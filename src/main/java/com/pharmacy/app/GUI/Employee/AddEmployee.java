@@ -4,11 +4,18 @@
  */
 package com.pharmacy.app.GUI.Employee;
 
+import com.pharmacy.app.BUS.EmployeeBUS;
+import com.pharmacy.app.DTO.EmployeeDTO;
+import com.pharmacy.app.Utils.EmployeeValidation;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author phong
  */
 public class AddEmployee extends javax.swing.JDialog {
+    private EmployeeBUS employeeBUS;
 
     /**
      * Creates new form AddEmployee
@@ -16,6 +23,11 @@ public class AddEmployee extends javax.swing.JDialog {
     public AddEmployee(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        // Center the dialog on the screen
+        setLocationRelativeTo(parent);
+        // Initialize BUS
+        employeeBUS = new EmployeeBUS();
+        employeeBUS.loadEmployeeList();
     }
 
     /**
@@ -199,6 +211,11 @@ public class AddEmployee extends javax.swing.JDialog {
         btnAddEmployee.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnAddEmployee.setForeground(new java.awt.Color(255, 255, 255));
         btnAddEmployee.setText("Thêm");
+        btnAddEmployee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddEmployeeActionPerformed(evt);
+            }
+        });
         pnlAddEmployeeButton.add(btnAddEmployee);
 
         btnCancel.setBackground(new java.awt.Color(153, 153, 153));
@@ -256,7 +273,7 @@ public class AddEmployee extends javax.swing.JDialog {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        dispose(); // Close the dialog
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void txtDOBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDOBActionPerformed
@@ -271,6 +288,157 @@ public class AddEmployee extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAddressActionPerformed
 
+    private void btnAddEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEmployeeActionPerformed
+        // Validate all input fields
+        if (!validateForm()) {
+            return;
+        }
+        
+        try {
+            // Generate a new employee ID
+            String employeeID = employeeBUS.generateNewEmployeeID();
+            
+            // For now, use a placeholder user ID (this would typically be linked to user accounts)
+            String userID = null;
+            
+            // Get name value
+            String name = txtName.getText().trim();
+            
+            // Parse date
+            String dobStr = txtDOB.getText().trim();
+            LocalDate dob = EmployeeValidation.parseDate(dobStr);
+            
+            // Get gender value (true for Male, false for Female)
+            boolean gender = cbGender.getSelectedIndex() == 0; // Nam = 0 (true), Nữ = 1 (false)
+            
+            // Get remaining field values
+            String email = txtEmail.getText().trim();
+            String phone = txtPhone.getText().trim();
+            String address = txtAddress.getText().trim();
+            
+            // Create employee object (not deleted by default)
+            EmployeeDTO employee = new EmployeeDTO(
+                    employeeID, 
+                    userID, 
+                    name, 
+                    dob, 
+                    gender, 
+                    email, 
+                    phone, 
+                    address, 
+                    false
+            );
+            
+            // Add the employee
+            boolean success = employeeBUS.addEmployee(employee);
+            
+            if (success) {
+                JOptionPane.showMessageDialog(
+                    this, 
+                    "Thêm nhân viên thành công!\nMã nhân viên: " + employeeID, 
+                    "Thông báo", 
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(
+                    this, 
+                    "Thêm nhân viên thất bại!", 
+                    "Lỗi", 
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                this, 
+                "Lỗi: " + e.getMessage(), 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE
+            );
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnAddEmployeeActionPerformed
+    
+    /**
+     * Validates all input fields in the form
+     * @return true if all fields are valid, false otherwise
+     */
+    private boolean validateForm() {
+        // Create DAO instance for duplicate checks
+        com.pharmacy.app.DAO.EmployeeDAO employeeDAO = new com.pharmacy.app.DAO.EmployeeDAO();
+
+        // Validate name (required)
+        String nameError = EmployeeValidation.validateRequired(txtName.getText(), "Họ tên");
+        if (!nameError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, nameError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtName.requestFocus();
+            return false;
+        }
+
+        // Validate date of birth
+        String dobError = EmployeeValidation.validateDate(txtDOB.getText());
+        if (!dobError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, dobError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtDOB.requestFocus();
+            return false;
+        }
+
+        // Validate email format
+        String emailError = EmployeeValidation.validateEmail(txtEmail.getText());
+        if (!emailError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, emailError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtEmail.requestFocus();
+            return false;
+        }
+
+        // Check if email already exists
+        String emailExistsError = EmployeeValidation.validateEmailExists(txtEmail.getText(), employeeDAO);
+        if (!emailExistsError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, emailExistsError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtEmail.requestFocus();
+            return false;
+        }
+
+        // Validate phone format
+        String phoneError = EmployeeValidation.validatePhone(txtPhone.getText());
+        if (!phoneError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, phoneError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtPhone.requestFocus();
+            return false;
+        }
+
+        // Check if phone already exists
+        String phoneExistsError = EmployeeValidation.validatePhoneExists(txtPhone.getText(), employeeDAO);
+        if (!phoneExistsError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, phoneExistsError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtPhone.requestFocus();
+            return false;
+        }
+
+        // Validate address (required)
+        String addressError = EmployeeValidation.validateRequired(txtAddress.getText(), "Địa chỉ");
+        if (!addressError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, addressError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtAddress.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+    
+    /**
+     * Clears all form fields
+     */
+//    private void clearForm() {
+//        txtName.setText("");
+//        txtDOB.setText("");
+//        cbGender.setSelectedIndex(0);
+//        txtEmail.setText("");
+//        txtPhone.setText("");
+//        txtAddress.setText("");
+//        txtName.requestFocus();
+//    }
+    
     /**
      * @param args the command line arguments
      */
@@ -296,6 +464,8 @@ public class AddEmployee extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 

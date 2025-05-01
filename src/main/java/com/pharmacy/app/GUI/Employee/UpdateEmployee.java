@@ -4,20 +4,103 @@
  */
 package com.pharmacy.app.GUI.Employee;
 
+import com.pharmacy.app.BUS.EmployeeBUS;
+import com.pharmacy.app.DTO.EmployeeDTO;
+import com.pharmacy.app.Utils.EmployeeValidation;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author phong
  */
 public class UpdateEmployee extends javax.swing.JDialog {
+    private EmployeeDTO employeeDTO;
+    private EmployeeBUS employeeBUS = new EmployeeBUS();
+    private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     /**
      * Creates new form UpdateEmployee
+     * @param parent
+     * @param modal
+     * @param employee
      */
-    public UpdateEmployee(java.awt.Frame parent, boolean modal) {
+    public UpdateEmployee(java.awt.Frame parent, boolean modal, EmployeeDTO employee) {
         super(parent, modal);
         initComponents();
+        this.employeeDTO = employee;
+        setData(employee);
     }
+    private void setData(EmployeeDTO employee) {
+        txtEmployeeID.setText(employee.getEmployeeID());
+        txtName.setText(employee.getName());
+        txtPhone.setText(employee.getPhone());
+        txtDOB.setText(employee.getDob().format(DATE_FORMAT));
+        cbGender.setSelectedIndex(employee.getGender() ? 0 : 1);
+        txtEmail.setText(employee.getEmail());
+        txtAddress.setText(String.valueOf(employee.getAddress()));
+    }
+    private UpdateEmployee(JFrame jFrame, boolean b) {
+        super(jFrame, b);
+        initComponents();
+    }
+    
+    /**
+     * Validates the employee form inputs
+     * @return true if all inputs are valid, false otherwise
+     */
+    private boolean validateForm() {
+        String name = txtName.getText().trim();
+        String dob = txtDOB.getText().trim();
+        String email = txtEmail.getText().trim();
+        String phone = txtPhone.getText().trim();
+        String address = txtAddress.getText().trim();
 
+        // Validate required fields
+        String nameError = EmployeeValidation.validateRequired(name, "Họ tên");
+        if (!nameError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, nameError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtName.requestFocus();
+            return false;
+        }
+
+        // Validate date of birth
+        String dobError = EmployeeValidation.validateDate(dob);
+        if (!dobError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, dobError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtDOB.requestFocus();
+            return false;
+        }
+
+        // Validate phone
+        String phoneError = EmployeeValidation.validatePhone(phone);
+        if (!phoneError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, phoneError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtPhone.requestFocus();
+            return false;
+        }
+
+        // Validate email if provided
+        String emailError = EmployeeValidation.validateEmail(email);
+        if (!emailError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, emailError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtEmail.requestFocus();
+            return false;
+        }
+
+        // Validate address
+        String addressError = EmployeeValidation.validateRequired(address, "Địa chỉ");
+        if (!addressError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, addressError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtAddress.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,6 +153,11 @@ public class UpdateEmployee extends javax.swing.JDialog {
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
         pnlUpdateButton.add(btnDelete);
 
         btnCancel.setBackground(new java.awt.Color(153, 153, 153));
@@ -235,6 +323,7 @@ public class UpdateEmployee extends javax.swing.JDialog {
         pnlUpdateEmployeeFields.add(lblEmpoyeeID, gridBagConstraints);
 
         txtEmployeeID.setEditable(false);
+        txtEmployeeID.setEnabled(false);
         txtEmployeeID.setFocusable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -276,11 +365,67 @@ public class UpdateEmployee extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
+        // Validate form
+        if (!validateForm()) {
+            return;
+        }
+
+        // Get form data
+        String name = txtName.getText().trim();
+        String dob = txtDOB.getText().trim();
+        String email = txtEmail.getText().trim();
+        String phone = txtPhone.getText().trim();
+        String address = txtAddress.getText().trim();
+        boolean gender = cbGender.getSelectedIndex() == 0; // true for Nam (Male), false for Nữ (Female)
+
+        // Parse date of birth
+        LocalDate dateOfBirth = EmployeeValidation.parseDate(dob);
+
+        // Check for duplicate email/phone with other employees
+        // Skip validation for the current employee's email/phone
+        String currentEmail = employeeDTO.getEmail();
+        String currentPhone = employeeDTO.getPhone();
+
+        // Only check for duplicate email if it changed
+        if (!email.equals(currentEmail) && !email.isEmpty()) {
+            if (employeeBUS.employeeDAO.isEmailExists(email)) {
+                JOptionPane.showMessageDialog(this, "Email đã được sử dụng bởi nhân viên khác!", 
+                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                txtEmail.requestFocus();
+                return;
+            }
+        }
+
+        // Only check for duplicate phone if it changed
+        if (!phone.equals(currentPhone)) {
+            if (employeeBUS.employeeDAO.isPhoneExists(phone)) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại đã được sử dụng bởi nhân viên khác!", 
+                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                txtPhone.requestFocus();
+                return;
+            }
+        }
+
+        // Update employee object with new data
+        employeeDTO.setName(name);
+        employeeDTO.setDob(dateOfBirth);
+        employeeDTO.setGender(gender);
+        employeeDTO.setEmail(email);
+        employeeDTO.setPhone(phone);
+        employeeDTO.setAddress(address);
+
+        // Update employee in database
+        boolean success = employeeBUS.updateEmployee(employeeDTO);
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Cập nhật thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            dispose(); // Close dialog after successful update
+        } else {
+            JOptionPane.showMessageDialog(this, "Cập nhật thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        dispose(); // Close dialog
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
@@ -307,6 +452,26 @@ public class UpdateEmployee extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAddressActionPerformed
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // Confirm before deletion
+        int confirm = JOptionPane.showConfirmDialog(this, 
+                "Bạn có chắc chắn muốn xóa nhân viên này?", 
+                "Xác nhận xóa", 
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            String employeeID = txtEmployeeID.getText();
+            boolean success = employeeBUS.deleteEmployee(employeeID);
+
+            if (success) {
+                JOptionPane.showMessageDialog(this, "Xóa nhân viên thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                dispose(); // Close dialog after successful deletion
+            } else {
+                JOptionPane.showMessageDialog(this, "Xóa nhân viên thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -332,6 +497,8 @@ public class UpdateEmployee extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(UpdateEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
