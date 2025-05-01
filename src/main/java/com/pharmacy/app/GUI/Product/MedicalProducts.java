@@ -4,22 +4,33 @@
  */
 package com.pharmacy.app.GUI.Product;
 
+import com.pharmacy.app.BUS.MedicalProductsBUS;
+import com.pharmacy.app.BUS.ProductBatchBUS;
+import com.pharmacy.app.DTO.MedicalProductsDTO;
+import com.pharmacy.app.DTO.ProductBatchDTO;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author LENOVO
  */
 public class MedicalProducts extends javax.swing.JPanel {
-
+    MedicalProductsBUS medBUS = new MedicalProductsBUS();
     /**
      * Creates new form MedicinesBatch
      */
     public MedicalProducts() {
         initComponents();
+        medListTbl.setDefaultEditor(Object.class, null);
+        loadMedList();
+        batchListTbl.setDefaultEditor(Object.class, null);
+        loadBatchList();
+        dateTbl.setDefaultEditor(Object.class, null);
+        loadDateList();
         
     }
 
@@ -56,7 +67,7 @@ public class MedicalProducts extends javax.swing.JPanel {
         jComboBox4 = new javax.swing.JComboBox<>();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        batchListTbl = new javax.swing.JTable();
         medDatePn = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -66,7 +77,7 @@ public class MedicalProducts extends javax.swing.JPanel {
         jComboBox2 = new javax.swing.JComboBox<>();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        dateTbl = new javax.swing.JTable();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -291,9 +302,10 @@ public class MedicalProducts extends javax.swing.JPanel {
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setLayout(new java.awt.BorderLayout());
 
+        jScrollPane2.setEnabled(false);
         jScrollPane2.setPreferredSize(new java.awt.Dimension(352, 202));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        batchListTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -312,7 +324,7 @@ public class MedicalProducts extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(batchListTbl);
 
         jPanel7.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
@@ -399,7 +411,9 @@ public class MedicalProducts extends javax.swing.JPanel {
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jScrollPane1.setEnabled(false);
+
+        dateTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -418,7 +432,7 @@ public class MedicalProducts extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(dateTbl);
 
         jPanel5.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -466,21 +480,86 @@ public class MedicalProducts extends javax.swing.JPanel {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+    
+    private void loadMedList(){
+        ArrayList<MedicalProductsDTO> medList = medBUS.getAllProducts();
+        DefaultTableModel model = (DefaultTableModel) medListTbl.getModel();
+        model.setRowCount(0);
+        
+        for(MedicalProductsDTO med : medList){
+            model.addRow(new Object[]{
+                med.getMedicineID(),
+                med.getName(),
+                med.getQuantity(),
+                med.getCategory()
+            });
+        }
+    }
+    
+    private void loadBatchList(){
+        try {
+            ProductBatchBUS medBUS = new ProductBatchBUS();
+            ArrayList<ProductBatchDTO> batchList = medBUS.getAllBatches();
+            DefaultTableModel model = (DefaultTableModel) batchListTbl.getModel();
+            model.setRowCount(0);
 
+            for(ProductBatchDTO batch : batchList){
+                model.addRow(new Object[]{
+                    batch.getBatchID(),
+                    batch.getMedicineID(),
+                    batch.getQuantityInStock(),
+                    "supplier chưa xử lý",
+                    batch.getManufacturingDate(),
+                    batch.getExpirationDate()
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getMessage();
+        }
+            
+}
+    private void loadDateList(){
+        try {
+            ProductBatchBUS medBUS = new ProductBatchBUS();
+            ArrayList<ProductBatchDTO> batchList = medBUS.getAllBatches();
+            DefaultTableModel model = (DefaultTableModel) dateTbl.getModel();
+            model.setRowCount(0);
+
+            for(ProductBatchDTO batch : batchList){
+                model.addRow(new Object[]{
+                    batch.getBatchID(),
+                    batch.getMedicineID(),
+                    batch.getQuantityInStock(),
+                    "supplier chưa xử lý",
+                    batch.getManufacturingDate(),
+                    batch.getExpirationDate(),
+                    medBUS.getDateforBatch(batch.getExpirationDate())
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getMessage();
+        }
+    }
+    
     private void medListTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medListTblMouseClicked
+         
         if (evt.getButton() == MouseEvent.BUTTON1) {
             int row = medListTbl.getSelectedRow();
-
             if (row >= 0) {
-                Object value = medListTbl.getValueAt(row, 0);
-
+                String ID = medListTbl.getValueAt(row, 0).toString();
+                
+                MedicalProductsDTO selectedProduct = medBUS.getProductByID(ID);
                 // Mở dialog
                 Frame frame = JOptionPane.getFrameForComponent(medListTbl);
-                ProductDetails dialog = new ProductDetails(frame, true);
+                ProductDetails dialog = new ProductDetails(frame, true, selectedProduct);
                 dialog.setLocationRelativeTo(frame);
                 dialog.setVisible(true);
             }
         }
+
+
 
     }//GEN-LAST:event_medListTblMouseClicked
 
@@ -488,6 +567,8 @@ public class MedicalProducts extends javax.swing.JPanel {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
+    private javax.swing.JTable batchListTbl;
+    private javax.swing.JTable dateTbl;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -512,8 +593,6 @@ public class MedicalProducts extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
