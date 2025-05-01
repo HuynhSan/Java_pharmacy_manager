@@ -4,6 +4,7 @@
  */
 package com.pharmacy.app.DTO;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 /**
@@ -11,15 +12,17 @@ import java.time.LocalDate;
  * @author LENOVO
  */
 public class ProductBatchDTO {
-    private int batchID;
-    private int medicineID;
+    private String batchID;
+    private String medicineID;
     private LocalDate manufacturingDate;
     private LocalDate expirationDate;
     private int quantityInStock;
     private int quantityReceived;
     private double sellPrice;
-
-    public ProductBatchDTO(int batchID, int medicineID, LocalDate manufacturingDate, LocalDate expirationDate, int quantityInStock, int quantityReceived, double sellPrice) {
+    private boolean status;
+    
+    public ProductBatchDTO(){};
+    public ProductBatchDTO(String batchID, String medicineID, LocalDate manufacturingDate, LocalDate expirationDate, int quantityInStock, int quantityReceived, double sellPrice, boolean status) {
         this.batchID = batchID;
         this.medicineID = medicineID;
         this.manufacturingDate = manufacturingDate;
@@ -29,19 +32,19 @@ public class ProductBatchDTO {
         this.sellPrice = sellPrice;
     }
 
-    public int getBatchID() {
+    public String getBatchID() {
         return batchID;
     }
 
-    public void setBatchID(int batchID) {
+    public void setBatchID(String batchID) {
         this.batchID = batchID;
     }
 
-    public int getMedicineID() {
+    public String getMedicineID() {
         return medicineID;
     }
 
-    public void setMedicineID(int medicineID) {
+    public void setMedicineID(String medicineID) {
         this.medicineID = medicineID;
     }
 
@@ -85,6 +88,12 @@ public class ProductBatchDTO {
         this.sellPrice = sellPrice;
     }
     
-    
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
     
 }
