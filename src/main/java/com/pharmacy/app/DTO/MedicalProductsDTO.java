@@ -15,18 +15,19 @@ public class MedicalProductsDTO {
     private String description;
     private String unit;
     private int quantity;
-    private double sellPrice;
-    private String status;
+    private boolean status;
     private String packingSpecification;
 
-    public MedicalProductsDTO(String medicineID, String name, String category, String description, String unit, int quantity, double sellPrice, String status, String packingSpecification) {
+    public MedicalProductsDTO(){
+     
+    }
+    public MedicalProductsDTO(String medicineID, String name, String category, String description, String unit, int quantity,  String packingSpecification, boolean status) {
         this.medicineID = medicineID;
         this.name = name;
         this.category = category;
         this.description = description;
         this.unit = unit;
         this.quantity = quantity;
-        this.sellPrice = sellPrice;
         this.status = status;
         this.packingSpecification = packingSpecification;
     }
@@ -79,19 +80,11 @@ public class MedicalProductsDTO {
         this.quantity = quantity;
     }
 
-    public double getSellPrice() {
-        return sellPrice;
-    }
-
-    public void setSellPrice(double sellPrice) {
-        this.sellPrice = sellPrice;
-    }
-
-    public String getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
