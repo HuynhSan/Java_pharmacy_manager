@@ -466,11 +466,11 @@ public class homepage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 // cardlayout
     public void switchToPanel(String panelName) {
-    ContentPn.setLayout(cardlayout);
-    cardlayout.show(ContentPn, panelName);
-    ContentPn.revalidate();
-    ContentPn.repaint();
-}
+        ContentPn.setLayout(cardlayout);
+        cardlayout.show(ContentPn, panelName);
+        ContentPn.revalidate();
+        ContentPn.repaint();
+    }
     
     public void hideshow(JPanel menushowhide, boolean dashboard, JLabel button){
         if(dashboard == true){

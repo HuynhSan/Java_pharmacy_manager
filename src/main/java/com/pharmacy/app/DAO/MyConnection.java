@@ -66,7 +66,18 @@ public class MyConnection {
             return null;
         }
     }
-
+    public ResultSet prepareQuery(String sql, Object... params) {
+        try {
+            PreparedStatement prestm = con.prepareStatement(sql);
+            for (int i = 0; i < params.length; i++) {
+                prestm.setObject(i + 1, params[i]);
+            }
+            return prestm.executeQuery();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     
     public int prepareUpdate(String sql, Object...params) {
         try {

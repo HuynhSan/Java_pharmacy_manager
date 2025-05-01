@@ -11,46 +11,58 @@ import java.time.LocalDate;
  * @author LENOVO
  */
 public class SuplierInvoiceDTO {
-    public int invoiceID;
-    public int poID;
-    public int supplierID;
+    public String invoiceID;
+    public String poID;
+    public String supplierID;
+    public String supplierName;
     public int totalQuantity;
     public double totalPrice;
     public LocalDate purchaseDate;
 
-    public SuplierInvoiceDTO(int invoiceID, int poID, int supplierID, int totalQuantity, double totalPrice, LocalDate purchaseDate) {
+    public SuplierInvoiceDTO(){}
+    
+    public SuplierInvoiceDTO(String invoiceID, String poID, String supplierID, String supplierName, int totalQuantity, double totalPrice, LocalDate purchaseDate) {
         this.invoiceID = invoiceID;
         this.poID = poID;
         this.supplierID = supplierID;
+        this.supplierName = supplierName;
         this.totalQuantity = totalQuantity;
         this.totalPrice = totalPrice;
         this.purchaseDate = purchaseDate;
     }
 
-    public int getInvoiceID() {
+    public String getInvoiceID() {
         return invoiceID;
     }
 
-    public void setInvoiceID(int invoiceID) {
+    public void setInvoiceID(String invoiceID) {
         this.invoiceID = invoiceID;
     }
 
-    public int getPoID() {
+    public String getPoID() {
         return poID;
     }
 
-    public void setPoID(int poID) {
+    public void setPoID(String poID) {
         this.poID = poID;
     }
 
-    public int getSupplierID() {
+    public String getSupplierID() {
         return supplierID;
     }
 
-    public void setSupplierID(int supplierID) {
+    public void setSupplierID(String supplierID) {
         this.supplierID = supplierID;
     }
+    
+    public String getSupplierName() {
+        return supplierName;
+    }
 
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+    
     public int getTotalQuantity() {
         return totalQuantity;
     }
