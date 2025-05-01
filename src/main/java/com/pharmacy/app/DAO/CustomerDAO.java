@@ -3,34 +3,28 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.pharmacy.app.DAO;
-import com.pharmacy.app.DTO.SupplierDTO;
+
+import com.pharmacy.app.DTO.CustomerDTO;
 import com.pharmacy.app.DAO.MyConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.util.Objects;
-//import java.util.List;
-
 /**
  *
- * @author Giai Cuu Li San
+ * @author BOI QUAN
  */
-public class SupplierDAO implements DAOinterface<SupplierDTO>{
-    private String searchField = "all"; // mặc định tìm tất cả
-
-    public void setSearchField(String field) {
-        this.searchField = field;
-    }
+public class CustomerDAO implements DAOinterface<CustomerDTO>{
     MyConnection myconnect = new MyConnection();
     
-    public String generateNextSupplierId() {
+    public String generateNextId() {
         String nextId = ""; // Mặc định nếu bảng chưa có dữ liệu
         if (myconnect.openConnection()){
             try {
-                String sql = "SELECT MAX(supplier_id) AS max_id FROM suppliers";
+                String sql = "SELECT MAX(customer_id) AS max_id FROM customers";
                 ResultSet rs = myconnect.runQuery(sql);
-                String lastId = "SUP000";
+                String lastId = "CUS000";
                 
                 if (rs.next()) {
                     lastId = rs.getString("max_id"); // Ví dụ SUP012
@@ -39,27 +33,26 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
                 String numericPart = lastId.substring(3);
                 int lastNumber = Integer.parseInt(numericPart); // Lấy phần số: 12
                 lastNumber++; // Tăng lên: 13
-                nextId = "SUP" + String.format("%03d", lastNumber); // Kết quả: SUP013
+                nextId = "CUS" + String.format("%03d", lastNumber); // Kết quả: SUP013
             } catch (Exception e) {
                 e.printStackTrace();
             } 
         }
         return nextId;
     }
-
+        
     @Override
-    public boolean insert(SupplierDTO t) {
+    public boolean insert(CustomerDTO t) {
         boolean result = false;
         if (myconnect.openConnection()){
-            String newId = generateNextSupplierId();
-            String sql = "INSERT INTO suppliers (supplier_id, name, phone_number, email, address) VALUES (?, ?, ?, ?, ?)";
+            String newId = generateNextId();
+            String sql = "INSERT INTO customers (customer_id, customer_name, phone_number, point) VALUES (?, ?, ?, ?)";
             int rowsAffected = myconnect.prepareUpdate(
                 sql,
                 newId,
                 t.getName(),
                 t.getPhone(),
-                t.getEmail(),
-                t.getAddress()                    
+                t.getPoint()                 
             );
             result = rowsAffected > 0;
             myconnect.closeConnection();
@@ -67,17 +60,16 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
         return result;
     }
 
+//    update thong tin
     @Override
-    public boolean update(SupplierDTO t) {
+    public boolean update(CustomerDTO t) {
         boolean result = false;
         if (myconnect.openConnection()){
-            String sql = "UPDATE suppliers SET name=?, phone_number=?, email=?, address=? WHERE supplier_id=?";
+            String sql = "UPDATE customers SET customer_name=?, phone_number=? WHERE customer_id=?";
             int rowsAffected = myconnect.prepareUpdate(
                     sql,
                     t.getName(),
                     t.getPhone(),
-                    t.getEmail(),
-                    t.getAddress(),
                     t.getId() // WHERE dieu kien
             );
             result = rowsAffected > 0;
@@ -86,11 +78,12 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
         return result;
     }
 
+//    update diem
     @Override
     public boolean delete(String t) {
         boolean result = false;
         if (myconnect.openConnection()){
-            String sql = "UPDATE suppliers SET is_deleted=1 WHERE supplier_id=?";
+            String sql = "UPDATE customers SET is_deleted=1 WHERE customer_id=?";
             int rowsAffected = myconnect.prepareUpdate(sql, t);
             result = rowsAffected > 0;
             myconnect.closeConnection();
@@ -99,21 +92,20 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
     }
 
     @Override
-    public ArrayList<SupplierDTO> selectAll(){
-        ArrayList<SupplierDTO> suppliers = new ArrayList<>();
+    public ArrayList<CustomerDTO> selectAll() {
+        ArrayList<CustomerDTO> customers = new ArrayList<>();
         if (myconnect.openConnection()) {
-            String sql = "SELECT supplier_id, name, phone_number, email, address FROM suppliers WHERE is_deleted = 0";
+            String sql = "SELECT * FROM customers WHERE is_deleted = 0";
             ResultSet rs = myconnect.runQuery(sql);
             try {
                 while (rs != null && rs.next()) {
-                    SupplierDTO supplier = new SupplierDTO(
+                    CustomerDTO customer = new CustomerDTO(
                         rs.getString(1), // id
                         rs.getString(2), // name
                         rs.getString(3), // phone
-                        rs.getString(4), // email
-                        rs.getString(5) // address
+                        rs.getFloat(4) // point
                     );
-                    suppliers.add(supplier);
+                    customers.add(customer);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -121,23 +113,22 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
                 myconnect.closeConnection();
             }
         }
-        return suppliers;
+        return customers;
     }
 
     @Override
-    public SupplierDTO selectByID(String t) {
-        SupplierDTO supplier = null;
+    public CustomerDTO selectByID(String t) {
+        CustomerDTO customer = null;
         if (myconnect.openConnection()){
-            String sql = "SELECT supplier_id, name, phone_number, email, address FROM suppliers WHERE supplier_id = ?";
+            String sql = "SELECT * FROM customers WHERE customer_id = ?";
             ResultSet rs = myconnect.prepareQuery(sql, t);
             try {
                 while (rs != null && rs.next()){
-                    supplier = new SupplierDTO(
+                    customer = new CustomerDTO(
                         rs.getString(1), // id
                         rs.getString(2), // name
                         rs.getString(3), // phone
-                        rs.getString(4), // email
-                        rs.getString(5) // address
+                        rs.getFloat(4) // point
                     );
                 }
             } catch (SQLException e){
@@ -146,31 +137,29 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
                 myconnect.closeConnection();
             }
         }
-        return supplier;
+        return customer;
     }
+    
 
     @Override
-    public ArrayList<SupplierDTO> search(String t) {
-        ArrayList<SupplierDTO> suppliers = new ArrayList<>();
+    public ArrayList<CustomerDTO> search(String t) {
+        ArrayList<CustomerDTO> customers = new ArrayList<>();
         if (myconnect.openConnection()){
-            String sql = "SELECT * FROM suppliers WHERE( "
-                    + "LOWER(supplier_id) LIKE '%" + t.toLowerCase() + "%' OR "
-                    + "LOWER(name) LIKE '%" + t.toLowerCase() + "%' OR "
-                    + "phone_number LIKE '%" + t.toLowerCase() + "%' OR "
-                    + "email LIKE '%" + t.toLowerCase() + "%' OR "
-                    + "LOWER(address) LIKE '%" + t.toLowerCase() + "%' ) "
+            String sql = "SELECT * FROM customers WHERE( "
+                    + "LOWER(customer_id) LIKE '%" + t.toLowerCase() + "%' OR "
+                    + "LOWER(customer_name) LIKE '%" + t.toLowerCase() + "%' OR "
+                    + "phone_number LIKE '%" + t.toLowerCase() + "%')"
                     + "AND is_deleted = 0";
             ResultSet rs = myconnect.runQuery(sql);
             try {
                 while (rs != null && rs.next()) {
-                    SupplierDTO supplier = new SupplierDTO(
+                    CustomerDTO customer = new CustomerDTO(
                         rs.getString(1), // id
                         rs.getString(2), // name
                         rs.getString(3), // phone
-                        rs.getString(4), // email
-                        rs.getString(5) // address
+                        rs.getFloat(4) // point
                     );
-                    suppliers.add(supplier);
+                    customers.add(customer);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -178,6 +167,6 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
                 myconnect.closeConnection();
             }
         }
-        return suppliers;
+        return customers;
     }
 }

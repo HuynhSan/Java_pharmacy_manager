@@ -4,24 +4,102 @@
  */
 package com.pharmacy.app.GUI.Customer;
 
-import com.pharmacy.app.GUI.Promo.AddPromo;
+import com.pharmacy.app.BUS.CustomerBUS;
+import com.pharmacy.app.DTO.CustomerDTO;
+import com.pharmacy.app.DAO.CustomerDAO;
+
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author BOI QUAN
  */
-public class CustomerList extends javax.swing.JPanel {
+public final class CustomerList extends javax.swing.JPanel {
+    private CustomerDAO customerDAO;
+    private CustomerBUS customerBUS;
 
     /**
      * Creates new form CustomerList
      */
     public CustomerList() {
         initComponents();
+        initBUS();
+        setupListeners();
+        loadCustomerData();
     }
 
+    private void initBUS(){
+        customerBUS = new CustomerBUS();
+        customerBUS.loadCustomerList();
+    }
+    
+    private void setupListeners(){
+        txtSearch.addFocusListener(new FocusAdapter(){
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtSearch.getText().equals("Tìm kiếm")) {
+                    txtSearch.setText("");
+                    txtSearch.setFont(new java.awt.Font("Segoe UI", 0, 12));
+                    txtSearch.setForeground(new java.awt.Color(0, 0, 0));
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtSearch.getText().isEmpty()) {
+                    txtSearch.setText("Tìm kiếm");
+                    txtSearch.setFont(new java.awt.Font("Segoe UI", 2, 12));
+                    txtSearch.setForeground(new java.awt.Color(153, 153, 153));
+                }
+            }
+        });
+        // Setup search text field key listener
+        txtSearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String keyword = txtSearch.getText();
+                if (!keyword.equals("Tìm kiếm")) {
+                    searchSupplier(keyword);
+                }
+            }
+        });
+    }
+
+    private void displayList(List<CustomerDTO> customerList) {
+        DefaultTableModel model = (DefaultTableModel) tbCustomerList.getModel();
+        model.setRowCount(0);
+
+        for (CustomerDTO c: customerList){
+            model.addRow(new Object[]{
+                c.getId(),
+                c.getName(),
+                c.getPhone(),
+                c.getPoint()
+            });
+        }
+    }
+
+    public void loadCustomerData(){
+        List<CustomerDTO> customerList = customerBUS.getAllCustomers();
+        displayList(customerList);
+    }
+    
+    private void searchSupplier(String keyword){
+        if (keyword.isEmpty() || keyword.equals("Tìm kiếm")) {
+            loadCustomerData(); // Hiển thị lại toàn bộ nếu người dùng xóa từ khóa
+            return;
+        }
+        
+        List<CustomerDTO> searchResult = customerBUS.search(keyword);
+        displayList(searchResult);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,11 +112,11 @@ public class CustomerList extends javax.swing.JPanel {
         plHeader = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         plSearch = new javax.swing.JPanel();
-        cbSort = new javax.swing.JComboBox<>();
-        txtSearch1 = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
+        txtSearch = new javax.swing.JTextField();
         btnAdd = new javax.swing.JButton();
         btnRefesh = new javax.swing.JButton();
-        lblImg = new javax.swing.JLabel();
+        btnExportPDF = new javax.swing.JButton();
         plCustomerList = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbCustomerList = new javax.swing.JTable();
@@ -65,17 +143,21 @@ public class CustomerList extends javax.swing.JPanel {
         plSearch.setPreferredSize(new java.awt.Dimension(450, 70));
         plSearch.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 20));
 
-        cbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbSort.setMinimumSize(new java.awt.Dimension(100, 30));
-        cbSort.setPreferredSize(new java.awt.Dimension(100, 30));
-        plSearch.add(cbSort);
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
-        txtSearch1.setMaximumSize(new java.awt.Dimension(300, 30));
-        txtSearch1.setMinimumSize(new java.awt.Dimension(300, 30));
-        txtSearch1.setPreferredSize(new java.awt.Dimension(300, 30));
-        plSearch.add(txtSearch1);
+        txtSearch.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        txtSearch.setForeground(new java.awt.Color(153, 153, 153));
+        txtSearch.setText("Tìm kiếm");
+        txtSearch.setMaximumSize(new java.awt.Dimension(326589, 30));
+        txtSearch.setMinimumSize(new java.awt.Dimension(500, 30));
+        txtSearch.setPreferredSize(new java.awt.Dimension(500, 30));
+        jPanel1.add(txtSearch);
 
-        btnAdd.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        plSearch.add(jPanel1);
+
+        btnAdd.setBackground(new java.awt.Color(0, 204, 51));
+        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("Thêm");
         btnAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAdd.setMaximumSize(new java.awt.Dimension(75, 30));
@@ -88,18 +170,23 @@ public class CustomerList extends javax.swing.JPanel {
         });
         plSearch.add(btnAdd);
 
-        btnRefesh.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnRefesh.setText("Làm mới");
+        btnRefesh.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnRefesh.setText("Tải lại");
         btnRefesh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnRefesh.setMaximumSize(new java.awt.Dimension(90, 30));
         btnRefesh.setMinimumSize(new java.awt.Dimension(90, 30));
         btnRefesh.setPreferredSize(new java.awt.Dimension(90, 30));
+        btnRefesh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefeshActionPerformed(evt);
+            }
+        });
         plSearch.add(btnRefesh);
 
-        lblImg.setBackground(new java.awt.Color(255, 255, 255));
-        lblImg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pdf.png"))); // NOI18N
-        plSearch.add(lblImg);
+        btnExportPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pdf.png"))); // NOI18N
+        btnExportPDF.setBorder(null);
+        btnExportPDF.setPreferredSize(new java.awt.Dimension(46, 40));
+        plSearch.add(btnExportPDF);
 
         javax.swing.GroupLayout plHeaderLayout = new javax.swing.GroupLayout(plHeader);
         plHeader.setLayout(plHeaderLayout);
@@ -131,7 +218,6 @@ public class CustomerList extends javax.swing.JPanel {
         jScrollPane1.setMinimumSize(new java.awt.Dimension(780, 400));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(1180, 400));
 
-        tbCustomerList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tbCustomerList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"KH01", "Nguyễn Văn A", "0123456789",  new Float(100.0)},
@@ -156,7 +242,13 @@ public class CustomerList extends javax.swing.JPanel {
         tbCustomerList.setPreferredSize(new java.awt.Dimension(1180, 400));
         tbCustomerList.setRowHeight(30);
         tbCustomerList.setShowGrid(true);
+        tbCustomerList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbCustomerListMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbCustomerList);
+        tbCustomerList.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         plCustomerList.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -173,20 +265,43 @@ public class CustomerList extends javax.swing.JPanel {
         addDialog.setVisible(true);
     }//GEN-LAST:event_btnAddMouseClicked
 
+    private void tbCustomerListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCustomerListMouseClicked
+        // TODO add your handling code here:
+//        customerDAO = new CustomerDAO();
+        int selectedRow = tbCustomerList.getSelectedRow();
+        if (selectedRow != -1){
+            // Lấy dữ liệu từ các cột trong dòng được chọn
+            String id = tbCustomerList.getValueAt(selectedRow, 0).toString();
+            // Tạo đối tượng CustomerDTO từ dữ liệu đã lấy
+            CustomerDTO selectedCustomer = customerBUS.getCustomerByID(id);
+            
+            CustomerDetail detailDialog = new CustomerDetail((JFrame) SwingUtilities.getWindowAncestor(this), true, selectedCustomer);
+            detailDialog.setLocationRelativeTo(null);
+            detailDialog.setVisible(true);
+        }
+    }//GEN-LAST:event_tbCustomerListMouseClicked
+
+    private void btnRefeshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefeshActionPerformed
+        txtSearch.setText("Tìm kiếm");
+        txtSearch.setForeground(new java.awt.Color(153, 153, 153));
+        customerBUS.loadCustomerList();
+        loadCustomerData(); 
+    }//GEN-LAST:event_btnRefeshActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnExportPDF;
     private javax.swing.JButton btnRefesh;
-    private javax.swing.JComboBox<String> cbSort;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel lblImg;
     private javax.swing.JPanel plCustomerList;
     private javax.swing.JPanel plHeader;
     private javax.swing.JPanel plSearch;
     private javax.swing.JTable tbCustomerList;
-    private javax.swing.JTextField txtSearch1;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }
