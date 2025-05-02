@@ -586,7 +586,7 @@ public class Invoices extends javax.swing.JPanel {
             DefaultTableModel model = (DefaultTableModel) tbSupInvoiceDetail.getModel();
 
             // Use the PDFExporter utility class to export employee data
-            com.pharmacy.app.Utils.PDFExporter.exportEmployeesToPDF(this, model, "PHIẾU NHẬP");
+            com.pharmacy.app.Utils.PDFExporter.exportInvoicesToPDF(this, model);
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this,
