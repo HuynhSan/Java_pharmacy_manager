@@ -341,7 +341,7 @@ public final class SupplierList extends javax.swing.JPanel {
             DefaultTableModel model = (DefaultTableModel) tbSupplierList.getModel();
 
             // Use the PDFExporter utility class to export employee data
-            com.pharmacy.app.Utils.PDFExporter.exportEmployeesToPDF(this, model, "DANH SÁCH NHÀ CUNG CẤP");
+            com.pharmacy.app.Utils.PDFExporter.exportSuppliersToPDF(this, model);
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this,
