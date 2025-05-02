@@ -456,7 +456,7 @@ public class EmployeeManagement extends javax.swing.JPanel {
             DefaultTableModel model = (DefaultTableModel) tblEmployees.getModel();
 
             // Use the PDFExporter utility class to export employee data
-            com.pharmacy.app.Utils.PDFExporter.exportEmployeesToPDF(this, model);
+            com.pharmacy.app.Utils.PDFExporter.exportEmployeesToPDF(this, model, "DANH SÁCH NHAN VIÊN");
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this,

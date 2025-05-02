@@ -390,14 +390,15 @@ public class PDFExporter {
         }
     }
     
-    public static boolean exportEmployeesToPDF(Component parentComponent, TableModel employeeTableModel) {
+    public static boolean exportEmployeesToPDF(Component parentComponent, TableModel employeeTableModel, String title) {
         // Define custom column widths for employee table
         float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
         
         return exportTableToPDF(
                 parentComponent,
                 employeeTableModel,
-                "DANH SÁCH NHÂN VIÊN",
+//                "DANH SÁCH NHÂN VIÊN",
+                title,
                 "DanhSachNhanVien.pdf",
                 columnWidths,
                 true // landscape orientation
