@@ -3,21 +3,28 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package com.pharmacy.app.GUI.Importing;
+import com.pharmacy.app.BUS.SuplierInvoicesBUS;
+import com.pharmacy.app.DAO.SupplierInvoicesDAO;
+import com.pharmacy.app.DTO.SuplierInvoiceDTO;
 import javax.swing.*;
 import java.awt.*;
-
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
 /**
  *
  * @author LENOVO
  */
-public class InvoicesList extends javax.swing.JPanel {
+public final class InvoicesList extends javax.swing.JPanel {
 
     /**
      * Creates new form POList
      */
     public InvoicesList() {
         initComponents();
+
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,7 +41,7 @@ public class InvoicesList extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbInvoiceHistory = new javax.swing.JTable();
         jComboBox4 = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
@@ -75,18 +82,18 @@ public class InvoicesList extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách phiếu nhập", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbInvoiceHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Mã phiếu nhập", "Tổng số lượng", "Tổng tiền", "Nhà cung cấp", "Người nhập"
+                "Mã phiếu nhập", "Tổng số lượng", "Tổng tiền", "Nhà cung cấp"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbInvoiceHistory);
 
         jComboBox4.setEditable(true);
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã thuốc", "Ngày nhập", "Tên người nhập", "Nhà cung cấp" }));
@@ -135,7 +142,7 @@ public class InvoicesList extends javax.swing.JPanel {
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addContainerGap(148, Short.MAX_VALUE))
         );
 
         jPanel3.add(jPanel2, java.awt.BorderLayout.CENTER);
@@ -416,13 +423,13 @@ public class InvoicesList extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JTable tbInvoiceHistory;
     private javax.swing.JButton updatePOBtn;
     // End of variables declaration//GEN-END:variables
 }

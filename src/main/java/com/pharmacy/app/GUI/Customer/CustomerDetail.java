@@ -3,24 +3,37 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package com.pharmacy.app.GUI.Customer;
+import com.pharmacy.app.BUS.CustomerBUS;
+import com.pharmacy.app.DTO.CustomerDTO;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 /**
  *
  * @author BOI QUAN
  */
 public class CustomerDetail extends javax.swing.JDialog {
-
+    private CustomerDTO customerDTO;
+    private CustomerBUS customerBUS = new CustomerBUS();
     /**
      * Creates new form ChiTietCustomer
      */
-    public CustomerDetail(java.awt.Frame parent, boolean modal) {
+    public CustomerDetail(java.awt.Frame parent, boolean modal, CustomerDTO customer) {
         super(parent, modal);
         initComponents();
         centerTableCells();
+        this.customerDTO = customer;
+        setData(customer);
         
     }
-
+    private void setData(CustomerDTO customer) {
+        txtId.setText(customer.getId());
+        txtName.setText(customer.getName());
+        txtPhone.setText(customer.getPhone());
+        txtPoint.setText(String.valueOf(customer.getPoint()));
+    }
     private void centerTableCells(){
         DefaultTableCellRenderer centerRender = new DefaultTableCellRenderer();
         centerRender.setHorizontalAlignment(SwingConstants.CENTER);
@@ -41,6 +54,8 @@ public class CustomerDetail extends javax.swing.JDialog {
 
         plHeader = new javax.swing.JPanel();
         plInformation = new javax.swing.JPanel();
+        lblId = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
         lblName = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
         lblPhone = new javax.swing.JLabel();
@@ -50,7 +65,7 @@ public class CustomerDetail extends javax.swing.JDialog {
         plButton = new javax.swing.JPanel();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
-        btnExit = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
         plHistory = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbHistory = new javax.swing.JTable();
@@ -72,24 +87,37 @@ public class CustomerDetail extends javax.swing.JDialog {
         plInformation.setBackground(new java.awt.Color(255, 255, 255));
         plInformation.setMaximumSize(new java.awt.Dimension(326589, 326589));
         plInformation.setMinimumSize(new java.awt.Dimension(0, 40));
-        plInformation.setPreferredSize(new java.awt.Dimension(600, 50));
+        plInformation.setPreferredSize(new java.awt.Dimension(650, 50));
+
+        lblId.setBackground(new java.awt.Color(255, 255, 255));
+        lblId.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblId.setText("ID:");
+        lblId.setPreferredSize(new java.awt.Dimension(30, 30));
+        plInformation.add(lblId);
+
+        txtId.setEditable(false);
+        txtId.setBackground(new java.awt.Color(255, 255, 255));
+        txtId.setBorder(null);
+        txtId.setFocusable(false);
+        txtId.setPreferredSize(new java.awt.Dimension(70, 30));
+        plInformation.add(txtId);
 
         lblName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblName.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         lblName.setText("Họ và Tên:");
         lblName.setMaximumSize(new java.awt.Dimension(326589, 326589));
         lblName.setMinimumSize(new java.awt.Dimension(70, 30));
-        lblName.setPreferredSize(new java.awt.Dimension(100, 30));
+        lblName.setPreferredSize(new java.awt.Dimension(90, 30));
         plInformation.add(lblName);
 
         txtName.setEditable(false);
+        txtName.setBackground(new java.awt.Color(255, 255, 255));
         txtName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtName.setText("Nguyễn Văn A");
         txtName.setToolTipText("");
         txtName.setBorder(null);
         txtName.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        txtName.setEnabled(false);
         txtName.setFocusable(false);
         txtName.setMaximumSize(new java.awt.Dimension(100, 30));
         txtName.setMinimumSize(new java.awt.Dimension(100, 30));
@@ -106,12 +134,12 @@ public class CustomerDetail extends javax.swing.JDialog {
         plInformation.add(lblPhone);
 
         txtPhone.setEditable(false);
+        txtPhone.setBackground(new java.awt.Color(255, 255, 255));
         txtPhone.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtPhone.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtPhone.setText("0123456789");
         txtPhone.setBorder(null);
         txtPhone.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        txtPhone.setEnabled(false);
         txtPhone.setFocusable(false);
         txtPhone.setMaximumSize(new java.awt.Dimension(100, 30));
         txtPhone.setMinimumSize(new java.awt.Dimension(100, 30));
@@ -150,25 +178,30 @@ public class CustomerDetail extends javax.swing.JDialog {
         plButton.setBackground(new java.awt.Color(255, 255, 255));
         plButton.setMaximumSize(new java.awt.Dimension(326589, 326589));
         plButton.setMinimumSize(new java.awt.Dimension(200, 40));
-        plButton.setPreferredSize(new java.awt.Dimension(350, 50));
+        plButton.setPreferredSize(new java.awt.Dimension(300, 50));
         plButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
 
         btnUpdate.setBackground(new java.awt.Color(0, 204, 51));
-        btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("Cập nhật");
         btnUpdate.setMaximumSize(new java.awt.Dimension(326589, 326589));
         btnUpdate.setMinimumSize(new java.awt.Dimension(77, 30));
-        btnUpdate.setPreferredSize(new java.awt.Dimension(100, 35));
+        btnUpdate.setPreferredSize(new java.awt.Dimension(80, 35));
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
         plButton.add(btnUpdate);
 
         btnDelete.setBackground(new java.awt.Color(255, 0, 0));
-        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("Xóa");
         btnDelete.setMaximumSize(new java.awt.Dimension(72, 30));
         btnDelete.setMinimumSize(new java.awt.Dimension(72, 30));
-        btnDelete.setPreferredSize(new java.awt.Dimension(72, 35));
+        btnDelete.setPreferredSize(new java.awt.Dimension(80, 35));
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -176,12 +209,17 @@ public class CustomerDetail extends javax.swing.JDialog {
         });
         plButton.add(btnDelete);
 
-        btnExit.setBackground(new java.awt.Color(153, 153, 153));
-        btnExit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnExit.setForeground(new java.awt.Color(255, 255, 255));
-        btnExit.setText("Thoát");
-        btnExit.setPreferredSize(new java.awt.Dimension(80, 35));
-        plButton.add(btnExit);
+        btnCancel.setBackground(new java.awt.Color(153, 153, 153));
+        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnCancel.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancel.setText("Hủy");
+        btnCancel.setPreferredSize(new java.awt.Dimension(80, 35));
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+        plButton.add(btnCancel);
 
         plHeader.add(plButton);
 
@@ -245,8 +283,36 @@ public class CustomerDetail extends javax.swing.JDialog {
     }//GEN-LAST:event_txtPhoneActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
+        CustomerDTO customer = this.customerDTO;
+        int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa nhà cung cấp này?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION){
+            boolean success = customerBUS.deleteCustomer(customer);
+            if (success){
+                JOptionPane.showMessageDialog(this, "Xóa khách hàng thành công!");
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Xóa khách hàng thất bại!");
+            }
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        CustomerDTO selectedCustomer = new CustomerDTO(
+            txtId.getText(),
+            txtName.getText(),
+            txtPhone.getText(),
+            Float.parseFloat(txtPoint.getText())
+        );
+        UpdateCustomer updateDialog = new UpdateCustomer((JFrame) SwingUtilities.getWindowAncestor(this), true, selectedCustomer, customerBUS);
+        
+        this.dispose();
+        updateDialog.setLocationRelativeTo(null);
+        updateDialog.setVisible(true);
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -280,8 +346,9 @@ public class CustomerDetail extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            private CustomerDTO customerDTO;
             public void run() {
-                CustomerDetail dialog = new CustomerDetail(new javax.swing.JFrame(), true);
+                CustomerDetail dialog = new CustomerDetail(new javax.swing.JFrame(), true, customerDTO);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -294,10 +361,11 @@ public class CustomerDetail extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnExit;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPhone;
     private javax.swing.JLabel lblPoint;
@@ -306,6 +374,7 @@ public class CustomerDetail extends javax.swing.JDialog {
     private javax.swing.JPanel plHistory;
     private javax.swing.JPanel plInformation;
     private javax.swing.JTable tbHistory;
+    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtPoint;

@@ -4,18 +4,26 @@
  */
 package com.pharmacy.app.GUI.Supplier;
 
+import com.pharmacy.app.BUS.SupplierBUS;
+import com.pharmacy.app.DTO.SupplierDTO;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author BOI QUAN
  */
 public class AddSupplier extends javax.swing.JDialog {
-
+    private SupplierBUS supplierBUS;
     /**
      * Creates new form AđSupplier
      */
     public AddSupplier(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        supplierBUS = new SupplierBUS();
+        String newId = supplierBUS.generateNextId();
+        System.out.println(newId);
+        txtID.setText(newId);
     }
 
     /**
@@ -32,25 +40,25 @@ public class AddSupplier extends javax.swing.JDialog {
         plInformation = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         plLbl = new javax.swing.JPanel();
+        lblId = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
         lblPhone = new javax.swing.JLabel();
         lblEmail = new javax.swing.JLabel();
         lblAddress = new javax.swing.JLabel();
         plTxt = new javax.swing.JPanel();
+        txtID = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
         txtPhone = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
         txtAddress = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         plButton = new javax.swing.JPanel();
-        btnExit = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
+        btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(400, 390));
         setMinimumSize(new java.awt.Dimension(400, 390));
-        setPreferredSize(new java.awt.Dimension(400, 390));
         setResizable(false);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
 
@@ -72,9 +80,9 @@ public class AddSupplier extends javax.swing.JDialog {
         getContentPane().add(plTitle);
 
         plInformation.setBackground(new java.awt.Color(255, 255, 255));
-        plInformation.setMaximumSize(new java.awt.Dimension(400, 300));
+        plInformation.setMaximumSize(new java.awt.Dimension(400, 500));
         plInformation.setMinimumSize(new java.awt.Dimension(400, 300));
-        plInformation.setPreferredSize(new java.awt.Dimension(400, 300));
+        plInformation.setPreferredSize(new java.awt.Dimension(400, 400));
         java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 15);
         flowLayout1.setAlignOnBaseline(true);
         plInformation.setLayout(flowLayout1);
@@ -85,14 +93,22 @@ public class AddSupplier extends javax.swing.JDialog {
         plInformation.add(jSeparator1);
 
         plLbl.setBackground(new java.awt.Color(255, 255, 255));
-        plLbl.setMaximumSize(new java.awt.Dimension(150, 180));
+        plLbl.setMaximumSize(new java.awt.Dimension(150, 210));
         plLbl.setMinimumSize(new java.awt.Dimension(150, 180));
-        plLbl.setPreferredSize(new java.awt.Dimension(150, 180));
+        plLbl.setPreferredSize(new java.awt.Dimension(150, 210));
         plLbl.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
+
+        lblId.setBackground(new java.awt.Color(255, 255, 255));
+        lblId.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblId.setText("ID");
+        lblId.setMaximumSize(new java.awt.Dimension(150, 30));
+        lblId.setMinimumSize(new java.awt.Dimension(150, 30));
+        lblId.setPreferredSize(new java.awt.Dimension(150, 30));
+        plLbl.add(lblId);
 
         lblName.setBackground(new java.awt.Color(255, 255, 255));
         lblName.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblName.setText("Tên:");
+        lblName.setText("Tên nhà cung cấp");
         lblName.setMaximumSize(new java.awt.Dimension(150, 30));
         lblName.setMinimumSize(new java.awt.Dimension(150, 30));
         lblName.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -100,7 +116,7 @@ public class AddSupplier extends javax.swing.JDialog {
 
         lblPhone.setBackground(new java.awt.Color(255, 255, 255));
         lblPhone.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblPhone.setText("Số điện thoại:");
+        lblPhone.setText("Số điện thoại");
         lblPhone.setMaximumSize(new java.awt.Dimension(150, 30));
         lblPhone.setMinimumSize(new java.awt.Dimension(150, 30));
         lblPhone.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -108,27 +124,33 @@ public class AddSupplier extends javax.swing.JDialog {
 
         lblEmail.setBackground(new java.awt.Color(255, 255, 255));
         lblEmail.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblEmail.setText("Email:");
+        lblEmail.setText("Email");
         lblEmail.setMaximumSize(new java.awt.Dimension(150, 30));
         lblEmail.setMinimumSize(new java.awt.Dimension(150, 30));
         lblEmail.setPreferredSize(new java.awt.Dimension(150, 30));
         plLbl.add(lblEmail);
 
-        lblAddress.setBackground(new java.awt.Color(255, 255, 255));
         lblAddress.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblAddress.setText("Địa chỉ:");
-        lblAddress.setMaximumSize(new java.awt.Dimension(150, 30));
-        lblAddress.setMinimumSize(new java.awt.Dimension(150, 30));
+        lblAddress.setText("Địa chỉ");
         lblAddress.setPreferredSize(new java.awt.Dimension(150, 30));
         plLbl.add(lblAddress);
 
         plInformation.add(plLbl);
 
         plTxt.setBackground(new java.awt.Color(255, 255, 255));
-        plTxt.setMaximumSize(new java.awt.Dimension(200, 180));
+        plTxt.setMaximumSize(new java.awt.Dimension(200, 210));
         plTxt.setMinimumSize(new java.awt.Dimension(200, 180));
-        plTxt.setPreferredSize(new java.awt.Dimension(200, 180));
+        plTxt.setPreferredSize(new java.awt.Dimension(200, 210));
         plTxt.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
+
+        txtID.setEditable(false);
+        txtID.setBackground(new java.awt.Color(255, 255, 255));
+        txtID.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        txtID.setFocusable(false);
+        txtID.setMaximumSize(new java.awt.Dimension(200, 30));
+        txtID.setMinimumSize(new java.awt.Dimension(200, 30));
+        txtID.setPreferredSize(new java.awt.Dimension(200, 30));
+        plTxt.add(txtID);
 
         txtName.setMaximumSize(new java.awt.Dimension(200, 30));
         txtName.setMinimumSize(new java.awt.Dimension(200, 30));
@@ -145,9 +167,12 @@ public class AddSupplier extends javax.swing.JDialog {
         txtEmail.setPreferredSize(new java.awt.Dimension(200, 30));
         plTxt.add(txtEmail);
 
-        txtAddress.setMaximumSize(new java.awt.Dimension(200, 30));
-        txtAddress.setMinimumSize(new java.awt.Dimension(200, 30));
         txtAddress.setPreferredSize(new java.awt.Dimension(200, 30));
+        txtAddress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAddressActionPerformed(evt);
+            }
+        });
         plTxt.add(txtAddress);
 
         plInformation.add(plTxt);
@@ -163,17 +188,32 @@ public class AddSupplier extends javax.swing.JDialog {
         plButton.setPreferredSize(new java.awt.Dimension(400, 70));
         plButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
 
-        btnExit.setText("Thoát");
-        btnExit.setMaximumSize(new java.awt.Dimension(72, 30));
-        btnExit.setMinimumSize(new java.awt.Dimension(72, 30));
-        btnExit.setPreferredSize(new java.awt.Dimension(72, 30));
-        plButton.add(btnExit);
-
+        btnSave.setBackground(new java.awt.Color(0, 204, 51));
+        btnSave.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSave.setForeground(new java.awt.Color(255, 255, 255));
         btnSave.setText("Lưu");
         btnSave.setMaximumSize(new java.awt.Dimension(72, 30));
         btnSave.setMinimumSize(new java.awt.Dimension(72, 30));
         btnSave.setPreferredSize(new java.awt.Dimension(72, 30));
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
         plButton.add(btnSave);
+
+        btnExit.setBackground(new java.awt.Color(153, 153, 153));
+        btnExit.setForeground(new java.awt.Color(255, 255, 255));
+        btnExit.setText("Thoát");
+        btnExit.setMaximumSize(new java.awt.Dimension(72, 30));
+        btnExit.setMinimumSize(new java.awt.Dimension(72, 30));
+        btnExit.setPreferredSize(new java.awt.Dimension(72, 30));
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
+        plButton.add(btnExit);
 
         plInformation.add(plButton);
 
@@ -181,6 +221,39 @@ public class AddSupplier extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddressActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAddressActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        String name = txtName.getText();
+        String phone = txtPhone.getText();
+        String email = txtEmail.getText();
+        String address = txtAddress.getText();
+        
+        if (name.isEmpty() || phone.isEmpty() || email.isEmpty() || address.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin!");
+            return ;
+        }
+        
+        SupplierDTO supplier = new SupplierDTO(name, phone, email, address);
+        System.out.println("Saving supplier: " + supplier.getName() + ", " + supplier.getPhone()+", "+ supplier.getEmail() + ", "+ supplier.getAddress());
+        boolean success = supplierBUS.addSupplier(supplier);
+        
+        if (success){
+            JOptionPane.showMessageDialog(this, "Thêm nhà cung cấp thành công!");
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Thêm nhà cung cấp thất bại!");
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,6 +307,7 @@ public class AddSupplier extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPhone;
     private javax.swing.JLabel lblTitle;
@@ -244,6 +318,7 @@ public class AddSupplier extends javax.swing.JDialog {
     private javax.swing.JPanel plTxt;
     private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPhone;
     // End of variables declaration//GEN-END:variables
