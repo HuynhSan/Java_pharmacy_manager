@@ -403,4 +403,18 @@ public class PDFExporter {
                 true // landscape orientation
         );
     }
+    
+    public static boolean exportContractsToPDF(Component parentComponent, TableModel contractTableModel) {
+        // Define custom column widths for contract table
+        float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
+        
+        return exportTableToPDF(
+                parentComponent,
+                contractTableModel,
+                "DANH SÁCH HỢP ĐỒNG",
+                "DanhSachHopDong.pdf",
+                columnWidths,
+                true // landscape orientation
+        );
+    }
 }

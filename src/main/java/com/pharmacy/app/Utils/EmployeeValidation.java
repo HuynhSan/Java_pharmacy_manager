@@ -109,7 +109,7 @@ public class EmployeeValidation {
     public static String validateEmailExists(String email, com.pharmacy.app.DAO.EmployeeDAO employeeDAO) {
         if (employeeDAO.isEmailExists(email)) {
             return "Email đã tồn tại trong hệ thống";
-        }
+        }   
         return "";
     }
 
