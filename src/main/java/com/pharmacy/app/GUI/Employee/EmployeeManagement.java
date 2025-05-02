@@ -472,6 +472,7 @@ public class EmployeeManagement extends javax.swing.JPanel {
         tblContracts.setPreferredSize(new java.awt.Dimension(1180, 500));
         tblContracts.setRowHeight(30);
         tblContracts.setShowGrid(true);
+      
         tblContracts.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblContractsMouseClicked(evt);
@@ -546,7 +547,7 @@ public class EmployeeManagement extends javax.swing.JPanel {
             DefaultTableModel model = (DefaultTableModel) tblEmployees.getModel();
 
             // Use the PDFExporter utility class to export employee data
-            com.pharmacy.app.Utils.PDFExporter.exportEmployeesToPDF(this, model, "DANH SÁCH NHAN VIÊN");
+            com.pharmacy.app.Utils.PDFExporter.exportEmployeesToPDF(this, model);
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -599,7 +600,6 @@ public class EmployeeManagement extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnPdfContractActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddContract;
