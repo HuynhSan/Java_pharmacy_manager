@@ -111,6 +111,7 @@ public final class SupplierList extends javax.swing.JPanel {
         plHeader = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         plSearch = new javax.swing.JPanel();
+
         txtSearch = new javax.swing.JTextField();
         btnAdd = new javax.swing.JButton();
         btnRefesh = new javax.swing.JButton();
@@ -146,6 +147,7 @@ public final class SupplierList extends javax.swing.JPanel {
         txtSearch.setForeground(new java.awt.Color(153, 153, 153));
         txtSearch.setText("Tìm kiếm");
         txtSearch.setToolTipText("");
+      
         txtSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txtSearch.setMaximumSize(new java.awt.Dimension(325689, 30));
         txtSearch.setMinimumSize(new java.awt.Dimension(300, 30));
@@ -155,6 +157,7 @@ public final class SupplierList extends javax.swing.JPanel {
                 txtSearchActionPerformed(evt);
             }
         });
+
         plSearch.add(txtSearch);
 
         btnAdd.setBackground(new java.awt.Color(0, 204, 51));
@@ -175,7 +178,9 @@ public final class SupplierList extends javax.swing.JPanel {
 
         btnRefesh.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRefesh.setText("Tải lại");
+
         btnRefesh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
         btnRefesh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnRefesh.setMaximumSize(new java.awt.Dimension(90, 30));
         btnRefesh.setMinimumSize(new java.awt.Dimension(90, 30));
@@ -187,14 +192,18 @@ public final class SupplierList extends javax.swing.JPanel {
         });
         plSearch.add(btnRefesh);
 
+
         btnExportPDF.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
         btnExportPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pdf.png"))); // NOI18N
         btnExportPDF.setText("Xuất PDF");
         btnExportPDF.setAlignmentX(0.5F);
         btnExportPDF.setBorder(null);
+
         btnExportPDF.setBorderPainted(false);
         btnExportPDF.setMinimumSize(new java.awt.Dimension(100, 24));
         btnExportPDF.setPreferredSize(new java.awt.Dimension(100, 30));
+
         btnExportPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportPDFActionPerformed(evt);
@@ -348,6 +357,7 @@ public final class SupplierList extends javax.swing.JPanel {
     private javax.swing.JButton btnExportPDF;
     private javax.swing.JButton btnRefesh;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel plHeader;
     private javax.swing.JPanel plSearch;
