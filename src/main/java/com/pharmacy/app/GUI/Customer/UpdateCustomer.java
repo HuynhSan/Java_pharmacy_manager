@@ -12,22 +12,27 @@ import javax.swing.JOptionPane;
  *
  * @author BOI QUAN
  */
-public class AddCustomer extends javax.swing.JDialog {
-
-    private final CustomerBUS customerBUS;
-
+public class UpdateCustomer extends javax.swing.JDialog {
+    private CustomerDTO customerDTO;
+    private CustomerBUS customerBUS;
     /**
      * Creates new form AddCustomer
+     * @param parent
+     * @param modal
      */
-    public AddCustomer(java.awt.Frame parent, boolean modal) {
+    public UpdateCustomer(java.awt.Frame parent, boolean modal, CustomerDTO customerDTO, CustomerBUS customerBUS) {
         super(parent, modal);
         initComponents();
-        customerBUS = new CustomerBUS();
-        String newId = customerBUS.generateNextId();
-        System.out.println(newId);
-        txtID.setText(newId);
+        this.customerBUS = customerBUS;
+        this.customerDTO = customerDTO;
+        setData(customerDTO);
     }
-
+    private void setData(CustomerDTO customer) {
+        txtId.setText(customer.getId());
+        txtName.setText(customer.getName());
+        txtPhone.setText(customer.getPhone());
+        txtPoint.setText(String.valueOf(customer.getPoint()));
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,17 +47,19 @@ public class AddCustomer extends javax.swing.JDialog {
         plInformation = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         plLbl = new javax.swing.JPanel();
-        lblID = new javax.swing.JLabel();
+        lblId = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
         lblPhone = new javax.swing.JLabel();
+        lblPoint = new javax.swing.JLabel();
         plTxt = new javax.swing.JPanel();
-        txtID = new javax.swing.JTextField();
+        txtId = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
         txtPhone = new javax.swing.JTextField();
+        txtPoint = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         plButton = new javax.swing.JPanel();
         btnSave = new javax.swing.JButton();
-        btnExit = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -64,12 +71,12 @@ public class AddCustomer extends javax.swing.JDialog {
         plTitle.setBackground(new java.awt.Color(255, 255, 255));
         plTitle.setMaximumSize(new java.awt.Dimension(326589, 326589));
         plTitle.setMinimumSize(new java.awt.Dimension(400, 50));
-        plTitle.setPreferredSize(new java.awt.Dimension(450, 300));
+        plTitle.setPreferredSize(new java.awt.Dimension(450, 350));
 
         lblTitle.setBackground(new java.awt.Color(255, 255, 255));
         lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitle.setText("Thông tin khách hàng");
+        lblTitle.setText("Cập nhật thông tin khách hàng");
         lblTitle.setMaximumSize(new java.awt.Dimension(326589, 326589));
         lblTitle.setMinimumSize(new java.awt.Dimension(400, 50));
         lblTitle.setPreferredSize(new java.awt.Dimension(450, 50));
@@ -78,7 +85,7 @@ public class AddCustomer extends javax.swing.JDialog {
         plInformation.setBackground(new java.awt.Color(255, 255, 255));
         plInformation.setMaximumSize(new java.awt.Dimension(326589, 326589));
         plInformation.setMinimumSize(new java.awt.Dimension(400, 220));
-        plInformation.setPreferredSize(new java.awt.Dimension(450, 250));
+        plInformation.setPreferredSize(new java.awt.Dimension(450, 300));
         plInformation.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
 
         jSeparator1.setBackground(new java.awt.Color(255, 255, 255));
@@ -90,16 +97,16 @@ public class AddCustomer extends javax.swing.JDialog {
         plLbl.setBackground(new java.awt.Color(255, 255, 255));
         plLbl.setMaximumSize(new java.awt.Dimension(100, 100));
         plLbl.setMinimumSize(new java.awt.Dimension(100, 100));
-        plLbl.setPreferredSize(new java.awt.Dimension(100, 140));
+        plLbl.setPreferredSize(new java.awt.Dimension(100, 160));
         java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10);
         flowLayout2.setAlignOnBaseline(true);
         plLbl.setLayout(flowLayout2);
 
-        lblID.setBackground(new java.awt.Color(255, 255, 255));
-        lblID.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblID.setText("Mã khách hàng");
-        lblID.setPreferredSize(new java.awt.Dimension(100, 30));
-        plLbl.add(lblID);
+        lblId.setBackground(new java.awt.Color(255, 255, 255));
+        lblId.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblId.setText("Mã khách hàng");
+        lblId.setPreferredSize(new java.awt.Dimension(100, 30));
+        plLbl.add(lblId);
 
         lblName.setBackground(new java.awt.Color(255, 255, 255));
         lblName.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -119,22 +126,28 @@ public class AddCustomer extends javax.swing.JDialog {
         lblPhone.setPreferredSize(new java.awt.Dimension(100, 30));
         plLbl.add(lblPhone);
 
+        lblPoint.setBackground(new java.awt.Color(255, 255, 255));
+        lblPoint.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblPoint.setText("Điểm");
+        lblPoint.setPreferredSize(new java.awt.Dimension(100, 30));
+        plLbl.add(lblPoint);
+
         plInformation.add(plLbl);
 
         plTxt.setBackground(new java.awt.Color(255, 255, 255));
         plTxt.setMaximumSize(new java.awt.Dimension(250, 100));
         plTxt.setMinimumSize(new java.awt.Dimension(250, 100));
-        plTxt.setPreferredSize(new java.awt.Dimension(250, 140));
+        plTxt.setPreferredSize(new java.awt.Dimension(250, 160));
         java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10);
         flowLayout1.setAlignOnBaseline(true);
         plTxt.setLayout(flowLayout1);
 
-        txtID.setEditable(false);
-        txtID.setBackground(new java.awt.Color(255, 255, 255));
-        txtID.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        txtID.setFocusable(false);
-        txtID.setPreferredSize(new java.awt.Dimension(220, 30));
-        plTxt.add(txtID);
+        txtId.setEditable(false);
+        txtId.setBackground(new java.awt.Color(255, 255, 255));
+        txtId.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        txtId.setFocusable(false);
+        txtId.setPreferredSize(new java.awt.Dimension(220, 30));
+        plTxt.add(txtId);
 
         txtName.setMaximumSize(new java.awt.Dimension(220, 30));
         txtName.setMinimumSize(new java.awt.Dimension(220, 30));
@@ -145,6 +158,18 @@ public class AddCustomer extends javax.swing.JDialog {
         txtPhone.setMinimumSize(new java.awt.Dimension(220, 30));
         txtPhone.setPreferredSize(new java.awt.Dimension(220, 30));
         plTxt.add(txtPhone);
+
+        txtPoint.setEditable(false);
+        txtPoint.setBackground(new java.awt.Color(255, 255, 255));
+        txtPoint.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        txtPoint.setFocusable(false);
+        txtPoint.setPreferredSize(new java.awt.Dimension(220, 30));
+        txtPoint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPointActionPerformed(evt);
+            }
+        });
+        plTxt.add(txtPoint);
 
         plInformation.add(plTxt);
 
@@ -174,19 +199,19 @@ public class AddCustomer extends javax.swing.JDialog {
         });
         plButton.add(btnSave);
 
-        btnExit.setBackground(new java.awt.Color(153, 153, 153));
-        btnExit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnExit.setForeground(new java.awt.Color(255, 255, 255));
-        btnExit.setText("Thoát");
-        btnExit.setMaximumSize(new java.awt.Dimension(70, 30));
-        btnExit.setMinimumSize(new java.awt.Dimension(70, 30));
-        btnExit.setPreferredSize(new java.awt.Dimension(70, 30));
-        btnExit.addActionListener(new java.awt.event.ActionListener() {
+        btnCancel.setBackground(new java.awt.Color(153, 153, 153));
+        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnCancel.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancel.setText("Hủy");
+        btnCancel.setMaximumSize(new java.awt.Dimension(70, 30));
+        btnCancel.setMinimumSize(new java.awt.Dimension(70, 30));
+        btnCancel.setPreferredSize(new java.awt.Dimension(70, 30));
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExitActionPerformed(evt);
+                btnCancelActionPerformed(evt);
             }
         });
-        plButton.add(btnExit);
+        plButton.add(btnCancel);
 
         plInformation.add(plButton);
 
@@ -198,33 +223,34 @@ public class AddCustomer extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btnExitActionPerformed
-
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        String id = txtId.getText();
         String name = txtName.getText();
         String phone = txtPhone.getText();
-        
-        if (name.isEmpty() || phone.isEmpty()){
-            JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin!");
-            return ;
-        }
-        
-        CustomerDTO customer = new CustomerDTO();
-        customer.setName(name);
-        customer.setPhone(phone);
-        
-        System.out.println("Saving supplier: " + customer.getName() + ", " + customer.getPhone());
-        boolean success = customerBUS.addCustomer(customer);
+        String point = txtPoint.getText();
+        CustomerDTO updateCustomer = new CustomerDTO();
+        updateCustomer.setId(id);
+        updateCustomer.setName(name);
+        updateCustomer.setPhone(phone);
+
+        boolean success = customerBUS.updateCustomer(updateCustomer);
         
         if (success){
-            JOptionPane.showMessageDialog(this, "Thêm khách hàng thành công!");
-            dispose();
+            JOptionPane.showMessageDialog(this, "Cập nhật khách hàng thành công!");
+            this.dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Thêm khách hàng thất bại!");
+            JOptionPane.showMessageDialog(this, "Cập nhật khách hàng thất bại!");
         }
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void txtPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPointActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPointActionPerformed
 
     /**
      * @param args the command line arguments
@@ -243,21 +269,25 @@ public class AddCustomer extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateCustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            private CustomerDTO customerDTO;
+            private CustomerBUS customerBUS;
             public void run() {
-                AddCustomer dialog = new AddCustomer(new javax.swing.JFrame(), true);
+                UpdateCustomer dialog = new UpdateCustomer(new javax.swing.JFrame(), true, customerDTO, customerBUS);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -270,21 +300,23 @@ public class AddCustomer extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnExit;
+    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSave;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JLabel lblID;
+    private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPhone;
+    private javax.swing.JLabel lblPoint;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JPanel plButton;
     private javax.swing.JPanel plInformation;
     private javax.swing.JPanel plLbl;
     private javax.swing.JPanel plTitle;
     private javax.swing.JPanel plTxt;
-    private javax.swing.JTextField txtID;
+    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtPoint;
     // End of variables declaration//GEN-END:variables
 }

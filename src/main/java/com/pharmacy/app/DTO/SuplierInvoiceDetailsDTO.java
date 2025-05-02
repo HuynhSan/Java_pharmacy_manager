@@ -9,34 +9,58 @@ package com.pharmacy.app.DTO;
  * @author LENOVO
  */
 public class SuplierInvoiceDetailsDTO {
-    public int invoiceID;
-    public int batchID;
+    public String invoiceID;
+    public String batchID;
+    public String productID;
+    public String name;
     public int quantity;
     public double unitPrice;
-
-    public SuplierInvoiceDetailsDTO(int invoiceID, int batchID, int quantity, double unitPrice) {
+    public double totalPrice;
+    
+    public SuplierInvoiceDetailsDTO(){}
+    
+    public SuplierInvoiceDetailsDTO(String invoiceID, String batchID, String productID, String name, int quantity, double unitPrice, double totalPrice) {
         this.invoiceID = invoiceID;
         this.batchID = batchID;
+        this.productID = productID;
+        this.name = name;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
+        this.totalPrice = totalPrice;
     }
 
-    public int getInvoiceID() {
+    public String getInvoiceID() {
         return invoiceID;
     }
 
-    public void setInvoiceID(int invoiceID) {
+    public void setInvoiceID(String invoiceID) {
         this.invoiceID = invoiceID;
     }
 
-    public int getBatchID() {
+    public String getBatchID() {
         return batchID;
     }
 
-    public void setBatchID(int batchID) {
+    public void setBatchID(String batchID) {
         this.batchID = batchID;
     }
 
+    public String getProductID() {
+        return productID;
+    }
+
+    public void setProductID(String productID) {
+        this.productID = productID;
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     public int getQuantity() {
         return quantity;
     }
@@ -53,5 +77,12 @@ public class SuplierInvoiceDetailsDTO {
         this.unitPrice = unitPrice;
     }
     
+    public double getTotalPrice(){
+        return totalPrice;
+    }
+    
+    public void setTotalPrice(double totalPrice){
+        this.totalPrice = totalPrice;
+    }
     
 }

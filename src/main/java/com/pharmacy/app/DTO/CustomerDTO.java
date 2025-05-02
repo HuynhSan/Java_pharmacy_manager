@@ -6,34 +6,32 @@ package com.pharmacy.app.DTO;
 
 /**
  *
- * @author Giai Cuu Li San
+ * @author BOI QUAN
  */
-public class SupplierDTO {
-    public String id;
-    public String name;
-    public String phone;
-    public String email;
-    public String address;
-    public boolean isDeleted;
-
+public class CustomerDTO {
+    private String id;
+    private String name;
+    private String phone;
+    private float point;
+    private boolean isDeleted;
+     
     // Constructor
-    public SupplierDTO(String id, String name, String phone, String email, String address) {
+    public CustomerDTO(String id, String name, String phone, float point) {
         this.id = id;
         this.name = name;
         this.phone = phone;
-        this.email = email;
-        this.address = address;
+        this.point = point;
     }
     
-    public SupplierDTO(String name, String phone, String email, String address) {
+    public CustomerDTO(String name, String phone, float point) {
+//        this.id = id;
         this.name = name;
         this.phone = phone;
-        this.email = email;
-        this.address = address;
+        this.point = point;
 //        this.isDeleted = isDeleted;
     }
     
-    public SupplierDTO() {
+    public CustomerDTO() {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -41,14 +39,13 @@ public class SupplierDTO {
     public String getId() { return id; }
     public String getName() { return name; }
     public String getPhone() { return phone; }
-    public String getEmail() { return email; }
-    public String getAddress() { return address; }
+    public float getPoint() { return point; }
     public boolean getIsDeleted() { return isDeleted; }
     
     public void setId(String id){ this.id = id; }
     public void setName(String name){ this.name = name; }
     public void setPhone(String phone) { this.phone = phone; }
-    public void setEmail(String email){ this.email = email; }
-    public void setAddress(String address){ this.address = address; }
+    public void setPoint(float point) { this.point = point; }
     public void setIsDeleted(boolean isDeleted) { this.isDeleted = isDeleted; }
+    
 }
