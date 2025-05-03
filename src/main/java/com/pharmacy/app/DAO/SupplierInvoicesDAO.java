@@ -42,10 +42,12 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
     public ArrayList<SuplierInvoiceDTO> selectAll() {
         ArrayList<SuplierInvoiceDTO> supInvoices = new ArrayList<>();
         if (myconnect.openConnection()){
-            String sql = "SELECT supplier_invoice_id, total_quantity, total_price, supplier_id, purchase_date FROM supplier_invoices WHERE is_deleted = 0";
+            System.out.println("ket noi thanh cong");
+            String sql = "SELECT supplier_invoice_id, si.total_quantity, total_price, si.supplier_id, purchase_date, manager_user_id FROM supplier_invoices si, purchase_orders po WHERE po.po_id = si.po_id AND si.is_deleted = 0";
             ResultSet rs = myconnect.runQuery(sql);
+
             try {
-                while (rs != null && rs.next()) {
+                while (rs.next()) {
                     SuplierInvoiceDTO supInvoice = new SuplierInvoiceDTO();
                     supInvoice.setInvoiceID(rs.getString(1));
                     supInvoice.setTotalQuantity(rs.getInt(2));
@@ -53,6 +55,7 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
                     supInvoice.setSupplierID(rs.getString(4));
                     LocalDate purchaseDate = rs.getDate(5).toLocalDate();
                     supInvoice.setPurchaseDate(purchaseDate);
+                    supInvoice.setManagerID(rs.getString(6));
 
                     supInvoices.add(supInvoice);
                 }
@@ -61,6 +64,8 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
             } finally {
                 myconnect.closeConnection();
             }
+        } else {
+            System.out.println("Khong the ket noi voi csdl");
         }
         return supInvoices;
     }
@@ -71,9 +76,10 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         SuplierInvoiceDTO supInvoice = null;
         if (myconnect.openConnection()){
-            String query = "SELECT si.supplier_invoice_id, sp.name, si.purchase_date "
+            String query = "SELECT si.supplier_invoice_id, sp.name, si.purchase_date, manager_user_id "
                     + " FROM supplier_invoices si"
                     + " INNER JOIN suppliers sp ON si.supplier_id = sp.supplier_id"
+                    + " INNER JOIN purchase_orders po ON po.po_id = si.po_id"
                     + " WHERE si.supplier_invoice_id = ?";
             ResultSet rs = myconnect.prepareQuery(query, t);
             try {
@@ -83,6 +89,8 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
                     supInvoice.setSupplierName(rs.getString(2));
                     LocalDate purchaseDate = rs.getDate(3).toLocalDate();
                     supInvoice.setPurchaseDate(purchaseDate);
+                    supInvoice.setManagerID(rs.getString(4));
+
                     
                 }
             } catch (SQLException e){

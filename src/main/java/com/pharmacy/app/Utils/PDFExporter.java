@@ -450,8 +450,8 @@ public class PDFExporter {
         return exportTableToPDF(
                 parentComponent,
                 supplierTableModel,
-                "DANH SÁCH NHÀ CUNG CẤP",
-                "DanhSachNhaCungCap.pdf",
+                "DANH SÁCH KHÁCH HÀNG",
+                "DanhSachKhachHang.pdf",
                 columnWidths,
                 true // landscape orientation
         );
