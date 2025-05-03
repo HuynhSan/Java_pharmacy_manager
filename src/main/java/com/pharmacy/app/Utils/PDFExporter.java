@@ -406,7 +406,7 @@ public class PDFExporter {
     
     public static boolean exportListToPDF(Component parentComponent, TableModel employeeTableModel, String title, String fileName) {
         float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
-        
+
         return exportTableToPDF(
                 parentComponent,
                 employeeTableModel,
@@ -416,5 +416,57 @@ public class PDFExporter {
                 true // landscape orientation
         );
     }
-    
+
+    public static boolean exportContractsToPDF(Component parentComponent, TableModel contractTableModel) {
+        float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
+
+        return exportTableToPDF(
+                parentComponent,
+                contractTableModel,
+                "DANH SÁCH HỢP ĐỒNG",
+                "DanhSachHopDong.pdf",
+                columnWidths,
+                true // landscape orientation
+        );
+    }
+
+    public static boolean exportSuppliersToPDF(Component parentComponent, TableModel supplierTableModel) {
+        // Define custom column widths for supplier table
+        float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
+        
+        return exportTableToPDF(
+                parentComponent,
+                supplierTableModel,
+                "DANH SÁCH NHÀ CUNG CẤP",
+                "DanhSachNhaCungCap.pdf",
+                columnWidths,
+                true // landscape orientation
+        );
+    }
+    public static boolean exportCustomersToPDF(Component parentComponent, TableModel supplierTableModel) {
+        // Define custom column widths for supplier table
+        float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
+        
+        return exportTableToPDF(
+                parentComponent,
+                supplierTableModel,
+                "DANH SÁCH NHÀ CUNG CẤP",
+                "DanhSachNhaCungCap.pdf",
+                columnWidths,
+                true // landscape orientation
+        );
+    }
+    public static boolean exportInvoicesToPDF(Component parentComponent, TableModel invoiceTableModel) {
+        // Define custom column widths for supplier table
+        float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
+        
+        return exportTableToPDF(
+                parentComponent,
+                invoiceTableModel,
+                "DANH SÁCH PHIẾU NHẬP",
+                "DanhSachPhieuNhap.pdf",
+                columnWidths,
+                true // landscape orientation
+        );
+    }
 }

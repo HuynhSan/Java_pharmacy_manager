@@ -19,6 +19,8 @@ public class AddEmployee extends javax.swing.JDialog {
 
     /**
      * Creates new form AddEmployee
+     * @param parent
+     * @param modal
      */
     public AddEmployee(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
