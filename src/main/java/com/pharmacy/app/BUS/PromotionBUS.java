@@ -40,7 +40,11 @@ public class PromotionBUS {
     public ArrayList<PromotionDTO> getPromosByType(String promoType){
         return promoDAO.getPromotionsByType(promoType);
     }
-
+    
+    public PromotionDTO findBestRewardPromo(float customerPoint){
+        return promoDAO.getBestRewardPromotion(customerPoint);
+    }
+    
     public ArrayList<PromotionDTO> searchAll(String keyword) {
         return promoDAO.selectAll().stream()
             .filter(p -> p.getPromotionId().toLowerCase().contains(keyword.toLowerCase()) ||
@@ -57,4 +61,6 @@ public class PromotionBUS {
     public PromotionDTO selectById(String promoId) {
         return promoDAO.selectByID(promoId);
     }
+    
+    
 }
