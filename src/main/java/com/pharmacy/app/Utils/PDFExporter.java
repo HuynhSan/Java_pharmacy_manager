@@ -668,6 +668,8 @@ public class PDFExporter {
             "PhieuNhap.pdf",
             columnWidths,
             true
+        );
+    }
 
     public static boolean exportUsersToPDF(Component parentComponent, TableModel userTableModel) {
         // Define custom column widths for supplier table
