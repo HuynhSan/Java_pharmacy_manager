@@ -4,6 +4,13 @@
  */
 package com.pharmacy.app.GUI.User;
 
+import com.pharmacy.app.DAO.UserDAO;
+import com.pharmacy.app.DTO.SessionDTO;
+import com.pharmacy.app.DTO.UserDTO;
+import com.pharmacy.app.Utils.UserValidation;
+import com.pharmacy.app.loginPage;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author phong
@@ -152,11 +159,89 @@ public class UpdateUserPassword extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
+        // Get the current logged in user
+        UserDTO currentUser = SessionDTO.getCurrentUser(); // Assuming you have a LoginManager class
+        if (currentUser == null) {
+            JOptionPane.showMessageDialog(this, 
+                "Không thể xác định người dùng hiện tại!", 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Get password inputs
+        String currentPassword = new String(txtCurrentPass.getPassword());
+        String newPassword = new String(txtNewPass.getPassword());
+        String confirmPassword = new String(txtNewPass2.getPassword());
+
+        // Validate inputs
+        if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Vui lòng điền đầy đủ các trường thông tin!", 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Check if current password is correct
+        UserDAO userDAO = new UserDAO();
+        UserDTO userCheck = userDAO.checkLogin(currentUser.getUsername(), currentPassword);
+        if (userCheck == null) {
+            JOptionPane.showMessageDialog(this, 
+                "Mật khẩu hiện tại không chính xác!", 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Check if new passwords match
+        if (!newPassword.equals(confirmPassword)) {
+            JOptionPane.showMessageDialog(this, 
+                "Mật khẩu mới không khớp!", 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate new password strength
+        String passwordError = UserValidation.validatePassword(newPassword);
+        if (!passwordError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, passwordError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Update password in database
+        currentUser.setPassword(newPassword);
+        boolean success = userDAO.update(currentUser);
+
+        if (success) {
+            JOptionPane.showMessageDialog(this, 
+                "Cập nhật mật khẩu thành công!", 
+                "Thông báo", 
+                JOptionPane.INFORMATION_MESSAGE);
+            SessionDTO.clearUser();  // Clear the current user session
+            this.dispose();  // Close the password update dialog
+
+            // Get the parent frame and close it
+            java.awt.Window parent = javax.swing.SwingUtilities.getWindowAncestor(this);
+            if (parent != null) {
+                parent.dispose();  // Close the parent window (main application window)
+            }
+
+            // Launch the login page
+            java.awt.EventQueue.invokeLater(() -> {
+                new loginPage().setVisible(true);
+            });
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Cập nhật mật khẩu thất bại!", 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**

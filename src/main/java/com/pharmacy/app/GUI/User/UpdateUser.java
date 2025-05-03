@@ -4,18 +4,121 @@
  */
 package com.pharmacy.app.GUI.User;
 
+import com.pharmacy.app.BUS.RoleBUS;
+import com.pharmacy.app.BUS.UserBUS;
+import com.pharmacy.app.DTO.RoleDTO;
+import com.pharmacy.app.DTO.UserDTO;
+import com.pharmacy.app.Utils.UserValidation;
+import java.util.ArrayList;
+import javax.swing.ButtonGroup;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author phong
  */
 public class UpdateUser extends javax.swing.JDialog {
+    private UserDTO userDTO;
+    private RoleBUS roleBUS;
+    private UserBUS userBUS;
+    private ButtonGroup statusGroup;
 
     /**
      * Creates new form UpdateUser
+     * @param parent 
+     * @param modal
+     * @param user
      */
-    public UpdateUser(java.awt.Frame parent, boolean modal) {
+    public UpdateUser(java.awt.Frame parent, boolean modal, UserDTO user) {
         super(parent, modal);
         initComponents();
+        this.userDTO = user;
+
+        // Initialize BUS classes
+        roleBUS = new RoleBUS();
+        roleBUS.loadRoleList();
+        userBUS = new UserBUS();
+
+        // Group radio buttons
+        setupRadioButtons();
+
+        // Load roles and set current data
+        loadRoles();
+        setData(user);
+    }
+
+    private UpdateUser(JFrame jFrame, boolean b) {
+        super(jFrame, b);
+        initComponents();
+    }
+    
+    // Setup radio button group
+    private void setupRadioButtons() {
+        // Group radio buttons to ensure only one can be selected
+        statusGroup = new ButtonGroup();
+        statusGroup.add(rbActive);
+        statusGroup.add(rbUnactive);
+    }
+
+    // Load roles into combo box
+    private void loadRoles() {
+        ArrayList<RoleDTO> roles = roleBUS.getRoleList();
+        cbUserRole.removeAllItems();
+
+        // Add each role to the combo box
+        for(RoleDTO role : roles) {
+            cbUserRole.addItem(role.getRoleName());
+        }
+    }
+
+    // Update setData method to fully populate form with user data
+    private void setData(UserDTO user) {
+        txtUserID.setText(user.getUserID());
+        txtUsername.setText(user.getUsername());
+
+        // Set selected role
+        RoleDTO role = roleBUS.getRoleByID(user.getRoleID());
+        String roleName = (role != null) ? role.getRoleName() : "Unknown";
+        cbUserRole.setSelectedItem(roleName);
+
+        // Set user status
+        if (user.getStatus()) {
+            rbActive.setSelected(true);
+        } else {
+            rbUnactive.setSelected(true);
+        }
+    }
+    
+    // Validate form inputs
+    private boolean validateForm() {
+        // Validate username
+        String username = txtUsername.getText().trim();
+        String usernameError = UserValidation.validateUsername(username);
+        if (!usernameError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, usernameError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtUsername.requestFocus();
+            return false;
+        }
+
+        // Check if username exists (only if changed)
+        if (!username.equals(userDTO.getUsername())) {
+            String existsError = UserValidation.validateUsernameExists(username, new com.pharmacy.app.DAO.UserDAO());
+            if (!existsError.isEmpty()) {
+                JOptionPane.showMessageDialog(this, existsError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+                txtUsername.requestFocus();
+                return false;
+            }
+        }
+
+        // Check if role is selected
+        if (cbUserRole.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn vai trò!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            cbUserRole.requestFocus();
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -43,7 +146,6 @@ public class UpdateUser extends javax.swing.JDialog {
         rbUnactive = new javax.swing.JRadioButton();
         pnlUpdateButton = new javax.swing.JPanel();
         btnUpdate = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -86,6 +188,7 @@ public class UpdateUser extends javax.swing.JDialog {
         pnlUpdateUserFields.add(lblUserStatus, gridBagConstraints);
 
         txtUserID.setEditable(false);
+        txtUserID.setEnabled(false);
         txtUserID.setFocusable(false);
         txtUserID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,7 +216,6 @@ public class UpdateUser extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 0);
         pnlUpdateUserFields.add(txtUsername, gridBagConstraints);
 
-        cbUserRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Manager", "Employee" }));
         cbUserRole.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbUserRoleActionPerformed(evt);
@@ -129,7 +231,6 @@ public class UpdateUser extends javax.swing.JDialog {
 
         pnlUpdateStatus.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 25, 5));
 
-        rbActive.setSelected(true);
         rbActive.setText("Active");
         rbActive.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,12 +266,6 @@ public class UpdateUser extends javax.swing.JDialog {
             }
         });
         pnlUpdateButton.add(btnUpdate);
-
-        btnDelete.setBackground(new java.awt.Color(255, 0, 0));
-        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete.setText("Xóa");
-        pnlUpdateButton.add(btnDelete);
 
         btnCancel.setBackground(new java.awt.Color(153, 153, 153));
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -231,11 +326,62 @@ public class UpdateUser extends javax.swing.JDialog {
     }//GEN-LAST:event_rbUnactiveActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
+        // Validate inputs
+        if (!validateForm()) {
+            return;
+        }
+
+        try {
+            // Get updated values
+            String userID = txtUserID.getText();
+            String username = txtUsername.getText().trim();
+
+            // Get selected role ID from name
+            String roleName = cbUserRole.getSelectedItem().toString();
+            String roleID = roleBUS.getRoleIDByName(roleName);
+
+            // Get status value
+            boolean status = rbActive.isSelected();
+
+            // Create updated user object
+            UserDTO updatedUser = new UserDTO(
+                userID,
+                username,
+                userDTO.getPassword(), // Keep original password
+                roleID,
+                status
+            );
+
+            // Update user in database
+            boolean result = userBUS.updateUser(updatedUser);
+
+            if (result) {
+                JOptionPane.showMessageDialog(this, 
+                    "Cập nhật người dùng thành công!", 
+                    "Thông báo",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+                // Close form
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    "Cập nhật người dùng thất bại!", 
+                    "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                this, 
+                "Lỗi: " + e.getMessage(), 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE
+            );
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
@@ -268,6 +414,7 @@ public class UpdateUser extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 UpdateUser dialog = new UpdateUser(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -283,7 +430,6 @@ public class UpdateUser extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JComboBox<String> cbUserRole;
     private javax.swing.JLabel lblRole;
