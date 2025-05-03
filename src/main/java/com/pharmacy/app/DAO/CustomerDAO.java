@@ -98,7 +98,7 @@ public class CustomerDAO implements DAOinterface<CustomerDTO>{
             String sql = "SELECT * FROM customers WHERE is_deleted = 0";
             ResultSet rs = myconnect.runQuery(sql);
             try {
-                while (rs != null && rs.next()) {
+                while (rs.next()) {
                     CustomerDTO customer = new CustomerDTO(
                         rs.getString(1), // id
                         rs.getString(2), // name
@@ -123,7 +123,7 @@ public class CustomerDAO implements DAOinterface<CustomerDTO>{
             String sql = "SELECT * FROM customers WHERE customer_id = ?";
             ResultSet rs = myconnect.prepareQuery(sql, t);
             try {
-                while (rs != null && rs.next()){
+                while (rs.next()){
                     customer = new CustomerDTO(
                         rs.getString(1), // id
                         rs.getString(2), // name
@@ -152,7 +152,7 @@ public class CustomerDAO implements DAOinterface<CustomerDTO>{
                     + "AND is_deleted = 0";
             ResultSet rs = myconnect.runQuery(sql);
             try {
-                while (rs != null && rs.next()) {
+                while (rs.next()) {
                     CustomerDTO customer = new CustomerDTO(
                         rs.getString(1), // id
                         rs.getString(2), // name
@@ -169,4 +169,29 @@ public class CustomerDAO implements DAOinterface<CustomerDTO>{
         }
         return customers;
     }
+
+    public CustomerDTO findCustomerByPhone(String phone) {
+        CustomerDTO customer = null;
+        if (myconnect.openConnection()){
+            String sql = "SELECT * FROM customers WHERE phone_number = ?";
+            ResultSet rs = myconnect.prepareQuery(sql, phone);
+            try {
+                while (rs != null && rs.next()){
+                    customer = new CustomerDTO(
+                        rs.getString(1), // id
+                        rs.getString(2), // name
+                        rs.getString(3), // phone
+                        rs.getFloat(4) // point
+                    );
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return customer;
+    }
+    
+    
 }

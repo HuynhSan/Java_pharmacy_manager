@@ -111,7 +111,6 @@ public final class SupplierList extends javax.swing.JPanel {
         plHeader = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         plSearch = new javax.swing.JPanel();
-
         txtSearch = new javax.swing.JTextField();
         btnAdd = new javax.swing.JButton();
         btnRefesh = new javax.swing.JButton();
@@ -123,22 +122,25 @@ public final class SupplierList extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(326589, 326589));
         setMinimumSize(new java.awt.Dimension(800, 580));
-        setPreferredSize(new java.awt.Dimension(1200, 700));
-        setLayout(new java.awt.BorderLayout(0, 10));
+        setLayout(new java.awt.BorderLayout(10, 10));
 
         plHeader.setBackground(new java.awt.Color(255, 255, 255));
         plHeader.setMaximumSize(new java.awt.Dimension(3265689, 326589));
         plHeader.setMinimumSize(new java.awt.Dimension(800, 100));
         plHeader.setPreferredSize(new java.awt.Dimension(800, 100));
+        plHeader.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("QUẢN LÝ NHÀ CUNG CẤP");
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel1.setMaximumSize(new java.awt.Dimension(326589, 325689));
         jLabel1.setPreferredSize(new java.awt.Dimension(221, 70));
+        plHeader.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         plSearch.setBackground(new java.awt.Color(255, 255, 255));
-        plSearch.setMaximumSize(new java.awt.Dimension(450, 70));
+        plSearch.setMaximumSize(new java.awt.Dimension(325689, 326589));
         plSearch.setMinimumSize(new java.awt.Dimension(450, 70));
         plSearch.setPreferredSize(new java.awt.Dimension(450, 70));
         plSearch.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 15));
@@ -147,17 +149,15 @@ public final class SupplierList extends javax.swing.JPanel {
         txtSearch.setForeground(new java.awt.Color(153, 153, 153));
         txtSearch.setText("Tìm kiếm");
         txtSearch.setToolTipText("");
-      
         txtSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txtSearch.setMaximumSize(new java.awt.Dimension(325689, 30));
         txtSearch.setMinimumSize(new java.awt.Dimension(300, 30));
-        txtSearch.setPreferredSize(new java.awt.Dimension(550, 30));
+        txtSearch.setPreferredSize(new java.awt.Dimension(300, 30));
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSearchActionPerformed(evt);
             }
         });
-
         plSearch.add(txtSearch);
 
         btnAdd.setBackground(new java.awt.Color(0, 204, 51));
@@ -178,9 +178,7 @@ public final class SupplierList extends javax.swing.JPanel {
 
         btnRefesh.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRefesh.setText("Tải lại");
-
         btnRefesh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
         btnRefesh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnRefesh.setMaximumSize(new java.awt.Dimension(90, 30));
         btnRefesh.setMinimumSize(new java.awt.Dimension(90, 30));
@@ -192,18 +190,14 @@ public final class SupplierList extends javax.swing.JPanel {
         });
         plSearch.add(btnRefesh);
 
-
         btnExportPDF.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-
         btnExportPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pdf.png"))); // NOI18N
         btnExportPDF.setText("Xuất PDF");
         btnExportPDF.setAlignmentX(0.5F);
         btnExportPDF.setBorder(null);
-
         btnExportPDF.setBorderPainted(false);
         btnExportPDF.setMinimumSize(new java.awt.Dimension(100, 24));
         btnExportPDF.setPreferredSize(new java.awt.Dimension(100, 30));
-
         btnExportPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportPDFActionPerformed(evt);
@@ -211,22 +205,7 @@ public final class SupplierList extends javax.swing.JPanel {
         });
         plSearch.add(btnExportPDF);
 
-        javax.swing.GroupLayout plHeaderLayout = new javax.swing.GroupLayout(plHeader);
-        plHeader.setLayout(plHeaderLayout);
-        plHeaderLayout.setHorizontalGroup(
-            plHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(plSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 956, Short.MAX_VALUE)
-        );
-        plHeaderLayout.setVerticalGroup(
-            plHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(plHeaderLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(plSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
-        );
+        plHeader.add(plSearch, java.awt.BorderLayout.PAGE_END);
 
         add(plHeader, java.awt.BorderLayout.NORTH);
 
@@ -335,7 +314,6 @@ public final class SupplierList extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRefeshActionPerformed
 
     private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
-        //        // TODO add your handling code here:
         try {
             // Get table model
             DefaultTableModel model = (DefaultTableModel) tbSupplierList.getModel();
@@ -357,7 +335,6 @@ public final class SupplierList extends javax.swing.JPanel {
     private javax.swing.JButton btnExportPDF;
     private javax.swing.JButton btnRefesh;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel plHeader;
     private javax.swing.JPanel plSearch;

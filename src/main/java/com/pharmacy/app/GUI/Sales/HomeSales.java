@@ -4,22 +4,126 @@
  */
 package com.pharmacy.app.GUI.Sales;
 
+import com.pharmacy.app.BUS.CustomerBUS;
+import com.pharmacy.app.BUS.PromotionBUS;
+import com.pharmacy.app.BUS.SalesBUS;
+import com.pharmacy.app.DAO.SalesDAO;
+import com.pharmacy.app.DTO.CartItemDTO;
+import com.pharmacy.app.DTO.CustomerDTO;
+import com.pharmacy.app.DTO.PromotionDTO;
+import com.pharmacy.app.DTO.SaleItemDTO;
 import com.pharmacy.app.GUI.Authorization.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Rectangle;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author phong
  */
 public class HomeSales extends javax.swing.JPanel {
+    private String currentCustomerId;
+    
+    private SalesBUS saleItemBUS = new SalesBUS();    
+    private CustomerBUS customerBUS = new CustomerBUS();
 
+    private ArrayList<SaleItemDTO> saleItemList = new ArrayList<>();
+    private Map<String, CartItemDTO> cartItemsMap = new HashMap<>(); // Khai báo ở class để lưu các thuốc đã thêm, key là batch_id
+
+    private PromotionBUS promoBUS = new PromotionBUS();
     /**
      * Creates new form AuthorizationManagement
      */
     public HomeSales() {
         initComponents();
+        loadAllData();
+        
+        txtPhoneCustomer.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                handlePhoneInput();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                handlePhoneInput();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                handlePhoneInput();
+            }
+        });
+
     }
+
+    
+    
+    
+    public void loadAllData() {
+        // Giả sử SaleItemDAO là lớp quản lý việc truy vấn dữ liệu
+        saleItemList = saleItemBUS.selectSaleItems();
+        showDataToTable(saleItemList);
+    }
+            
+    
+    public void showHashMap(){
+        // Sau khi thêm vào cartPanel, thêm đoạn này để debug
+        System.out.println("==> Giỏ hàng hiện tại:");
+        for (Map.Entry<String, CartItemDTO> entry : cartItemsMap.entrySet()) {
+            CartItemDTO cartitem = entry.getValue();
+            System.out.println("Batch ID: " + cartitem.getBatchId()
+               + ", Product ID: " + cartitem.getProductId()
+               + ", Tên: " + cartitem.getName()
+               + ", SL: " + cartitem.getQuantityFromSpinner()
+               + ", Giá gốc: " + cartitem.getSellPrice()
+               + ", Tiền khuyến mãi: " + cartitem.getDiscountAmount()
+               + ", Giá sau KM: " + cartitem.getFinalPrice());
+        }
+        System.out.println("------------------------------");
+
+    }
+        
+    public void showDataToTable(ArrayList<SaleItemDTO> list) {
+        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
+        model.setRowCount(0); // Xóa dữ liệu cũ
+
+        for (SaleItemDTO saleItem : list) {
+            Object[] row = new Object[] {
+                saleItem.getBatchId(),
+                saleItem.getName(),
+                saleItem.getUnit(),
+                saleItem.getSellPrice(),
+                saleItem.getInventoryQuantity(),
+                saleItem.getExpirationDate(),
+                saleItem.getPercentDiscount(),
+                saleItem.getDiscountAmount(),
+                saleItem.getFinalPrice()
+            };
+            model.addRow(row);
+        }
+    }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,12 +149,15 @@ public class HomeSales extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblProduct = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        pnCart = new javax.swing.JPanel();
-        jSpinner1 = new javax.swing.JSpinner();
-        jTextField8 = new javax.swing.JTextField();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        cartPanel = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        btnDelete1LineInCart = new javax.swing.JButton();
-        btnReset = new javax.swing.JButton();
+        btnClearCart = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
@@ -59,21 +166,23 @@ public class HomeSales extends javax.swing.JPanel {
         lblPointCustomer = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         txtPhoneCustomer = new javax.swing.JTextField();
-        txtNameCustomer = new javax.swing.JTextField();
-        txtPointCustomer = new javax.swing.JTextField();
+        txtCustomerName = new javax.swing.JTextField();
+        txtLoyaltyPoints = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
-        lblTotalProductPrice = new javax.swing.JLabel();
+        lblSoLuongSP = new javax.swing.JLabel();
+        lblTotalProductPrice1 = new javax.swing.JLabel();
         lblProductDiscount = new javax.swing.JLabel();
         lblVoucher = new javax.swing.JLabel();
         lblVoucherDiscount = new javax.swing.JLabel();
         lblSubtotal = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
+        txtTotalProduct = new javax.swing.JTextField();
         txtTotalProductPrice = new javax.swing.JTextField();
-        txtProductDiscoun = new javax.swing.JTextField();
-        txtVoucher = new javax.swing.JTextField();
-        txtVoucherDiscount = new javax.swing.JTextField();
+        txtProductDiscount = new javax.swing.JTextField();
+        txtPromoId = new javax.swing.JTextField();
+        txtDiscount = new javax.swing.JTextField();
         txtSubtotal = new javax.swing.JTextField();
         btnPayment = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
@@ -84,7 +193,7 @@ public class HomeSales extends javax.swing.JPanel {
         lblPdf = new javax.swing.JLabel();
         jPanel18 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tblPromo1 = new javax.swing.JTable();
+        tblInvoice = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(986, 578));
@@ -134,7 +243,9 @@ public class HomeSales extends javax.swing.JPanel {
         btnAddMedicineToCart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnAddMedicineToCart.setText("Thêm thuốc");
         btnAddMedicineToCart.setMargin(new java.awt.Insets(2, 10, 3, 10));
-        btnAddMedicineToCart.setPreferredSize(new java.awt.Dimension(100, 35));
+        btnAddMedicineToCart.setMaximumSize(new java.awt.Dimension(150, 27));
+        btnAddMedicineToCart.setMinimumSize(new java.awt.Dimension(150, 27));
+        btnAddMedicineToCart.setPreferredSize(new java.awt.Dimension(135, 35));
         btnAddMedicineToCart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddMedicineToCartActionPerformed(evt);
@@ -145,6 +256,11 @@ public class HomeSales extends javax.swing.JPanel {
         btnRefresh.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnRefresh.setText("Refresh");
         btnRefresh.setPreferredSize(new java.awt.Dimension(80, 35));
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnRefresh);
 
         jPanel4.add(jPanel3);
@@ -164,26 +280,33 @@ public class HomeSales extends javax.swing.JPanel {
         tblProduct.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"123", "Parnadol", "vỉ", null, null, null, null, null, null},
+                {null, "Parnadol", "vỉ", null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Mã thuốc", "Tên thuốc", "Đơn vị", "Đơn giá", "Tồn kho", "Hạn sử dụng", "Khuyến mãi (%)", "Tiền khuyến mãi", "Giá sau khuyến mãi"
+                "Lô thuốc", "Tên thuốc", "Đơn vị", "Đơn giá", "Tồn kho", "Hạn sử dụng", "Khuyến mãi (%)", "Tiền khuyến mãi", "Giá sau khuyến mãi"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         tblProduct.setMaximumSize(new java.awt.Dimension(750, 600));
         tblProduct.setMinimumSize(new java.awt.Dimension(0, 0));
-        tblProduct.setPreferredSize(new java.awt.Dimension(790, 250));
+        tblProduct.setPreferredSize(new java.awt.Dimension(790, 1000));
         tblProduct.setRowHeight(30);
         tblProduct.setShowGrid(true);
         tblProduct.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -193,11 +316,12 @@ public class HomeSales extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(tblProduct);
         if (tblProduct.getColumnModel().getColumnCount() > 0) {
-            tblProduct.getColumnModel().getColumn(0).setPreferredWidth(15);
-            tblProduct.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tblProduct.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tblProduct.getColumnModel().getColumn(1).setPreferredWidth(120);
             tblProduct.getColumnModel().getColumn(2).setPreferredWidth(10);
-            tblProduct.getColumnModel().getColumn(3).setPreferredWidth(15);
+            tblProduct.getColumnModel().getColumn(3).setPreferredWidth(50);
             tblProduct.getColumnModel().getColumn(4).setPreferredWidth(10);
+            tblProduct.getColumnModel().getColumn(5).setPreferredWidth(60);
         }
 
         jPanel1.add(jScrollPane2);
@@ -211,55 +335,68 @@ public class HomeSales extends javax.swing.JPanel {
         jLabel2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel1.add(jLabel2);
 
-        pnCart.setBackground(new java.awt.Color(255, 255, 255));
-        pnCart.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        pnCart.setPreferredSize(new java.awt.Dimension(790, 200));
+        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel11.setPreferredSize(new java.awt.Dimension(790, 30));
+        jPanel11.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 10));
 
-        jTextField8.setText("Parnadol");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Tên thuốc");
+        jLabel3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel3.setMinimumSize(new java.awt.Dimension(61, 25));
+        jLabel3.setPreferredSize(new java.awt.Dimension(300, 30));
+        jLabel3.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel11.add(jLabel3);
 
-        javax.swing.GroupLayout pnCartLayout = new javax.swing.GroupLayout(pnCart);
-        pnCart.setLayout(pnCartLayout);
-        pnCartLayout.setHorizontalGroup(
-            pnCartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnCartLayout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(588, Short.MAX_VALUE))
-        );
-        pnCartLayout.setVerticalGroup(
-            pnCartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnCartLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(pnCartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(154, Short.MAX_VALUE))
-        );
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel4.setText("Giá tiền");
+        jLabel4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jLabel4.setPreferredSize(new java.awt.Dimension(150, 30));
+        jPanel11.add(jLabel4);
 
-        jPanel1.add(pnCart);
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("Số lượng");
+        jLabel5.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel5.setPreferredSize(new java.awt.Dimension(130, 30));
+        jPanel11.add(jLabel5);
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Xóa thuốc");
+        jLabel6.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel6.setPreferredSize(new java.awt.Dimension(80, 30));
+        jLabel6.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel11.add(jLabel6);
+
+        jPanel1.add(jPanel11);
+
+        jScrollPane4.setPreferredSize(new java.awt.Dimension(790, 250));
+
+        cartPanel.setBackground(new java.awt.Color(255, 255, 255));
+        cartPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        cartPanel.setLayout(new javax.swing.BoxLayout(cartPanel, javax.swing.BoxLayout.Y_AXIS));
+        jScrollPane4.setViewportView(cartPanel);
+
+        jPanel1.add(jScrollPane4);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setPreferredSize(new java.awt.Dimension(750, 50));
+        jPanel5.setPreferredSize(new java.awt.Dimension(790, 50));
         jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 0));
 
-        btnDelete1LineInCart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnDelete1LineInCart.setText("Xóa");
-        btnDelete1LineInCart.setMaximumSize(new java.awt.Dimension(326589, 326589));
-        btnDelete1LineInCart.setPreferredSize(new java.awt.Dimension(80, 30));
-        jPanel5.add(btnDelete1LineInCart);
-
-        btnReset.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnReset.setText("Đặt lại");
-        btnReset.setMaximumSize(new java.awt.Dimension(326589, 326589));
-        btnReset.setPreferredSize(new java.awt.Dimension(80, 30));
-        btnReset.addActionListener(new java.awt.event.ActionListener() {
+        btnClearCart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnClearCart.setText("Xóa giỏ hàng");
+        btnClearCart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnClearCart.setMaximumSize(new java.awt.Dimension(326589, 326589));
+        btnClearCart.setPreferredSize(new java.awt.Dimension(120, 30));
+        btnClearCart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnResetActionPerformed(evt);
+                btnClearCartActionPerformed(evt);
             }
         });
-        jPanel5.add(btnReset);
+        jPanel5.add(btnClearCart);
 
         jPanel1.add(jPanel5);
 
@@ -303,14 +440,27 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel12.setLayout(new java.awt.GridLayout(3, 1, 5, 10));
 
         txtPhoneCustomer.setPreferredSize(new java.awt.Dimension(200, 22));
+        txtPhoneCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPhoneCustomerActionPerformed(evt);
+            }
+        });
+        txtPhoneCustomer.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPhoneCustomerKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPhoneCustomerKeyTyped(evt);
+            }
+        });
         jPanel12.add(txtPhoneCustomer);
 
-        txtNameCustomer.setEnabled(false);
-        jPanel12.add(txtNameCustomer);
+        txtCustomerName.setEnabled(false);
+        jPanel12.add(txtCustomerName);
 
-        txtPointCustomer.setEnabled(false);
-        txtPointCustomer.setPreferredSize(new java.awt.Dimension(73, 25));
-        jPanel12.add(txtPointCustomer);
+        txtLoyaltyPoints.setEnabled(false);
+        txtLoyaltyPoints.setPreferredSize(new java.awt.Dimension(73, 25));
+        jPanel12.add(txtLoyaltyPoints);
 
         jPanel6.add(jPanel12);
 
@@ -318,17 +468,23 @@ public class HomeSales extends javax.swing.JPanel {
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thanh toán", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
-        jPanel7.setPreferredSize(new java.awt.Dimension(330, 270));
+        jPanel7.setPreferredSize(new java.awt.Dimension(330, 300));
 
         jPanel14.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel14.setPreferredSize(new java.awt.Dimension(160, 200));
-        jPanel14.setLayout(new java.awt.GridLayout(6, 1, 0, 15));
+        jPanel14.setPreferredSize(new java.awt.Dimension(160, 250));
+        jPanel14.setLayout(new java.awt.GridLayout(7, 1, 0, 15));
 
-        lblTotalProductPrice.setBackground(new java.awt.Color(255, 255, 255));
-        lblTotalProductPrice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblTotalProductPrice.setText("Tổng tiền sản phẩm");
-        lblTotalProductPrice.setPreferredSize(new java.awt.Dimension(100, 16));
-        jPanel14.add(lblTotalProductPrice);
+        lblSoLuongSP.setBackground(new java.awt.Color(255, 255, 255));
+        lblSoLuongSP.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSoLuongSP.setText("Tổng số sản phẩm");
+        lblSoLuongSP.setPreferredSize(new java.awt.Dimension(100, 16));
+        jPanel14.add(lblSoLuongSP);
+
+        lblTotalProductPrice1.setBackground(new java.awt.Color(255, 255, 255));
+        lblTotalProductPrice1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTotalProductPrice1.setText("Tổng tiền sản phẩm");
+        lblTotalProductPrice1.setPreferredSize(new java.awt.Dimension(100, 16));
+        jPanel14.add(lblTotalProductPrice1);
 
         lblProductDiscount.setBackground(new java.awt.Color(255, 255, 255));
         lblProductDiscount.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -355,22 +511,25 @@ public class HomeSales extends javax.swing.JPanel {
 
         jPanel15.setBackground(new java.awt.Color(255, 255, 255));
         jPanel15.setMinimumSize(new java.awt.Dimension(300, 350));
-        jPanel15.setPreferredSize(new java.awt.Dimension(130, 200));
-        jPanel15.setLayout(new java.awt.GridLayout(6, 1, 5, 10));
+        jPanel15.setPreferredSize(new java.awt.Dimension(130, 250));
+        jPanel15.setLayout(new java.awt.GridLayout(7, 1, 5, 10));
+
+        txtTotalProduct.setEnabled(false);
+        txtTotalProduct.setPreferredSize(new java.awt.Dimension(200, 22));
+        jPanel15.add(txtTotalProduct);
 
         txtTotalProductPrice.setEnabled(false);
-        txtTotalProductPrice.setPreferredSize(new java.awt.Dimension(200, 22));
         jPanel15.add(txtTotalProductPrice);
 
-        txtProductDiscoun.setEnabled(false);
-        jPanel15.add(txtProductDiscoun);
+        txtProductDiscount.setEnabled(false);
+        txtProductDiscount.setPreferredSize(new java.awt.Dimension(73, 25));
+        jPanel15.add(txtProductDiscount);
 
-        txtVoucher.setEnabled(false);
-        txtVoucher.setPreferredSize(new java.awt.Dimension(73, 25));
-        jPanel15.add(txtVoucher);
+        txtPromoId.setEnabled(false);
+        jPanel15.add(txtPromoId);
 
-        txtVoucherDiscount.setEnabled(false);
-        jPanel15.add(txtVoucherDiscount);
+        txtDiscount.setEnabled(false);
+        jPanel15.add(txtDiscount);
 
         txtSubtotal.setEnabled(false);
         jPanel15.add(txtSubtotal);
@@ -449,8 +608,8 @@ public class HomeSales extends javax.swing.JPanel {
         jScrollPane3.setMinimumSize(new java.awt.Dimension(0, 0));
         jScrollPane3.setPreferredSize(new java.awt.Dimension(1210, 600));
 
-        tblPromo1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tblPromo1.setModel(new javax.swing.table.DefaultTableModel(
+        tblInvoice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tblInvoice.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"HD01", "Nguyen Van B", null, "101000"},
                 {null, null, null, null},
@@ -469,18 +628,18 @@ public class HomeSales extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
-        tblPromo1.setMaximumSize(new java.awt.Dimension(325689, 326589));
-        tblPromo1.setMinimumSize(new java.awt.Dimension(0, 0));
-        tblPromo1.setPreferredSize(new java.awt.Dimension(750, 700));
-        tblPromo1.setRowHeight(30);
-        tblPromo1.setShowGrid(true);
-        tblPromo1.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblInvoice.setMaximumSize(new java.awt.Dimension(325689, 326589));
+        tblInvoice.setMinimumSize(new java.awt.Dimension(0, 0));
+        tblInvoice.setPreferredSize(new java.awt.Dimension(750, 700));
+        tblInvoice.setRowHeight(30);
+        tblInvoice.setShowGrid(true);
+        tblInvoice.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                tblPromo1MousePressed(evt);
+                tblInvoiceMousePressed(evt);
             }
         });
-        jScrollPane3.setViewportView(tblPromo1);
-        tblPromo1.getAccessibleContext().setAccessibleDescription("");
+        jScrollPane3.setViewportView(tblInvoice);
+        tblInvoice.getAccessibleContext().setAccessibleDescription("");
 
         jPanel18.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
@@ -495,10 +654,6 @@ public class HomeSales extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_tblProductMousePressed
 
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnResetActionPerformed
-
     private void btnPaymentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPaymentMouseClicked
 
     }//GEN-LAST:event_btnPaymentMouseClicked
@@ -509,29 +664,88 @@ public class HomeSales extends javax.swing.JPanel {
         dialog.setVisible(true);
     }//GEN-LAST:event_btnPaymentActionPerformed
 
-    private void tblPromo1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPromo1MousePressed
+    private void tblInvoiceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInvoiceMousePressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_tblPromo1MousePressed
+    }//GEN-LAST:event_tblInvoiceMousePressed
 
     private void btnAddMedicineToCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMedicineToCartActionPerformed
-        // TODO add your handling code here:
+        int[] selectedRows = tblProduct.getSelectedRows();
+
+        if (selectedRows.length == 0) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn ít nhất một thuốc để thêm vào giỏ.");
+            return;
+        }
+
+        for (int rowIndex : selectedRows) {
+            // Lấy batch_id từ table (giả sử là cột 0)
+            String batchId = tblProduct.getValueAt(rowIndex, 0).toString();
+
+            // Tìm SaleItem tương ứng từ danh sách
+            for (SaleItemDTO item : saleItemList) {
+                if (item.getBatchId().equals(batchId)) {
+                    addToCart(item);
+                    break;
+                }
+            }
+        }
     }//GEN-LAST:event_btnAddMedicineToCartActionPerformed
+
+    private void txtPhoneCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPhoneCustomerActionPerformed
+        
+    }//GEN-LAST:event_txtPhoneCustomerActionPerformed
+
+    private void txtPhoneCustomerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPhoneCustomerKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPhoneCustomerKeyPressed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        tblProduct.clearSelection();  // Bỏ mọi dòng đang được chọn
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void btnClearCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearCartActionPerformed
+        // Hiện hộp thoại xác nhận trước khi xóa
+        int confirmed = JOptionPane.showConfirmDialog(
+            this,
+            "Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng không?",
+            "Xác nhận xóa",
+            JOptionPane.YES_NO_OPTION
+        );
+        if (confirmed == JOptionPane.YES_OPTION){
+            cartItemsMap.clear();
+            cartPanel.removeAll(); // Xóa giao diện các item
+            cartPanel.revalidate(); // Cập nhật lại layout
+            cartPanel.repaint();
+            updatePayment(); // Cập nhật lại khu vực thanh toán
+        }
+    }//GEN-LAST:event_btnClearCartActionPerformed
+
+    private void txtPhoneCustomerKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPhoneCustomerKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume(); // chặn ký tự không phải số
+        }
+    }//GEN-LAST:event_txtPhoneCustomerKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddMedicineToCart;
-    private javax.swing.JButton btnDelete1LineInCart;
+    private javax.swing.JButton btnClearCart;
     private javax.swing.JButton btnPayment;
     private javax.swing.JButton btnRefresh;
-    private javax.swing.JButton btnReset;
+    private javax.swing.JPanel cartPanel;
     private javax.swing.JComboBox<String> cbxAll;
     private javax.swing.JComboBox<String> cbxAll1;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
@@ -549,30 +763,306 @@ public class HomeSales extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField8;
     private javax.swing.JLabel lblNameCustomer;
     private javax.swing.JLabel lblPdf;
     private javax.swing.JLabel lblPhoneCustomer;
     private javax.swing.JLabel lblPointCustomer;
     private javax.swing.JLabel lblProductDiscount;
+    private javax.swing.JLabel lblSoLuongSP;
     private javax.swing.JLabel lblSubtotal;
-    private javax.swing.JLabel lblTotalProductPrice;
+    private javax.swing.JLabel lblTotalProductPrice1;
     private javax.swing.JLabel lblVoucher;
     private javax.swing.JLabel lblVoucherDiscount;
-    private javax.swing.JPanel pnCart;
+    private javax.swing.JTable tblInvoice;
     private javax.swing.JTable tblProduct;
-    private javax.swing.JTable tblPromo1;
-    private javax.swing.JTextField txtNameCustomer;
+    private javax.swing.JTextField txtCustomerName;
+    private javax.swing.JTextField txtDiscount;
+    private javax.swing.JTextField txtLoyaltyPoints;
     private javax.swing.JTextField txtPhoneCustomer;
-    private javax.swing.JTextField txtPointCustomer;
-    private javax.swing.JTextField txtProductDiscoun;
+    private javax.swing.JTextField txtProductDiscount;
+    private javax.swing.JTextField txtPromoId;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtSearch1;
     private javax.swing.JTextField txtSubtotal;
+    private javax.swing.JTextField txtTotalProduct;
     private javax.swing.JTextField txtTotalProductPrice;
-    private javax.swing.JTextField txtVoucher;
-    private javax.swing.JTextField txtVoucherDiscount;
     // End of variables declaration//GEN-END:variables
+
+
+//
+//    public void addItemToCart(SaleItemDTO item) {
+//        String batchId = item.getBatchId();
+//
+//        if (cartItemsMap.containsKey(batchId)) {
+//            // Nếu thuốc đã có -> tăng số lượng
+//            JPanel itemPanel = cartItemsMap.get(batchId);
+//            for (Component comp : itemPanel.getComponents()) {
+//                if (comp instanceof JLabel && ((JLabel) comp).getText().matches("\\d+")) {
+//                    JLabel quantityLabel = (JLabel) comp;
+//                    int qty = Integer.parseInt(quantityLabel.getText());
+//                    quantityLabel.setText(String.valueOf(qty + 1));
+//                    break;
+//                }
+//            }
+//        } else {
+//            // Nếu thuốc chưa có -> tạo mới
+//            JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+//            JLabel nameLabel = new JLabel(item.getName());
+//
+//            JButton btnMinus = new JButton("-");
+//            JButton btnPlus = new JButton("+");
+//            JLabel quantityLabel = new JLabel("1");
+//            JButton btnRemove = new JButton("X");
+//
+//            btnPlus.addActionListener(e -> {
+//                int qty = Integer.parseInt(quantityLabel.getText());
+//                quantityLabel.setText(String.valueOf(qty + 1));
+//            });
+//
+//            btnMinus.addActionListener(e -> {
+//                int qty = Integer.parseInt(quantityLabel.getText());
+//                if (qty > 1) {
+//                    quantityLabel.setText(String.valueOf(qty - 1));
+//                }
+//            });
+//
+//            btnRemove.addActionListener(e -> {
+//                cartPanel.remove(itemPanel);
+//                cartItemsMap.remove(batchId);
+//                cartPanel.revalidate();
+//                cartPanel.repaint();
+//            });
+//
+//            itemPanel.add(nameLabel);
+//            itemPanel.add(btnMinus);
+//            itemPanel.add(quantityLabel);
+//            itemPanel.add(btnPlus);
+//            itemPanel.add(btnRemove);
+//
+//            cartPanel.add(itemPanel);
+//            cartPanel.revalidate();
+//            cartPanel.repaint();
+//
+//            // Thêm vào map để lần sau kiểm tra
+//            cartItemsMap.put(batchId, itemPanel);
+//        }
+//    }
+
+    private void addToCart(SaleItemDTO item) {
+        String key = item.getBatchId();
+
+        if (cartItemsMap.containsKey(key)) {
+            // Nếu đã tồn tại thì tăng số lượng
+            CartItemDTO cartItem = cartItemsMap.get(key);
+            JSpinner spinner = cartItem.getSpinner();
+            int current = (int) spinner.getValue();
+            spinner.setValue(current + 1);
+            cartItem.setQuantity(current + 1);
+            
+        } else {
+            // Tạo dòng mới
+            JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 30, 5)); 
+            row.setAlignmentX(Component.LEFT_ALIGNMENT);
+            row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); // Cố định chiều cao
+
+            // Tên thuốc
+            JLabel nameLabel = new JLabel(item.getName());
+            nameLabel.setPreferredSize(new Dimension(300, 30));
+
+            // Giá x số lượng
+            JLabel totalLabel = new JLabel(String.format("%.2f", item.getFinalPrice()));
+            totalLabel.setPreferredSize(new Dimension(200, 30));
+            
+            // Số lượng
+            JSpinner quantitySpinner = new JSpinner(new SpinnerNumberModel(1, 1, 999, 1));
+            quantitySpinner.setPreferredSize(new Dimension(100, 30));
+            quantitySpinner.addChangeListener(e -> {
+                int quantity = (int) quantitySpinner.getValue();
+                double finalprice = quantity * item.getFinalPrice().doubleValue();                
+                double originalprice = quantity * item.getSellPrice().doubleValue();
+                double discountprice = quantity * item.getDiscountAmount().doubleValue();
+
+                totalLabel.setText(String.format("%.2f", finalprice));
+                
+                CartItemDTO cartItem = cartItemsMap.get(key);
+                cartItem.setQuantity(quantity);
+                cartItem.setFinalPrice(BigDecimal.valueOf(finalprice));                
+                cartItem.setSellPrice(BigDecimal.valueOf(originalprice));
+                cartItem.setDiscountAmount(BigDecimal.valueOf(discountprice));
+
+                updatePayment();
+            });
+
+            // Nút xoá
+            JButton deleteButton = new JButton("X");
+            deleteButton.setPreferredSize(new Dimension(50, 30));
+            deleteButton.addActionListener(e -> {
+                cartPanel.remove(row);
+                cartItemsMap.remove(key);
+                cartPanel.revalidate();
+                cartPanel.repaint();
+                updatePayment();
+            });
+
+            row.add(nameLabel);
+            row.add(totalLabel);
+            row.add(quantitySpinner);
+            row.add(deleteButton);
+
+            CartItemDTO cartItem = new CartItemDTO(
+                item.getBatchId(),
+                item.getProductId(),
+                item.getName(),
+                item.getDiscountAmount(),
+                item.getSellPrice(),
+                item.getFinalPrice(),
+                1 // Khởi tạo số lượng ban đầu là 1
+            );
+
+            cartItem.setPanel(row);
+            cartItem.setSpinner(quantitySpinner);
+            
+            cartItemsMap.put(key, cartItem);
+            cartPanel.add(row);
+            cartPanel.revalidate();
+            cartPanel.repaint();
+            
+            updatePayment();
+
+            // Cuộn xuống cuối
+            SwingUtilities.invokeLater(() -> {
+                Rectangle bounds = row.getBounds();
+                cartPanel.scrollRectToVisible(bounds);
+            });
+        }
+    }
+    
+    
+    // Hàm tính tổng tiền gốc
+    private BigDecimal calculateTotalAmount() {
+        BigDecimal totalAmount = BigDecimal.ZERO;
+
+        for (CartItemDTO cartItem : cartItemsMap.values()) {
+            totalAmount = totalAmount.add(cartItem.getSellPrice());
+        }
+
+        return totalAmount;
+    }
+    
+    // Hàm tính tổng tiền khuyến mãi 
+    private BigDecimal calculateDiscountAmount() {
+        BigDecimal totalAmount = BigDecimal.ZERO;
+
+        for (CartItemDTO cartItem : cartItemsMap.values()) {
+            totalAmount = totalAmount.add(cartItem.getDiscountAmount());
+        }
+
+        return totalAmount;
+    }
+
+
+    // Hàm đếm tổng số lượng sp
+    private int calculateTotalProduct() {
+        int totalProduct = 0;
+
+        for (CartItemDTO cartItem : cartItemsMap.values()) {
+            totalProduct += cartItem.getQuantityFromSpinner();
+        }
+
+        return totalProduct;
+    }
+    
+    
+    // 
+    private void updatePayment() {
+        BigDecimal totalAmount = calculateTotalAmount();        
+        BigDecimal discountAmount = calculateDiscountAmount();        
+        int totalProduct = calculateTotalProduct();
+
+
+        txtTotalProductPrice.setText(totalAmount.toString());
+        txtProductDiscount.setText(discountAmount.toString());        
+        txtTotalProduct.setText(String.valueOf(totalProduct));
+
+        showHashMap();
+    }
+    
+    // Hàm tìm KH theo SDT
+    public CustomerDTO getCustomerByPhone(String phone) {
+        return customerBUS.findCustomerByPhone(phone);
+    }
+
+    // Hàm xử lý nhập SDT
+    private void handlePhoneInput() {
+        String phone = txtPhoneCustomer.getText().trim();
+
+        if (phone.length() >= 10) { // Kiểm tra độ dài hợp lệ
+            CustomerDTO customer = getCustomerByPhone(phone);
+            if (customer != null) {
+                txtCustomerName.setText(customer.getName());
+                txtLoyaltyPoints.setText(String.valueOf(customer.getPoint()));
+                currentCustomerId = customer.getId(); // lưu để dùng khi thanh toán
+                applyBestPromoForCustomer(customer);
+                System.out.println(currentCustomerId);
+            } else {
+                int choice = JOptionPane.showConfirmDialog(null,
+                    "Số điện thoại chưa là khách hàng. Bạn có muốn tạo mới không?",
+                    "Khách hàng mới",
+                    JOptionPane.YES_NO_OPTION);
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    String name = JOptionPane.showInputDialog("Nhập tên khách hàng:");
+                    String id = customerBUS.generateNextId(); // Tạo id mới
+                    if (name != null && !name.trim().isEmpty()) {
+                        CustomerDTO newCustomer = new CustomerDTO();
+                        newCustomer.setName(name.trim());
+                        newCustomer.setPhone(phone);
+                        newCustomer.setPoint(0);
+
+                        boolean newCustomerId = customerBUS.addCustomer(newCustomer);
+                        if (newCustomerId) {
+                            JOptionPane.showMessageDialog(null, "Tạo khách hàng thành công!");
+                            txtCustomerName.setText(name);
+                            txtLoyaltyPoints.setText("0");
+                            currentCustomerId = id;
+                            
+                            newCustomer.setId(id);
+                            applyBestPromoForCustomer(newCustomer);
+                            System.out.println(currentCustomerId);
+                           
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Lỗi khi tạo khách hàng.");
+                        }
+                    }
+                }   else {
+                        txtCustomerName.setText("");
+                        txtLoyaltyPoints.setText("");
+                        currentCustomerId = "";
+                }
+            }
+        } else {
+            txtCustomerName.setText("");
+            txtLoyaltyPoints.setText("");
+            currentCustomerId = "";
+        }
+    }
+    
+    
+    private void applyBestPromoForCustomer(CustomerDTO customer) {
+        PromotionDTO bestPromo = promoBUS.findBestRewardPromo(customer.getPoint());
+        if (bestPromo != null) {
+            txtPromoId.setText(bestPromo.getPromotionId());
+            txtDiscount.setText(bestPromo.getDiscountAmount().toString());
+        } else {
+            txtPromoId.setText("Không có khuyến mãi!");
+            txtDiscount.setText("0");
+        }
+    }
+
+    
+
+
+
 }

@@ -105,7 +105,7 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
             String sql = "SELECT supplier_id, name, phone_number, email, address FROM suppliers WHERE is_deleted = 0";
             ResultSet rs = myconnect.runQuery(sql);
             try {
-                while (rs != null && rs.next()) {
+                while (rs.next()) {
                     SupplierDTO supplier = new SupplierDTO(
                         rs.getString(1), // id
                         rs.getString(2), // name
@@ -131,7 +131,7 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
             String sql = "SELECT supplier_id, name, phone_number, email, address FROM suppliers WHERE supplier_id = ?";
             ResultSet rs = myconnect.prepareQuery(sql, t);
             try {
-                while (rs != null && rs.next()){
+                while (rs.next()){
                     supplier = new SupplierDTO(
                         rs.getString(1), // id
                         rs.getString(2), // name
@@ -162,7 +162,7 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
                     + "AND is_deleted = 0";
             ResultSet rs = myconnect.runQuery(sql);
             try {
-                while (rs != null && rs.next()) {
+                while (rs.next()) {
                     SupplierDTO supplier = new SupplierDTO(
                         rs.getString(1), // id
                         rs.getString(2), // name

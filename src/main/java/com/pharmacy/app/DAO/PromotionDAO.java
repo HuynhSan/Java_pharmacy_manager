@@ -222,5 +222,43 @@ public class PromotionDAO implements DAOinterface<PromotionDTO>{
     }
 
     
+    public PromotionDTO getBestRewardPromotion(float customerPoint) {
+        PromotionDTO promo = null;
+        
+        if (myconnect.openConnection()){
+            String sql = "SELECT TOP 1 * " +
+                        "FROM promotions " +
+                        "WHERE promo_type = N'Đổi điểm' " +
+                        "AND points_required <= ? " +
+                        "AND CAST(GETDATE() AS DATE) BETWEEN start_date AND end_date " +
+                        "AND is_deleted = 0 " +
+                        "ORDER BY points_to_money DESC, points_required ASC";
+
+            
+            ResultSet rs = myconnect.runPreparedQuery(sql, customerPoint);
+            
+            try {
+                while (rs != null && rs.next()){
+                    promo = new PromotionDTO(
+                            rs.getString(1),
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getFloat(4),
+                            rs.getFloat(5),
+                            rs.getDouble(6),
+                            rs.getDate(7).toLocalDate(),
+                            rs.getDate(8).toLocalDate()
+                    );
+                }
+            } catch(Exception e){
+                    e.printStackTrace();
+            } finally{
+                myconnect.closeConnection();
+            }
+        }
+        return promo;
+    }
+
+    
     
 }
