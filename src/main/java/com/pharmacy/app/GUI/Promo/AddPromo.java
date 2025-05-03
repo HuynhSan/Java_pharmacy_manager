@@ -12,6 +12,7 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -23,7 +24,7 @@ public class AddPromo extends javax.swing.JDialog {
 
 
     public AddPromo(HomePromo homePromo) {
-        super((Frame) null, "Thêm khuyến mãi", true);
+        super((Frame)SwingUtilities.getWindowAncestor(homePromo), true);
         this.homepromo = homePromo;
         
         // Khởi tạo thành phần giao diện
@@ -38,7 +39,7 @@ public class AddPromo extends javax.swing.JDialog {
         startDatePicker.setDate(today);
         
         changeType();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(homePromo);
     }
 
     /**

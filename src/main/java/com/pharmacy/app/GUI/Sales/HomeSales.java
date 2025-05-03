@@ -19,7 +19,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +46,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class HomeSales extends javax.swing.JPanel {
     UserDTO current_user = SessionDTO.getCurrentUser();
-    private String user_id = current_user.getUserID();
+    private String user_id = current_user.getUserID();    
+//    private String user_id = "";
+
     
     private String currentCustomerId;
     
@@ -85,7 +89,6 @@ public class HomeSales extends javax.swing.JPanel {
     
     
     public void loadAllData() {
-        // Giả sử SaleItemDAO là lớp quản lý việc truy vấn dữ liệu
         saleItemList = saleItemBUS.selectSaleItems();
         showDataToTable(saleItemList);
         txtPromoId.setText("Không có!");
@@ -666,8 +669,32 @@ public class HomeSales extends javax.swing.JPanel {
     }//GEN-LAST:event_btnPaymentMouseClicked
 
     private void btnPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentActionPerformed
-        PaymentDialog dialog = new PaymentDialog((JFrame) SwingUtilities.getWindowAncestor(this), true);
-        dialog.setLocationRelativeTo(null);
+        BigDecimal totalAmount = calculateTotalAmount();        
+        BigDecimal productDiscount = calculateDiscountAmount();
+       
+        String discountText = txtDiscount.getText().trim();
+        BigDecimal promoDiscount = new BigDecimal(discountText);
+
+        BigDecimal subTotal = totalAmount
+                .subtract(productDiscount)
+                .subtract(promoDiscount);
+        BigDecimal totalDiscount = productDiscount.add(promoDiscount);
+        
+        String userId = user_id;
+        String customerId = currentCustomerId;
+        
+        Window parenWindow = SwingUtilities.getWindowAncestor(this);
+        PaymentDialog dialog = new PaymentDialog(
+            (Frame) parenWindow,
+            true,
+            totalAmount.toString(),
+            totalDiscount.toString(),
+            subTotal.toString(),
+            cartItemsMap,
+            userId,
+            customerId
+        );
+        dialog.setLocationRelativeTo(parenWindow);
         dialog.setVisible(true);
     }//GEN-LAST:event_btnPaymentActionPerformed
 
@@ -1044,7 +1071,7 @@ public class HomeSales extends javax.swing.JPanel {
                             currentCustomerId = id;
                             
                             newCustomer.setId(id);
-                            applyBestPromoForCustomer(newCustomer);
+//                            applyBestPromoForCustomer(newCustomer);
                             System.out.println(currentCustomerId);
                            
                         } else {
