@@ -4,19 +4,59 @@
  */
 package com.pharmacy.app.GUI.Sales;
 
+import com.pharmacy.app.DTO.CartItemDTO;
+import java.awt.Frame;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author Giai Cuu Li San
  */
 public class PaymentDialog extends javax.swing.JDialog {
 
+    private Map<String, CartItemDTO> cartItems;
+    private String userID;
+    private String customerID;
     /**
      * Creates new form PaymentDialog
      */
-    public PaymentDialog(java.awt.Frame parent, boolean modal) {
+    public PaymentDialog(java.awt.Frame parent, boolean modal, String totalProductPrice, String totalDiscount, String subTotal, Map<String, CartItemDTO> cartItemsMap, String userId, String customerId) {
         super(parent, modal);
         initComponents();
-        setLocationRelativeTo(this);
+        
+        // Gán dữ liệu truyền vào
+        this.cartItems = cartItemsMap;
+        this.userID = userId;
+        this.customerID = customerId;
+        System.out.println(userId);        
+        System.out.println(customerId);
+
+        
+        showHashMap(cartItems);
+        
+        // Hiển thị dữ liệu lên các trường trong dialog
+        txtTotalProductPrice.setText(totalProductPrice);
+        txtDiscountAmount.setText(totalDiscount);
+        txtFinalTotal.setText(subTotal);
+        
+    }
+    
+        public void showHashMap(Map<String, CartItemDTO> cartItems){
+        // Sau khi thêm vào cartPanel, thêm đoạn này để debug
+        System.out.println("==> Giỏ hàng thanh toán:");
+        for (Map.Entry<String, CartItemDTO> entry : cartItems.entrySet()) {
+            CartItemDTO cartitem = entry.getValue();
+            System.out.println("Batch ID: " + cartitem.getBatchId()
+               + ", Product ID: " + cartitem.getProductId()
+               + ", Tên: " + cartitem.getName()
+               + ", SL: " + cartitem.getQuantityFromSpinner()
+               + ", Giá gốc: " + cartitem.getSellPrice()
+               + ", Tiền khuyến mãi: " + cartitem.getDiscountAmount()
+               + ", Giá sau KM: " + cartitem.getFinalPrice());
+        }
+        System.out.println("------------------------------");
+
     }
 
     /**
@@ -31,11 +71,11 @@ public class PaymentDialog extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         lblTotalAmount = new javax.swing.JLabel();
-        tfTotalAmount = new javax.swing.JTextField();
-        tfDiscountAmount = new javax.swing.JTextField();
+        txtTotalProductPrice = new javax.swing.JTextField();
+        txtDiscountAmount = new javax.swing.JTextField();
         lblDiscountAmount = new javax.swing.JLabel();
         lblFinalTotal = new javax.swing.JLabel();
-        tfFinalTotal = new javax.swing.JTextField();
+        txtFinalTotal = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnConfirmPayment = new javax.swing.JButton();
@@ -59,26 +99,26 @@ public class PaymentDialog extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel1.add(lblTotalAmount, gridBagConstraints);
 
-        tfTotalAmount.setEnabled(false);
-        tfTotalAmount.setPreferredSize(new java.awt.Dimension(200, 25));
+        txtTotalProductPrice.setEnabled(false);
+        txtTotalProductPrice.setPreferredSize(new java.awt.Dimension(200, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(7, 20, 7, 15);
-        jPanel1.add(tfTotalAmount, gridBagConstraints);
+        jPanel1.add(txtTotalProductPrice, gridBagConstraints);
 
-        tfDiscountAmount.setEditable(false);
-        tfDiscountAmount.setEnabled(false);
-        tfDiscountAmount.setPreferredSize(new java.awt.Dimension(200, 25));
+        txtDiscountAmount.setEditable(false);
+        txtDiscountAmount.setEnabled(false);
+        txtDiscountAmount.setPreferredSize(new java.awt.Dimension(200, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(7, 20, 7, 15);
-        jPanel1.add(tfDiscountAmount, gridBagConstraints);
+        jPanel1.add(txtDiscountAmount, gridBagConstraints);
 
         lblDiscountAmount.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblDiscountAmount.setText("Tiền khuyến mãi");
@@ -97,15 +137,15 @@ public class PaymentDialog extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel1.add(lblFinalTotal, gridBagConstraints);
 
-        tfFinalTotal.setEnabled(false);
-        tfFinalTotal.setPreferredSize(new java.awt.Dimension(200, 25));
+        txtFinalTotal.setEnabled(false);
+        txtFinalTotal.setPreferredSize(new java.awt.Dimension(200, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(7, 20, 7, 15);
-        jPanel1.add(tfFinalTotal, gridBagConstraints);
+        jPanel1.add(txtFinalTotal, gridBagConstraints);
 
         jPanel2.setPreferredSize(new java.awt.Dimension(300, 30));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
@@ -115,6 +155,11 @@ public class PaymentDialog extends javax.swing.JDialog {
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("Hủy");
         btnCancel.setPreferredSize(new java.awt.Dimension(80, 25));
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnCancel);
 
         btnConfirmPayment.setBackground(new java.awt.Color(0, 204, 51));
@@ -147,48 +192,13 @@ public class PaymentDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCancelActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PaymentDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PaymentDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PaymentDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PaymentDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                PaymentDialog dialog = new PaymentDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
@@ -199,8 +209,8 @@ public class PaymentDialog extends javax.swing.JDialog {
     private javax.swing.JLabel lblFinalTotal;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblTotalAmount;
-    private javax.swing.JTextField tfDiscountAmount;
-    private javax.swing.JTextField tfFinalTotal;
-    private javax.swing.JTextField tfTotalAmount;
+    private javax.swing.JTextField txtDiscountAmount;
+    private javax.swing.JTextField txtFinalTotal;
+    private javax.swing.JTextField txtTotalProductPrice;
     // End of variables declaration//GEN-END:variables
 }
