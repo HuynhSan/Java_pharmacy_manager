@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author BOI QUAN
  */
 public class SuplierInvoicesBUS {
-    private SupplierInvoicesDAO supInvoiceDAO;
+    private final SupplierInvoicesDAO supInvoiceDAO;
     private ArrayList<SuplierInvoiceDTO> supInvoicesList;
     public SuplierInvoicesBUS(){
         supInvoiceDAO = new SupplierInvoicesDAO();
