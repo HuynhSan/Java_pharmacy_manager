@@ -4,6 +4,8 @@
  */
 package com.pharmacy.app.GUI.User;
 
+import com.pharmacy.app.DTO.SessionDTO;
+import com.pharmacy.app.DTO.UserDTO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -12,13 +14,22 @@ import javax.swing.SwingUtilities;
  * @author LENOVO
  */
 public class UserInfo extends javax.swing.JDialog {
-
+    
     /**
      * Creates new form UserInfor
      */
     public UserInfo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setUser();
+    }
+    
+    public void setUser(){
+        UserDTO currentUser = SessionDTO.getCurrentUser();
+        txtUserID.setText(currentUser.getUserID());
+        txtUsername.setText(currentUser.getUsername());
+        txtRole.setText(SessionDTO.getRoleName());
+        txtPassword.setText(currentUser.getPassword());
     }
 
     /**
