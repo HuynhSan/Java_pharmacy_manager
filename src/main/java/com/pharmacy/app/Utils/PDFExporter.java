@@ -5,6 +5,7 @@
 package com.pharmacy.app.Utils;
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -25,6 +26,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -46,6 +48,11 @@ public class PDFExporter {
      * @param landscape True for landscape orientation, false for portrait
      * @return True if export was successful, false otherwise
      */
+    private static String supInvoiceID;
+    private static String supplierName;
+    private static String managerName;
+    private static String purchaseDate;
+    
     public static boolean exportTableToPDF(
             Component parentComponent,
             TableModel tableModel,
@@ -78,8 +85,12 @@ public class PDFExporter {
                 return false; // User canceled operation
             }
             
-            // Create and export PDF
-            createPDF(fileToSave, title, columns, tableModel, columnWidths, landscape);
+            if("PHIẾU NHẬP".equals(title)){
+                createInvoicePDF(fileToSave, title, columns, tableModel, columnWidths, landscape, supInvoiceID, supplierName, managerName, purchaseDate);
+            } else {
+                // Create and export PDF
+                createPDF(fileToSave, title, columns, tableModel, columnWidths, landscape);
+            }
             
             // Ask to open the file
             boolean opened = askToOpenFile(parentComponent, fileToSave);
@@ -143,7 +154,7 @@ public class PDFExporter {
         Document document = new Document(pageSize, 36, 36, 54, 36); // left, right, top, bottom margins
         
         // Create writer
-        PdfWriter.getInstance(document, new FileOutputStream(file));
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
         
         // Open document
         document.open();
@@ -221,14 +232,177 @@ public class PDFExporter {
         document.add(pdfTable);
         
         // Add footer with page number
-        document.add(new Paragraph(" "));
-        Paragraph footer = new Paragraph("Trang 1", contentFont);
-        footer.setAlignment(Element.ALIGN_RIGHT);
-        document.add(footer);
+        writer.setPageEvent(new PageNumber(contentFont));
         
         // Close document
         document.close();
     }
+    
+    private static void createInvoicePDF(
+            File file,
+            String title,
+            List<String> columns,
+            TableModel tableModel,
+            float[] columnWidths,
+            boolean landscape,
+            String supInvoiceID,
+            String supplierName,
+            String managerID,
+            String purchaseDate) throws DocumentException, IOException {
+        
+        // Set page orientation
+        Rectangle pageSize = PageSize.A4;
+        Document document = new Document(pageSize, 36, 36, 54, 36); // left, right, top, bottom margins
+        
+        // Create writer
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+        
+        // Open document
+        document.open();
+        
+        // Set fonts
+        BaseFont baseFont = BaseFont.createFont("c:/windows/fonts/arial.ttf", 
+                BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                
+        Font titleFont = new Font(baseFont, 18, Font.BOLD);
+        Font headerFont = new Font(baseFont, 10, Font.BOLD);
+        Font subtitleFont = new Font(baseFont, 10, Font.NORMAL);
+        Font contentFont = new Font(baseFont, 8, Font.NORMAL);
+        
+        // Add title
+        Paragraph titlePara = new Paragraph(title, titleFont);
+        titlePara.setAlignment(Element.ALIGN_CENTER);
+        titlePara.setSpacingAfter(10);
+        document.add(titlePara);
+
+        // Ađ info
+        Paragraph info = new Paragraph();
+        info.setFont(subtitleFont);
+        info.add("Mã phiếu nhập:     " + supInvoiceID + "\n");
+        info.add("Nhà cung cấp:     " +supplierName + "\n");
+        info.add("Người lập phiếu:     " + managerID + "\n");
+        info.add("Ngày lập phiếu:     " + purchaseDate + "\n");
+        document.add(info);
+
+        // Add date
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formatDateTime = now.format(formatter);
+        Paragraph dateTime = new Paragraph("Ngày xuất:     " + formatDateTime, subtitleFont);
+        dateTime.setAlignment(Element.ALIGN_LEFT);
+        document.add(dateTime);
+        
+        // Add space
+        document.add(new Paragraph(" "));
+        
+        // Create table
+        PdfPTable pdfTable = new PdfPTable(columns.size());
+        pdfTable.setWidthPercentage(100);
+        
+        Double tongTien = 0.0;
+        // NumberFormat for formatting numbers with commas
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        // Set column widths if provided
+        if (columnWidths != null && columnWidths.length == columns.size()) {
+            pdfTable.setWidths(columnWidths);
+        }
+        
+        // Add headers
+        for (String column : columns) {
+            PdfPCell cell = new PdfPCell(new Phrase(column, headerFont));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setBackgroundColor(new BaseColor(220, 220, 220));
+            cell.setPadding(5);
+            pdfTable.addCell(cell);
+        }
+        
+        // Add data
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            for (int j = 0; j < tableModel.getColumnCount(); j++) {
+                String value = tableModel.getValueAt(i, j) != null ? 
+                        tableModel.getValueAt(i, j).toString() : "";
+                
+                PdfPCell cell = new PdfPCell(new Phrase(value, contentFont));
+                
+                // Adjust cell alignment based on content type if needed
+                if (tableModel.getColumnClass(j) == Integer.class || 
+                    tableModel.getColumnClass(j) == Long.class ||
+                    tableModel.getColumnClass(j) == Double.class) {
+                    cell.setPhrase(new Phrase(numberFormat.format(Double.parseDouble(value)), contentFont));
+                    cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                } else if (tableModel.getColumnClass(j) == Boolean.class) {
+                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                } else {
+                    cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                }
+                
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setPadding(5);
+                pdfTable.addCell(cell);
+                
+                if(j == tableModel.getColumnCount()-1){
+                    try{
+                        tongTien += Double.parseDouble(value.replace(",", ""));
+                    } catch (NumberFormatException e){
+                        
+                    }
+                }
+            }
+        }
+        
+        // Add table to document
+        document.add(pdfTable);
+        
+        // Hiển thị tổng tiền
+        Paragraph total = new Paragraph();
+        total.setFont(subtitleFont);
+        total.add(new Chunk("Tổng tiền: ", headerFont));
+        total.add(String.format("%,.0f VND", tongTien));
+        total.setAlignment(Element.ALIGN_RIGHT);
+        total.setSpacingBefore(10);
+        document.add(total);
+
+        // Thêm khoảng trống trước phần chữ ký
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph(" "));
+        
+        
+        // Phần chữ ký
+        PdfPTable signatureTable = new PdfPTable(2);
+        signatureTable.setWidthPercentage(100);
+        signatureTable.setSpacingBefore(20f);
+        signatureTable.setWidths(new float[]{1, 1});
+
+        PdfPCell nguoiLapCell = new PdfPCell(new Phrase("Người lập phiếu", subtitleFont));
+        nguoiLapCell.setBorder(Rectangle.NO_BORDER);
+        nguoiLapCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        signatureTable.addCell(nguoiLapCell);
+
+        PdfPCell nguoiNhanCell = new PdfPCell(new Phrase("Người nhận hàng", subtitleFont));
+        nguoiNhanCell.setBorder(Rectangle.NO_BORDER);
+        nguoiNhanCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        signatureTable.addCell(nguoiNhanCell);
+
+        PdfPCell emptyCell1 = new PdfPCell(new Phrase("\n\n\n\n(Ký, ghi rõ họ tên)", subtitleFont));
+        emptyCell1.setBorder(Rectangle.NO_BORDER);
+        emptyCell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        signatureTable.addCell(emptyCell1);
+
+        PdfPCell emptyCell2 = new PdfPCell(new Phrase("\n\n\n\n(Ký, ghi rõ họ tên)", subtitleFont));
+        emptyCell2.setBorder(Rectangle.NO_BORDER);
+        emptyCell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        signatureTable.addCell(emptyCell2);
+        
+        document.add(signatureTable);
+        // Add page number
+        writer.setPageEvent(new PageNumber(contentFont));
+        
+        // Close document
+        document.close();
+    }
+    
     
     /**
      * Ask user if they want to open the generated PDF
@@ -455,6 +629,22 @@ public class PDFExporter {
                 "DanhSachPhieuNhap.pdf",
                 columnWidths,
                 true // landscape orientation
+        );
+    }
+    
+    public static boolean exportSupInvoiceToPDF(Component parentComponent, TableModel invoiceTableModel, String supInvoiceID, String supplierName, String managerName, String purchaseDate){
+        float[] columnWidths = {1.2f, 1.5f, 1.5f, 6.0f, 1.5f, 1.50f, 1.8f};
+        PDFExporter.supInvoiceID = supInvoiceID;
+        PDFExporter.supplierName = supplierName;
+        PDFExporter.managerName = managerName;
+        PDFExporter.purchaseDate = purchaseDate;
+        return exportTableToPDF(
+            parentComponent,
+            invoiceTableModel,
+            "PHIẾU NHẬP",
+            "PhieuNhap.pdf",
+            columnWidths,
+            true
         );
     }
 }

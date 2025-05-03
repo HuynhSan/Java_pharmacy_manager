@@ -42,8 +42,10 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
     public ArrayList<SuplierInvoiceDTO> selectAll() {
         ArrayList<SuplierInvoiceDTO> supInvoices = new ArrayList<>();
         if (myconnect.openConnection()){
-            System.out.println("ket noi thanh cong");
-            String sql = "SELECT supplier_invoice_id, si.total_quantity, total_price, si.supplier_id, purchase_date, manager_user_id FROM supplier_invoices si, purchase_orders po WHERE po.po_id = si.po_id AND si.is_deleted = 0";
+            String sql = "SELECT supplier_invoice_id, si.total_quantity, total_price, si.supplier_id, purchase_date, manager_user_id "
+                    + " FROM supplier_invoices si"
+                    + " INNER JOIN purchase_orders po ON po.po_id = si.po_id"
+                    + " WHERE si.is_deleted = 0";
             ResultSet rs = myconnect.runQuery(sql);
 
             try {
@@ -76,10 +78,11 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         SuplierInvoiceDTO supInvoice = null;
         if (myconnect.openConnection()){
-            String query = "SELECT si.supplier_invoice_id, sp.name, si.purchase_date, manager_user_id "
+            String query = "SELECT si.supplier_invoice_id, sp.name, si.purchase_date, manager_user_id, u.username "
                     + " FROM supplier_invoices si"
                     + " INNER JOIN suppliers sp ON si.supplier_id = sp.supplier_id"
                     + " INNER JOIN purchase_orders po ON po.po_id = si.po_id"
+                    + " INNER JOIN users u ON u.user_id = po.manager_user_id"
                     + " WHERE si.supplier_invoice_id = ?";
             ResultSet rs = myconnect.prepareQuery(query, t);
             try {
@@ -90,6 +93,7 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
                     LocalDate purchaseDate = rs.getDate(3).toLocalDate();
                     supInvoice.setPurchaseDate(purchaseDate);
                     supInvoice.setManagerID(rs.getString(4));
+                    supInvoice.setManagerName(rs.getString(5));
 
                     
                 }
