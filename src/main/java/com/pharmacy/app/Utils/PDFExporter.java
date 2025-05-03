@@ -404,10 +404,22 @@ public class PDFExporter {
         );
     }
     
-    public static boolean exportContractsToPDF(Component parentComponent, TableModel contractTableModel) {
-        // Define custom column widths for contract table
+    public static boolean exportListToPDF(Component parentComponent, TableModel employeeTableModel, String title, String fileName) {
         float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
-        
+
+        return exportTableToPDF(
+                parentComponent,
+                employeeTableModel,
+                title,
+                fileName,
+                columnWidths,
+                true // landscape orientation
+        );
+    }
+
+    public static boolean exportContractsToPDF(Component parentComponent, TableModel contractTableModel) {
+        float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
+
         return exportTableToPDF(
                 parentComponent,
                 contractTableModel,
@@ -417,7 +429,7 @@ public class PDFExporter {
                 true // landscape orientation
         );
     }
-    
+
     public static boolean exportSuppliersToPDF(Component parentComponent, TableModel supplierTableModel) {
         // Define custom column widths for supplier table
         float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
