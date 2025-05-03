@@ -280,7 +280,7 @@ public class HomePromo extends javax.swing.JPanel{
             DefaultTableModel model = (DefaultTableModel) tblPromo.getModel();
 
             // Use the PDFExporter utility class to export employee data
-            com.pharmacy.app.Utils.PDFExporter.exportListToPDF(this, model, "DANH SÁCH KHUYẾN MÃI","DanhSachKhuyenMai.pdf");
+            com.pharmacy.app.Utils.PDFExporter.exportPromotionsToPDF(this, model);
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this,

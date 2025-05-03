@@ -390,6 +390,20 @@ public class PDFExporter {
         }
     }
     
+    public static boolean exportPromotionsToPDF(Component parentComponent, TableModel employeeTableModel) {
+        // Define custom column widths for employee table
+        float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
+        
+        return exportTableToPDF(
+                parentComponent,
+                employeeTableModel,
+                "DANH SÁCH KHUYẾN MÃI",
+                "DanhSachKhuyenMai.pdf",
+                columnWidths,
+                true // landscape orientation
+        );
+    }
+    
     public static boolean exportEmployeesToPDF(Component parentComponent, TableModel employeeTableModel) {
         // Define custom column widths for employee table
         float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
