@@ -4,6 +4,7 @@
  */
 package com.pharmacy.app;
 
+import com.pharmacy.app.DTO.SessionDTO;
 import com.pharmacy.app.GUI.Authorization.AuthorizationManagement;
 import com.pharmacy.app.GUI.Customer.CustomerList;
 import com.pharmacy.app.GUI.Employee.EmployeeManagement;
@@ -266,6 +267,9 @@ public class homepage extends javax.swing.JFrame {
 
         logouticon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logout.png"))); // NOI18N
         logouticon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logouticonMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 logouticonMouseEntered(evt);
             }
@@ -660,6 +664,20 @@ public class homepage extends javax.swing.JFrame {
             a=true;
         }
     }//GEN-LAST:event_backiconMouseClicked
+
+    private void logouticonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logouticonMouseClicked
+        int confirm = JOptionPane.showConfirmDialog(null, 
+            "Bạn có chắc chắn muốn đăng xuất không?", 
+            "Xác nhận đăng xuất", 
+            JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION){
+            SessionDTO.clearUser();
+            this.dispose();
+            java.awt.EventQueue.invokeLater(() -> {
+                new loginPage().setVisible(true);
+            });
+        }
+    }//GEN-LAST:event_logouticonMouseClicked
 
     
     public static void main(String args[]) {
