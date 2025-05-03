@@ -403,4 +403,19 @@ public class PDFExporter {
                 true // landscape orientation
         );
     }
+    
+    public static boolean exportListToPDF(Component parentComponent, TableModel employeeTableModel, String title, String fileName) {
+        // Define custom column widths for employee table
+        float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
+        
+        return exportTableToPDF(
+                parentComponent,
+                employeeTableModel,
+                title,
+                fileName,
+                columnWidths,
+                true // landscape orientation
+        );
+    }
+    
 }
