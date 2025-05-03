@@ -14,12 +14,12 @@ public class SuplierInvoiceDetailsDTO {
     public String productID;
     public String name;
     public int quantity;
-    public double unitPrice;
-    public double totalPrice;
+    public Double unitPrice;
+    public Double totalPrice;
     
     public SuplierInvoiceDetailsDTO(){}
     
-    public SuplierInvoiceDetailsDTO(String invoiceID, String batchID, String productID, String name, int quantity, double unitPrice, double totalPrice) {
+    public SuplierInvoiceDetailsDTO(String invoiceID, String batchID, String productID, String name, int quantity, Double unitPrice, Double totalPrice) {
         this.invoiceID = invoiceID;
         this.batchID = batchID;
         this.productID = productID;
@@ -69,19 +69,19 @@ public class SuplierInvoiceDetailsDTO {
         this.quantity = quantity;
     }
 
-    public double getUnitPrice() {
+    public Double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(double unitPrice) {
+    public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
     
-    public double getTotalPrice(){
+    public Double getTotalPrice(){
         return totalPrice;
     }
     
-    public void setTotalPrice(double totalPrice){
+    public void setTotalPrice(Double totalPrice){
         this.totalPrice = totalPrice;
     }
     

@@ -14,20 +14,23 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author LENOVO
  */
-public class Invoices extends javax.swing.JPanel {
-    private SupplierInvoicesDAO supInvoiceDAO = new SupplierInvoicesDAO();
+public final class Invoices extends javax.swing.JPanel {
+    private final SupplierInvoicesDAO supInvoiceDAO = new SupplierInvoicesDAO();
     private SuplierInvoicesBUS supInvoiceBUS;
     private SuplierInvoiceDetailsBUS supInvoiceDetailsBUS;
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private NumberFormat currencyFomat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
     /**
      * Creates new form Invoices
      */
@@ -79,8 +82,6 @@ public class Invoices extends javax.swing.JPanel {
         for (SuplierInvoiceDTO si: supInvoiceList){
             model.addRow(new Object[]{
                 si.getInvoiceID(),
-//                si.getPoID(),
-                
                 si.getTotalQuantity(),
                 si.getTotalPrice(),
                 si.getSupplierID(),
@@ -97,10 +98,10 @@ public class Invoices extends javax.swing.JPanel {
     
     public double calculateTotalAmount() {
         DefaultTableModel model = (DefaultTableModel) tbSupInvoiceDetail.getModel();
-        double total = 0;
+        Double total = 0.0;
 
         for (int i = 0; i < model.getRowCount(); i++) {
-            Object value = model.getValueAt(i, 5); // Cột "Thành tiền" là cột thứ 6 → index = 5
+            Object value = model.getValueAt(i, 6);
             if (value != null) {
                 try {
                     total += Double.parseDouble(value.toString());
@@ -109,9 +110,9 @@ public class Invoices extends javax.swing.JPanel {
                 }
             }
         }
-
         return total;
     }
+    
     private void searchSupplier(String keyword){
         keyword = txtSearch.getText().trim();
         String selected = cbSearchType.getSelectedItem().toString();
@@ -171,7 +172,7 @@ public class Invoices extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         txtInvoiceID = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtManagerID = new javax.swing.JTextField();
+        txtManagerName = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txtTotalPrice = new javax.swing.JTextField();
@@ -246,7 +247,7 @@ public class Invoices extends javax.swing.JPanel {
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 740, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 736, Short.MAX_VALUE)
                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4)
@@ -397,20 +398,20 @@ public class Invoices extends javax.swing.JPanel {
 
         tbSupInvoiceDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "STT", "Mã thuốc", "Tên thuốc", "Giá nhập", "Số lượng", "Thành tiền"
+                "STT", "Lô thuốc", "Mã thuốc", "Tên thuốc", "Giá nhập", "Số lượng", "Thành tiền"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -423,6 +424,15 @@ public class Invoices extends javax.swing.JPanel {
         });
         tbSupInvoiceDetail.setPreferredSize(new java.awt.Dimension(400, 80));
         jScrollPane2.setViewportView(tbSupInvoiceDetail);
+        if (tbSupInvoiceDetail.getColumnModel().getColumnCount() > 0) {
+            tbSupInvoiceDetail.getColumnModel().getColumn(0).setPreferredWidth(1);
+            tbSupInvoiceDetail.getColumnModel().getColumn(1).setPreferredWidth(5);
+            tbSupInvoiceDetail.getColumnModel().getColumn(2).setPreferredWidth(5);
+            tbSupInvoiceDetail.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tbSupInvoiceDetail.getColumnModel().getColumn(4).setPreferredWidth(10);
+            tbSupInvoiceDetail.getColumnModel().getColumn(5).setPreferredWidth(10);
+            tbSupInvoiceDetail.getColumnModel().getColumn(6).setPreferredWidth(10);
+        }
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Ngày lập:");
@@ -449,10 +459,10 @@ public class Invoices extends javax.swing.JPanel {
         jLabel5.setText("Nhà cung cấp:");
         jLabel5.setPreferredSize(new java.awt.Dimension(77, 30));
 
-        txtManagerID.setEditable(false);
-        txtManagerID.setBackground(new java.awt.Color(255, 255, 255));
-        txtManagerID.setBorder(null);
-        txtManagerID.setPreferredSize(new java.awt.Dimension(64, 30));
+        txtManagerName.setEditable(false);
+        txtManagerName.setBackground(new java.awt.Color(255, 255, 255));
+        txtManagerName.setBorder(null);
+        txtManagerName.setPreferredSize(new java.awt.Dimension(64, 30));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setText("Người lập:");
@@ -460,11 +470,15 @@ public class Invoices extends javax.swing.JPanel {
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel8.setText("TỔNG THÀNH TIỀN:");
+        jLabel8.setPreferredSize(new java.awt.Dimension(114, 30));
 
         txtTotalPrice.setEditable(false);
         txtTotalPrice.setBackground(new java.awt.Color(255, 255, 255));
+        txtTotalPrice.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         txtTotalPrice.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtTotalPrice.setBorder(null);
+        txtTotalPrice.setFocusable(false);
+        txtTotalPrice.setMinimumSize(new java.awt.Dimension(64, 30));
         txtTotalPrice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTotalPriceActionPerformed(evt);
@@ -506,7 +520,7 @@ public class Invoices extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(txtManagerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtManagerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -520,10 +534,10 @@ public class Invoices extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8)
-                .addGap(30, 30, 30)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
                 .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addGap(54, 54, 54))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -539,16 +553,16 @@ public class Invoices extends javax.swing.JPanel {
                 .addGap(8, 8, 8)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtManagerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtManagerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPurchaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28))
+                .addGap(45, 45, 45))
         );
 
         jPanel5.add(jPanel6, java.awt.BorderLayout.CENTER);
@@ -573,9 +587,12 @@ public class Invoices extends javax.swing.JPanel {
         try {
             // Get table model
             DefaultTableModel model = (DefaultTableModel) tbSupInvoiceDetail.getModel();
-
+            String invoiceID = txtInvoiceID.getText();
+            String supplier = txtSupplier.getText();
+            String managerName = txtManagerName.getText();
+            String purchaseDate = txtPurchaseDate.getText();
             // Use the PDFExporter utility class to export employee data
-            com.pharmacy.app.Utils.PDFExporter.exportInvoicesToPDF(this, model);
+            com.pharmacy.app.Utils.PDFExporter.exportSupInvoiceToPDF(this, model, invoiceID, supplier, managerName, purchaseDate);
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -607,8 +624,8 @@ public class Invoices extends javax.swing.JPanel {
             txtInvoiceID.setText(infoSupInvoice.getInvoiceID());
             txtSupplier.setText(infoSupInvoice.getSupplierName());
             txtPurchaseDate.setText(infoSupInvoice.getPurchaseDate().format(DATE_FORMAT));
-            txtManagerID.setText(infoSupInvoice.getManagerID());
-            System.out.println(infoSupInvoice.getManagerID());
+            txtManagerName.setText(infoSupInvoice.getManagerName());
+            System.out.println(infoSupInvoice.getManagerName());
             // Lay noi dung cua supplier invoice
             ArrayList<SuplierInvoiceDetailsDTO> supInvoiceDetails = supInvoiceDetailsBUS.getHistoryByID(id);
             
@@ -618,6 +635,7 @@ public class Invoices extends javax.swing.JPanel {
             for (SuplierInvoiceDetailsDTO sid: supInvoiceDetails){
                 model.addRow(new Object[]{
                     stt++,
+                    sid.getBatchID(),
                     sid.getProductID(),
                     sid.getName(),
                     sid.getUnitPrice(),
@@ -627,8 +645,8 @@ public class Invoices extends javax.swing.JPanel {
             }
             
             // Tong tien
-            double total = calculateTotalAmount();
-            txtTotalPrice.setText(String.format("%.2f", total));
+            Double total = calculateTotalAmount();
+            txtTotalPrice.setText(String.format("%,.0f VND", total));
         }
     }//GEN-LAST:event_tbInvoiceHistoryMouseClicked
 
@@ -665,7 +683,7 @@ public class Invoices extends javax.swing.JPanel {
     private javax.swing.JTable tbInvoiceHistory;
     private javax.swing.JTable tbSupInvoiceDetail;
     private javax.swing.JTextField txtInvoiceID;
-    private javax.swing.JTextField txtManagerID;
+    private javax.swing.JTextField txtManagerName;
     private javax.swing.JTextField txtPurchaseDate;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtSupplier;

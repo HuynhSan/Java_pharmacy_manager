@@ -16,17 +16,19 @@ public class SuplierInvoiceDTO {
     public String supplierID;
     public String supplierName;
     public String managerID;
+    public String managerName;
     public int totalQuantity;
-    public double totalPrice;
+    public Double totalPrice;
     public LocalDate purchaseDate;
 
     public SuplierInvoiceDTO(){}
     
-    public SuplierInvoiceDTO(String invoiceID, String poID, String supplierID, String managerID, String supplierName, int totalQuantity, double totalPrice, LocalDate purchaseDate) {
+    public SuplierInvoiceDTO(String invoiceID, String poID, String supplierID, String managerID, String supplierName, String managerName, int totalQuantity, Double totalPrice, LocalDate purchaseDate) {
         this.invoiceID = invoiceID;
         this.poID = poID;
         this.supplierID = supplierID;
         this.managerID = managerID;
+        this.managerName = managerName;
         this.supplierName = supplierName;
         this.totalQuantity = totalQuantity;
         this.totalPrice = totalPrice;
@@ -60,10 +62,19 @@ public class SuplierInvoiceDTO {
     public String getManagerID() {
         return managerID;
     }
-
+    
     public void setManagerID(String managerID) {
         this.managerID = managerID;
     }
+    
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
+    }
+        
+    public String getManagerName() {
+        return managerName;
+    }
+    
     public String getSupplierName() {
         return supplierName;
     }
@@ -80,11 +91,11 @@ public class SuplierInvoiceDTO {
         this.totalQuantity = totalQuantity;
     }
 
-    public double getTotalPrice() {
+    public Double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
 
