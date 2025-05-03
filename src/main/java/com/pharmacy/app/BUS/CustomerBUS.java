@@ -77,4 +77,9 @@ public class CustomerBUS {
         }
         return -1;
     }
+    
+    public CustomerDTO findCustomerByPhone(String phone) {
+        return customerDAO.findCustomerByPhone(phone);
+    }
+    
 }

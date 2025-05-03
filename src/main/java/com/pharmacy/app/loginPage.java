@@ -4,6 +4,8 @@
  */
 package com.pharmacy.app;
 
+import com.pharmacy.app.DTO.SessionDTO;
+
 /**
  *
  * @author phong
@@ -144,6 +146,7 @@ public class loginPage extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
@@ -169,6 +172,7 @@ public class loginPage extends javax.swing.JFrame {
 
         if (loggedInUser != null) {
             // Login successful
+            SessionDTO.setCurrentUser(loggedInUser);
             // Redirect based on role
             String roleID = loggedInUser.getRoleID();
 

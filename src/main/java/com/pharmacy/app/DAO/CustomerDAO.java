@@ -169,4 +169,29 @@ public class CustomerDAO implements DAOinterface<CustomerDTO>{
         }
         return customers;
     }
+
+    public CustomerDTO findCustomerByPhone(String phone) {
+        CustomerDTO customer = null;
+        if (myconnect.openConnection()){
+            String sql = "SELECT * FROM customers WHERE phone_number = ?";
+            ResultSet rs = myconnect.prepareQuery(sql, phone);
+            try {
+                while (rs != null && rs.next()){
+                    customer = new CustomerDTO(
+                        rs.getString(1), // id
+                        rs.getString(2), // name
+                        rs.getString(3), // phone
+                        rs.getFloat(4) // point
+                    );
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return customer;
+    }
+    
+    
 }
