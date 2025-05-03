@@ -117,6 +117,7 @@
         <Component class="javax.swing.JTextField" name="txtUserID">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <Events>
@@ -141,11 +142,7 @@
         <Component class="javax.swing.JComboBox" name="cbUserRole">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="3">
-                <StringItem index="0" value="Admin"/>
-                <StringItem index="1" value="Manager"/>
-                <StringItem index="2" value="Employee"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
           </Properties>
           <Events>
@@ -173,7 +170,6 @@
           <SubComponents>
             <Component class="javax.swing.JRadioButton" name="rbActive">
               <Properties>
-                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Active"/>
               </Properties>
               <Events>
@@ -214,20 +210,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateActionPerformed"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnDelete">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="ff" type="rgb"/>
-            </Property>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="12" style="1"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="X&#xf3;a"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnCancel">
           <Properties>

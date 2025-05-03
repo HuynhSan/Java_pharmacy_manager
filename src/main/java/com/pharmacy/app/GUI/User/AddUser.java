@@ -4,20 +4,222 @@
  */
 package com.pharmacy.app.GUI.User;
 
+import com.pharmacy.app.BUS.EmployeeBUS;
+import com.pharmacy.app.BUS.RoleBUS;
+import com.pharmacy.app.BUS.UserBUS;
+import com.pharmacy.app.DAO.EmployeeDAO;
+import com.pharmacy.app.DAO.UserDAO;
+import com.pharmacy.app.DTO.EmployeeDTO;
+import com.pharmacy.app.DTO.RoleDTO;
+import com.pharmacy.app.DTO.UserDTO;
+import com.pharmacy.app.Utils.UserValidation;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author phong
  */
 public class AddUser extends javax.swing.JDialog {
+    private EmployeeBUS employeeBUS;
+    private UserBUS userBUS;
+    private RoleBUS roleBUS;
+    private EmployeeDAO employeeDAO = new EmployeeDAO();
+    private UserDAO userDAO = new UserDAO();
+    private EmployeeDTO employeeDTO;
+    private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private EmployeeDTO selectedEmployee;
+    private ButtonGroup statusGroup;
 
     /**
      * Creates new form AddUserForEmployee
+     * @param parent
+     * @param modal
      */
     public AddUser(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setupListeners();
+        initBUS();
+        loadEmployeeData();
+        setupTable();
+        setupRadioButtons();
+        loadRoles();
+    }
+    
+    private void initBUS() {
+        employeeBUS = new EmployeeBUS();
+        employeeBUS.loadNoUserIDList();
+        roleBUS = new RoleBUS();
+        roleBUS.loadRoleList();
+        userBUS = new UserBUS();
+    }
+    
+    private void setupRadioButtons() {
+        // Group radio buttons to ensure only one can be selected
+        statusGroup = new ButtonGroup();
+        statusGroup.add(rbActive);
+        statusGroup.add(rbUnactive);
+        rbActive.setSelected(true);
     }
 
+    private void loadRoles() {
+        ArrayList<RoleDTO> roles = roleBUS.getRoleList();
+        cbUserRole.removeAllItems();
+
+        // Add each role to the combo box
+        for(RoleDTO role : roles) {
+            cbUserRole.addItem(role.getRoleName());
+        }
+    }
+    
+    private void setupListeners() {
+        // Setup search text field focus listener
+        txtSearchEmployee.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtSearchEmployee.getText().equals("Tìm kiếm")) {
+                    txtSearchEmployee.setText("");
+                    txtSearchEmployee.setFont(new java.awt.Font("Segoe UI", 0, 12));
+                    txtSearchEmployee.setForeground(new java.awt.Color(0, 0, 0));
+                }
+            }
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtSearchEmployee.getText().isEmpty()) {
+                    txtSearchEmployee.setText("Tìm kiếm");
+                    txtSearchEmployee.setFont(new java.awt.Font("Segoe UI", 2, 12));
+                    txtSearchEmployee.setForeground(new java.awt.Color(153, 153, 153));
+                }
+            }
+        });
+        
+        // Setup search text field key listener
+        txtSearchEmployee.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String keyword = txtSearchEmployee.getText();
+                if (!keyword.equals("Tìm kiếm")) {
+                    searchEmployees(keyword);
+                }
+            }
+        });
+    }
+    
+    /**
+     * Load all employee data into the table
+     */
+    private void loadEmployeeData() {
+        ArrayList<EmployeeDTO> employees = employeeBUS.getNoUserIDList();
+        displayEmployees(employees);
+    }
+    
+    /**
+     * Search employees based on keyword
+     */
+    private void searchEmployees(String keyword) {
+        if (keyword.isEmpty() || keyword.equals("Tìm kiếm")) {
+            loadEmployeeData();
+            return;
+        }
+        
+        ArrayList<EmployeeDTO> searchResults = employeeBUS.searchEmployees(keyword);
+        displayEmployees(searchResults);
+    }
+    
+    /**
+     * Display employees in the table
+     */
+    private void displayEmployees(ArrayList<EmployeeDTO> employees) {
+        DefaultTableModel model = (DefaultTableModel) tblEmployees.getModel();
+        model.setRowCount(0); // Clear current data
+        
+        for (EmployeeDTO employee : employees) {
+            Object[] row = {
+                employee.getEmployeeID(),
+                employee.getName(),
+                employee.getDob().format(DATE_FORMAT),
+                employee.getEmail()
+            };
+            model.addRow(row);
+        }
+    }
+    
+    private boolean validateForm() {
+        // Check if employee is selected
+        if (selectedEmployee == null) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        // Validate username
+        String username = txtUsername.getText().trim();
+        String usernameError = UserValidation.validateUsername(username);
+        if (!usernameError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, usernameError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtUsername.requestFocus();
+            return false;
+        }
+
+        // Check if username exists
+        String existsError = UserValidation.validateUsernameExists(username, userDAO);
+        if (!existsError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, existsError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtUsername.requestFocus();
+            return false;
+        }
+
+        // Validate password
+        String password = new String(txtPassword.getPassword()).trim();
+        String passwordError = UserValidation.validatePassword(password);
+        if (!passwordError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, passwordError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtPassword.requestFocus();
+            return false;
+        }
+
+        // Check if role is selected
+        if (cbUserRole.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn vai trò!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            cbUserRole.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+    
+    private void setupTable() {
+        // Set table selection mode to single selection
+        tblEmployees.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        // Add table row selection listener
+        tblEmployees.getSelectionModel().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent event) {
+                // Skip if adjusting or no row is selected
+                if (event.getValueIsAdjusting() || tblEmployees.getSelectedRow() == -1) {
+                    return;
+                }
+
+                // Get selected employee's ID from the table
+                String employeeID = tblEmployees.getValueAt(tblEmployees.getSelectedRow(), 0).toString();
+
+                // Retrieve full employee object from BUS
+                selectedEmployee = employeeBUS.getEmployeeByID(employeeID);
+                
+                // Display employee ID in text field
+                txtEmployeeID.setText(selectedEmployee.getEmployeeID());
+            }
+        });
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -37,7 +239,7 @@ public class AddUser extends javax.swing.JDialog {
         lblEmployeeID = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
         cbUserRole = new javax.swing.JComboBox<>();
-        pnlAddStatus = new javax.swing.JPanel();
+        pnlStatusGroup = new javax.swing.JPanel();
         rbActive = new javax.swing.JRadioButton();
         rbUnactive = new javax.swing.JRadioButton();
         txtEmployeeID = new javax.swing.JTextField();
@@ -105,7 +307,6 @@ public class AddUser extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 0);
         pnlAddUserLabel.add(txtUsername, gridBagConstraints);
 
-        cbUserRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Quản lý", "Nhân viên" }));
         cbUserRole.setFocusable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -114,8 +315,8 @@ public class AddUser extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 0);
         pnlAddUserLabel.add(cbUserRole, gridBagConstraints);
 
-        pnlAddStatus.setFocusable(false);
-        pnlAddStatus.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
+        pnlStatusGroup.setFocusable(false);
+        pnlStatusGroup.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
 
         rbActive.setSelected(true);
         rbActive.setText("Active");
@@ -124,19 +325,25 @@ public class AddUser extends javax.swing.JDialog {
                 rbActiveActionPerformed(evt);
             }
         });
-        pnlAddStatus.add(rbActive);
+        pnlStatusGroup.add(rbActive);
 
         rbUnactive.setText("Inactive");
-        pnlAddStatus.add(rbUnactive);
+        pnlStatusGroup.add(rbUnactive);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        pnlAddUserLabel.add(pnlAddStatus, gridBagConstraints);
+        pnlAddUserLabel.add(pnlStatusGroup, gridBagConstraints);
 
         txtEmployeeID.setEditable(false);
+        txtEmployeeID.setEnabled(false);
         txtEmployeeID.setFocusable(false);
+        txtEmployeeID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEmployeeIDActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -156,12 +363,22 @@ public class AddUser extends javax.swing.JDialog {
         btnAddUser.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnAddUser.setForeground(new java.awt.Color(255, 255, 255));
         btnAddUser.setText("Thêm");
+        btnAddUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddUserActionPerformed(evt);
+            }
+        });
         pnlAddUserButton.add(btnAddUser);
 
         btnCancel.setBackground(new java.awt.Color(153, 153, 153));
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("Hủy");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
         pnlAddUserButton.add(btnCancel);
 
         javax.swing.GroupLayout pnlAddUserLayout = new javax.swing.GroupLayout(pnlAddUser);
@@ -266,6 +483,89 @@ public class AddUser extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_rbActiveActionPerformed
 
+    private void txtEmployeeIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmployeeIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEmployeeIDActionPerformed
+
+    private void btnAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserActionPerformed
+        // Validate all input fields
+        if (!validateForm()) {
+            return;
+        }
+        
+        try {
+            // Generate a new user ID
+            String userID = userBUS.generateNewUserID();
+            
+            // Get selected role ID from name
+            String roleName = cbUserRole.getSelectedItem().toString();
+            String roleID = roleBUS.getRoleIDByName(roleName);
+            
+            // Get username value
+            String username = txtUsername.getText().trim();
+            
+            // Get password value
+            String password = new String(txtPassword.getPassword()).trim();
+            
+            // Get status value
+            boolean status = rbActive.isSelected();
+            
+            // Create new user
+            UserDTO newUser = new UserDTO(
+                userID,
+                username,
+                password,
+                roleID,
+                status
+            );
+            
+             // Insert user into database
+            boolean result = userBUS.addUser(newUser);
+
+            if (result) {
+                // Update employee with user ID
+                selectedEmployee.setUserID(userID);
+                boolean updateResult = employeeDAO.update(selectedEmployee);
+
+                if (updateResult) {
+                    JOptionPane.showMessageDialog(this, 
+                        "Thêm người dùng thành công!\nMã người dùng: " + userID, 
+                        "Thông báo",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+                    // Refresh employee data
+                    employeeBUS.loadNoUserIDList();
+                    loadEmployeeData();
+
+                    // Close form
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, 
+                        "Lỗi khi cập nhật thông tin nhân viên!", 
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    "Thêm người dùng thất bại!", 
+                    "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                this, 
+                "Lỗi: " + e.getMessage(), 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE
+            );
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnAddUserActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -321,13 +621,13 @@ public class AddUser extends javax.swing.JDialog {
     private javax.swing.JLabel lblRole;
     private javax.swing.JLabel lblUserStatus;
     private javax.swing.JLabel lblUsername;
-    private javax.swing.JPanel pnlAddStatus;
     private javax.swing.JPanel pnlAddUser;
     private javax.swing.JPanel pnlAddUserButton;
     private javax.swing.JPanel pnlAddUserLabel;
     private javax.swing.JPanel pnlEmloyeesList;
     private javax.swing.JPanel pnlEmployeesList;
     private javax.swing.JPanel pnlSearchEmployee;
+    private javax.swing.JPanel pnlStatusGroup;
     private javax.swing.JRadioButton rbActive;
     private javax.swing.JRadioButton rbUnactive;
     private javax.swing.JTable tblEmployees;
