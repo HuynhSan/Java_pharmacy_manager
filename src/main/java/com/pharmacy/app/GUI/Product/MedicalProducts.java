@@ -226,6 +226,7 @@ public class MedicalProducts extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        medListTbl.setRowHeight(30);
         medListTbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 medListTblMouseClicked(evt);
@@ -324,6 +325,7 @@ public class MedicalProducts extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        batchListTbl.setRowHeight(30);
         jScrollPane2.setViewportView(batchListTbl);
 
         jPanel7.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -432,6 +434,7 @@ public class MedicalProducts extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        dateTbl.setRowHeight(30);
         jScrollPane1.setViewportView(dateTbl);
 
         jPanel5.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -440,7 +443,7 @@ public class MedicalProducts extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Quản lý hạn sử dụng", medDatePn);
 
-        add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        add(jTabbedPane1, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed

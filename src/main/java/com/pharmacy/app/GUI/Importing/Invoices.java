@@ -8,6 +8,7 @@ import com.pharmacy.app.BUS.SuplierInvoicesBUS;
 import com.pharmacy.app.DAO.SupplierInvoicesDAO;
 import com.pharmacy.app.DTO.SuplierInvoiceDTO;
 import com.pharmacy.app.DTO.SuplierInvoiceDetailsDTO;
+import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
@@ -16,9 +17,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+//import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
+
 
 import javax.swing.table.DefaultTableModel;
 /**
@@ -30,7 +32,9 @@ public final class Invoices extends javax.swing.JPanel {
     private SuplierInvoicesBUS supInvoiceBUS;
     private SuplierInvoiceDetailsBUS supInvoiceDetailsBUS;
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private NumberFormat currencyFomat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
+    private final NumberFormat currencyFomat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
+    JDateChooser dateChooser = new JDateChooser();
+
     /**
      * Creates new form Invoices
      */
@@ -68,14 +72,15 @@ public final class Invoices extends javax.swing.JPanel {
         txtSearch.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                String keyword = txtSearch.getText();
+                String keyword = txtSearch.getText().trim();
                 if (!keyword.equals("Tìm kiếm")) {
-                    searchSupplier(keyword);
+                    searchInvoice(keyword);
                 }
             }
         });
     }
-    private void displayList(List<SuplierInvoiceDTO> supInvoiceList) {
+    
+    private void displayList(ArrayList<SuplierInvoiceDTO> supInvoiceList) {
         DefaultTableModel model = (DefaultTableModel) tbInvoiceHistory.getModel();
         model.setRowCount(0);
 
@@ -92,8 +97,35 @@ public final class Invoices extends javax.swing.JPanel {
     }
 
     public void loadSupInvoiceData(){
-        List<SuplierInvoiceDTO> supInvoiceList = supInvoiceBUS.getAllSuplierInvoice();
+        ArrayList<SuplierInvoiceDTO> supInvoiceList = supInvoiceBUS.getAllSuplierInvoice();
         displayList(supInvoiceList);
+    }
+    
+    public void loadSupInvoiceDetail(String supInvoiceID){
+        // Lay thong tin chi tiet cua supplier invoice
+        SuplierInvoiceDTO infoSupInvoice = supInvoiceBUS.getSupInvoiceByID(supInvoiceID);
+        txtInvoiceID.setText(infoSupInvoice.getInvoiceID());
+        txtSupplier.setText(infoSupInvoice.getSupplierName());
+        txtPurchaseDate.setText(infoSupInvoice.getPurchaseDate().format(DATE_FORMAT));
+        txtManagerName.setText(infoSupInvoice.getManagerName());
+
+        // Lay noi dung cua supplier invoice
+        ArrayList<SuplierInvoiceDetailsDTO> supInvoiceDetails = supInvoiceDetailsBUS.getHistoryByID(supInvoiceID);
+
+        DefaultTableModel model = (DefaultTableModel) tbSupInvoiceDetail.getModel();
+        model.setRowCount(0);
+        int stt = 1;
+        for (SuplierInvoiceDetailsDTO sid: supInvoiceDetails){
+            model.addRow(new Object[]{
+                stt++,
+                sid.getBatchID(),
+                sid.getProductID(),
+                sid.getName(),
+                sid.getUnitPrice(),
+                sid.getQuantity(),
+                sid.getTotalPrice()
+            });
+        }
     }
     
     public double calculateTotalAmount() {
@@ -113,25 +145,22 @@ public final class Invoices extends javax.swing.JPanel {
         return total;
     }
     
-    private void searchSupplier(String keyword){
-        keyword = txtSearch.getText().trim();
-        String selected = cbSearchType.getSelectedItem().toString();
+    private void searchInvoice(String keyword){
         if (keyword.isEmpty() || keyword.equals("Tìm kiếm")) {
             loadSupInvoiceData(); // Hiển thị lại toàn bộ nếu người dùng xóa từ khóa
             return;
-        } else {
-            switch(selected){
-                case "Mã phiếu nhập" -> supInvoiceDAO.setSearchField("siId");
-                case "Ngày" -> supInvoiceDAO.setSearchField("date");
-                case "Nhà cung cấp" -> supInvoiceDAO.setSearchField("sup");
-                default -> supInvoiceDAO.setSearchField("all");
-            }
-            
         }
-        
-        List<SuplierInvoiceDTO> searchResult = supInvoiceBUS.search(keyword);
+        ArrayList<SuplierInvoiceDTO> searchResult = supInvoiceBUS.search(keyword);
         displayList(searchResult);
     }
+
+
+//    private void filterByDate(LocalDate date){
+//        ArrayList<SuplierInvoiceDTO> result = supInvoiceBUS.filterByDate(date);
+//        displayList(result);
+//    }
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -157,10 +186,9 @@ public final class Invoices extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
+        txtSearch = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbInvoiceHistory = new javax.swing.JTable();
-        cbSearchType = new javax.swing.JComboBox<>();
-        txtSearch = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -175,9 +203,9 @@ public final class Invoices extends javax.swing.JPanel {
         txtManagerName = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        txtTotalPrice = new javax.swing.JTextField();
         txtSupplier = new javax.swing.JTextField();
         jButton8 = new javax.swing.JButton();
+        txtTotal = new javax.swing.JTextField();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -219,6 +247,7 @@ public final class Invoices extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTable2.setRowHeight(30);
         jTable2.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(jTable2);
 
@@ -247,7 +276,7 @@ public final class Invoices extends javax.swing.JPanel {
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 736, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 734, Short.MAX_VALUE)
                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4)
@@ -309,6 +338,18 @@ public final class Invoices extends javax.swing.JPanel {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách phiếu nhập", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
         jPanel4.setPreferredSize(new java.awt.Dimension(500, 518));
 
+        txtSearch.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        txtSearch.setForeground(new java.awt.Color(153, 153, 153));
+        txtSearch.setText("Tìm kiếm");
+        txtSearch.setPreferredSize(new java.awt.Dimension(64, 30));
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 400));
+
         tbInvoiceHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -328,6 +369,8 @@ public final class Invoices extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tbInvoiceHistory.setPreferredSize(new java.awt.Dimension(450, 400));
+        tbInvoiceHistory.setRowHeight(30);
         tbInvoiceHistory.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbInvoiceHistoryMouseClicked(evt);
@@ -335,43 +378,25 @@ public final class Invoices extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tbInvoiceHistory);
 
-        cbSearchType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Mã phiếu nhập", "Ngày nhập", "Nhà cung cấp" }));
-        cbSearchType.setPreferredSize(new java.awt.Dimension(118, 30));
-
-        txtSearch.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        txtSearch.setForeground(new java.awt.Color(153, 153, 153));
-        txtSearch.setText("Tìm kiếm");
-        txtSearch.setPreferredSize(new java.awt.Dimension(64, 30));
-        txtSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSearchActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(cbSearchType, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cbSearchType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(21, 21, 21)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.CENTER);
@@ -395,6 +420,8 @@ public final class Invoices extends javax.swing.JPanel {
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chi tiết phiếu nhập", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
+
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(452, 400));
 
         tbSupInvoiceDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -422,7 +449,8 @@ public final class Invoices extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tbSupInvoiceDetail.setPreferredSize(new java.awt.Dimension(400, 80));
+        tbSupInvoiceDetail.setPreferredSize(new java.awt.Dimension(400, 400));
+        tbSupInvoiceDetail.setRowHeight(30);
         jScrollPane2.setViewportView(tbSupInvoiceDetail);
         if (tbSupInvoiceDetail.getColumnModel().getColumnCount() > 0) {
             tbSupInvoiceDetail.getColumnModel().getColumn(0).setPreferredWidth(1);
@@ -436,7 +464,7 @@ public final class Invoices extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Ngày lập:");
-        jLabel1.setPreferredSize(new java.awt.Dimension(50, 30));
+        jLabel1.setPreferredSize(new java.awt.Dimension(80, 30));
 
         txtPurchaseDate.setEditable(false);
         txtPurchaseDate.setBackground(new java.awt.Color(255, 255, 255));
@@ -453,16 +481,17 @@ public final class Invoices extends javax.swing.JPanel {
         txtInvoiceID.setBackground(new java.awt.Color(255, 255, 255));
         txtInvoiceID.setBorder(null);
         txtInvoiceID.setFocusable(false);
-        txtInvoiceID.setPreferredSize(new java.awt.Dimension(64, 30));
+        txtInvoiceID.setPreferredSize(new java.awt.Dimension(80, 30));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Nhà cung cấp:");
-        jLabel5.setPreferredSize(new java.awt.Dimension(77, 30));
+        jLabel5.setPreferredSize(new java.awt.Dimension(80, 30));
 
         txtManagerName.setEditable(false);
         txtManagerName.setBackground(new java.awt.Color(255, 255, 255));
         txtManagerName.setBorder(null);
-        txtManagerName.setPreferredSize(new java.awt.Dimension(64, 30));
+        txtManagerName.setFocusable(false);
+        txtManagerName.setPreferredSize(new java.awt.Dimension(80, 30));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setText("Người lập:");
@@ -471,19 +500,6 @@ public final class Invoices extends javax.swing.JPanel {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel8.setText("TỔNG THÀNH TIỀN:");
         jLabel8.setPreferredSize(new java.awt.Dimension(114, 30));
-
-        txtTotalPrice.setEditable(false);
-        txtTotalPrice.setBackground(new java.awt.Color(255, 255, 255));
-        txtTotalPrice.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        txtTotalPrice.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtTotalPrice.setBorder(null);
-        txtTotalPrice.setFocusable(false);
-        txtTotalPrice.setMinimumSize(new java.awt.Dimension(64, 30));
-        txtTotalPrice.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTotalPriceActionPerformed(evt);
-            }
-        });
 
         txtSupplier.setEditable(false);
         txtSupplier.setBackground(new java.awt.Color(255, 255, 255));
@@ -502,53 +518,61 @@ public final class Invoices extends javax.swing.JPanel {
             }
         });
 
+        txtTotal.setEditable(false);
+        txtTotal.setBackground(new java.awt.Color(255, 255, 255));
+        txtTotal.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        txtTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTotal.setText("0 VND");
+        txtTotal.setBorder(null);
+        txtTotal.setFocusable(false);
+        txtTotal.setPreferredSize(new java.awt.Dimension(80, 30));
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(txtInvoiceID, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(txtManagerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtPurchaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(91, 91, 91))
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 773, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(61, 61, 61))
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtInvoiceID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtManagerName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPurchaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(txtSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41)
+                                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 773, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addGap(13, 13, 13)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtInvoiceID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtInvoiceID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(8, 8, 8)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -558,11 +582,11 @@ public final class Invoices extends javax.swing.JPanel {
                     .addComponent(txtPurchaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45))
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel5.add(jPanel6, java.awt.BorderLayout.CENTER);
@@ -577,10 +601,6 @@ public final class Invoices extends javax.swing.JPanel {
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
-
-    private void txtTotalPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalPriceActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTotalPriceActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
@@ -618,41 +638,18 @@ public final class Invoices extends javax.swing.JPanel {
         if (selectedRow != -1){
             // Lấy dữ liệu từ các cột trong dòng được chọn
             String id = tbInvoiceHistory.getValueAt(selectedRow, 0).toString();
-
-            // Lay thong tin chi tiet cua supplier invoice
-            SuplierInvoiceDTO infoSupInvoice = supInvoiceBUS.getSupInvoiceByID(id);
-            txtInvoiceID.setText(infoSupInvoice.getInvoiceID());
-            txtSupplier.setText(infoSupInvoice.getSupplierName());
-            txtPurchaseDate.setText(infoSupInvoice.getPurchaseDate().format(DATE_FORMAT));
-            txtManagerName.setText(infoSupInvoice.getManagerName());
-            System.out.println(infoSupInvoice.getManagerName());
-            // Lay noi dung cua supplier invoice
-            ArrayList<SuplierInvoiceDetailsDTO> supInvoiceDetails = supInvoiceDetailsBUS.getHistoryByID(id);
             
-            DefaultTableModel model = (DefaultTableModel) tbSupInvoiceDetail.getModel();
-            model.setRowCount(0);
-            int stt = 1;
-            for (SuplierInvoiceDetailsDTO sid: supInvoiceDetails){
-                model.addRow(new Object[]{
-                    stt++,
-                    sid.getBatchID(),
-                    sid.getProductID(),
-                    sid.getName(),
-                    sid.getUnitPrice(),
-                    sid.getQuantity(),
-                    sid.getTotalPrice()
-                });
-            }
-            
+            loadSupInvoiceDetail(id);
+            SwingUtilities.invokeLater(() -> {
+                txtTotal.setText(String.format("%,.0f VND", calculateTotalAmount()));
+            });
             // Tong tien
-            Double total = calculateTotalAmount();
-            txtTotalPrice.setText(String.format("%,.0f VND", total));
+//            txtTotal.setText(String.format("%,.0f VND", calculateTotalAmount()));
         }
     }//GEN-LAST:event_tbInvoiceHistoryMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cbSearchType;
     private javax.swing.JButton importBtn;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton8;
@@ -687,6 +684,6 @@ public final class Invoices extends javax.swing.JPanel {
     private javax.swing.JTextField txtPurchaseDate;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtSupplier;
-    private javax.swing.JTextField txtTotalPrice;
+    private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }

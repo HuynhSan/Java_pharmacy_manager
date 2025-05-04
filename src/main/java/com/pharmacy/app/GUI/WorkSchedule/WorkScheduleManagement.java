@@ -112,6 +112,7 @@ public class WorkScheduleManagement extends javax.swing.JPanel {
             }
         ));
         tblWeekSchedule.setPreferredSize(new java.awt.Dimension(690, 80));
+        tblWeekSchedule.setRowHeight(30);
         jScrollPane1.setViewportView(tblWeekSchedule);
         if (tblWeekSchedule.getColumnModel().getColumnCount() > 0) {
             tblWeekSchedule.getColumnModel().getColumn(0).setPreferredWidth(150);
@@ -163,6 +164,7 @@ public class WorkScheduleManagement extends javax.swing.JPanel {
             }
         ));
         tblWeekAttendance.setPreferredSize(new java.awt.Dimension(690, 80));
+        tblWeekAttendance.setRowHeight(30);
         jScrollPane2.setViewportView(tblWeekAttendance);
         if (tblWeekAttendance.getColumnModel().getColumnCount() > 0) {
             tblWeekAttendance.getColumnModel().getColumn(0).setPreferredWidth(150);
@@ -229,6 +231,7 @@ public class WorkScheduleManagement extends javax.swing.JPanel {
         tblShiftList.setFocusable(false);
         tblShiftList.setMinimumSize(new java.awt.Dimension(500, 80));
         tblShiftList.setPreferredSize(new java.awt.Dimension(500, 80));
+        tblShiftList.setRowHeight(30);
         tblShiftList.setShowGrid(true);
         jScrollPane3.setViewportView(tblShiftList);
 

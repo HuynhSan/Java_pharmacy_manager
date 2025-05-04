@@ -16,24 +16,15 @@ public class CustomerDTO {
     private boolean isDeleted;
      
     // Constructor
-    public CustomerDTO(String id, String name, String phone, float point) {
+    public CustomerDTO(String id, String name, String phone, float point, boolean isDeleted) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.point = point;
+        this.isDeleted = isDeleted;
     }
     
-    public CustomerDTO(String name, String phone, float point) {
-//        this.id = id;
-        this.name = name;
-        this.phone = phone;
-        this.point = point;
-//        this.isDeleted = isDeleted;
-    }
-    
-    public CustomerDTO() {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public CustomerDTO() {}
 
     // Getter & Setter
     public String getId() { return id; }

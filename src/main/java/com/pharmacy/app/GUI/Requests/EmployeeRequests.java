@@ -134,6 +134,7 @@ public class EmployeeRequests extends javax.swing.JPanel {
         tblRequets.setFocusable(false);
         tblRequets.setMinimumSize(new java.awt.Dimension(500, 80));
         tblRequets.setPreferredSize(new java.awt.Dimension(500, 80));
+        tblRequets.setRowHeight(30);
         tblRequets.setShowGrid(true);
         jScrollPane1.setViewportView(tblRequets);
 

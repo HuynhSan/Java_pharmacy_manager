@@ -290,6 +290,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        jTable1.setRowHeight(30);
         jScrollPane1.setViewportView(jTable1);
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -426,6 +427,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTable4.setRowHeight(30);
         jTable4.getTableHeader().setReorderingAllowed(false);
         jScrollPane5.setViewportView(jTable4);
 
@@ -517,6 +519,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        jTable5.setRowHeight(30);
         jScrollPane6.setViewportView(jTable5);
 
         jLabel22.setText("Ngày lập:");

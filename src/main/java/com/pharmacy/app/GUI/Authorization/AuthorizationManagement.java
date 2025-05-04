@@ -80,6 +80,7 @@ public class AuthorizationManagement extends javax.swing.JPanel {
         tbRole.setFocusable(false);
         tbRole.setMinimumSize(new java.awt.Dimension(500, 80));
         tbRole.setPreferredSize(new java.awt.Dimension(500, 80));
+        tbRole.setRowHeight(30);
         tbRole.setShowGrid(true);
         jScrollPane1.setViewportView(tbRole);
 
@@ -229,6 +230,7 @@ public class AuthorizationManagement extends javax.swing.JPanel {
         tblPermission.setFocusable(false);
         tblPermission.setMinimumSize(new java.awt.Dimension(500, 80));
         tblPermission.setPreferredSize(new java.awt.Dimension(500, 80));
+        tblPermission.setRowHeight(30);
         tblPermission.setShowGrid(true);
         jScrollPane2.setViewportView(tblPermission);
 

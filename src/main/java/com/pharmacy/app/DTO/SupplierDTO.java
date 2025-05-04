@@ -9,12 +9,12 @@ package com.pharmacy.app.DTO;
  * @author Giai Cuu Li San
  */
 public class SupplierDTO {
-    public String id;
-    public String name;
-    public String phone;
-    public String email;
-    public String address;
-    public boolean isDeleted;
+    private String id;
+    private String name;
+    private String phone;
+    private String email;
+    private String address;
+    private boolean isDeleted;
 
     // Constructor
     public SupplierDTO(String id, String name, String phone, String email, String address) {
@@ -23,6 +23,7 @@ public class SupplierDTO {
         this.phone = phone;
         this.email = email;
         this.address = address;
+//        this.isDeleted = isDeleted;
     }
     
     public SupplierDTO(String name, String phone, String email, String address) {
@@ -30,7 +31,7 @@ public class SupplierDTO {
         this.phone = phone;
         this.email = email;
         this.address = address;
-//        this.isDeleted = isDeleted;
+//        
     }
     
     public SupplierDTO() {
