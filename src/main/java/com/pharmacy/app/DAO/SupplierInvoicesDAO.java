@@ -93,7 +93,23 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
         }
         return supInvoice;
     }
-
+    
+    public String getLatestProductID(){
+        String latestID = null;
+        if (myconnect.openConnection()) {
+            try {
+                String sql = "SELECT MAX(supplier_invoice_id) AS max_id FROM supplier_invoices";
+                ResultSet rs = myconnect.runQuery(sql);
+                if (rs.next()) {
+                    latestID = rs.getString("max_id"); // Có thể là null nếu chưa có sản phẩm
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return latestID;
+    }
+    
     @Override
     public ArrayList<SuplierInvoiceDTO> search(String t) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

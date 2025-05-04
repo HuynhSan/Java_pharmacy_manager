@@ -69,8 +69,51 @@ public class ProductBatchDAO implements DAOinterface<ProductBatchDTO>{
     }
 
     @Override
-    public ProductBatchDTO selectByID(String t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ProductBatchDTO selectByID(String ID) {
+        if(myconnect.openConnection()){
+            try {
+                String sql = "SELECT pb.*, si.supplier_id FROM product_batches pb" + 
+                             "JOIN supplier_invoice_details sid ON pb.batch_id = pb.batch_id " + 
+                             "JOIN supplier_invoice si ON sid.supplier_invoice_id = si.supplier_invoice_id"+
+                             "WHERE pb.product_id = ?";
+
+                PreparedStatement ps = myconnect.con.prepareStatement(sql);
+                ps.setString(1, ID);
+
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    ProductBatchDTO pdBatch = new ProductBatchDTO();
+
+                    pdBatch.setMedicineID(rs.getString("product_id"));
+                    pdBatch.setBatchID(rs.getString("batch_id"));
+                    pdBatch.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
+                    pdBatch.setManufacturingDate(rs.getDate("manufacturing_date").toLocalDate());
+                    pdBatch.setQuantityInStock(rs.getInt("inventory_quantity"));
+                    pdBatch.setQuantityReceived(rs.getInt("recieved_quantity"));
+                    pdBatch.setSellPrice(rs.getDouble("sell_price"));
+                    pdBatch.setStatus(rs.getBoolean("is_deleted"));
+
+                    return pdBatch;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return null; 
+    }
+    public void updateSumQuantity(String productId, int quantity) {
+    if (myconnect.openConnection()) {
+        try {
+            String sql = "UPDATE medical_products SET quantity = ? WHERE product_id = ?";
+            myconnect.prepareUpdate(sql, quantity, productId);
+            
+        } finally {
+            myconnect.closeConnection();
+        }
+    }
     }
 
     @Override

@@ -45,6 +45,20 @@ public class SuplierInvoicesBUS {
         return supInvoiceDAO.selectByID(invoiceID);
     }
     
+    public String generateNextProductID() {
+        String lastID = supInvoiceDAO.getLatestProductID();  // Có thể là null
+
+        if (lastID == null || lastID.isEmpty()) {
+            return "INV001"; // Mặc định nếu bảng rỗng
+        }
+
+        String numericPart = lastID.substring(3); // Bỏ "INV", lấy số
+        int lastNumber = Integer.parseInt(numericPart);
+        int nextNumber = lastNumber + 1;
+
+        return "INV" + String.format("%03d", nextNumber);
+    }
+    
     public ArrayList<SuplierInvoiceDTO> search(String keyword){
         return supInvoiceDAO.search(keyword);
     }

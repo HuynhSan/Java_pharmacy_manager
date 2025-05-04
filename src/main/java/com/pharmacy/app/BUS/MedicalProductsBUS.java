@@ -26,7 +26,7 @@ public class MedicalProductsBUS {
     
     public String getMedicineNameByID(String medicineID) {
         try {
-            return productDAO.getProductbyID(medicineID).getName();
+            return productDAO.selectByID(medicineID).getName();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -39,13 +39,40 @@ public class MedicalProductsBUS {
                 return product;
             }
         }
-        return productDAO.getProductbyID(productID);
+        return productDAO.selectByID(productID);
     }
     
     public void saleQuantity(int quan, String ID){
-        MedicalProductsDTO pd = productDAO.getProductbyID(ID);
+        MedicalProductsDTO pd = productDAO.selectByID(ID);
         pd.setQuantity(pd.getQuantity()- quan);
         int newQuantity = pd.getQuantity();
         productDAO.updateSumQuantity(ID, newQuantity);
     }
+    
+    public boolean updateProduct(MedicalProductsDTO product){
+        return productDAO.update(product);
+    }
+    
+    public String generateNextProductID() {
+        String lastID = productDAO.getLatestProductID();  // Có thể là null
+
+        if (lastID == null || lastID.isEmpty()) {
+            return "MP001"; // Mặc định nếu bảng rỗng
+        }
+
+        String numericPart = lastID.substring(2); // Bỏ "MP", lấy số
+        int lastNumber = Integer.parseInt(numericPart);
+        int nextNumber = lastNumber + 1;
+
+        return "MP" + String.format("%03d", nextNumber); // VD: MP013
+    }
+    
+    public boolean addProduct(MedicalProductsDTO product){
+        return productDAO.insert(product);
+    }
+    
+    public boolean deleteProduct(String ID){
+        return productDAO.delete(ID);
+    }
+    
 }

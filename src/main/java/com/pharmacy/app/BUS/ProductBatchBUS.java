@@ -4,6 +4,7 @@
  */
 package com.pharmacy.app.BUS;
 
+import com.itextpdf.text.pdf.BidiOrder;
 import com.pharmacy.app.DAO.ProductBatchDAO;
 import com.pharmacy.app.DTO.ProductBatchDTO;
 import com.pharmacy.app.GUI.Product.MedicalProducts;
@@ -60,4 +61,8 @@ public class ProductBatchBUS {
             return true;
         }else return false;
     }
+   public ProductBatchDTO getProductBatchByProductID(String ID){
+       ProductBatchDTO pd = batchDAO.selectByID(ID);
+       return pd; 
+   }
 }

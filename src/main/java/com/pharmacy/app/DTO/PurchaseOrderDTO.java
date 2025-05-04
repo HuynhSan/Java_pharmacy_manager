@@ -11,45 +11,44 @@ import java.time.LocalDate;
  * @author LENOVO
  */
 public class PurchaseOrderDTO {
-    public int poID;
-    public int managerUserID;
-    public int supplierID;
+    public String poID;
+    public String managerUserID;
+    public String supplierID;
     public int totalQuantity;
     public LocalDate orderDate; // hoặc dùng java.time.LocalDate
-    public LocalDate status;
-    public int adminID;
+    public String status;
+    public String adminID;
 
-    public PurchaseOrderDTO(int poID, int managerUserID, int supplierID, int totalQuantity, LocalDate orderDate, LocalDate status, int adminID) {
+    public PurchaseOrderDTO(String poID, String managerUserID, String supplierID, LocalDate orderDate, String status, String adminID) {
         this.poID = poID;
         this.managerUserID = managerUserID;
         this.supplierID = supplierID;
-        this.totalQuantity = totalQuantity;
         this.orderDate = orderDate;
         this.status = status;
         this.adminID = adminID;
     }
 
-    public int getPoID() {
+    public String getPoID() {
         return poID;
     }
 
-    public void setPoID(int poID) {
+    public void setPoID(String poID) {
         this.poID = poID;
     }
 
-    public int getManagerUserID() {
+    public String getManagerUserID() {
         return managerUserID;
     }
 
-    public void setManagerUserID(int managerUserID) {
+    public void setManagerUserID(String managerUserID) {
         this.managerUserID = managerUserID;
     }
 
-    public int getSupplierID() {
+    public String getSupplierID() {
         return supplierID;
     }
 
-    public void setSupplierID(int supplierID) {
+    public void setSupplierID(String supplierID) {
         this.supplierID = supplierID;
     }
 
@@ -69,19 +68,19 @@ public class PurchaseOrderDTO {
         this.orderDate = orderDate;
     }
 
-    public LocalDate getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(LocalDate status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public int getAdminID() {
+    public String getAdminID() {
         return adminID;
     }
 
-    public void setAdminID(int adminID) {
+    public void setAdminID(String adminID) {
         this.adminID = adminID;
     }
 }
