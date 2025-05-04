@@ -73,6 +73,8 @@ public class ConfirmStockIn extends javax.swing.JDialog {
                 return types [columnIndex];
             }
         });
+        jTable3.setPreferredSize(new java.awt.Dimension(600, 402));
+        jTable3.setRowHeight(30);
         jTable3.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(jTable3);
 

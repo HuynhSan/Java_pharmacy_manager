@@ -177,6 +177,7 @@ public class UpdatePO extends javax.swing.JDialog {
                 return types [columnIndex];
             }
         });
+        jTable1.setRowHeight(30);
         jScrollPane1.setViewportView(jTable1);
 
         jLabel5.setText("Loại thuốc:");

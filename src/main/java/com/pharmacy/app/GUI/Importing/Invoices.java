@@ -30,7 +30,7 @@ public final class Invoices extends javax.swing.JPanel {
     private SuplierInvoicesBUS supInvoiceBUS;
     private SuplierInvoiceDetailsBUS supInvoiceDetailsBUS;
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private NumberFormat currencyFomat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
+    private final NumberFormat currencyFomat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
     /**
      * Creates new form Invoices
      */
@@ -219,6 +219,7 @@ public final class Invoices extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTable2.setRowHeight(30);
         jTable2.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(jTable2);
 
@@ -309,6 +310,8 @@ public final class Invoices extends javax.swing.JPanel {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách phiếu nhập", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
         jPanel4.setPreferredSize(new java.awt.Dimension(500, 518));
 
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 400));
+
         tbInvoiceHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -328,6 +331,8 @@ public final class Invoices extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tbInvoiceHistory.setPreferredSize(new java.awt.Dimension(450, 400));
+        tbInvoiceHistory.setRowHeight(30);
         tbInvoiceHistory.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbInvoiceHistoryMouseClicked(evt);
@@ -396,6 +401,8 @@ public final class Invoices extends javax.swing.JPanel {
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chi tiết phiếu nhập", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
 
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(452, 400));
+
         tbSupInvoiceDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -422,7 +429,8 @@ public final class Invoices extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tbSupInvoiceDetail.setPreferredSize(new java.awt.Dimension(400, 80));
+        tbSupInvoiceDetail.setPreferredSize(new java.awt.Dimension(400, 400));
+        tbSupInvoiceDetail.setRowHeight(30);
         jScrollPane2.setViewportView(tbSupInvoiceDetail);
         if (tbSupInvoiceDetail.getColumnModel().getColumnCount() > 0) {
             tbSupInvoiceDetail.getColumnModel().getColumn(0).setPreferredWidth(1);
@@ -626,6 +634,7 @@ public final class Invoices extends javax.swing.JPanel {
             txtPurchaseDate.setText(infoSupInvoice.getPurchaseDate().format(DATE_FORMAT));
             txtManagerName.setText(infoSupInvoice.getManagerName());
             System.out.println(infoSupInvoice.getManagerName());
+            
             // Lay noi dung cua supplier invoice
             ArrayList<SuplierInvoiceDetailsDTO> supInvoiceDetails = supInvoiceDetailsBUS.getHistoryByID(id);
             

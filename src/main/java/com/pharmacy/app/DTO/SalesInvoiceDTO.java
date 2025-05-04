@@ -22,7 +22,8 @@ public class SalesInvoiceDTO {
     private LocalDate createDate;
 
     // constructor, getter, setter ...
-
+    public SalesInvoiceDTO(){}
+    
     public SalesInvoiceDTO(String invoiceId, String userId, String customerId, int totalQuantity, BigDecimal totalAmount, BigDecimal totalDiscount, BigDecimal finalTotal, LocalDate createDate) {
         this.invoiceId = invoiceId;
         this.userId = userId;

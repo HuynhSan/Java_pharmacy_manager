@@ -37,12 +37,11 @@ public class SuplierInvoicesBUS {
     }
     
     public SuplierInvoiceDTO getSupInvoiceByID(String invoiceID){
-//        for (SuplierInvoiceDTO supInvoice : supInvoicesList) {
-//            if (supInvoice.getInvoiceID().equals(invoiceID)) {
-//                return supInvoice;
-//            }
-//        }
         return supInvoiceDAO.selectByID(invoiceID);
+    }
+    
+    public ArrayList<SuplierInvoiceDTO> getSupInvoiceBySupplierID(String supplierID){
+        return supInvoiceDAO.selectBySupplierID(supplierID);
     }
     
     public ArrayList<SuplierInvoiceDTO> search(String keyword){

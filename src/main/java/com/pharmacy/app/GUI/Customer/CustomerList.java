@@ -120,7 +120,6 @@ public final class CustomerList extends javax.swing.JPanel {
         plCustomerList = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbCustomerList = new javax.swing.JTable();
-        jSeparator1 = new javax.swing.JSeparator();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(326589, 326589));
@@ -227,9 +226,16 @@ public final class CustomerList extends javax.swing.JPanel {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tbCustomerList.setMaximumSize(new java.awt.Dimension(326589, 326589));
@@ -246,11 +252,6 @@ public final class CustomerList extends javax.swing.JPanel {
         tbCustomerList.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         plCustomerList.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        jSeparator1.setMaximumSize(new java.awt.Dimension(700, 10));
-        jSeparator1.setMinimumSize(new java.awt.Dimension(700, 10));
-        jSeparator1.setPreferredSize(new java.awt.Dimension(700, 10));
-        plCustomerList.add(jSeparator1, java.awt.BorderLayout.NORTH);
 
         add(plCustomerList, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -308,7 +309,6 @@ public final class CustomerList extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel plCustomerList;
     private javax.swing.JPanel plHeader;
     private javax.swing.JPanel plSearch;

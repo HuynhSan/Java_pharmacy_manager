@@ -106,6 +106,33 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
         return supInvoice;
     }
 
+    public ArrayList<SuplierInvoiceDTO> selectBySupplierID(String t) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<SuplierInvoiceDTO> supInvoices = new ArrayList<>();
+        if (myconnect.openConnection()){
+            String query = "SELECT si.supplier_invoice_id, si.total_quantity, si.purchase_date"
+                    + " FROM supplier_invoices si"
+                    + " INNER JOIN suppliers sp ON si.supplier_id = sp.supplier_id"
+                    + " WHERE si.supplier_id = ?";
+            ResultSet rs = myconnect.prepareQuery(query, t);
+            try {
+                while(rs.next()){
+                    SuplierInvoiceDTO supInvoice = new SuplierInvoiceDTO();
+                    supInvoice.setInvoiceID(rs.getString(1));
+                    supInvoice.setTotalQuantity(rs.getInt(2));
+                    LocalDate purchaseDate = rs.getDate(3).toLocalDate();
+                    supInvoice.setPurchaseDate(purchaseDate);
+                    
+                    supInvoices.add(supInvoice);
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return supInvoices;
+    }
     @Override
     public ArrayList<SuplierInvoiceDTO> search(String t) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

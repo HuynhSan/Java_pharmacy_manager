@@ -357,9 +357,11 @@ public class EmployeeManagement extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblEmployees.setColumnSelectionAllowed(true);
         tblEmployees.setFocusable(false);
         tblEmployees.setMinimumSize(new java.awt.Dimension(500, 80));
         tblEmployees.setPreferredSize(new java.awt.Dimension(1180, 600));
+        tblEmployees.setRowHeight(30);
         tblEmployees.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblEmployees.setShowGrid(true);
         tblEmployees.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -472,7 +474,6 @@ public class EmployeeManagement extends javax.swing.JPanel {
         tblContracts.setPreferredSize(new java.awt.Dimension(1180, 500));
         tblContracts.setRowHeight(30);
         tblContracts.setShowGrid(true);
-      
         tblContracts.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblContractsMouseClicked(evt);
