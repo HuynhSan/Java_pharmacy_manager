@@ -440,6 +440,14 @@ public class PDFExporter {
     
     /**
      * Alternative method with more customization options
+     * @param parentComponent
+     * @param title
+     * @param subtitle
+     * @param filename
+     * @param headers
+     * @param data
+     * @param columnWidths
+     * @param landscape
      */
     public static boolean exportToPDF(
             Component parentComponent,
@@ -646,6 +654,7 @@ public class PDFExporter {
         );
     }
     
+
     public static boolean exportSupInvoiceToPDF(Component parentComponent, TableModel invoiceTableModel, String supInvoiceID, String supplierName, String managerName, String purchaseDate){
         float[] columnWidths = {1.2f, 1.5f, 1.5f, 6.0f, 1.5f, 1.50f, 1.8f};
         PDFExporter.supInvoiceID = supInvoiceID;
@@ -659,6 +668,21 @@ public class PDFExporter {
             "PhieuNhap.pdf",
             columnWidths,
             true
+        );
+    }
+
+    public static boolean exportUsersToPDF(Component parentComponent, TableModel userTableModel) {
+        // Define custom column widths for supplier table
+        float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
+        
+        return exportTableToPDF(
+                parentComponent,
+                userTableModel,
+                "DANH SÁCH NGƯỜI DÙNG",
+                "DanhSachNguoiDung.pdf",
+                columnWidths,
+                true // landscape orientation
+
         );
     }
 }

@@ -15,10 +15,12 @@ import java.util.ArrayList;
 public class EmployeeBUS {
     public EmployeeDAO employeeDAO;
     private ArrayList<EmployeeDTO> employeeList;
+    private ArrayList<EmployeeDTO> noUserIDList;
     
     public EmployeeBUS() {
         employeeDAO = new EmployeeDAO();
         employeeList = new ArrayList<>();
+        noUserIDList = new ArrayList<>();
     }
     
     public ArrayList<EmployeeDTO> getEmployeeList() {
@@ -27,6 +29,14 @@ public class EmployeeBUS {
     
     public void loadEmployeeList() {
         employeeList = employeeDAO.selectAll();
+    }
+    
+    public ArrayList<EmployeeDTO> getNoUserIDList() {
+        return noUserIDList;
+    }
+    
+    public void loadNoUserIDList() {
+        noUserIDList = employeeDAO.selectNoUserID();
     }
     
     public boolean addEmployee(EmployeeDTO employee) {

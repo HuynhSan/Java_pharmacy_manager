@@ -39,13 +39,13 @@ public class UserDAO implements DAOinterface<UserDTO> {
     @Override
     public boolean update(UserDTO user) {
         myConnection.openConnection();
-        String query = "UPDATE users SET user_id = ?, username = ?, password = ?, role_id = ?, status = ? WHERE user_id = ?";
+        String query = "UPDATE users SET username = ?, password = ?, role_id = ?, status = ? WHERE user_id = ?";
         int result = myConnection.prepareUpdate(query, 
-                user.getUserID(),
                 user.getUsername(),
                 user.getPassword(),
                 user.getRoleID(),
-                user.getStatus());
+                user.getStatus(),
+                user.getUserID());
         myConnection.closeConnection();
         return result > 0;
     }
@@ -64,7 +64,7 @@ public class UserDAO implements DAOinterface<UserDTO> {
     public ArrayList<UserDTO> selectAll() {
         ArrayList<UserDTO> userList = new ArrayList<>();
         myConnection.openConnection();
-        String query = "SELECT * FROM users WHERE status = 1";
+        String query = "SELECT * FROM users";
         ResultSet rs = myConnection.runQuery(query);
         try {
             while (rs.next()) {
@@ -83,7 +83,7 @@ public class UserDAO implements DAOinterface<UserDTO> {
     public UserDTO selectByID(String userID) {
         UserDTO user = null;
         myConnection.openConnection();
-        String query = "SELECT * FROM users WHERE user_id = ? AND status = 1";
+        String query = "SELECT * FROM users WHERE user_id = ?";
         try {
             ResultSet rs = myConnection.runPreparedQuery(query, userID);
             if (rs.next()) {
@@ -103,9 +103,25 @@ public class UserDAO implements DAOinterface<UserDTO> {
         myConnection.openConnection();
         String query = "SELECT * FROM users WHERE (user_id LIKE '%" + keyword + "%' OR "
                 + "username LIKE '%" + keyword + "%' OR "
-                + "password LIKE '%" + keyword + "%' OR "
-                + "role_id LIKE '%" + keyword + "%') "
-                + "AND status = 1";
+                + "role_id LIKE '%" + keyword + "%') ";
+        ResultSet rs = myConnection.runQuery(query);
+        try {
+            while (rs.next()) {
+                UserDTO user = extractUserFromResultSet(rs);
+                userList.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            myConnection.closeConnection();
+        }
+        return userList;
+    }
+    
+    public ArrayList<UserDTO> filterByStatus(boolean status) {
+        ArrayList<UserDTO> userList = new ArrayList<>();
+        myConnection.openConnection();
+        String query = "SELECT * FROM users WHERE status = " + (status ? "1" : "0");
         ResultSet rs = myConnection.runQuery(query);
         try {
             while (rs.next()) {
@@ -131,7 +147,7 @@ public class UserDAO implements DAOinterface<UserDTO> {
                 String id = rs.getString("user_id");
                 if (id != null && id.startsWith("USER")) {
                     try {
-                        int idNum = Integer.parseInt(id.substring(2));
+                        int idNum = Integer.parseInt(id.substring(4));
                         if (idNum > maxID) {
                             maxID = idNum;
                         }
@@ -145,7 +161,27 @@ public class UserDAO implements DAOinterface<UserDTO> {
         } finally {
             myConnection.closeConnection();
         }
+        System.out.println("Max ID: "+maxID);
         return maxID;
+    }
+    
+    public boolean isUsernameExists(String username) {
+        myConnection.openConnection();
+        String query = "SELECT COUNT(*) as count FROM users WHERE username = '" + username + "'";
+        boolean exists = false;
+
+        try {
+            ResultSet rs = myConnection.runQuery(query);
+            if (rs.next()) {
+                exists = rs.getInt("count") > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            myConnection.closeConnection();
+        }
+
+        return exists;
     }
     
     /**

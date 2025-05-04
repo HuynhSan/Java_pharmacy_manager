@@ -12,12 +12,16 @@ import com.pharmacy.app.DTO.CartItemDTO;
 import com.pharmacy.app.DTO.CustomerDTO;
 import com.pharmacy.app.DTO.PromotionDTO;
 import com.pharmacy.app.DTO.SaleItemDTO;
+import com.pharmacy.app.DTO.SessionDTO;
+import com.pharmacy.app.DTO.UserDTO;
 import com.pharmacy.app.GUI.Authorization.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +45,11 @@ import javax.swing.table.DefaultTableModel;
  * @author phong
  */
 public class HomeSales extends javax.swing.JPanel {
+    UserDTO current_user = SessionDTO.getCurrentUser();
+    private String user_id = current_user.getUserID();    
+//    private String user_id = "";
+
+    
     private String currentCustomerId;
     
     private SalesBUS saleItemBUS = new SalesBUS();    
@@ -80,9 +89,10 @@ public class HomeSales extends javax.swing.JPanel {
     
     
     public void loadAllData() {
-        // Giả sử SaleItemDAO là lớp quản lý việc truy vấn dữ liệu
         saleItemList = saleItemBUS.selectSaleItems();
         showDataToTable(saleItemList);
+        txtPromoId.setText("Không có!");
+        txtDiscount.setText("0");
     }
             
     
@@ -659,8 +669,32 @@ public class HomeSales extends javax.swing.JPanel {
     }//GEN-LAST:event_btnPaymentMouseClicked
 
     private void btnPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentActionPerformed
-        PaymentDialog dialog = new PaymentDialog((JFrame) SwingUtilities.getWindowAncestor(this), true);
-        dialog.setLocationRelativeTo(null);
+        BigDecimal totalAmount = calculateTotalAmount();        
+        BigDecimal productDiscount = calculateDiscountAmount();
+       
+        String discountText = txtDiscount.getText().trim();
+        BigDecimal promoDiscount = new BigDecimal(discountText);
+
+        BigDecimal subTotal = totalAmount
+                .subtract(productDiscount)
+                .subtract(promoDiscount);
+        BigDecimal totalDiscount = productDiscount.add(promoDiscount);
+        
+        String userId = user_id;
+        String customerId = currentCustomerId;
+        
+        Window parenWindow = SwingUtilities.getWindowAncestor(this);
+        PaymentDialog dialog = new PaymentDialog(
+            (Frame) parenWindow,
+            true,
+            totalAmount.toString(),
+            totalDiscount.toString(),
+            subTotal.toString(),
+            cartItemsMap,
+            userId,
+            customerId
+        );
+        dialog.setLocationRelativeTo(parenWindow);
         dialog.setVisible(true);
     }//GEN-LAST:event_btnPaymentActionPerformed
 
@@ -695,7 +729,7 @@ public class HomeSales extends javax.swing.JPanel {
     }//GEN-LAST:event_txtPhoneCustomerActionPerformed
 
     private void txtPhoneCustomerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPhoneCustomerKeyPressed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtPhoneCustomerKeyPressed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
@@ -978,13 +1012,21 @@ public class HomeSales extends javax.swing.JPanel {
     // 
     private void updatePayment() {
         BigDecimal totalAmount = calculateTotalAmount();        
-        BigDecimal discountAmount = calculateDiscountAmount();        
+        BigDecimal productDiscount = calculateDiscountAmount();        
         int totalProduct = calculateTotalProduct();
+        
+        String discountText = txtDiscount.getText().trim();
+        BigDecimal promoDiscount = new BigDecimal(discountText);
+
+        BigDecimal subTotal = totalAmount
+                .subtract(productDiscount)
+                .subtract(promoDiscount);
 
 
         txtTotalProductPrice.setText(totalAmount.toString());
-        txtProductDiscount.setText(discountAmount.toString());        
+        txtProductDiscount.setText(productDiscount.toString());        
         txtTotalProduct.setText(String.valueOf(totalProduct));
+        txtSubtotal.setText(subTotal.toString());
 
         showHashMap();
     }
@@ -1029,7 +1071,7 @@ public class HomeSales extends javax.swing.JPanel {
                             currentCustomerId = id;
                             
                             newCustomer.setId(id);
-                            applyBestPromoForCustomer(newCustomer);
+//                            applyBestPromoForCustomer(newCustomer);
                             System.out.println(currentCustomerId);
                            
                         } else {
@@ -1037,6 +1079,7 @@ public class HomeSales extends javax.swing.JPanel {
                         }
                     }
                 }   else {
+                        txtPhoneCustomer.setText("");
                         txtCustomerName.setText("");
                         txtLoyaltyPoints.setText("");
                         currentCustomerId = "";
@@ -1046,11 +1089,13 @@ public class HomeSales extends javax.swing.JPanel {
             txtCustomerName.setText("");
             txtLoyaltyPoints.setText("");
             currentCustomerId = "";
+            txtPromoId.setText("Không có!");
+            txtDiscount.setText("0");
         }
     }
     
     
-    private void applyBestPromoForCustomer(CustomerDTO customer) {
+    private void applyBestPromoForCustomer(CustomerDTO customer) {        
         PromotionDTO bestPromo = promoBUS.findBestRewardPromo(customer.getPoint());
         if (bestPromo != null) {
             txtPromoId.setText(bestPromo.getPromotionId());
@@ -1059,6 +1104,7 @@ public class HomeSales extends javax.swing.JPanel {
             txtPromoId.setText("Không có khuyến mãi!");
             txtDiscount.setText("0");
         }
+        updatePayment();
     }
 
     

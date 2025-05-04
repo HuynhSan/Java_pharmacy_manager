@@ -227,6 +227,24 @@ public class EmployeeDAO implements DAOinterface<EmployeeDTO> {
         return exists;
     }
     
+    public ArrayList<EmployeeDTO> selectNoUserID() {
+        ArrayList<EmployeeDTO> employeeList = new ArrayList<>();
+        myConnection.openConnection();
+        String query = "SELECT * FROM employees WHERE user_id is NULL and is_deleted = 0";
+        ResultSet rs = myConnection.runQuery(query);
+        try {
+            while (rs.next()) {
+                EmployeeDTO employee = extractEmployeeFromResultSet(rs);
+                employeeList.add(employee);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            myConnection.closeConnection();
+        }
+        return employeeList;
+    }
+    
     private EmployeeDTO extractEmployeeFromResultSet(ResultSet rs) throws SQLException {
         String employeeID = rs.getString("employee_id");
         String userID = rs.getString("user_id");

@@ -27,7 +27,7 @@ public class SessionDTO {
     }
    
     public static UserDTO getCurrentUser(){
-        return  currentUser;
+        return currentUser;
     }
     
     public static String getRoleName(){
