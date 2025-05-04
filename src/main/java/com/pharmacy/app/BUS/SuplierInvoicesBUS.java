@@ -6,6 +6,7 @@ package com.pharmacy.app.BUS;
 
 import com.pharmacy.app.DAO.SupplierInvoicesDAO;
 import com.pharmacy.app.DTO.SuplierInvoiceDTO;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -47,5 +48,8 @@ public class SuplierInvoicesBUS {
     public ArrayList<SuplierInvoiceDTO> search(String keyword){
         return supInvoiceDAO.search(keyword);
     }
-    
+    public ArrayList<SuplierInvoiceDTO> filterByDate(LocalDate date){
+        return supInvoiceDAO.filterByDate(date);
+    }
+
 }
