@@ -48,8 +48,6 @@ public class HomeSales extends javax.swing.JPanel {
     UserDTO current_user = SessionDTO.getCurrentUser();
     private String user_id = current_user.getUserID();    
 //    private String user_id = "";
-
-    
     private String currentCustomerId;
     
     private SalesBUS saleItemBUS = new SalesBUS();    
@@ -683,16 +681,24 @@ public class HomeSales extends javax.swing.JPanel {
         String userId = user_id;
         String customerId = currentCustomerId;
         
+        
+        String promoId = txtPromoId.getText().trim();
+        if (promoId.equals("Không có!")){
+            promoId = null;
+        }
+        
         Window parenWindow = SwingUtilities.getWindowAncestor(this);
         PaymentDialog dialog = new PaymentDialog(
             (Frame) parenWindow,
             true,
-            totalAmount.toString(),
-            totalDiscount.toString(),
-            subTotal.toString(),
+            this,
+            totalAmount,
+            totalDiscount,
+            subTotal,
             cartItemsMap,
             userId,
-            customerId
+            customerId,
+            promoId
         );
         dialog.setLocationRelativeTo(parenWindow);
         dialog.setVisible(true);
@@ -975,7 +981,7 @@ public class HomeSales extends javax.swing.JPanel {
     
     
     // Hàm tính tổng tiền gốc
-    private BigDecimal calculateTotalAmount() {
+    public BigDecimal calculateTotalAmount() {
         BigDecimal totalAmount = BigDecimal.ZERO;
 
         for (CartItemDTO cartItem : cartItemsMap.values()) {
@@ -986,7 +992,7 @@ public class HomeSales extends javax.swing.JPanel {
     }
     
     // Hàm tính tổng tiền khuyến mãi 
-    private BigDecimal calculateDiscountAmount() {
+    public BigDecimal calculateDiscountAmount() {
         BigDecimal totalAmount = BigDecimal.ZERO;
 
         for (CartItemDTO cartItem : cartItemsMap.values()) {
@@ -998,7 +1004,7 @@ public class HomeSales extends javax.swing.JPanel {
 
 
     // Hàm đếm tổng số lượng sp
-    private int calculateTotalProduct() {
+    public int calculateTotalProduct() {
         int totalProduct = 0;
 
         for (CartItemDTO cartItem : cartItemsMap.values()) {
