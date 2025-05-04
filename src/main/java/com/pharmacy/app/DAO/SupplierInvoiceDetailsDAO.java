@@ -39,7 +39,7 @@ public class SupplierInvoiceDetailsDAO implements DAOinterface<SuplierInvoiceDet
     public ArrayList<SuplierInvoiceDetailsDTO> selectInvoiceDetailByID(String t) {
         ArrayList<SuplierInvoiceDetailsDTO> supInvoiceDetails = new ArrayList<>();
         if(myconnect.openConnection()){
-            String query = "SELECT pb.batch_id, mp.product_id, name, sell_price, inventory_quantity, (inventory_quantity * sell_price) AS total_price"
+            String query = "SELECT pb.batch_id, mp.product_id, name, unit_price, sid.quantity, (sid.quantity * unit_price) AS total_price"
                     + " FROM supplier_invoice_details sid"
                     + " INNER JOIN product_batches pb ON sid.batch_id = pb.batch_id"
                     + " INNER JOIN medical_products mp ON pb.product_id = mp.product_id"

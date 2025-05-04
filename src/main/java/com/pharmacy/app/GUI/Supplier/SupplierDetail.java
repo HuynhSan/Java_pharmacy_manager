@@ -3,34 +3,41 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package com.pharmacy.app.GUI.Supplier;
+import com.pharmacy.app.BUS.SuplierInvoicesBUS;
 import com.pharmacy.app.DTO.SupplierDTO;
 import com.pharmacy.app.BUS.SupplierBUS;
 import com.pharmacy.app.DAO.SupplierDAO;
+import com.pharmacy.app.DTO.SuplierInvoiceDTO;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 
 /**
  *
  * @author BOI QUAN
  */
-public class SupplierDetail extends javax.swing.JDialog {
+public final class SupplierDetail extends javax.swing.JDialog {
     private SupplierDAO supplierDAO;
     private SupplierDTO supplierDTO;
-    private SupplierBUS supplierBUS = new SupplierBUS();
-    
+    private final SupplierBUS supplierBUS = new SupplierBUS();
+    private final SuplierInvoicesBUS supInvoicesBUS = new SuplierInvoicesBUS();
+    private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     /**
      * Creates new form ChiTietSupplier
      * @param parent
      * @param modal
-     * @param supplierDTO
+     * @param supplier
      */
     public SupplierDetail(java.awt.Frame parent, boolean modal, SupplierDTO supplier) {
         super(parent, modal);
         initComponents();
-        this.supplierDTO = supplier;
-        setData(supplierDTO);
+        setData(supplier);
+        loadSupplierInvoiceData(supplier.getId());
     }
     
     private void setData(SupplierDTO supplier) {
@@ -40,7 +47,26 @@ public class SupplierDetail extends javax.swing.JDialog {
         txtEmail.setText(supplier.getEmail());
         txtAddress.setText(supplier.getAddress());
     }
+    
+    private void displayList(List<SuplierInvoiceDTO> suppliersList) {
+        DefaultTableModel model = (DefaultTableModel) tbHistory.getModel();
+        model.setRowCount(0);
+        int stt = 1;
+        for (SuplierInvoiceDTO si: suppliersList){
+            model.addRow(new Object[]{
+                stt++,
+                si.getInvoiceID(),
+                si.getPurchaseDate().format(DATE_FORMAT),
+                si.getTotalQuantity(),
+                "ĐÃ NHẬN"
+            });
+        }
+    }
 
+    public void loadSupplierInvoiceData(String supplierID){
+        List<SuplierInvoiceDTO> suppliersList = supInvoicesBUS.getSupInvoiceBySupplierID(supplierID);
+        displayList(suppliersList);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,6 +75,7 @@ public class SupplierDetail extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         plHeader = new javax.swing.JPanel();
         plInformation = new javax.swing.JPanel();
@@ -59,7 +86,6 @@ public class SupplierDetail extends javax.swing.JDialog {
         txtName = new javax.swing.JTextField();
         lblPhone = new javax.swing.JLabel();
         txtPhone = new javax.swing.JTextField();
-        plInfor2 = new javax.swing.JPanel();
         lblEmail = new javax.swing.JLabel();
         txtAddress = new javax.swing.JTextField();
         lblAddress = new javax.swing.JLabel();
@@ -82,23 +108,24 @@ public class SupplierDetail extends javax.swing.JDialog {
         plHeader.setMaximumSize(new java.awt.Dimension(326589, 600));
         plHeader.setMinimumSize(new java.awt.Dimension(800, 140));
         plHeader.setPreferredSize(new java.awt.Dimension(800, 200));
-        plHeader.setLayout(new javax.swing.BoxLayout(plHeader, javax.swing.BoxLayout.Y_AXIS));
+        plHeader.setLayout(new javax.swing.BoxLayout(plHeader, javax.swing.BoxLayout.X_AXIS));
 
         plInformation.setBackground(new java.awt.Color(255, 255, 255));
         plInformation.setMaximumSize(new java.awt.Dimension(800, 150));
         plInformation.setMinimumSize(new java.awt.Dimension(550, 100));
-        plInformation.setPreferredSize(new java.awt.Dimension(780, 150));
+        plInformation.setPreferredSize(new java.awt.Dimension(680, 150));
         plInformation.setLayout(new javax.swing.BoxLayout(plInformation, javax.swing.BoxLayout.Y_AXIS));
 
         plInfor1.setBackground(new java.awt.Color(255, 255, 255));
-        plInfor1.setPreferredSize(new java.awt.Dimension(600, 40));
-        plInfor1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        plInfor1.setMinimumSize(new java.awt.Dimension(500, 30));
+        plInfor1.setPreferredSize(new java.awt.Dimension(700, 150));
+        plInfor1.setLayout(new java.awt.GridBagLayout());
 
         lblId.setBackground(new java.awt.Color(255, 255, 255));
         lblId.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblId.setText("ID:");
-        lblId.setPreferredSize(new java.awt.Dimension(40, 30));
-        plInfor1.add(lblId);
+        lblId.setPreferredSize(new java.awt.Dimension(100, 30));
+        plInfor1.add(lblId, new java.awt.GridBagConstraints());
 
         txtId.setEditable(false);
         txtId.setBackground(new java.awt.Color(255, 255, 255));
@@ -106,15 +133,22 @@ public class SupplierDetail extends javax.swing.JDialog {
         txtId.setFocusable(false);
         txtId.setMargin(new java.awt.Insets(2, 10, 2, 6));
         txtId.setPreferredSize(new java.awt.Dimension(70, 30));
-        plInfor1.add(txtId);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        plInfor1.add(txtId, gridBagConstraints);
 
         lblName.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblName.setText("Tên công ty:");
         lblName.setMaximumSize(new java.awt.Dimension(70, 30));
         lblName.setMinimumSize(new java.awt.Dimension(70, 30));
         lblName.setPreferredSize(new java.awt.Dimension(100, 30));
-        plInfor1.add(lblName);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipady = 1;
+        plInfor1.add(lblName, gridBagConstraints);
 
         txtName.setEditable(false);
         txtName.setBackground(new java.awt.Color(255, 255, 255));
@@ -125,40 +159,45 @@ public class SupplierDetail extends javax.swing.JDialog {
         txtName.setMaximumSize(new java.awt.Dimension(100, 30));
         txtName.setMinimumSize(new java.awt.Dimension(100, 30));
         txtName.setPreferredSize(new java.awt.Dimension(250, 30));
-        plInfor1.add(txtName);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        plInfor1.add(txtName, gridBagConstraints);
 
         lblPhone.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblPhone.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblPhone.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblPhone.setText("Số điện thoại:");
         lblPhone.setMaximumSize(new java.awt.Dimension(120, 30));
         lblPhone.setMinimumSize(new java.awt.Dimension(120, 30));
-        lblPhone.setPreferredSize(new java.awt.Dimension(120, 30));
-        plInfor1.add(lblPhone);
+        lblPhone.setPreferredSize(new java.awt.Dimension(100, 30));
+        plInfor1.add(lblPhone, new java.awt.GridBagConstraints());
 
         txtPhone.setEditable(false);
+        txtPhone.setBackground(new java.awt.Color(255, 255, 255));
         txtPhone.setBorder(null);
         txtPhone.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtPhone.setFocusable(false);
         txtPhone.setMargin(new java.awt.Insets(2, 10, 2, 6));
         txtPhone.setMaximumSize(new java.awt.Dimension(100, 30));
-        txtPhone.setMinimumSize(new java.awt.Dimension(100, 30));
-        txtPhone.setPreferredSize(new java.awt.Dimension(150, 30));
-        plInfor1.add(txtPhone);
-
-        plInformation.add(plInfor1);
-
-        plInfor2.setBackground(new java.awt.Color(255, 255, 255));
-        plInfor2.setPreferredSize(new java.awt.Dimension(600, 40));
-        plInfor2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        txtPhone.setMinimumSize(new java.awt.Dimension(80, 30));
+        txtPhone.setPreferredSize(new java.awt.Dimension(100, 30));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        plInfor1.add(txtPhone, gridBagConstraints);
 
         lblEmail.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblEmail.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEmail.setText("Địa chỉ:");
         lblEmail.setMaximumSize(new java.awt.Dimension(50, 30));
         lblEmail.setMinimumSize(new java.awt.Dimension(50, 30));
-        lblEmail.setPreferredSize(new java.awt.Dimension(50, 30));
-        plInfor2.add(lblEmail);
+        lblEmail.setPreferredSize(new java.awt.Dimension(100, 30));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        plInfor1.add(lblEmail, gridBagConstraints);
 
         txtAddress.setEditable(false);
+        txtAddress.setBackground(new java.awt.Color(255, 255, 255));
         txtAddress.setBorder(null);
         txtAddress.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtAddress.setFocusable(false);
@@ -166,17 +205,25 @@ public class SupplierDetail extends javax.swing.JDialog {
         txtAddress.setMaximumSize(new java.awt.Dimension(250, 30));
         txtAddress.setMinimumSize(new java.awt.Dimension(250, 30));
         txtAddress.setPreferredSize(new java.awt.Dimension(250, 30));
-        plInfor2.add(txtAddress);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        plInfor1.add(txtAddress, gridBagConstraints);
 
         lblAddress.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblAddress.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblAddress.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblAddress.setText("Email:");
         lblAddress.setMaximumSize(new java.awt.Dimension(100, 30));
         lblAddress.setMinimumSize(new java.awt.Dimension(50, 30));
         lblAddress.setPreferredSize(new java.awt.Dimension(100, 30));
-        plInfor2.add(lblAddress);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        plInfor1.add(lblAddress, gridBagConstraints);
 
         txtEmail.setEditable(false);
+        txtEmail.setBackground(new java.awt.Color(255, 255, 255));
         txtEmail.setBorder(null);
         txtEmail.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtEmail.setFocusable(false);
@@ -184,16 +231,20 @@ public class SupplierDetail extends javax.swing.JDialog {
         txtEmail.setMaximumSize(new java.awt.Dimension(250, 30));
         txtEmail.setMinimumSize(new java.awt.Dimension(250, 30));
         txtEmail.setPreferredSize(new java.awt.Dimension(200, 30));
-        plInfor2.add(txtEmail);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        plInfor1.add(txtEmail, gridBagConstraints);
 
-        plInformation.add(plInfor2);
+        plInformation.add(plInfor1);
 
         plHeader.add(plInformation);
 
         plButton.setBackground(new java.awt.Color(255, 255, 255));
-        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10);
-        flowLayout1.setAlignOnBaseline(true);
-        plButton.setLayout(flowLayout1);
+        plButton.setMaximumSize(new java.awt.Dimension(326589, 326589));
+        plButton.setPreferredSize(new java.awt.Dimension(100, 150));
+        plButton.setLayout(new java.awt.GridBagLayout());
 
         btnUpdate.setBackground(new java.awt.Color(0, 204, 51));
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -207,35 +258,47 @@ public class SupplierDetail extends javax.swing.JDialog {
                 btnUpdateActionPerformed(evt);
             }
         });
-        plButton.add(btnUpdate);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        plButton.add(btnUpdate, gridBagConstraints);
 
         btnDelete.setBackground(new java.awt.Color(255, 0, 0));
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("Xóa");
-        btnDelete.setMaximumSize(new java.awt.Dimension(70, 30));
+        btnDelete.setMaximumSize(new java.awt.Dimension(80, 30));
         btnDelete.setMinimumSize(new java.awt.Dimension(70, 30));
-        btnDelete.setPreferredSize(new java.awt.Dimension(70, 30));
+        btnDelete.setPreferredSize(new java.awt.Dimension(80, 30));
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
             }
         });
-        plButton.add(btnDelete);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
+        plButton.add(btnDelete, gridBagConstraints);
 
         btnCancel.setBackground(new java.awt.Color(153, 153, 153));
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("Hủy");
-        btnCancel.setMaximumSize(new java.awt.Dimension(70, 30));
+        btnCancel.setMaximumSize(new java.awt.Dimension(80, 30));
         btnCancel.setMinimumSize(new java.awt.Dimension(70, 30));
-        btnCancel.setPreferredSize(new java.awt.Dimension(70, 30));
+        btnCancel.setPreferredSize(new java.awt.Dimension(80, 30));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
             }
         });
-        plButton.add(btnCancel);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
+        plButton.add(btnCancel, gridBagConstraints);
 
         plHeader.add(plButton);
 
@@ -247,34 +310,46 @@ public class SupplierDetail extends javax.swing.JDialog {
         plHistory.setMinimumSize(new java.awt.Dimension(800, 400));
         plHistory.setPreferredSize(new java.awt.Dimension(800, 400));
 
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setMaximumSize(new java.awt.Dimension(780, 360));
         jScrollPane1.setMinimumSize(new java.awt.Dimension(780, 360));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(780, 360));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(780, 340));
 
         tbHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"DH01", "23/05/2025",  new Integer(300), "ĐÃ NHẬN"},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, "DH01", "23/05/2025",  new Integer(300), "ĐÃ NHẬN"},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "MÃ ĐƠN HÀNG", "NGÀY NHẬN", "TỔNG SỐ LƯỢNG", "TRẠNG THÁI"
+                "STT", "MÃ ĐƠN HÀNG", "NGÀY NHẬN", "TỔNG SỐ LƯỢNG", "TRẠNG THÁI"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        tbHistory.setMaximumSize(new java.awt.Dimension(780, 360));
-        tbHistory.setMinimumSize(new java.awt.Dimension(780, 360));
-        tbHistory.setPreferredSize(new java.awt.Dimension(780, 360));
+        tbHistory.setMaximumSize(new java.awt.Dimension(325689, 326589));
+        tbHistory.setMinimumSize(new java.awt.Dimension(0, 0));
+        tbHistory.setPreferredSize(new java.awt.Dimension(780, 340));
+        tbHistory.setRowHeight(30);
         tbHistory.setShowGrid(true);
         jScrollPane1.setViewportView(tbHistory);
+        if (tbHistory.getColumnModel().getColumnCount() > 0) {
+            tbHistory.getColumnModel().getColumn(0).setPreferredWidth(5);
+        }
 
         plHistory.add(jScrollPane1);
 
@@ -381,7 +456,6 @@ public class SupplierDetail extends javax.swing.JDialog {
     private javax.swing.JPanel plHeader;
     private javax.swing.JPanel plHistory;
     private javax.swing.JPanel plInfor1;
-    private javax.swing.JPanel plInfor2;
     private javax.swing.JPanel plInformation;
     private javax.swing.JTable tbHistory;
     private javax.swing.JTextField txtAddress;

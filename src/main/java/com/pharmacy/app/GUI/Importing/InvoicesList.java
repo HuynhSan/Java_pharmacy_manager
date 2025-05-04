@@ -93,6 +93,7 @@ public final class InvoicesList extends javax.swing.JPanel {
                 "Mã phiếu nhập", "Tổng số lượng", "Tổng tiền", "Nhà cung cấp"
             }
         ));
+        tbInvoiceHistory.setRowHeight(30);
         jScrollPane1.setViewportView(tbInvoiceHistory);
 
         jComboBox4.setEditable(true);
@@ -271,6 +272,7 @@ public final class InvoicesList extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        jTable3.setRowHeight(30);
         jScrollPane2.setViewportView(jTable3);
 
         jPanel5.add(jScrollPane2, java.awt.BorderLayout.CENTER);

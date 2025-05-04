@@ -4,13 +4,9 @@
  */
 package com.pharmacy.app.DAO;
 import com.pharmacy.app.DTO.SupplierDTO;
-import com.pharmacy.app.DAO.MyConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.sql.PreparedStatement;
-import java.util.Objects;
-//import java.util.List;
 
 /**
  *
@@ -40,7 +36,7 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
                 int lastNumber = Integer.parseInt(numericPart); // Lấy phần số: 12
                 lastNumber++; // Tăng lên: 13
                 nextId = "SUP" + String.format("%03d", lastNumber); // Kết quả: SUP013
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             } 
         }
