@@ -4,8 +4,12 @@
  */
 package com.pharmacy.app.GUI.Sales;
 
+import com.pharmacy.app.BUS.SalesInvoiceBUS;
 import com.pharmacy.app.DTO.CartItemDTO;
+import com.pharmacy.app.DTO.SalesInvoiceDTO;
 import java.awt.Frame;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,10 +22,18 @@ public class PaymentDialog extends javax.swing.JDialog {
     private Map<String, CartItemDTO> cartItems;
     private String userID;
     private String customerID;
+    private HomeSales homesales;
+    private BigDecimal totalProductPrice;
+    private int totalProduct;
+    BigDecimal totalDiscount;
+    BigDecimal subTotal;
+    
+    
+    SalesInvoiceBUS salesInvoiceBUS = new SalesInvoiceBUS();
     /**
      * Creates new form PaymentDialog
      */
-    public PaymentDialog(java.awt.Frame parent, boolean modal, String totalProductPrice, String totalDiscount, String subTotal, Map<String, CartItemDTO> cartItemsMap, String userId, String customerId) {
+    public PaymentDialog(java.awt.Frame parent, boolean modal, HomeSales homesales, BigDecimal totalProductPrice, BigDecimal totalDiscount, BigDecimal subTotal, Map<String, CartItemDTO> cartItemsMap, String userId, String customerId, String promoId) {
         super(parent, modal);
         initComponents();
         
@@ -29,17 +41,26 @@ public class PaymentDialog extends javax.swing.JDialog {
         this.cartItems = cartItemsMap;
         this.userID = userId;
         this.customerID = customerId;
+        this.totalProductPrice = totalProductPrice;
+        this.totalDiscount = totalDiscount;
+        this.subTotal = subTotal;
+        this.totalProduct = homesales.calculateTotalProduct();
+
+
         System.out.println(userId);        
         System.out.println(customerId);
+//        System.out.println(newSalesInvoiceId);
 
         
         showHashMap(cartItems);
         
         // Hiển thị dữ liệu lên các trường trong dialog
-        txtTotalProductPrice.setText(totalProductPrice);
-        txtDiscountAmount.setText(totalDiscount);
-        txtFinalTotal.setText(subTotal);
+        txtTotalProductPrice.setText(totalProductPrice.toString());
+        txtDiscountAmount.setText(totalDiscount.toString());
+        txtFinalTotal.setText(subTotal.toString());
+        System.out.println(promoId);
         
+
     }
     
         public void showHashMap(Map<String, CartItemDTO> cartItems){
@@ -58,6 +79,8 @@ public class PaymentDialog extends javax.swing.JDialog {
         System.out.println("------------------------------");
 
     }
+        
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -167,6 +190,11 @@ public class PaymentDialog extends javax.swing.JDialog {
         btnConfirmPayment.setForeground(new java.awt.Color(255, 255, 255));
         btnConfirmPayment.setText("Xác nhận");
         btnConfirmPayment.setPreferredSize(new java.awt.Dimension(90, 25));
+        btnConfirmPayment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmPaymentActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnConfirmPayment);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -196,6 +224,10 @@ public class PaymentDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void btnConfirmPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmPaymentActionPerformed
+        handleConfirm();
+    }//GEN-LAST:event_btnConfirmPaymentActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -213,4 +245,49 @@ public class PaymentDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtFinalTotal;
     private javax.swing.JTextField txtTotalProductPrice;
     // End of variables declaration//GEN-END:variables
+
+    private void handleConfirm() {
+        // 1. Tạo mã hoá đơn mới
+        String invoiceId = salesInvoiceBUS.generateNewId();  // Ví dụ: HD001, HD002,...
+
+        // 2. Lấy ngày tạo
+        LocalDate today = LocalDate.now();
+
+        System.out.println("===== THÔNG TIN HÓA ĐƠN =====");
+        System.out.println("Mã hóa đơn: " + invoiceId);
+        System.out.println("Mã nhân viên (userID): " + userID);
+        System.out.println("Mã khách hàng (customerID): " + customerID);
+        System.out.println("Tổng số lượng sản phẩm: " + totalProduct);
+        System.out.println("Tổng tiền sản phẩm: " + totalProductPrice);
+        System.out.println("Tổng khuyến mãi: " + totalDiscount);
+        System.out.println("Thành tiền: " + subTotal);
+        System.out.println("Ngày tạo: " + today);
+        System.out.println("=============================");
+
+        
+        // 4. Tạo hóa đơn DTO
+        SalesInvoiceDTO invoiceDTO = new SalesInvoiceDTO(invoiceId, this.userID, this.customerID, totalProduct, totalProductPrice, totalDiscount, subTotal, today);
+
+        // 5. Gọi BUS lưu hoá đơn
+//        boolean success = invoiceBUS.insertInvoice(invoice);
+//
+//        // 6. Lưu chi tiết hoá đơn nếu hoá đơn được lưu thành công
+//        if (success) {
+//            for (CartItemDTO item : cartItems.values()) {
+//                InvoiceDetailDTO detail = new InvoiceDetailDTO(
+//                    invoiceId,
+//                    item.getProductId(),
+//                    item.getQuantity(),
+//                    item.getTotalPrice()
+//                );
+//                invoiceDetailBUS.insertInvoiceDetail(detail);
+//            }
+//
+//            JOptionPane.showMessageDialog(this, "Thanh toán thành công!");
+//            this.dispose(); // Đóng dialog
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Lỗi khi lưu hoá đơn!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//        }
+    }
+
 }
