@@ -4,6 +4,8 @@
  */
 package com.pharmacy.app;
 
+import com.pharmacy.app.DTO.SessionDTO;
+
 /**
  *
  * @author phong
@@ -36,17 +38,20 @@ public class loginPage extends javax.swing.JFrame {
         lblPassword = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
         jPasswordField = new javax.swing.JPasswordField();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(278, 209));
-        setMinimumSize(new java.awt.Dimension(278, 209));
+        setMaximumSize(new java.awt.Dimension(330, 280));
+        setMinimumSize(new java.awt.Dimension(330, 280));
+        setPreferredSize(new java.awt.Dimension(330, 280));
         setResizable(false);
 
         pnlLogin.setBackground(new java.awt.Color(255, 255, 255));
         pnlLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        pnlLogin.setMaximumSize(new java.awt.Dimension(278, 209));
-        pnlLogin.setMinimumSize(new java.awt.Dimension(278, 209));
+        pnlLogin.setMaximumSize(new java.awt.Dimension(330, 280));
+        pnlLogin.setMinimumSize(new java.awt.Dimension(330, 280));
+        pnlLogin.setPreferredSize(new java.awt.Dimension(330, 280));
 
         lblLogin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -66,6 +71,8 @@ public class loginPage extends javax.swing.JFrame {
         pnlLoginFields.setBackground(new java.awt.Color(255, 255, 255));
         pnlLoginFields.setLayout(new java.awt.GridBagLayout());
 
+        lblUsername.setBackground(new java.awt.Color(255, 255, 255));
+        lblUsername.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblUsername.setText("Tên đăng nhập:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -74,6 +81,7 @@ public class loginPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 20);
         pnlLoginFields.add(lblUsername, gridBagConstraints);
 
+        lblPassword.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblPassword.setText("Mật khẩu:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -81,6 +89,8 @@ public class loginPage extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
         pnlLoginFields.add(lblPassword, gridBagConstraints);
+
+        txtUsername.setPreferredSize(new java.awt.Dimension(100, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -90,6 +100,7 @@ public class loginPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
         pnlLoginFields.add(txtUsername, gridBagConstraints);
 
+        jPasswordField.setPreferredSize(new java.awt.Dimension(100, 30));
         jPasswordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordFieldActionPerformed(evt);
@@ -101,39 +112,48 @@ public class loginPage extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         pnlLoginFields.add(jPasswordField, gridBagConstraints);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 2, 11)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 0, 51));
+        jLabel1.setText("Quên mật khẩu ?");
+
         javax.swing.GroupLayout pnlLoginLayout = new javax.swing.GroupLayout(pnlLogin);
         pnlLogin.setLayout(pnlLoginLayout);
         pnlLoginLayout.setHorizontalGroup(
             pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLoginLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnLogin)
-                .addGap(90, 90, 90))
             .addGroup(pnlLoginLayout.createSequentialGroup()
                 .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel1)
+                        .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlLoginLayout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(pnlLoginFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlLoginLayout.createSequentialGroup()
+                                .addGap(115, 115, 115)
+                                .addComponent(lblLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(pnlLoginLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(pnlLoginFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlLoginLayout.createSequentialGroup()
-                        .addGap(81, 81, 81)
-                        .addComponent(lblLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                        .addGap(112, 112, 112)
+                        .addComponent(btnLogin)))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         pnlLoginLayout.setVerticalGroup(
             pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlLoginLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(21, 21, 21)
                 .addComponent(lblLogin)
-                .addGap(30, 30, 30)
+                .addGap(29, 29, 29)
                 .addComponent(pnlLoginFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLogin)
-                .addGap(20, 20, 20))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlLogin, java.awt.BorderLayout.CENTER);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
@@ -159,6 +179,7 @@ public class loginPage extends javax.swing.JFrame {
 
         if (loggedInUser != null) {
             // Login successful
+            SessionDTO.setCurrentUser(loggedInUser);
             // Redirect based on role
             String roleID = loggedInUser.getRoleID();
 
@@ -252,6 +273,7 @@ public class loginPage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPasswordField jPasswordField;
     private javax.swing.JLabel lblLogin;
     private javax.swing.JLabel lblPassword;

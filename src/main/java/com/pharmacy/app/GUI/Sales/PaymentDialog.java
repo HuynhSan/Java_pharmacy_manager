@@ -4,19 +4,100 @@
  */
 package com.pharmacy.app.GUI.Sales;
 
+import com.pharmacy.app.BUS.CustomerBUS;
+import com.pharmacy.app.BUS.ProductBatchBUS;
+import com.pharmacy.app.BUS.PromotionBUS;
+import com.pharmacy.app.BUS.SalesInvoiceBUS;
+import com.pharmacy.app.BUS.SalesInvoiceDetailBUS;
+import com.pharmacy.app.BUS.SalesInvoicePromotionBUS;
+import com.pharmacy.app.DTO.CartItemDTO;
+import com.pharmacy.app.DTO.PromotionDTO;
+import com.pharmacy.app.DTO.SalesInvoiceDTO;
+import com.pharmacy.app.DTO.SalesInvoiceDetailDTO;
+import com.pharmacy.app.DTO.SalesInvoicePromotionDTO;
+import java.awt.Frame;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Giai Cuu Li San
  */
 public class PaymentDialog extends javax.swing.JDialog {
 
+    private Map<String, CartItemDTO> cartItems;
+    private String userID;
+    private String customerID;
+    private String promoID;
+    private HomeSales homesales;
+    private BigDecimal totalProductPrice;
+    private int totalProduct;
+    BigDecimal totalDiscount;
+    BigDecimal subTotal;
+    
+    
+    SalesInvoiceBUS salesInvoiceBUS = new SalesInvoiceBUS();
+    SalesInvoiceDetailBUS salesInvoiceDetailBUS = new SalesInvoiceDetailBUS();
+    
+    ProductBatchBUS batchBus = new ProductBatchBUS();
+    CustomerBUS customerBUS = new CustomerBUS();    
+    PromotionBUS promoBUS = new PromotionBUS();
+    SalesInvoicePromotionBUS salesPromoBUS = new SalesInvoicePromotionBUS();
+
     /**
      * Creates new form PaymentDialog
      */
-    public PaymentDialog(java.awt.Frame parent, boolean modal) {
+    public PaymentDialog(java.awt.Frame parent, boolean modal, HomeSales homesales, BigDecimal totalProductPrice, BigDecimal totalDiscount, BigDecimal subTotal, Map<String, CartItemDTO> cartItemsMap, String userId, String customerId, String promoId) {
         super(parent, modal);
         initComponents();
-        setLocationRelativeTo(this);
+        
+        // Gán dữ liệu truyền vào
+        this.cartItems = cartItemsMap;
+        this.userID = userId;
+        this.customerID = customerId;
+        this.promoID = promoId;
+        this.totalProductPrice = totalProductPrice;
+        this.totalDiscount = totalDiscount;
+        this.subTotal = subTotal;
+        this.totalProduct = homesales.calculateTotalProduct();
+        this.homesales = homesales;
+
+
+        System.out.println(userId);        
+        System.out.println(customerId);
+//        System.out.println(newSalesInvoiceId);
+
+        
+        showHashMap(cartItems);
+        
+        // Hiển thị dữ liệu lên các trường trong dialog
+        txtTotalProductPrice.setText(totalProductPrice.toString());
+        txtDiscountAmount.setText(totalDiscount.toString());
+        txtFinalTotal.setText(subTotal.toString());
+        System.out.println(promoId);
+        
+
+    }
+    
+        public void showHashMap(Map<String, CartItemDTO> cartItems){
+        // Sau khi thêm vào cartPanel, thêm đoạn này để debug
+        System.out.println("==> Giỏ hàng thanh toán:");
+        for (Map.Entry<String, CartItemDTO> entry : cartItems.entrySet()) {
+            CartItemDTO cartitem = entry.getValue();
+            System.out.println("Batch ID: " + cartitem.getBatchId()
+               + ", Product ID: " + cartitem.getProductId()
+               + ", Tên: " + cartitem.getName()
+               + ", SL: " + cartitem.getQuantityFromSpinner()
+               + ", Giá gốc: " + cartitem.getSellPrice()
+               + ", Tiền khuyến mãi: " + cartitem.getDiscountAmount()
+               + ", Giá sau KM: " + cartitem.getFinalPrice());
+        }
+        System.out.println("------------------------------");
+
     }
 
     /**
@@ -31,11 +112,11 @@ public class PaymentDialog extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         lblTotalAmount = new javax.swing.JLabel();
-        tfTotalAmount = new javax.swing.JTextField();
-        tfDiscountAmount = new javax.swing.JTextField();
+        txtTotalProductPrice = new javax.swing.JTextField();
+        txtDiscountAmount = new javax.swing.JTextField();
         lblDiscountAmount = new javax.swing.JLabel();
         lblFinalTotal = new javax.swing.JLabel();
-        tfFinalTotal = new javax.swing.JTextField();
+        txtFinalTotal = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnConfirmPayment = new javax.swing.JButton();
@@ -59,26 +140,26 @@ public class PaymentDialog extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel1.add(lblTotalAmount, gridBagConstraints);
 
-        tfTotalAmount.setEnabled(false);
-        tfTotalAmount.setPreferredSize(new java.awt.Dimension(200, 25));
+        txtTotalProductPrice.setEnabled(false);
+        txtTotalProductPrice.setPreferredSize(new java.awt.Dimension(200, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(7, 20, 7, 15);
-        jPanel1.add(tfTotalAmount, gridBagConstraints);
+        jPanel1.add(txtTotalProductPrice, gridBagConstraints);
 
-        tfDiscountAmount.setEditable(false);
-        tfDiscountAmount.setEnabled(false);
-        tfDiscountAmount.setPreferredSize(new java.awt.Dimension(200, 25));
+        txtDiscountAmount.setEditable(false);
+        txtDiscountAmount.setEnabled(false);
+        txtDiscountAmount.setPreferredSize(new java.awt.Dimension(200, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(7, 20, 7, 15);
-        jPanel1.add(tfDiscountAmount, gridBagConstraints);
+        jPanel1.add(txtDiscountAmount, gridBagConstraints);
 
         lblDiscountAmount.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblDiscountAmount.setText("Tiền khuyến mãi");
@@ -97,15 +178,15 @@ public class PaymentDialog extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel1.add(lblFinalTotal, gridBagConstraints);
 
-        tfFinalTotal.setEnabled(false);
-        tfFinalTotal.setPreferredSize(new java.awt.Dimension(200, 25));
+        txtFinalTotal.setEnabled(false);
+        txtFinalTotal.setPreferredSize(new java.awt.Dimension(200, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(7, 20, 7, 15);
-        jPanel1.add(tfFinalTotal, gridBagConstraints);
+        jPanel1.add(txtFinalTotal, gridBagConstraints);
 
         jPanel2.setPreferredSize(new java.awt.Dimension(300, 30));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
@@ -115,6 +196,11 @@ public class PaymentDialog extends javax.swing.JDialog {
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("Hủy");
         btnCancel.setPreferredSize(new java.awt.Dimension(80, 25));
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnCancel);
 
         btnConfirmPayment.setBackground(new java.awt.Color(0, 204, 51));
@@ -122,6 +208,11 @@ public class PaymentDialog extends javax.swing.JDialog {
         btnConfirmPayment.setForeground(new java.awt.Color(255, 255, 255));
         btnConfirmPayment.setText("Xác nhận");
         btnConfirmPayment.setPreferredSize(new java.awt.Dimension(90, 25));
+        btnConfirmPayment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmPaymentActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnConfirmPayment);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -147,48 +238,17 @@ public class PaymentDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnConfirmPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmPaymentActionPerformed
+        handleConfirm();
+    }//GEN-LAST:event_btnConfirmPaymentActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PaymentDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PaymentDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PaymentDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PaymentDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                PaymentDialog dialog = new PaymentDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
@@ -199,8 +259,78 @@ public class PaymentDialog extends javax.swing.JDialog {
     private javax.swing.JLabel lblFinalTotal;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblTotalAmount;
-    private javax.swing.JTextField tfDiscountAmount;
-    private javax.swing.JTextField tfFinalTotal;
-    private javax.swing.JTextField tfTotalAmount;
+    private javax.swing.JTextField txtDiscountAmount;
+    private javax.swing.JTextField txtFinalTotal;
+    private javax.swing.JTextField txtTotalProductPrice;
     // End of variables declaration//GEN-END:variables
+
+    private void handleConfirm() {
+        // 1. Tạo mã hoá đơn mới
+        String invoiceId = salesInvoiceBUS.generateNewId();  // Ví dụ: HD001, HD002,...
+
+        // 2. Lấy ngày tạo
+        LocalDateTime today = LocalDateTime.now();
+
+        // 3. Tạo hóa đơn DTO
+        SalesInvoiceDTO invoiceDTO;
+        if (customerID == null){
+            invoiceDTO = new SalesInvoiceDTO(invoiceId, userID, null, totalProduct, totalProductPrice, totalDiscount,subTotal, today);
+
+        } else {
+            invoiceDTO = new SalesInvoiceDTO(invoiceId, userID, customerID, totalProduct, totalProductPrice, totalDiscount,subTotal, today);
+        }
+
+        // 4. Gọi BUS lưu hoá đơn
+        boolean success = salesInvoiceBUS.insertInvoice(invoiceDTO);
+
+        // 5. Lưu chi tiết hoá đơn nếu hoá đơn được lưu thành công
+        if (success) {
+            for (CartItemDTO item : cartItems.values()) {
+                SalesInvoiceDetailDTO detail = new SalesInvoiceDetailDTO(
+                    invoiceId,
+                    item.getProductId(),
+                    item.getQuantity(),
+                    item.getFinalPrice()
+                );
+                salesInvoiceDetailBUS.addInvoiceDetail(detail);
+                
+                // Cập nhật tồn kho theo batchId và product_Id
+                batchBus.updateInventoryQuantity(item.getBatchId(), item.getProductId(), item.getQuantity());
+            }
+            
+            if (customerID != null){
+                System.out.println(promoID);
+                PromotionDTO promo = promoBUS.selectById(promoID);
+                // Cập nhật điểm
+                customerBUS.updateCustomerPointsAfterInvoice(customerID, promo, this.subTotal);
+            }
+            
+            if (promoID != null){
+                salesPromoBUS.add(new SalesInvoicePromotionDTO(invoiceId, promoID));
+            }
+
+            JOptionPane.showMessageDialog(this, "Xuất hóa đơn thành công!");
+            this.dispose(); // Đóng dialog
+            homesales.loadAllData();
+            homesales.reload();
+        } else {
+            JOptionPane.showMessageDialog(this, "Lỗi khi lưu hoá đơn!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
 }
+
+
+
+
+//        System.out.println("===== THÔNG TIN HÓA ĐƠN =====");
+//        System.out.println("Mã hóa đơn: " + invoiceId);
+//        System.out.println("Mã nhân viên (userID): " + userID);
+//        System.out.println("Mã khách hàng (customerID): " + customerID);
+//        System.out.println("Tổng số lượng sản phẩm: " + totalProduct);
+//        System.out.println("Tổng tiền sản phẩm: " + totalProductPrice);
+//        System.out.println("Tổng khuyến mãi: " + totalDiscount);
+//        System.out.println("Thành tiền: " + subTotal);
+//        System.out.println("Ngày tạo: " + today);
+//        System.out.println("=============================");
+//

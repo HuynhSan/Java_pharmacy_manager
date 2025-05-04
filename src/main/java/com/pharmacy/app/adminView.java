@@ -4,6 +4,7 @@
  */
 package com.pharmacy.app;
 
+import com.pharmacy.app.DTO.SessionDTO;
 import com.pharmacy.app.GUI.Authorization.AuthorizationManagement;
 import com.pharmacy.app.GUI.Customer.CustomerList;
 import com.pharmacy.app.GUI.Employee.EmployeeManagement;
@@ -266,6 +267,9 @@ public class adminView extends javax.swing.JFrame {
         logouticon.setBackground(new java.awt.Color(0, 51, 102));
         logouticon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logout.png"))); // NOI18N
         logouticon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logouticonMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 logouticonMouseEntered(evt);
             }
@@ -486,12 +490,12 @@ public class adminView extends javax.swing.JFrame {
         authzBtn.setBackground(new java.awt.Color(0, 102, 153));
         authzBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         authzBtn.setForeground(new java.awt.Color(255, 255, 255));
-        authzBtn.setText("PHÂN QUYỀN");
         authzBtn.setToolTipText("");
         authzBtn.setBorder(null);
         authzBtn.setBorderPainted(false);
         authzBtn.setContentAreaFilled(false);
         authzBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        authzBtn.setEnabled(false);
         authzBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         authzBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         authzBtn.setMinimumSize(new java.awt.Dimension(200, 30));
@@ -517,11 +521,11 @@ public class adminView extends javax.swing.JFrame {
         reportBtn.setBackground(new java.awt.Color(0, 102, 153));
         reportBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         reportBtn.setForeground(new java.awt.Color(255, 255, 255));
-        reportBtn.setText("BÁO CÁO THỐNG KÊ");
         reportBtn.setBorder(null);
         reportBtn.setBorderPainted(false);
         reportBtn.setContentAreaFilled(false);
         reportBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        reportBtn.setEnabled(false);
         reportBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         reportBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         reportBtn.setMinimumSize(new java.awt.Dimension(200, 30));
@@ -788,6 +792,20 @@ public class adminView extends javax.swing.JFrame {
         userDialog.setLocationRelativeTo(null);
         userDialog.setVisible(true);
     }//GEN-LAST:event_usericonMouseClicked
+
+    private void logouticonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logouticonMouseClicked
+        int confirm = JOptionPane.showConfirmDialog(null, 
+            "Bạn có chắc chắn muốn đăng xuất không?", 
+            "Xác nhận đăng xuất", 
+            JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION){
+            SessionDTO.clearUser();
+            this.dispose();
+            java.awt.EventQueue.invokeLater(() -> {
+                new loginPage().setVisible(true);
+            });
+        }
+    }//GEN-LAST:event_logouticonMouseClicked
 
     
     public static void main(String args[]) {

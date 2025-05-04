@@ -424,6 +424,7 @@
                             </Column>
                           </TableColumnModel>
                         </Property>
+                        <Property name="rowHeight" type="int" value="30"/>
                         <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                           <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                         </Property>
@@ -723,6 +724,7 @@
                                     <Column editable="false" title="Tr&#x1ea1;ng th&#xe1;i" type="java.lang.String"/>
                                   </Table>
                                 </Property>
+<<<<<<< HEAD
                                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                                   <TableColumnModel selectionModel="0">
                                     <Column maxWidth="60" minWidth="30" prefWidth="50" resizable="true">
@@ -747,6 +749,9 @@
                                     </Column>
                                   </TableColumnModel>
                                 </Property>
+=======
+                                <Property name="rowHeight" type="int" value="30"/>
+>>>>>>> 7c4c0003821ad03ffe2230cc68e0443074c8bd93
                                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                                 </Property>
@@ -945,6 +950,7 @@
                                     <Column editable="true" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng" type="java.lang.Integer"/>
                                   </Table>
                                 </Property>
+<<<<<<< HEAD
                                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                                   <TableColumnModel selectionModel="0">
                                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
@@ -964,6 +970,9 @@
                                     </Column>
                                   </TableColumnModel>
                                 </Property>
+=======
+                                <Property name="rowHeight" type="int" value="30"/>
+>>>>>>> 7c4c0003821ad03ffe2230cc68e0443074c8bd93
                                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                                 </Property>

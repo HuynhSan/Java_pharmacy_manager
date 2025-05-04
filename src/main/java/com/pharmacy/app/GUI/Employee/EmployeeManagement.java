@@ -7,6 +7,9 @@ package com.pharmacy.app.GUI.Employee;
 import com.pharmacy.app.BUS.EmployeeBUS;
 import com.pharmacy.app.DTO.EmployeeDTO;
 import com.pharmacy.app.DAO.EmployeeDAO;
+import com.pharmacy.app.BUS.ContractBUS;
+import com.pharmacy.app.DTO.ContractDTO;
+import com.pharmacy.app.DAO.ContractDAO;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -25,6 +28,9 @@ public class EmployeeManagement extends javax.swing.JPanel {
     private EmployeeBUS employeeBUS;
     private EmployeeDAO employeeDAO = new EmployeeDAO();
     private EmployeeDTO employeeDTO;
+    private ContractBUS contractBUS;
+    private ContractDAO contractDAO = new ContractDAO();
+    private ContractDTO contractDTO;
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     /**
@@ -35,11 +41,14 @@ public class EmployeeManagement extends javax.swing.JPanel {
         setupListeners();
         initBUS();
         loadEmployeeData();
+        loadContractData();
     }
     
     private void initBUS() {
         employeeBUS = new EmployeeBUS();
         employeeBUS.loadEmployeeList();
+        contractBUS = new ContractBUS();
+        contractBUS.loadContractList();
     }
     
     private void setupListeners() {
@@ -64,6 +73,26 @@ public class EmployeeManagement extends javax.swing.JPanel {
             }
         });
         
+        txtSearchContract.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtSearchContract.getText().equals("Tìm kiếm")) {
+                    txtSearchContract.setText("");
+                    txtSearchContract.setFont(new java.awt.Font("Segoe UI", 0, 12));
+                    txtSearchContract.setForeground(new java.awt.Color(0, 0, 0));
+                }
+            }
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtSearchContract.getText().isEmpty()) {
+                    txtSearchContract.setText("Tìm kiếm");
+                    txtSearchContract.setFont(new java.awt.Font("Segoe UI", 2, 12));
+                    txtSearchContract.setForeground(new java.awt.Color(153, 153, 153));
+                }
+            }
+        });
+        
         // Setup search text field key listener
         txtSearchEmployee.addKeyListener(new KeyAdapter() {
             @Override
@@ -71,6 +100,16 @@ public class EmployeeManagement extends javax.swing.JPanel {
                 String keyword = txtSearchEmployee.getText();
                 if (!keyword.equals("Tìm kiếm")) {
                     searchEmployees(keyword);
+                }
+            }
+        });
+        
+        txtSearchContract.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String keyword = txtSearchContract.getText();
+                if (!keyword.equals("Tìm kiếm")) {
+                    searchContracts(keyword);
                 }
             }
         });
@@ -140,6 +179,52 @@ public class EmployeeManagement extends javax.swing.JPanel {
             model.addRow(row);
         }
     }
+    
+    /**
+     * Load all contract data into the table
+     */
+    private void loadContractData() {
+        ArrayList<ContractDTO> contracts = contractBUS.getContractList();
+        displayContracts(contracts);
+    }
+    
+    /**
+     * Search contracts based on keyword
+     */
+    private void searchContracts(String keyword) {
+        if (keyword.isEmpty() || keyword.equals("Tìm kiếm")) {
+            loadContractData();
+            return;
+        }
+        
+        ArrayList<ContractDTO> searchResults = contractBUS.searchContracts(keyword);
+        displayContracts(searchResults);
+    }
+    
+    /**
+     * Display contracts in the table
+     */
+    private void displayContracts(ArrayList<ContractDTO> contracts) {
+        DefaultTableModel model = (DefaultTableModel) tblContracts.getModel();
+        model.setRowCount(0); // Clear current data
+
+        for (ContractDTO contract : contracts) {
+            // Look up the employee name based on employee ID
+            String employeeID = contract.getEmployeeID();
+            EmployeeDTO employee = employeeBUS.getEmployeeByID(employeeID);
+            String employeeName = (employee != null) ? employee.getName() : "Unknown";
+
+            Object[] row = {
+                contract.getContractID(),
+                employeeName, // Display employee name instead of ID
+                contract.getSigningDate().format(DATE_FORMAT),
+                contract.getStartDate().format(DATE_FORMAT),
+                contract.getEndDate().format(DATE_FORMAT),
+                contract.getPosition()
+            };
+            model.addRow(row);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -164,7 +249,6 @@ public class EmployeeManagement extends javax.swing.JPanel {
         pnlContracts = new javax.swing.JPanel();
         pnlContract1 = new javax.swing.JPanel();
         txtSearchContract = new javax.swing.JTextField();
-        cbContract = new javax.swing.JComboBox<>();
         btnAddContract = new javax.swing.JButton();
         btnRefeshContract = new javax.swing.JButton();
         btnPdfContract = new javax.swing.JButton();
@@ -273,9 +357,11 @@ public class EmployeeManagement extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblEmployees.setColumnSelectionAllowed(true);
         tblEmployees.setFocusable(false);
         tblEmployees.setMinimumSize(new java.awt.Dimension(500, 80));
         tblEmployees.setPreferredSize(new java.awt.Dimension(1180, 600));
+        tblEmployees.setRowHeight(30);
         tblEmployees.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblEmployees.setShowGrid(true);
         tblEmployees.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -319,13 +405,8 @@ public class EmployeeManagement extends javax.swing.JPanel {
         txtSearchContract.setPreferredSize(new java.awt.Dimension(300, 35));
         pnlContract1.add(txtSearchContract);
 
-        cbContract.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Quản lý", "Nhân viên" }));
-        cbContract.setFocusable(false);
-        cbContract.setPreferredSize(new java.awt.Dimension(80, 35));
-        pnlContract1.add(cbContract);
-
         btnAddContract.setBackground(new java.awt.Color(0, 204, 51));
-        btnAddContract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAddContract.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnAddContract.setForeground(new java.awt.Color(255, 255, 255));
         btnAddContract.setText("Thêm");
         btnAddContract.setFocusable(false);
@@ -339,20 +420,28 @@ public class EmployeeManagement extends javax.swing.JPanel {
         });
         pnlContract1.add(btnAddContract);
 
-        btnRefeshContract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnRefeshContract.setText("Tải lại");
         btnRefeshContract.setFocusable(false);
         btnRefeshContract.setMaximumSize(new java.awt.Dimension(72, 22));
         btnRefeshContract.setMinimumSize(new java.awt.Dimension(80, 35));
         btnRefeshContract.setPreferredSize(new java.awt.Dimension(80, 35));
+        btnRefeshContract.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefeshContractActionPerformed(evt);
+            }
+        });
         pnlContract1.add(btnRefeshContract);
 
-        btnPdfContract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnPdfContract.setText("In PDF");
         btnPdfContract.setFocusable(false);
         btnPdfContract.setMaximumSize(new java.awt.Dimension(72, 22));
         btnPdfContract.setMinimumSize(new java.awt.Dimension(80, 35));
         btnPdfContract.setPreferredSize(new java.awt.Dimension(80, 35));
+        btnPdfContract.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPdfContractActionPerformed(evt);
+            }
+        });
         pnlContract1.add(btnPdfContract);
 
         pnlContracts.add(pnlContract1, java.awt.BorderLayout.NORTH);
@@ -363,7 +452,6 @@ public class EmployeeManagement extends javax.swing.JPanel {
         jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane2.setPreferredSize(new java.awt.Dimension(1180, 500));
 
-        tblContracts.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tblContracts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -378,7 +466,7 @@ public class EmployeeManagement extends javax.swing.JPanel {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Mã hợp đồng", "Mã nhân viên", "Ngày ký kết", "Ngày bắt đầu", "Ngày kết thúc", "Chức vụ"
+                "Mã hợp đồng", "Tên nhân viên", "Ngày ký kết", "Ngày bắt đầu", "Ngày kết thúc", "Chức vụ"
             }
         ));
         tblContracts.setFocusable(false);
@@ -386,6 +474,11 @@ public class EmployeeManagement extends javax.swing.JPanel {
         tblContracts.setPreferredSize(new java.awt.Dimension(1180, 500));
         tblContracts.setRowHeight(30);
         tblContracts.setShowGrid(true);
+        tblContracts.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblContractsMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblContracts);
 
         javax.swing.GroupLayout pnlContract2Layout = new javax.swing.GroupLayout(pnlContract2);
@@ -431,14 +524,13 @@ public class EmployeeManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddEmployeeActionPerformed
 
     private void btnAddContractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddContractActionPerformed
-        AddContract addConDialog = new AddContract((JFrame) SwingUtilities.getWindowAncestor(this), true);
-        addConDialog.setLocationRelativeTo(null);
-        addConDialog.setVisible(true);
+        ChooseEmployee chooseEmDialog = new ChooseEmployee((JFrame) SwingUtilities.getWindowAncestor(this), true);
+        chooseEmDialog.setLocationRelativeTo(null);
+        chooseEmDialog.setVisible(true);
     }//GEN-LAST:event_btnAddContractActionPerformed
 
     private void tblEmployeesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEmployeesMouseClicked
         int selectedRow = tblEmployees.getSelectedRow();
-        System.out.println(selectedRow);
         if (selectedRow != -1){
             // Get id of selected row
             String id = tblEmployees.getValueAt(selectedRow, 0).toString();
@@ -467,6 +559,48 @@ public class EmployeeManagement extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnPdfEmployeeActionPerformed
 
+    private void btnRefeshContractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefeshContractActionPerformed
+        // Reset the search field
+        txtSearchContract.setText("Tìm kiếm");
+        txtSearchContract.setFont(new java.awt.Font("Segoe UI", 2, 12));
+        txtSearchContract.setForeground(new java.awt.Color(153, 153, 153));
+
+        // Reload the contract data from the database
+        contractBUS.loadContractList();
+
+        // Display the refreshed contract data
+        loadContractData();
+    }//GEN-LAST:event_btnRefeshContractActionPerformed
+
+    private void tblContractsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblContractsMouseClicked
+        int selectedRow = tblContracts.getSelectedRow();
+        if (selectedRow != -1){
+            // Get id of selected row
+            String id = tblContracts.getValueAt(selectedRow, 0).toString();
+            // Create DTO object
+            ContractDTO selectedContract = contractBUS.getContractByID(id);
+            UpdateContract detailDialog = new UpdateContract((JFrame) SwingUtilities.getWindowAncestor(this), true, selectedContract);
+            detailDialog.setLocationRelativeTo(null);
+            detailDialog.setVisible(true);
+        }
+    }//GEN-LAST:event_tblContractsMouseClicked
+
+    private void btnPdfContractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdfContractActionPerformed
+        try {
+            // Get table model
+            DefaultTableModel model = (DefaultTableModel) tblContracts.getModel();
+
+            // Use the PDFExporter utility class to export contract data
+            com.pharmacy.app.Utils.PDFExporter.exportContractsToPDF(this, model);
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Lỗi khi xuất PDF: " + e.getMessage(),
+                "Lỗi",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnPdfContractActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddContract;
@@ -475,7 +609,6 @@ public class EmployeeManagement extends javax.swing.JPanel {
     private javax.swing.JButton btnPdfEmployee;
     private javax.swing.JButton btnRefeshContract;
     private javax.swing.JButton btnRefeshEmployee;
-    private javax.swing.JComboBox<String> cbContract;
     private javax.swing.JComboBox<String> cbEmployee;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

@@ -6,6 +6,7 @@ package com.pharmacy.app.BUS;
 
 import com.pharmacy.app.DAO.SupplierInvoicesDAO;
 import com.pharmacy.app.DTO.SuplierInvoiceDTO;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * @author BOI QUAN
  */
 public class SuplierInvoicesBUS {
-    private SupplierInvoicesDAO supInvoiceDAO;
+    private final SupplierInvoicesDAO supInvoiceDAO;
     private ArrayList<SuplierInvoiceDTO> supInvoicesList;
     public SuplierInvoicesBUS(){
         supInvoiceDAO = new SupplierInvoicesDAO();
@@ -37,14 +38,9 @@ public class SuplierInvoicesBUS {
     }
     
     public SuplierInvoiceDTO getSupInvoiceByID(String invoiceID){
-//        for (SuplierInvoiceDTO supInvoice : supInvoicesList) {
-//            if (supInvoice.getInvoiceID().equals(invoiceID)) {
-//                return supInvoice;
-//            }
-//        }
         return supInvoiceDAO.selectByID(invoiceID);
     }
-    
+
     public String generateNextProductID() {
         String lastID = supInvoiceDAO.getLatestProductID();  // Có thể là null
 
@@ -59,8 +55,15 @@ public class SuplierInvoicesBUS {
         return "INV" + String.format("%03d", nextNumber);
     }
     
+    public ArrayList<SuplierInvoiceDTO> getSupInvoiceBySupplierID(String supplierID){
+        return supInvoiceDAO.selectBySupplierID(supplierID);
+    }
+    
     public ArrayList<SuplierInvoiceDTO> search(String keyword){
         return supInvoiceDAO.search(keyword);
     }
-    
+    public ArrayList<SuplierInvoiceDTO> filterByDate(LocalDate date){
+        return supInvoiceDAO.filterByDate(date);
+    }
+
 }

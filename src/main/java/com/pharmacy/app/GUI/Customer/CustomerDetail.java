@@ -4,28 +4,38 @@
  */
 package com.pharmacy.app.GUI.Customer;
 import com.pharmacy.app.BUS.CustomerBUS;
+import com.pharmacy.app.BUS.SalesInvoiceBUS;
 import com.pharmacy.app.DTO.CustomerDTO;
+import com.pharmacy.app.DTO.SalesInvoiceDTO;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author BOI QUAN
  */
-public class CustomerDetail extends javax.swing.JDialog {
+public final class CustomerDetail extends javax.swing.JDialog {
     private CustomerDTO customerDTO;
-    private CustomerBUS customerBUS = new CustomerBUS();
+    private final CustomerBUS customerBUS = new CustomerBUS();
+    private final SalesInvoiceBUS saleInvoiceBUS = new SalesInvoiceBUS();
+    private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     /**
      * Creates new form ChiTietCustomer
+     * @param parent
+     * @param modal
+     * @param customer
      */
     public CustomerDetail(java.awt.Frame parent, boolean modal, CustomerDTO customer) {
         super(parent, modal);
         initComponents();
-        centerTableCells();
-        this.customerDTO = customer;
+//        centerTableCells();
         setData(customer);
+        loadCustomerInvoiceData(customer.getId());
         
     }
     private void setData(CustomerDTO customer) {
@@ -34,14 +44,34 @@ public class CustomerDetail extends javax.swing.JDialog {
         txtPhone.setText(customer.getPhone());
         txtPoint.setText(String.valueOf(customer.getPoint()));
     }
-    private void centerTableCells(){
-        DefaultTableCellRenderer centerRender = new DefaultTableCellRenderer();
-        centerRender.setHorizontalAlignment(SwingConstants.CENTER);
-        tbHistory.setDefaultRenderer(Object.class, centerRender);
-
-        for (int i=0; i< tbHistory.getColumnCount();i++){
-            tbHistory.getColumnModel().getColumn(i).setCellRenderer(centerRender);
+//    private void centerTableCells(){
+//        DefaultTableCellRenderer centerRender = new DefaultTableCellRenderer();
+//        centerRender.setHorizontalAlignment(SwingConstants.CENTER);
+//        tbHistory.setDefaultRenderer(Object.class, centerRender);
+//
+//        for (int i=0; i< tbHistory.getColumnCount();i++){
+//            tbHistory.getColumnModel().getColumn(i).setCellRenderer(centerRender);
+//        }
+//    }
+    private void displayList(List<SalesInvoiceDTO> customersInvoices) {
+        DefaultTableModel model = (DefaultTableModel) tbHistory.getModel();
+        model.setRowCount(0);
+        int stt = 1;
+        for (SalesInvoiceDTO csi: customersInvoices){
+            model.addRow(new Object[]{
+                stt++,
+                csi.getInvoiceId(),
+                csi.getCreateDate().format(DATE_FORMAT),
+                csi.getUserId(),
+                csi.getTotalQuantity(),
+                csi.getFinalTotal()
+            });
         }
+    }
+
+    public void loadCustomerInvoiceData(String customerID){
+        List<SalesInvoiceDTO> customersInvoices = saleInvoiceBUS.getSelectSaleInvoiceByCustomerID(customerID);
+        displayList(customersInvoices);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -51,6 +81,7 @@ public class CustomerDetail extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         plHeader = new javax.swing.JPanel();
         plInformation = new javax.swing.JPanel();
@@ -62,6 +93,7 @@ public class CustomerDetail extends javax.swing.JDialog {
         txtPhone = new javax.swing.JTextField();
         lblPoint = new javax.swing.JLabel();
         txtPoint = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
         plButton = new javax.swing.JPanel();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
@@ -73,47 +105,64 @@ public class CustomerDetail extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(800, 580));
-        setPreferredSize(new java.awt.Dimension(1020, 650));
         setResizable(false);
-        getContentPane().setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
 
         plHeader.setBackground(new java.awt.Color(255, 255, 255));
         plHeader.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "THÔNG TIN", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
         plHeader.setMaximumSize(new java.awt.Dimension(326589, 326589));
         plHeader.setMinimumSize(new java.awt.Dimension(800, 70));
-        plHeader.setPreferredSize(new java.awt.Dimension(1000, 100));
-        plHeader.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 10));
+        plHeader.setPreferredSize(new java.awt.Dimension(800, 150));
+        plHeader.setLayout(new javax.swing.BoxLayout(plHeader, javax.swing.BoxLayout.X_AXIS));
 
         plInformation.setBackground(new java.awt.Color(255, 255, 255));
         plInformation.setMaximumSize(new java.awt.Dimension(326589, 326589));
         plInformation.setMinimumSize(new java.awt.Dimension(0, 40));
-        plInformation.setPreferredSize(new java.awt.Dimension(650, 50));
+        plInformation.setPreferredSize(new java.awt.Dimension(550, 50));
+        plInformation.setLayout(new java.awt.GridBagLayout());
 
         lblId.setBackground(new java.awt.Color(255, 255, 255));
         lblId.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblId.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblId.setText("ID:");
-        lblId.setPreferredSize(new java.awt.Dimension(30, 30));
-        plInformation.add(lblId);
+        lblId.setPreferredSize(new java.awt.Dimension(80, 30));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        plInformation.add(lblId, gridBagConstraints);
 
         txtId.setEditable(false);
         txtId.setBackground(new java.awt.Color(255, 255, 255));
+        txtId.setText("CUS001");
         txtId.setBorder(null);
         txtId.setFocusable(false);
-        txtId.setPreferredSize(new java.awt.Dimension(70, 30));
-        plInformation.add(txtId);
+        txtId.setPreferredSize(new java.awt.Dimension(150, 30));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 15);
+        plInformation.add(txtId, gridBagConstraints);
 
-        lblName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblName.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblName.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblName.setText("Họ và Tên:");
         lblName.setMaximumSize(new java.awt.Dimension(326589, 326589));
         lblName.setMinimumSize(new java.awt.Dimension(70, 30));
-        lblName.setPreferredSize(new java.awt.Dimension(90, 30));
-        plInformation.add(lblName);
+        lblName.setPreferredSize(new java.awt.Dimension(80, 30));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = new java.awt.Insets(15, 0, 0, 0);
+        plInformation.add(lblName, gridBagConstraints);
 
         txtName.setEditable(false);
         txtName.setBackground(new java.awt.Color(255, 255, 255));
-        txtName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtName.setText("Nguyễn Văn A");
         txtName.setToolTipText("");
         txtName.setBorder(null);
@@ -121,22 +170,32 @@ public class CustomerDetail extends javax.swing.JDialog {
         txtName.setFocusable(false);
         txtName.setMaximumSize(new java.awt.Dimension(100, 30));
         txtName.setMinimumSize(new java.awt.Dimension(100, 30));
-        txtName.setPreferredSize(new java.awt.Dimension(100, 35));
+        txtName.setPreferredSize(new java.awt.Dimension(150, 30));
         txtName.setSelectionColor(new java.awt.Color(255, 255, 255));
-        plInformation.add(txtName);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(15, 0, 0, 15);
+        plInformation.add(txtName, gridBagConstraints);
 
-        lblPhone.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblPhone.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblPhone.setBackground(new java.awt.Color(255, 255, 255));
+        lblPhone.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblPhone.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblPhone.setText("Số điện thoại:");
         lblPhone.setMaximumSize(new java.awt.Dimension(100, 30));
         lblPhone.setMinimumSize(new java.awt.Dimension(100, 30));
         lblPhone.setPreferredSize(new java.awt.Dimension(100, 30));
-        plInformation.add(lblPhone);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        plInformation.add(lblPhone, gridBagConstraints);
 
         txtPhone.setEditable(false);
         txtPhone.setBackground(new java.awt.Color(255, 255, 255));
         txtPhone.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtPhone.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPhone.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtPhone.setText("0123456789");
         txtPhone.setBorder(null);
         txtPhone.setDisabledTextColor(new java.awt.Color(0, 0, 0));
@@ -149,37 +208,56 @@ public class CustomerDetail extends javax.swing.JDialog {
                 txtPhoneActionPerformed(evt);
             }
         });
-        plInformation.add(txtPhone);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        plInformation.add(txtPhone, gridBagConstraints);
 
-        lblPoint.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblPoint.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblPoint.setBackground(new java.awt.Color(255, 255, 255));
+        lblPoint.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblPoint.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblPoint.setText("Điểm:");
         lblPoint.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lblPoint.setMaximumSize(new java.awt.Dimension(70, 30));
         lblPoint.setMinimumSize(new java.awt.Dimension(70, 30));
-        lblPoint.setPreferredSize(new java.awt.Dimension(70, 30));
-        plInformation.add(lblPoint);
+        lblPoint.setPreferredSize(new java.awt.Dimension(100, 30));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(15, 0, 0, 0);
+        plInformation.add(lblPoint, gridBagConstraints);
 
         txtPoint.setEditable(false);
         txtPoint.setBackground(new java.awt.Color(255, 255, 255));
         txtPoint.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtPoint.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtPoint.setText("100");
         txtPoint.setBorder(null);
         txtPoint.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        txtPoint.setEnabled(false);
-        txtPoint.setMargin(new java.awt.Insets(2, 15, 2, 6));
+        txtPoint.setFocusable(false);
         txtPoint.setMaximumSize(new java.awt.Dimension(60, 30));
         txtPoint.setMinimumSize(new java.awt.Dimension(60, 30));
         txtPoint.setPreferredSize(new java.awt.Dimension(60, 35));
-        plInformation.add(txtPoint);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(15, 0, 0, 0);
+        plInformation.add(txtPoint, gridBagConstraints);
 
         plHeader.add(plInformation);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(230, 100));
+        plHeader.add(jPanel1);
 
         plButton.setBackground(new java.awt.Color(255, 255, 255));
         plButton.setMaximumSize(new java.awt.Dimension(326589, 326589));
         plButton.setMinimumSize(new java.awt.Dimension(200, 40));
-        plButton.setPreferredSize(new java.awt.Dimension(300, 50));
-        plButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
+        plButton.setPreferredSize(new java.awt.Dimension(100, 50));
+        plButton.setLayout(new java.awt.GridBagLayout());
 
         btnUpdate.setBackground(new java.awt.Color(0, 204, 51));
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -187,13 +265,15 @@ public class CustomerDetail extends javax.swing.JDialog {
         btnUpdate.setText("Cập nhật");
         btnUpdate.setMaximumSize(new java.awt.Dimension(326589, 326589));
         btnUpdate.setMinimumSize(new java.awt.Dimension(77, 30));
-        btnUpdate.setPreferredSize(new java.awt.Dimension(80, 35));
+        btnUpdate.setPreferredSize(new java.awt.Dimension(80, 30));
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
             }
         });
-        plButton.add(btnUpdate);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        plButton.add(btnUpdate, gridBagConstraints);
 
         btnDelete.setBackground(new java.awt.Color(255, 0, 0));
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -201,25 +281,35 @@ public class CustomerDetail extends javax.swing.JDialog {
         btnDelete.setText("Xóa");
         btnDelete.setMaximumSize(new java.awt.Dimension(72, 30));
         btnDelete.setMinimumSize(new java.awt.Dimension(72, 30));
-        btnDelete.setPreferredSize(new java.awt.Dimension(80, 35));
+        btnDelete.setPreferredSize(new java.awt.Dimension(80, 30));
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
             }
         });
-        plButton.add(btnDelete);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
+        plButton.add(btnDelete, gridBagConstraints);
 
         btnCancel.setBackground(new java.awt.Color(153, 153, 153));
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("Hủy");
-        btnCancel.setPreferredSize(new java.awt.Dimension(80, 35));
+        btnCancel.setPreferredSize(new java.awt.Dimension(80, 30));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
             }
         });
-        plButton.add(btnCancel);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
+        plButton.add(btnCancel, gridBagConstraints);
 
         plHeader.add(plButton);
 
@@ -229,45 +319,49 @@ public class CustomerDetail extends javax.swing.JDialog {
         plHistory.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LỊCH SỬ MUA HÀNG", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
         plHistory.setMaximumSize(new java.awt.Dimension(326589, 326589));
         plHistory.setMinimumSize(new java.awt.Dimension(800, 440));
-        plHistory.setPreferredSize(new java.awt.Dimension(1000, 450));
+        plHistory.setPreferredSize(new java.awt.Dimension(800, 400));
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setMaximumSize(new java.awt.Dimension(326589, 326589));
         jScrollPane1.setMinimumSize(new java.awt.Dimension(780, 400));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(980, 400));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(780, 340));
 
         tbHistory.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tbHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"HD01", "03/02/2023", "NV01", null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, "HD01", "03/02/2023", "NV01", null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Date", "Mã NV", "Tổng tiền"
+                "STT", "Mã hóa đơn", "Ngày", "Mã nhân viên", "Số lượng", "Tổng tiền"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         tbHistory.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tbHistory.setMaximumSize(new java.awt.Dimension(326589, 326589));
         tbHistory.setMinimumSize(new java.awt.Dimension(780, 80));
-        tbHistory.setPreferredSize(new java.awt.Dimension(980, 450));
+        tbHistory.setPreferredSize(new java.awt.Dimension(780, 340));
         tbHistory.setRowHeight(30);
         tbHistory.setShowGrid(true);
         jScrollPane1.setViewportView(tbHistory);
         if (tbHistory.getColumnModel().getColumnCount() > 0) {
-            tbHistory.getColumnModel().getColumn(0).setHeaderValue("ID");
-            tbHistory.getColumnModel().getColumn(1).setHeaderValue("Date");
-            tbHistory.getColumnModel().getColumn(2).setHeaderValue("Mã NV");
-            tbHistory.getColumnModel().getColumn(3).setHeaderValue("Tổng tiền");
+            tbHistory.getColumnModel().getColumn(0).setPreferredWidth(5);
         }
 
         plHistory.add(jScrollPane1);
@@ -301,12 +395,12 @@ public class CustomerDetail extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        CustomerDTO selectedCustomer = new CustomerDTO(
-            txtId.getText(),
-            txtName.getText(),
-            txtPhone.getText(),
-            Float.parseFloat(txtPoint.getText())
-        );
+        CustomerDTO selectedCustomer = new CustomerDTO();
+        selectedCustomer.setId(txtId.getText());
+        selectedCustomer.setName(txtName.getText());
+        selectedCustomer.setPhone(txtPhone.getText());
+        selectedCustomer.setPoint(Float.parseFloat(txtPoint.getText()));
+        
         UpdateCustomer updateDialog = new UpdateCustomer((JFrame) SwingUtilities.getWindowAncestor(this), true, selectedCustomer, customerBUS);
         
         this.dispose();
@@ -364,6 +458,7 @@ public class CustomerDetail extends javax.swing.JDialog {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblName;

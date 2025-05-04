@@ -39,7 +39,7 @@ public class SupplierInvoiceDetailsDAO implements DAOinterface<SuplierInvoiceDet
     public ArrayList<SuplierInvoiceDetailsDTO> selectInvoiceDetailByID(String t) {
         ArrayList<SuplierInvoiceDetailsDTO> supInvoiceDetails = new ArrayList<>();
         if(myconnect.openConnection()){
-            String query = "SELECT mp.product_id, name, sell_price, inventory_quantity, (inventory_quantity * sell_price) AS total_price"
+            String query = "SELECT pb.batch_id, mp.product_id, name, unit_price, sid.quantity, (sid.quantity * unit_price) AS total_price"
                     + " FROM supplier_invoice_details sid"
                     + " INNER JOIN product_batches pb ON sid.batch_id = pb.batch_id"
                     + " INNER JOIN medical_products mp ON pb.product_id = mp.product_id"
@@ -48,11 +48,12 @@ public class SupplierInvoiceDetailsDAO implements DAOinterface<SuplierInvoiceDet
             try {
                 while(rs != null && rs.next()){
                     SuplierInvoiceDetailsDTO supInvoiceDetail = new SuplierInvoiceDetailsDTO();
-                    supInvoiceDetail.setProductID(rs.getString("product_id"));
-                    supInvoiceDetail.setName(rs.getString("name"));
-                    supInvoiceDetail.setUnitPrice(rs.getDouble("sell_price"));
-                    supInvoiceDetail.setQuantity(rs.getInt("inventory_quantity"));
-                    supInvoiceDetail.setTotalPrice(rs.getDouble("total_price"));
+                    supInvoiceDetail.setBatchID(rs.getString(1));
+                    supInvoiceDetail.setProductID(rs.getString(2));
+                    supInvoiceDetail.setName(rs.getString(3));
+                    supInvoiceDetail.setUnitPrice(rs.getDouble(4));
+                    supInvoiceDetail.setQuantity(rs.getInt(5));
+                    supInvoiceDetail.setTotalPrice(rs.getDouble(6));
                     
                     supInvoiceDetails.add(supInvoiceDetail);
                 }

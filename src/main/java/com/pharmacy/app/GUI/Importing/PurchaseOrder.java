@@ -347,6 +347,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(poTbl);
 
+
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         jPanel14.setBackground(new java.awt.Color(255, 255, 255));
@@ -481,6 +482,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+
         poListTbl.getTableHeader().setReorderingAllowed(false);
         poListTbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -494,6 +496,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
             poListTbl.getColumnModel().getColumn(0).setMaxWidth(60);
             poListTbl.getColumnModel().getColumn(1).setResizable(false);
         }
+
 
         jComboBox6.setEditable(true);
         jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo đơn", "Tên người tạo", "Nhà cung cấp" }));
@@ -583,7 +586,9 @@ public class PurchaseOrder extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+
         jscrollpane.setViewportView(podetailsTbl);
+
 
         jLabel22.setText("Ngày lập:");
 

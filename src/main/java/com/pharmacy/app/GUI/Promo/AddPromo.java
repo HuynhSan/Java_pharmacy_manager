@@ -12,6 +12,7 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -23,7 +24,7 @@ public class AddPromo extends javax.swing.JDialog {
 
 
     public AddPromo(HomePromo homePromo) {
-        super((Frame) null, "Thêm khuyến mãi", true);
+        super((Frame)SwingUtilities.getWindowAncestor(homePromo), true);
         this.homepromo = homePromo;
         
         // Khởi tạo thành phần giao diện
@@ -37,8 +38,8 @@ public class AddPromo extends javax.swing.JDialog {
         Date today = new Date();
         startDatePicker.setDate(today);
         
-        updated();
-        setLocationRelativeTo(null);
+        changeType();
+        setLocationRelativeTo(homePromo);
     }
 
     /**
@@ -197,7 +198,7 @@ public class AddPromo extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbxPromotionTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxPromotionTypeActionPerformed
-        updated();
+        changeType();
     }//GEN-LAST:event_cbxPromotionTypeActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
@@ -326,17 +327,24 @@ public class AddPromo extends javax.swing.JDialog {
 
     }//GEN-LAST:event_endDatePickerPropertyChange
     
-    private void updated() {
+    private void changeType() {
         String selectedValue = (String) cbxPromotionType.getSelectedItem();
         
         if ("Đổi điểm".equals(selectedValue)) {
             txtDiscountPercent.setEnabled(false);
             txtMinAccumulatedPoint.setEnabled(true);
             txtDiscountAmount.setEnabled(true);
+            
+            // reset lai cac truong kh dung
+            txtDiscountPercent.setText("");
         } else {
             txtDiscountPercent.setEnabled(true);
             txtMinAccumulatedPoint.setEnabled(false);
             txtDiscountAmount.setEnabled(false);
+            
+            // reset lai cac truong kh dung
+            txtMinAccumulatedPoint.setText("");            
+            txtDiscountAmount.setText("");
         }
     }
     /**

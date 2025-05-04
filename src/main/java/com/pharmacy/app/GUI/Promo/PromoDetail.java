@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -22,22 +23,24 @@ import javax.swing.JOptionPane;
  */
 public class PromoDetail extends javax.swing.JDialog {
     private HomePromo homepromo;
+    private PromotionDTO promoDTO;
     private PromotionBUS promoBUS = new PromotionBUS();
     /**
      * Creates new form AddPromo1
-     * @param parent
+     * @param homepromo
      * @param promo
      */
-    public PromoDetail(HomePromo homepromo, PromotionDTO promo) {
-        super((Frame) null, "Chi tiết khuyến mãi", true);
+    public PromoDetail(java.awt.Frame parent,boolean modal, HomePromo homepromo, PromotionDTO promo) {
+        super(parent, true);
         this.homepromo = homepromo;
+        this.promoDTO = promo;
 
         // Khởi tạo các thành phần giao diện
         initComponents();
         
         // Gán giá trị vào các trường
         fillFields(promo);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(parent);
     }
 
     /**
@@ -74,6 +77,7 @@ public class PromoDetail extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Chi tiết khuyến mãi");
         setMinimumSize(new java.awt.Dimension(550, 550));
         getContentPane().setLayout(new java.awt.BorderLayout(20, 0));
 

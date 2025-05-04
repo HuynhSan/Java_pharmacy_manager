@@ -76,6 +76,10 @@ public class UserBUS {
         return userDAO.search(keyword);
     }
     
+    public ArrayList<UserDTO> filterUsersByStatus(boolean status) {
+        return userDAO.filterByStatus(status);
+    }
+    
     public String generateNewUserID() {
         // Get the highest user ID from the entire database (including deleted users)
         int maxID = userDAO.getHighestUserIDNumber();
@@ -104,4 +108,4 @@ public class UserBUS {
         // If not found in the list, query the database
         return userDAO.checkLogin(username, password);
     }
-    }
+}

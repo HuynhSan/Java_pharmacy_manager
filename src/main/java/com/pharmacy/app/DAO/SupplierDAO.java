@@ -4,13 +4,9 @@
  */
 package com.pharmacy.app.DAO;
 import com.pharmacy.app.DTO.SupplierDTO;
-import com.pharmacy.app.DAO.MyConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.sql.PreparedStatement;
-import java.util.Objects;
-//import java.util.List;
 
 /**
  *
@@ -40,7 +36,7 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
                 int lastNumber = Integer.parseInt(numericPart); // Lấy phần số: 12
                 lastNumber++; // Tăng lên: 13
                 nextId = "SUP" + String.format("%03d", lastNumber); // Kết quả: SUP013
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             } 
         }
@@ -105,7 +101,7 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
             String sql = "SELECT supplier_id, name, phone_number, email, address FROM suppliers WHERE is_deleted = 0";
             ResultSet rs = myconnect.runQuery(sql);
             try {
-                while (rs != null && rs.next()) {
+                while (rs.next()) {
                     SupplierDTO supplier = new SupplierDTO(
                         rs.getString(1), // id
                         rs.getString(2), // name
@@ -131,7 +127,7 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
             String sql = "SELECT supplier_id, name, phone_number, email, address FROM suppliers WHERE supplier_id = ?";
             ResultSet rs = myconnect.prepareQuery(sql, t);
             try {
-                while (rs != null && rs.next()){
+                while (rs.next()){
                     supplier = new SupplierDTO(
                         rs.getString(1), // id
                         rs.getString(2), // name
@@ -162,7 +158,7 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
                     + "AND is_deleted = 0";
             ResultSet rs = myconnect.runQuery(sql);
             try {
-                while (rs != null && rs.next()) {
+                while (rs.next()) {
                     SupplierDTO supplier = new SupplierDTO(
                         rs.getString(1), // id
                         rs.getString(2), // name

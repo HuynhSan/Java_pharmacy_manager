@@ -5,7 +5,10 @@
 package com.pharmacy.app.GUI.Promo;
 import com.pharmacy.app.BUS.PromotionBUS;
 import com.pharmacy.app.DTO.PromotionDTO;
+import com.pharmacy.app.Utils.PDFExporter;
 import java.awt.Color;
+import java.awt.Frame;
+import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -27,8 +30,8 @@ public class HomePromo extends javax.swing.JPanel{
 
     public HomePromo() {
         initComponents();
-        setupTable();
         loadAllData();
+
         
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -50,6 +53,7 @@ public class HomePromo extends javax.swing.JPanel{
         });
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,7 +71,7 @@ public class HomePromo extends javax.swing.JPanel{
         plButton = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
         btnRefesh = new javax.swing.JButton();
-        lblImg = new javax.swing.JLabel();
+        btnPrintPDF = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -106,13 +110,18 @@ public class HomePromo extends javax.swing.JPanel{
         txtSearch.setMaximumSize(new java.awt.Dimension(300, 30));
         txtSearch.setMinimumSize(new java.awt.Dimension(300, 30));
         txtSearch.setPreferredSize(new java.awt.Dimension(300, 30));
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
         plSearch.add(txtSearch);
 
         plButton.setBackground(new java.awt.Color(255, 255, 255));
         plButton.setMaximumSize(new java.awt.Dimension(300, 70));
         plButton.setMinimumSize(new java.awt.Dimension(300, 70));
         plButton.setPreferredSize(new java.awt.Dimension(300, 70));
-        plButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 15));
+        plButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 20));
 
         btnAdd.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnAdd.setText("Thêm");
@@ -140,10 +149,19 @@ public class HomePromo extends javax.swing.JPanel{
         });
         plButton.add(btnRefesh);
 
-        lblImg.setBackground(new java.awt.Color(255, 255, 255));
-        lblImg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pdf.png"))); // NOI18N
-        plButton.add(lblImg);
+        btnPrintPDF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnPrintPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pdf.png"))); // NOI18N
+        btnPrintPDF.setText("PDF");
+        btnPrintPDF.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnPrintPDF.setMaximumSize(new java.awt.Dimension(90, 30));
+        btnPrintPDF.setMinimumSize(new java.awt.Dimension(90, 30));
+        btnPrintPDF.setPreferredSize(new java.awt.Dimension(90, 30));
+        btnPrintPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintPDFActionPerformed(evt);
+            }
+        });
+        plButton.add(btnPrintPDF);
 
         javax.swing.GroupLayout plHeaderLayout = new javax.swing.GroupLayout(plHeader);
         plHeader.setLayout(plHeaderLayout);
@@ -152,9 +170,9 @@ public class HomePromo extends javax.swing.JPanel{
             .addGroup(plHeaderLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(plSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
-                .addComponent(plButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 423, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(plButton, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 298, Short.MAX_VALUE))
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         plHeaderLayout.setVerticalGroup(
@@ -165,7 +183,9 @@ public class HomePromo extends javax.swing.JPanel{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(plHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(plSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(plButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, plHeaderLayout.createSequentialGroup()
+                        .addComponent(plButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         add(plHeader, java.awt.BorderLayout.NORTH);
@@ -210,11 +230,11 @@ public class HomePromo extends javax.swing.JPanel{
         columnModel.getColumn(0).setPreferredWidth(50);
         columnModel.getColumn(0).setPreferredWidth(50);
         columnModel.getColumn(0).setPreferredWidth(50);
-        tblPromo.setEnabled(false);
         tblPromo.setMaximumSize(new java.awt.Dimension(700, 600));
         tblPromo.setMinimumSize(new java.awt.Dimension(700, 450));
         tblPromo.setPreferredSize(new java.awt.Dimension(1180, 600));
         tblPromo.setRowHeight(30);
+        tblPromo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         tblPromo.setShowGrid(true);
         tblPromo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -229,13 +249,20 @@ public class HomePromo extends javax.swing.JPanel{
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblPromoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPromoMouseClicked
-        int row = tblPromo.rowAtPoint(evt.getPoint());
-        if (row >= 0) {
-            tblPromo.setRowSelectionInterval(row, row); // Tô màu dòng được click
+        int selected_row = tblPromo.getSelectedRow();
+        System.out.println(selected_row);
+        if (selected_row != -1) {
+            String promoId = tblPromo.getValueAt(selected_row, 0).toString();
+            PromotionDTO promo = promoBUS.selectById(promoId);  // lấy chi tiết
+
+            if (promo != null) {
+                PromoDetail dialog = new PromoDetail((JFrame) SwingUtilities.getWindowAncestor(this), true, this, promo);
+                dialog.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin khuyến mãi.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
         }
-        if (evt.getClickCount() == 2){
-            showPromoDetails(row);
-        }
+      
     }//GEN-LAST:event_tblPromoMouseClicked
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -258,15 +285,26 @@ public class HomePromo extends javax.swing.JPanel{
         loadAllData();
     }//GEN-LAST:event_btnRefeshActionPerformed
 
-    
-    private void setupTable() {
-        tblPromo.setSelectionBackground(new Color(0, 220, 230)); // Màu nền khi chọn (xanh nhạt)
-        tblPromo.setSelectionForeground(Color.BLACK); // Màu chữ khi chọn
-        tblPromo.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Chỉ cho phép chọn 1 dòng
-    }
-    
-    // Dùng cho combobox
+    private void btnPrintPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintPDFActionPerformed
+        try {
+            // Get table model
+            DefaultTableModel model = (DefaultTableModel) tblPromo.getModel();
 
+            // Use the PDFExporter utility class to export employee data
+            com.pharmacy.app.Utils.PDFExporter.exportPromotionsToPDF(this, model);
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Lỗi khi xuất PDF: " + e.getMessage(),
+                "Lỗi",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnPrintPDFActionPerformed
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchActionPerformed
     
     // Dùng cho combobox
     public void loadDataByType(String type) {
@@ -279,14 +317,13 @@ public class HomePromo extends javax.swing.JPanel{
         model.setRowCount(0); // Xóa dữ liệu cũ
 
         for (PromotionDTO promo : list) {
-            Object[] row = new Object[]{
+            model.addRow(new Object[]{
                 promo.getPromotionId(),
                 promo.getProgramName(),
                 promo.getPromotionType(),
                 promo.getStartDate(),
                 promo.getEndDate()
-            };
-            model.addRow(row);
+            });
         }
     }
     
@@ -295,25 +332,6 @@ public class HomePromo extends javax.swing.JPanel{
         promotionList = promoBUS.getAllPromos();
         showDataToTable(promotionList);
     }
-
-
-    private void showPromoDetails(int row) {
-        if (row >= 0 && row < promotionList.size()) {
-            String promoId = promotionList.get(row).getPromotionId();
-
-            PromotionDTO promo = promoBUS.selectById(promoId);  // Lấy chi tiết từ DB
-
-            if (promo != null) {
-                PromoDetail dialog = new PromoDetail(this, promo);
-                dialog.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin khuyến mãi.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Dữ liệu không hợp lệ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     
     private void searchPromo() {
         String keyword = txtSearch.getText();
@@ -323,13 +341,13 @@ public class HomePromo extends javax.swing.JPanel{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnPrintPDF;
     private javax.swing.JButton btnRefesh;
     private javax.swing.JComboBox<String> cbSort;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel lblImg;
     private javax.swing.JPanel plButton;
     private javax.swing.JPanel plHeader;
     private javax.swing.JPanel plSearch;

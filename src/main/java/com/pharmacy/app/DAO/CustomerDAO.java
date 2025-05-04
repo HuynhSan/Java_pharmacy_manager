@@ -5,12 +5,9 @@
 package com.pharmacy.app.DAO;
 
 import com.pharmacy.app.DTO.CustomerDTO;
-import com.pharmacy.app.DAO.MyConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.sql.PreparedStatement;
-import java.util.Objects;
 /**
  *
  * @author BOI QUAN
@@ -34,8 +31,8 @@ public class CustomerDAO implements DAOinterface<CustomerDTO>{
                 int lastNumber = Integer.parseInt(numericPart); // Lấy phần số: 12
                 lastNumber++; // Tăng lên: 13
                 nextId = "CUS" + String.format("%03d", lastNumber); // Kết quả: SUP013
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (SQLException e) {
+//                e.printStackTrace();
             } 
         }
         return nextId;
@@ -98,17 +95,17 @@ public class CustomerDAO implements DAOinterface<CustomerDTO>{
             String sql = "SELECT * FROM customers WHERE is_deleted = 0";
             ResultSet rs = myconnect.runQuery(sql);
             try {
-                while (rs != null && rs.next()) {
-                    CustomerDTO customer = new CustomerDTO(
-                        rs.getString(1), // id
-                        rs.getString(2), // name
-                        rs.getString(3), // phone
-                        rs.getFloat(4) // point
-                    );
+                while (rs.next()) {
+                    CustomerDTO customer = new CustomerDTO();
+                    customer.setId(rs.getString(1)); // id
+                    customer.setName(rs.getString(2)); // name
+                    customer.setPhone(rs.getString(3)); // phone
+                    customer.setPoint(rs.getFloat(4)); // point
+                    
                     customers.add(customer);
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             } finally {
                 myconnect.closeConnection();
             }
@@ -123,16 +120,15 @@ public class CustomerDAO implements DAOinterface<CustomerDTO>{
             String sql = "SELECT * FROM customers WHERE customer_id = ?";
             ResultSet rs = myconnect.prepareQuery(sql, t);
             try {
-                while (rs != null && rs.next()){
-                    customer = new CustomerDTO(
-                        rs.getString(1), // id
-                        rs.getString(2), // name
-                        rs.getString(3), // phone
-                        rs.getFloat(4) // point
-                    );
+                while (rs.next()){
+                    customer = new CustomerDTO();
+                    customer.setId(rs.getString(1)); // id
+                    customer.setName(rs.getString(2)); // name
+                    customer.setPhone(rs.getString(3)); // phone
+                    customer.setPoint(rs.getFloat(4)); // point
                 }
             } catch (SQLException e){
-                e.printStackTrace();
+//                e.printStackTrace();
             } finally {
                 myconnect.closeConnection();
             }
@@ -152,21 +148,75 @@ public class CustomerDAO implements DAOinterface<CustomerDTO>{
                     + "AND is_deleted = 0";
             ResultSet rs = myconnect.runQuery(sql);
             try {
-                while (rs != null && rs.next()) {
-                    CustomerDTO customer = new CustomerDTO(
-                        rs.getString(1), // id
-                        rs.getString(2), // name
-                        rs.getString(3), // phone
-                        rs.getFloat(4) // point
-                    );
+                while (rs.next()) {
+                    CustomerDTO customer = new CustomerDTO();
+                    customer.setId(rs.getString(1)); // id
+                    customer.setName(rs.getString(2)); // name
+                    customer.setPhone(rs.getString(3)); // phone
+                    customer.setPoint(rs.getFloat(4)); // point
+                    
                     customers.add(customer);
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             } finally {
                 myconnect.closeConnection();
             }
         }
         return customers;
     }
+
+    public CustomerDTO findCustomerByPhone(String phone) {
+        CustomerDTO customer = null;
+        if (myconnect.openConnection()){
+            String sql = "SELECT * FROM customers WHERE phone_number = ?";
+            ResultSet rs = myconnect.prepareQuery(sql, phone);
+            try {
+                while (rs.next()){
+                    customer = new CustomerDTO();
+                    customer.setId(rs.getString(1)); // id
+                    customer.setName(rs.getString(2)); // name
+                    customer.setPhone(rs.getString(3)); // phone
+                    customer.setPoint(rs.getFloat(4)); // point
+                }
+            } catch (SQLException e){
+//                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return customer;
+    }
+
+    public void updatePoints(String customerId, float newTotalPoints) {
+        if (myconnect.openConnection()){
+            String sql = "UPDATE customers SET point = ? WHERE customer_id=?";
+            int rowsAffected = myconnect.prepareUpdate(
+                    sql,
+                    newTotalPoints,
+                    customerId // WHERE dieu kien
+            );
+            myconnect.closeConnection();
+        }
+    }
+
+    public String getCustomerNameById(String id) {
+        String name = "";
+        if (myconnect.openConnection()){
+            String sql = "SELECT customer_name FROM customers WHERE customer_id = ?";
+            ResultSet rs = myconnect.prepareQuery(sql, id);
+            try {
+                while (rs != null && rs.next()){
+                    name = rs.getString(1);
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return name;
+    }
+    
+    
 }

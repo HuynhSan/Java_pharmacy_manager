@@ -4,6 +4,7 @@
  */
 package com.pharmacy.app;
 
+import com.pharmacy.app.DTO.SessionDTO;
 import com.pharmacy.app.GUI.Authorization.AuthorizationManagement;
 import com.pharmacy.app.GUI.Customer.CustomerList;
 import com.pharmacy.app.GUI.Employee.EmployeeManagement;
@@ -277,6 +278,9 @@ public class managerView extends javax.swing.JFrame {
         logouticon.setBackground(new java.awt.Color(0, 51, 102));
         logouticon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logout.png"))); // NOI18N
         logouticon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logouticonMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 logouticonMouseEntered(evt);
             }
@@ -562,11 +566,11 @@ public class managerView extends javax.swing.JFrame {
         scheduleBtn.setBackground(new java.awt.Color(0, 102, 153));
         scheduleBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         scheduleBtn.setForeground(new java.awt.Color(255, 255, 255));
-        scheduleBtn.setText("QUẢN LÝ LỊCH LÀM VIỆC");
         scheduleBtn.setBorder(null);
         scheduleBtn.setBorderPainted(false);
         scheduleBtn.setContentAreaFilled(false);
         scheduleBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        scheduleBtn.setEnabled(false);
         scheduleBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         scheduleBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         scheduleBtn.setMinimumSize(new java.awt.Dimension(200, 30));
@@ -592,11 +596,11 @@ public class managerView extends javax.swing.JFrame {
         reportBtn.setBackground(new java.awt.Color(0, 102, 153));
         reportBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         reportBtn.setForeground(new java.awt.Color(255, 255, 255));
-        reportBtn.setText("BÁO CÁO THỐNG KÊ");
         reportBtn.setBorder(null);
         reportBtn.setBorderPainted(false);
         reportBtn.setContentAreaFilled(false);
         reportBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        reportBtn.setEnabled(false);
         reportBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         reportBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         reportBtn.setMinimumSize(new java.awt.Dimension(200, 30));
@@ -614,11 +618,11 @@ public class managerView extends javax.swing.JFrame {
         infoBtn.setBackground(new java.awt.Color(0, 102, 153));
         infoBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         infoBtn.setForeground(new java.awt.Color(255, 255, 255));
-        infoBtn.setText("THÔNG TIN CÁ NHÂN");
         infoBtn.setBorder(null);
         infoBtn.setBorderPainted(false);
         infoBtn.setContentAreaFilled(false);
         infoBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        infoBtn.setEnabled(false);
         infoBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         infoBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         infoBtn.setMinimumSize(new java.awt.Dimension(200, 30));
@@ -945,6 +949,20 @@ public class managerView extends javax.swing.JFrame {
     private void logouticonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logouticonMouseExited
         btnLogout.setBackground(new Color(0,51,102));
     }//GEN-LAST:event_logouticonMouseExited
+
+    private void logouticonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logouticonMouseClicked
+        int confirm = JOptionPane.showConfirmDialog(null, 
+            "Bạn có chắc chắn muốn đăng xuất không?", 
+            "Xác nhận đăng xuất", 
+            JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION){
+            SessionDTO.clearUser();
+            this.dispose();
+            java.awt.EventQueue.invokeLater(() -> {
+                new loginPage().setVisible(true);
+            });
+        }
+    }//GEN-LAST:event_logouticonMouseClicked
 
     
     public static void main(String args[]) {
