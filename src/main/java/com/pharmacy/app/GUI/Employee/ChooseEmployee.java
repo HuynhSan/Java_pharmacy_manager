@@ -201,6 +201,8 @@ public class ChooseEmployee extends javax.swing.JDialog {
         ));
         tblEmployees.setColumnSelectionAllowed(true);
         tblEmployees.setFocusable(false);
+        tblEmployees.setPreferredSize(new java.awt.Dimension(300, 310));
+        tblEmployees.setRowHeight(30);
         tblEmployees.setShowGrid(true);
         tblEmployees.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

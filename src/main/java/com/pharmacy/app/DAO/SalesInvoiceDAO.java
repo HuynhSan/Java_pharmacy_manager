@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -38,7 +39,34 @@ public class SalesInvoiceDAO implements DAOinterface<SalesInvoiceDTO>{
         }
         return newId;
     }
-
+    
+    public ArrayList<SalesInvoiceDTO> selectSaleInvoiceByCustomerID(String t) {
+        ArrayList<SalesInvoiceDTO> saleInvoices = new ArrayList<>();
+        if (myconnect.openConnection()){
+            String sql = "SELECT sales_invoice_id, user_id, total_quantity, total_amount, sale_date "
+                    + " FROM sales_invoices sai"
+                    + " INNER JOIN customers c ON c.customer_id = sai.customer_id "
+                    + " WHERE c.customer_id = ?";
+            ResultSet rs = myconnect.prepareQuery(sql, t);
+            try {
+                while (rs.next()){
+                    SalesInvoiceDTO saleInvoice = new SalesInvoiceDTO();
+                    saleInvoice.setInvoiceId(rs.getString(1)); // id
+                    saleInvoice.setUserId(rs.getString(2)); // name
+                    saleInvoice.setTotalQuantity(rs.getInt(3)); // phone
+                    saleInvoice.setFinalTotal(rs.getBigDecimal(4));
+                    LocalDate createDate = rs.getDate(5).toLocalDate();
+                    saleInvoice.setCreateDate(createDate);
+                    saleInvoices.add(saleInvoice);
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return saleInvoices;
+    }
     @Override
     public boolean insert(SalesInvoiceDTO t) {
         boolean isSuccess = false;

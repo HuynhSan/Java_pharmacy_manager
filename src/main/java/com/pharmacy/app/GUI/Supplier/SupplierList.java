@@ -259,6 +259,7 @@ public final class SupplierList extends javax.swing.JPanel {
         tbSupplierList.setMinimumSize(new java.awt.Dimension(700, 400));
         tbSupplierList.setName(""); // NOI18N
         tbSupplierList.setPreferredSize(new java.awt.Dimension(1180, 550));
+        tbSupplierList.setRowHeight(30);
         tbSupplierList.setSelectionBackground(new java.awt.Color(51, 51, 51));
         tbSupplierList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tbSupplierList.setShowGrid(true);

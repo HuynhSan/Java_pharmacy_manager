@@ -343,6 +343,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
             }
         ));
         tblWeekSchedule.setPreferredSize(new java.awt.Dimension(690, 80));
+        tblWeekSchedule.setRowHeight(30);
         jScrollPane2.setViewportView(tblWeekSchedule);
 
         pnlWeekSchedule.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -398,6 +399,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         ));
         tblPayrollComponent.setEnabled(false);
         tblPayrollComponent.setFocusable(false);
+        tblPayrollComponent.setRowHeight(30);
         spPayrollComponent.setViewportView(tblPayrollComponent);
 
         pnlPayrollComponent.add(spPayrollComponent, java.awt.BorderLayout.CENTER);
