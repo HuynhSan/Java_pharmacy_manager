@@ -48,16 +48,8 @@ public class ProductBatchBUS {
         }else return "Hết hạn sử dụng";
     }
     
-    public boolean saleBatchQuantity(int quan){
-        if(quan <= batchDTO.getQuantityInStock()){
-            
-            batchDTO.setQuantityInStock(batchDTO.getQuantityInStock() - quan);
-            int newQuantity = batchDTO.getQuantityInStock();
-            
-            productBUS.saleQuantity(quan, batchDTO.getMedicineID());
-            batchDAO.updateBatchQuantity(batchDTO.getMedicineID(), newQuantity);
-            
-            return true;
-        }else return false;
+
+    public boolean updateInventoryQuantity(String batchId, String productId, int quantity){
+        return batchDAO.updateBatchQuantity(batchId, productId, quantity);
     }
 }

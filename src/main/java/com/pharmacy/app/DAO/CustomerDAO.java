@@ -187,6 +187,36 @@ public class CustomerDAO implements DAOinterface<CustomerDTO>{
         }
         return customer;
     }
+
+    public void updatePoints(String customerId, float newTotalPoints) {
+        if (myconnect.openConnection()){
+            String sql = "UPDATE customers SET point = ? WHERE customer_id=?";
+            int rowsAffected = myconnect.prepareUpdate(
+                    sql,
+                    newTotalPoints,
+                    customerId // WHERE dieu kien
+            );
+            myconnect.closeConnection();
+        }
+    }
+
+    public String getCustomerNameById(String id) {
+        String name = "";
+        if (myconnect.openConnection()){
+            String sql = "SELECT customer_name FROM customers WHERE customer_id = ?";
+            ResultSet rs = myconnect.prepareQuery(sql, id);
+            try {
+                while (rs != null && rs.next()){
+                    name = rs.getString(1);
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return name;
+    }
     
     
 }

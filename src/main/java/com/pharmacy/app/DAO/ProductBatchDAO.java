@@ -78,18 +78,20 @@ public class ProductBatchDAO implements DAOinterface<ProductBatchDTO>{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
-    public void updateBatchQuantity(String productId, int quantity) {
-    if (myconnect.openConnection()) {
-        try {
-            String sql = "UPDATE product_batches SET inventory_quantity = ? WHERE product_id = ?";
-            myconnect.prepareUpdate(sql, quantity, productId);
+    public boolean updateBatchQuantity(String batchId, String productId, int quantity) {
+        boolean isSuccess = false;
+        if (myconnect.openConnection()) {
+        String sql = "UPDATE product_batches SET inventory_quantity = inventory_quantity -  ? WHERE batch_id = ? AND product_id = ?";
+        int result = myconnect.prepareUpdate(sql, quantity, batchId, productId);
             
-        } finally {
-            myconnect.closeConnection();
+        if (result > 0) {
+                isSuccess = true; // thành công
+            }
+            myconnect.closeConnection(); // Đảm bảo đóng kết nối sau khi xong
         }
+        return isSuccess;
     }
 }
 
-}
 
 

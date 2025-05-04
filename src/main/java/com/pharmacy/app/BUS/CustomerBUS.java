@@ -2,6 +2,9 @@ package com.pharmacy.app.BUS;
 
 import com.pharmacy.app.DAO.CustomerDAO;
 import com.pharmacy.app.DTO.CustomerDTO;
+import com.pharmacy.app.DTO.PromotionDTO;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 /**
@@ -82,4 +85,35 @@ public class CustomerBUS {
         return customerDAO.findCustomerByPhone(phone);
     }
     
+    public String getCustomerNameById(String id){
+        return customerDAO.getCustomerNameById(id);
+    }
+    
+    
+    public void updateCustomerPointsAfterInvoice(String customerId, PromotionDTO promotionDTO, BigDecimal finalTotal) {
+        CustomerDTO customer = customerDAO.selectByID(customerId);
+        if (customer == null) return;
+
+        float currentPoints = customer.getPoint();
+
+        // 1. Trừ điểm nếu KH dùng mã giảm đổi điểm
+        if (promotionDTO != null && "Đổi điểm".equals(promotionDTO.getPromotionType())) {
+            float pointsUsed = promotionDTO.getMinAccumulatedPoints(); // Lấy số điểm từ mã khuyến mãi
+            currentPoints -= pointsUsed;
+        }
+
+        // 2. Cộng điểm mới
+        BigDecimal earnedPointsDecimal = finalTotal
+            .divide(BigDecimal.valueOf(10000), 0, RoundingMode.HALF_UP); // Làm tròn về số nguyên
+        float earnedPoints = earnedPointsDecimal.floatValue();
+
+        // 3. Tính tổng điểm mới và làm tròn 
+        float newTotalPoints = BigDecimal.valueOf(currentPoints + earnedPoints)
+            .setScale(1, RoundingMode.HALF_UP) // Làm tròn 1 chữ số thập phân (hoặc 0 nếu muốn số nguyên)
+            .floatValue();
+        
+        // 3. Cập nhật
+        customer.setPoint(newTotalPoints);
+        customerDAO.updatePoints(customerId, newTotalPoints);
+    }
 }

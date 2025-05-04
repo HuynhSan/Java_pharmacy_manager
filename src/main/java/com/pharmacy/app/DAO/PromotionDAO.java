@@ -190,6 +190,7 @@ public class PromotionDAO implements DAOinterface<PromotionDTO>{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
+    // Hàm lọc khuyến mãi theo cbx
     public ArrayList<PromotionDTO> getPromotionsByType(String type) {
         ArrayList<PromotionDTO> promos = new ArrayList<>();
         
@@ -221,7 +222,7 @@ public class PromotionDAO implements DAOinterface<PromotionDTO>{
         return promos;
     }
 
-    
+    // Hàm lấy khuyến mãi ưu đãi nhất
     public PromotionDTO getBestRewardPromotion(float customerPoint) {
         PromotionDTO promo = null;
         
