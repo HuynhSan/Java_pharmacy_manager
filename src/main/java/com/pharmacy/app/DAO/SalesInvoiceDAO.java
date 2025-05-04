@@ -8,6 +8,7 @@ import com.pharmacy.app.DTO.SalesInvoiceDTO;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -40,7 +41,35 @@ public class SalesInvoiceDAO implements DAOinterface<SalesInvoiceDTO>{
 
     @Override
     public boolean insert(SalesInvoiceDTO t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean isSuccess = false;
+
+        if (myconnect.openConnection()) {
+            String sql = "INSERT INTO sales_invoices (sales_invoice_id, user_id, customer_id, total_quantity, total_amount, original_amount, discount_amount, sale_date)"
+                       + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            
+            // Sử dụng prepareUpdate để thực hiện câu lệnh INSERT
+            int result = myconnect.prepareUpdate(
+                sql,
+                t.getInvoiceId(),
+                t.getUserId(),
+                t.getCustomerId() != null && !t.getCustomerId().isEmpty()? t.getCustomerId() : null,
+                t.getTotalQuantity(),
+                t.getFinalTotal(),
+                t.getTotalAmount(),
+                t.getTotalDiscount(),
+                Timestamp.valueOf(t.getCreateDate())   // Convert LocalDate sang java.sql.Date
+                
+            );
+
+            // Kiểm tra kết quả và trả về true nếu thành công, false nếu thất bại
+            if (result > 0) {
+                isSuccess = true; // Insert thành công
+            }
+
+            myconnect.closeConnection(); // Đảm bảo đóng kết nối sau khi xong
+        }
+
+        return isSuccess;
 
     }
 
@@ -56,7 +85,32 @@ public class SalesInvoiceDAO implements DAOinterface<SalesInvoiceDTO>{
 
     @Override
     public ArrayList<SalesInvoiceDTO> selectAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<SalesInvoiceDTO> list = new ArrayList<>();
+        if (myconnect.openConnection()){
+            String sql = "SELECT * FROM sales_invoices WHERE is_deleted = 0";
+            
+            ResultSet rs = myconnect.runQuery(sql);
+            try{
+                while (rs != null && rs.next()){
+                    SalesInvoiceDTO invoice = new SalesInvoiceDTO(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getInt(4),
+                        rs.getBigDecimal("original_amount"),
+                        rs.getBigDecimal("discount_amount"),
+                        rs.getBigDecimal("total_amount"),
+                        rs.getTimestamp(8).toLocalDateTime()
+                    );
+                    list.add(invoice);    
+                }
+            } catch(Exception e){
+                    e.printStackTrace();
+            } finally{
+                myconnect.closeConnection();
+            }
+        }
+        return list;
     }
 
     @Override

@@ -5,7 +5,7 @@
 package com.pharmacy.app.DTO;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -19,11 +19,11 @@ public class SalesInvoiceDTO {
     private BigDecimal totalAmount;
     private BigDecimal totalDiscount;
     private BigDecimal finalTotal;
-    private LocalDate createDate;
+    private LocalDateTime createDate;
 
     // constructor, getter, setter ...
 
-    public SalesInvoiceDTO(String invoiceId, String userId, String customerId, int totalQuantity, BigDecimal totalAmount, BigDecimal totalDiscount, BigDecimal finalTotal, LocalDate createDate) {
+    public SalesInvoiceDTO(String invoiceId, String userId, String customerId, int totalQuantity, BigDecimal totalAmount, BigDecimal totalDiscount, BigDecimal finalTotal, LocalDateTime createDate) {
         this.invoiceId = invoiceId;
         this.userId = userId;
         this.customerId = customerId;
@@ -62,7 +62,7 @@ public class SalesInvoiceDTO {
         return finalTotal;
     }
 
-    public LocalDate getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
@@ -94,7 +94,7 @@ public class SalesInvoiceDTO {
         this.finalTotal = finalTotal;
     }
 
-    public void setCreateDate(LocalDate createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
     

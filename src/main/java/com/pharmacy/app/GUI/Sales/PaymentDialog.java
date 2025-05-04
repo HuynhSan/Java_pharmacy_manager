@@ -4,14 +4,24 @@
  */
 package com.pharmacy.app.GUI.Sales;
 
+import com.pharmacy.app.BUS.CustomerBUS;
+import com.pharmacy.app.BUS.ProductBatchBUS;
+import com.pharmacy.app.BUS.PromotionBUS;
 import com.pharmacy.app.BUS.SalesInvoiceBUS;
+import com.pharmacy.app.BUS.SalesInvoiceDetailBUS;
+import com.pharmacy.app.BUS.SalesInvoicePromotionBUS;
 import com.pharmacy.app.DTO.CartItemDTO;
+import com.pharmacy.app.DTO.PromotionDTO;
 import com.pharmacy.app.DTO.SalesInvoiceDTO;
+import com.pharmacy.app.DTO.SalesInvoiceDetailDTO;
+import com.pharmacy.app.DTO.SalesInvoicePromotionDTO;
 import java.awt.Frame;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,6 +32,7 @@ public class PaymentDialog extends javax.swing.JDialog {
     private Map<String, CartItemDTO> cartItems;
     private String userID;
     private String customerID;
+    private String promoID;
     private HomeSales homesales;
     private BigDecimal totalProductPrice;
     private int totalProduct;
@@ -30,6 +41,13 @@ public class PaymentDialog extends javax.swing.JDialog {
     
     
     SalesInvoiceBUS salesInvoiceBUS = new SalesInvoiceBUS();
+    SalesInvoiceDetailBUS salesInvoiceDetailBUS = new SalesInvoiceDetailBUS();
+    
+    ProductBatchBUS batchBus = new ProductBatchBUS();
+    CustomerBUS customerBUS = new CustomerBUS();    
+    PromotionBUS promoBUS = new PromotionBUS();
+    SalesInvoicePromotionBUS salesPromoBUS = new SalesInvoicePromotionBUS();
+
     /**
      * Creates new form PaymentDialog
      */
@@ -41,10 +59,12 @@ public class PaymentDialog extends javax.swing.JDialog {
         this.cartItems = cartItemsMap;
         this.userID = userId;
         this.customerID = customerId;
+        this.promoID = promoId;
         this.totalProductPrice = totalProductPrice;
         this.totalDiscount = totalDiscount;
         this.subTotal = subTotal;
         this.totalProduct = homesales.calculateTotalProduct();
+        this.homesales = homesales;
 
 
         System.out.println(userId);        
@@ -79,8 +99,6 @@ public class PaymentDialog extends javax.swing.JDialog {
         System.out.println("------------------------------");
 
     }
-        
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -251,43 +269,68 @@ public class PaymentDialog extends javax.swing.JDialog {
         String invoiceId = salesInvoiceBUS.generateNewId();  // Ví dụ: HD001, HD002,...
 
         // 2. Lấy ngày tạo
-        LocalDate today = LocalDate.now();
+        LocalDateTime today = LocalDateTime.now();
 
-        System.out.println("===== THÔNG TIN HÓA ĐƠN =====");
-        System.out.println("Mã hóa đơn: " + invoiceId);
-        System.out.println("Mã nhân viên (userID): " + userID);
-        System.out.println("Mã khách hàng (customerID): " + customerID);
-        System.out.println("Tổng số lượng sản phẩm: " + totalProduct);
-        System.out.println("Tổng tiền sản phẩm: " + totalProductPrice);
-        System.out.println("Tổng khuyến mãi: " + totalDiscount);
-        System.out.println("Thành tiền: " + subTotal);
-        System.out.println("Ngày tạo: " + today);
-        System.out.println("=============================");
+        // 3. Tạo hóa đơn DTO
+        SalesInvoiceDTO invoiceDTO;
+        if (customerID == null){
+            invoiceDTO = new SalesInvoiceDTO(invoiceId, userID, null, totalProduct, totalProductPrice, totalDiscount,subTotal, today);
 
-        
-        // 4. Tạo hóa đơn DTO
-        SalesInvoiceDTO invoiceDTO = new SalesInvoiceDTO(invoiceId, this.userID, this.customerID, totalProduct, totalProductPrice, totalDiscount, subTotal, today);
+        } else {
+            invoiceDTO = new SalesInvoiceDTO(invoiceId, userID, customerID, totalProduct, totalProductPrice, totalDiscount,subTotal, today);
+        }
 
-        // 5. Gọi BUS lưu hoá đơn
-//        boolean success = invoiceBUS.insertInvoice(invoice);
-//
-//        // 6. Lưu chi tiết hoá đơn nếu hoá đơn được lưu thành công
-//        if (success) {
-//            for (CartItemDTO item : cartItems.values()) {
-//                InvoiceDetailDTO detail = new InvoiceDetailDTO(
-//                    invoiceId,
-//                    item.getProductId(),
-//                    item.getQuantity(),
-//                    item.getTotalPrice()
-//                );
-//                invoiceDetailBUS.insertInvoiceDetail(detail);
-//            }
-//
-//            JOptionPane.showMessageDialog(this, "Thanh toán thành công!");
-//            this.dispose(); // Đóng dialog
-//        } else {
-//            JOptionPane.showMessageDialog(this, "Lỗi khi lưu hoá đơn!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//        }
-    }
+        // 4. Gọi BUS lưu hoá đơn
+        boolean success = salesInvoiceBUS.insertInvoice(invoiceDTO);
+
+        // 5. Lưu chi tiết hoá đơn nếu hoá đơn được lưu thành công
+        if (success) {
+            for (CartItemDTO item : cartItems.values()) {
+                SalesInvoiceDetailDTO detail = new SalesInvoiceDetailDTO(
+                    invoiceId,
+                    item.getProductId(),
+                    item.getQuantity(),
+                    item.getFinalPrice()
+                );
+                salesInvoiceDetailBUS.addInvoiceDetail(detail);
+                
+                // Cập nhật tồn kho theo batchId và product_Id
+                batchBus.updateInventoryQuantity(item.getBatchId(), item.getProductId(), item.getQuantity());
+            }
+            
+            if (customerID != null){
+                System.out.println(promoID);
+                PromotionDTO promo = promoBUS.selectById(promoID);
+                // Cập nhật điểm
+                customerBUS.updateCustomerPointsAfterInvoice(customerID, promo, this.subTotal);
+            }
+            
+            if (promoID != null){
+                salesPromoBUS.add(new SalesInvoicePromotionDTO(invoiceId, promoID));
+            }
+
+            JOptionPane.showMessageDialog(this, "Xuất hóa đơn thành công!");
+            this.dispose(); // Đóng dialog
+            homesales.loadAllData();
+            homesales.reload();
+        } else {
+            JOptionPane.showMessageDialog(this, "Lỗi khi lưu hoá đơn!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }
 
 }
+
+
+
+
+//        System.out.println("===== THÔNG TIN HÓA ĐƠN =====");
+//        System.out.println("Mã hóa đơn: " + invoiceId);
+//        System.out.println("Mã nhân viên (userID): " + userID);
+//        System.out.println("Mã khách hàng (customerID): " + customerID);
+//        System.out.println("Tổng số lượng sản phẩm: " + totalProduct);
+//        System.out.println("Tổng tiền sản phẩm: " + totalProductPrice);
+//        System.out.println("Tổng khuyến mãi: " + totalDiscount);
+//        System.out.println("Thành tiền: " + subTotal);
+//        System.out.println("Ngày tạo: " + today);
+//        System.out.println("=============================");
+//

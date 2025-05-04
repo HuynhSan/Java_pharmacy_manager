@@ -7,11 +7,13 @@ package com.pharmacy.app.GUI.Sales;
 import com.pharmacy.app.BUS.CustomerBUS;
 import com.pharmacy.app.BUS.PromotionBUS;
 import com.pharmacy.app.BUS.SalesBUS;
+import com.pharmacy.app.BUS.SalesInvoiceBUS;
 import com.pharmacy.app.DAO.SalesDAO;
 import com.pharmacy.app.DTO.CartItemDTO;
 import com.pharmacy.app.DTO.CustomerDTO;
 import com.pharmacy.app.DTO.PromotionDTO;
 import com.pharmacy.app.DTO.SaleItemDTO;
+import com.pharmacy.app.DTO.SalesInvoiceDTO;
 import com.pharmacy.app.DTO.SessionDTO;
 import com.pharmacy.app.DTO.UserDTO;
 import com.pharmacy.app.GUI.Authorization.*;
@@ -47,22 +49,43 @@ import javax.swing.table.DefaultTableModel;
 public class HomeSales extends javax.swing.JPanel {
     UserDTO current_user = SessionDTO.getCurrentUser();
     private String user_id = current_user.getUserID();    
-//    private String user_id = "";
     private String currentCustomerId;
     
     private SalesBUS saleItemBUS = new SalesBUS();    
     private CustomerBUS customerBUS = new CustomerBUS();
+    private PromotionBUS promoBUS = new PromotionBUS();    
+    private SalesInvoiceBUS invoiceBUS = new SalesInvoiceBUS();
 
     private ArrayList<SaleItemDTO> saleItemList = new ArrayList<>();
+    private ArrayList<SalesInvoiceDTO> invoiceList = new ArrayList<>();
+
     private Map<String, CartItemDTO> cartItemsMap = new HashMap<>(); // Khai báo ở class để lưu các thuốc đã thêm, key là batch_id
 
-    private PromotionBUS promoBUS = new PromotionBUS();
     /**
      * Creates new form AuthorizationManagement
      */
     public HomeSales() {
         initComponents();
         loadAllData();
+        
+        txtSearchProduct.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                searchProduct();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                searchProduct();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                searchProduct();
+            }
+
+
+        });
         
         txtPhoneCustomer.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -82,13 +105,24 @@ public class HomeSales extends javax.swing.JPanel {
         });
 
     }
-
     
+    public void reload(){
+        tblProduct.clearSelection();  // Bỏ mọi dòng đang được chọn
+        cartItemsMap.clear();
+        txtPhoneCustomer.setText("");
+        cartPanel.removeAll(); // Xóa giao diện các item
+        cartPanel.revalidate(); // Cập nhật lại layout
+        cartPanel.repaint();
+        updatePayment(); // Cập nhật lại khu vực thanh toán
+
+    }
     
     
     public void loadAllData() {
         saleItemList = saleItemBUS.selectSaleItems();
-        showDataToTable(saleItemList);
+        invoiceList = invoiceBUS.selectAll();
+        showDataToTableProduct(saleItemList);
+        showDataToTableInvoice(invoiceList);
         txtPromoId.setText("Không có!");
         txtDiscount.setText("0");
     }
@@ -110,8 +144,10 @@ public class HomeSales extends javax.swing.JPanel {
         System.out.println("------------------------------");
 
     }
+    
+    
         
-    public void showDataToTable(ArrayList<SaleItemDTO> list) {
+    public void showDataToTableProduct(ArrayList<SaleItemDTO> list) {
         DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
         model.setRowCount(0); // Xóa dữ liệu cũ
 
@@ -130,8 +166,25 @@ public class HomeSales extends javax.swing.JPanel {
             model.addRow(row);
         }
     }
+    
+    public void showDataToTableInvoice(ArrayList<SalesInvoiceDTO> list) {
+        DefaultTableModel model = (DefaultTableModel) tblInvoice.getModel();
+        model.setRowCount(0); // Xóa dữ liệu cũ
 
-
+        for (SalesInvoiceDTO invoice : list) {
+            String customerName = "";
+            if (invoice.getCustomerId() != null) {
+                customerName = customerBUS.getCustomerNameById(invoice.getCustomerId());
+            }
+            Object[] row = new Object[] {
+                invoice.getInvoiceId(),
+                customerName,
+                invoice.getCreateDate(),
+                invoice.getFinalTotal(),
+            };
+            model.addRow(row);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -149,7 +202,7 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel4 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         cbxAll = new javax.swing.JComboBox<>();
-        txtSearch = new javax.swing.JTextField();
+        txtSearchProduct = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         btnAddMedicineToCart = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
@@ -198,7 +251,7 @@ public class HomeSales extends javax.swing.JPanel {
         cbxAll1 = new javax.swing.JComboBox<>();
         txtSearch1 = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
-        lblPdf = new javax.swing.JLabel();
+        btnExportPDF = new javax.swing.JButton();
         jPanel18 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblInvoice = new javax.swing.JTable();
@@ -236,11 +289,10 @@ public class HomeSales extends javax.swing.JPanel {
         cbxAll.setPreferredSize(new java.awt.Dimension(80, 35));
         jPanel8.add(cbxAll);
 
-        txtSearch.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
-        txtSearch.setText("Tìm kiếm thuốc");
-        txtSearch.setMinimumSize(new java.awt.Dimension(80, 30));
-        txtSearch.setPreferredSize(new java.awt.Dimension(400, 35));
-        jPanel8.add(txtSearch);
+        txtSearchProduct.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        txtSearchProduct.setMinimumSize(new java.awt.Dimension(80, 30));
+        txtSearchProduct.setPreferredSize(new java.awt.Dimension(400, 35));
+        jPanel8.add(txtSearchProduct);
 
         jPanel4.add(jPanel8);
 
@@ -590,7 +642,6 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel10.add(cbxAll1);
 
         txtSearch1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtSearch1.setText("Search");
         txtSearch1.setMinimumSize(new java.awt.Dimension(80, 30));
         txtSearch1.setPreferredSize(new java.awt.Dimension(500, 35));
         jPanel10.add(txtSearch1);
@@ -602,9 +653,17 @@ public class HomeSales extends javax.swing.JPanel {
         jButton4.setPreferredSize(new java.awt.Dimension(80, 35));
         jPanel10.add(jButton4);
 
-        lblPdf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pdf.png"))); // NOI18N
-        lblPdf.setPreferredSize(new java.awt.Dimension(45, 45));
-        jPanel10.add(lblPdf);
+        btnExportPDF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnExportPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pdf.png"))); // NOI18N
+        btnExportPDF.setMaximumSize(new java.awt.Dimension(325689, 326589));
+        btnExportPDF.setMinimumSize(new java.awt.Dimension(0, 0));
+        btnExportPDF.setPreferredSize(new java.awt.Dimension(80, 35));
+        btnExportPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportPDFActionPerformed(evt);
+            }
+        });
+        jPanel10.add(btnExportPDF);
 
         jPanel9.add(jPanel10, java.awt.BorderLayout.NORTH);
 
@@ -642,6 +701,9 @@ public class HomeSales extends javax.swing.JPanel {
         tblInvoice.setRowHeight(30);
         tblInvoice.setShowGrid(true);
         tblInvoice.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblInvoiceMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tblInvoiceMousePressed(evt);
             }
@@ -683,7 +745,7 @@ public class HomeSales extends javax.swing.JPanel {
         
         
         String promoId = txtPromoId.getText().trim();
-        if (promoId.equals("Không có!")){
+        if (promoId.equals("Không có!") && promoId.equals("Không có khuyến mãi!")){
             promoId = null;
         }
         
@@ -710,12 +772,10 @@ public class HomeSales extends javax.swing.JPanel {
 
     private void btnAddMedicineToCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMedicineToCartActionPerformed
         int[] selectedRows = tblProduct.getSelectedRows();
-
         if (selectedRows.length == 0) {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn ít nhất một thuốc để thêm vào giỏ.");
             return;
         }
-
         for (int rowIndex : selectedRows) {
             // Lấy batch_id từ table (giả sử là cột 0)
             String batchId = tblProduct.getValueAt(rowIndex, 0).toString();
@@ -731,7 +791,7 @@ public class HomeSales extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddMedicineToCartActionPerformed
 
     private void txtPhoneCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPhoneCustomerActionPerformed
-        
+    
     }//GEN-LAST:event_txtPhoneCustomerActionPerformed
 
     private void txtPhoneCustomerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPhoneCustomerKeyPressed
@@ -766,10 +826,43 @@ public class HomeSales extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtPhoneCustomerKeyTyped
 
+    private void tblInvoiceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInvoiceMouseClicked
+        int selected_row = tblInvoice.getSelectedRow();
+        System.out.println(selected_row);
+        if (selected_row != -1) {
+            String invoiceId = tblInvoice.getValueAt(selected_row, 0).toString();
+              // lấy chi tiết
+
+//            if (promo != null) {
+//                PromoDetail dialog = new PromoDetail((JFrame) SwingUtilities.getWindowAncestor(this), true, this, promo);
+//                dialog.setVisible(true);
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin khuyến mãi.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            }
+        }
+    }//GEN-LAST:event_tblInvoiceMouseClicked
+
+    private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
+        try {
+            // Get table model
+            DefaultTableModel model = (DefaultTableModel) tblInvoice.getModel();
+
+            com.pharmacy.app.Utils.PDFExporter.exportSalesInvoiceToPDF(this, model);
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Lỗi khi xuất PDF: " + e.getMessage(),
+                "Lỗi",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnExportPDFActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddMedicineToCart;
     private javax.swing.JButton btnClearCart;
+    private javax.swing.JButton btnExportPDF;
     private javax.swing.JButton btnPayment;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JPanel cartPanel;
@@ -806,7 +899,6 @@ public class HomeSales extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblNameCustomer;
-    private javax.swing.JLabel lblPdf;
     private javax.swing.JLabel lblPhoneCustomer;
     private javax.swing.JLabel lblPointCustomer;
     private javax.swing.JLabel lblProductDiscount;
@@ -823,72 +915,12 @@ public class HomeSales extends javax.swing.JPanel {
     private javax.swing.JTextField txtPhoneCustomer;
     private javax.swing.JTextField txtProductDiscount;
     private javax.swing.JTextField txtPromoId;
-    private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtSearch1;
+    private javax.swing.JTextField txtSearchProduct;
     private javax.swing.JTextField txtSubtotal;
     private javax.swing.JTextField txtTotalProduct;
     private javax.swing.JTextField txtTotalProductPrice;
     // End of variables declaration//GEN-END:variables
-
-
-//
-//    public void addItemToCart(SaleItemDTO item) {
-//        String batchId = item.getBatchId();
-//
-//        if (cartItemsMap.containsKey(batchId)) {
-//            // Nếu thuốc đã có -> tăng số lượng
-//            JPanel itemPanel = cartItemsMap.get(batchId);
-//            for (Component comp : itemPanel.getComponents()) {
-//                if (comp instanceof JLabel && ((JLabel) comp).getText().matches("\\d+")) {
-//                    JLabel quantityLabel = (JLabel) comp;
-//                    int qty = Integer.parseInt(quantityLabel.getText());
-//                    quantityLabel.setText(String.valueOf(qty + 1));
-//                    break;
-//                }
-//            }
-//        } else {
-//            // Nếu thuốc chưa có -> tạo mới
-//            JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-//            JLabel nameLabel = new JLabel(item.getName());
-//
-//            JButton btnMinus = new JButton("-");
-//            JButton btnPlus = new JButton("+");
-//            JLabel quantityLabel = new JLabel("1");
-//            JButton btnRemove = new JButton("X");
-//
-//            btnPlus.addActionListener(e -> {
-//                int qty = Integer.parseInt(quantityLabel.getText());
-//                quantityLabel.setText(String.valueOf(qty + 1));
-//            });
-//
-//            btnMinus.addActionListener(e -> {
-//                int qty = Integer.parseInt(quantityLabel.getText());
-//                if (qty > 1) {
-//                    quantityLabel.setText(String.valueOf(qty - 1));
-//                }
-//            });
-//
-//            btnRemove.addActionListener(e -> {
-//                cartPanel.remove(itemPanel);
-//                cartItemsMap.remove(batchId);
-//                cartPanel.revalidate();
-//                cartPanel.repaint();
-//            });
-//
-//            itemPanel.add(nameLabel);
-//            itemPanel.add(btnMinus);
-//            itemPanel.add(quantityLabel);
-//            itemPanel.add(btnPlus);
-//            itemPanel.add(btnRemove);
-//
-//            cartPanel.add(itemPanel);
-//            cartPanel.revalidate();
-//            cartPanel.repaint();
-//
-//            // Thêm vào map để lần sau kiểm tra
-//            cartItemsMap.put(batchId, itemPanel);
-//        }
-//    }
 
     private void addToCart(SaleItemDTO item) {
         String key = item.getBatchId();
@@ -902,6 +934,7 @@ public class HomeSales extends javax.swing.JPanel {
             cartItem.setQuantity(current + 1);
             
         } else {
+            // Đưa dữ liệu vào giỏ hàng
             // Tạo dòng mới
             JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 30, 5)); 
             row.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -926,12 +959,14 @@ public class HomeSales extends javax.swing.JPanel {
 
                 totalLabel.setText(String.format("%.2f", finalprice));
                 
+                // Lưu sp vào hashmap
                 CartItemDTO cartItem = cartItemsMap.get(key);
                 cartItem.setQuantity(quantity);
                 cartItem.setFinalPrice(BigDecimal.valueOf(finalprice));                
                 cartItem.setSellPrice(BigDecimal.valueOf(originalprice));
                 cartItem.setDiscountAmount(BigDecimal.valueOf(discountprice));
 
+                // Cập nhật khu vực thanh toán
                 updatePayment();
             });
 
@@ -946,6 +981,7 @@ public class HomeSales extends javax.swing.JPanel {
                 updatePayment();
             });
 
+            // add thành phần vào giỏ hàng
             row.add(nameLabel);
             row.add(totalLabel);
             row.add(quantitySpinner);
@@ -1002,7 +1038,6 @@ public class HomeSales extends javax.swing.JPanel {
         return totalAmount;
     }
 
-
     // Hàm đếm tổng số lượng sp
     public int calculateTotalProduct() {
         int totalProduct = 0;
@@ -1013,9 +1048,8 @@ public class HomeSales extends javax.swing.JPanel {
 
         return totalProduct;
     }
-    
-    
-    // 
+        
+    // Tính toán và gán dữ liệu vào khu vực thanh toán
     private void updatePayment() {
         BigDecimal totalAmount = calculateTotalAmount();        
         BigDecimal productDiscount = calculateDiscountAmount();        
@@ -1027,7 +1061,6 @@ public class HomeSales extends javax.swing.JPanel {
         BigDecimal subTotal = totalAmount
                 .subtract(productDiscount)
                 .subtract(promoDiscount);
-
 
         txtTotalProductPrice.setText(totalAmount.toString());
         txtProductDiscount.setText(productDiscount.toString());        
@@ -1049,11 +1082,9 @@ public class HomeSales extends javax.swing.JPanel {
         if (phone.length() >= 10) { // Kiểm tra độ dài hợp lệ
             CustomerDTO customer = getCustomerByPhone(phone);
             if (customer != null) {
-                txtCustomerName.setText(customer.getName());
-                txtLoyaltyPoints.setText(String.valueOf(customer.getPoint()));
-                currentCustomerId = customer.getId(); // lưu để dùng khi thanh toán
+                printCustomerInfo(customer);
                 applyBestPromoForCustomer(customer);
-                System.out.println(currentCustomerId);
+//                System.out.println(currentCustomerId);
             } else {
                 int choice = JOptionPane.showConfirmDialog(null,
                     "Số điện thoại chưa là khách hàng. Bạn có muốn tạo mới không?",
@@ -1072,13 +1103,9 @@ public class HomeSales extends javax.swing.JPanel {
                         boolean newCustomerId = customerBUS.addCustomer(newCustomer);
                         if (newCustomerId) {
                             JOptionPane.showMessageDialog(null, "Tạo khách hàng thành công!");
-                            txtCustomerName.setText(name);
-                            txtLoyaltyPoints.setText("0");
-                            currentCustomerId = id;
-                            
                             newCustomer.setId(id);
-//                            applyBestPromoForCustomer(newCustomer);
-                            System.out.println(currentCustomerId);
+                            printCustomerInfo(newCustomer);
+//                            System.out.println(currentCustomerId);
                            
                         } else {
                             JOptionPane.showMessageDialog(null, "Lỗi khi tạo khách hàng.");
@@ -1086,20 +1113,17 @@ public class HomeSales extends javax.swing.JPanel {
                     }
                 }   else {
                         txtPhoneCustomer.setText("");
-                        txtCustomerName.setText("");
-                        txtLoyaltyPoints.setText("");
+                        printCustomerInfo(null);
                         currentCustomerId = "";
                 }
             }
         } else {
-            txtCustomerName.setText("");
-            txtLoyaltyPoints.setText("");
+            printCustomerInfo(null);
             currentCustomerId = "";
             txtPromoId.setText("Không có!");
             txtDiscount.setText("0");
         }
     }
-    
     
     private void applyBestPromoForCustomer(CustomerDTO customer) {        
         PromotionDTO bestPromo = promoBUS.findBestRewardPromo(customer.getPoint());
@@ -1112,9 +1136,29 @@ public class HomeSales extends javax.swing.JPanel {
         }
         updatePayment();
     }
-
     
+    private void printCustomerInfo(CustomerDTO t){
+        if (t != null){
+            txtCustomerName.setText(t.getName());
+            txtLoyaltyPoints.setText(String.valueOf(t.getPoint()));
+            currentCustomerId = t.getId(); // lưu để dùng khi thanh toán
 
-
-
+        } else {
+            txtCustomerName.setText("");
+            txtLoyaltyPoints.setText("");
+        }
+        
+    }
+    
+    private void searchProduct() {
+        String keyword = txtSearchProduct.getText();
+        ArrayList<SaleItemDTO> result = saleItemBUS.searchProduct(keyword);
+        showDataToTableProduct(result);
+    }
+    
+//    private void searchInvoice() {
+//        String keyword = txtSearch1.getText();
+//        ArrayList<SalesInvoiceDTO> result = invoiceBUS.searchInvoice(keyword);
+//        showDataToTable(result);
+//    }
 }
