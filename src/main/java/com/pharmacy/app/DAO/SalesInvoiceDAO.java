@@ -55,8 +55,12 @@ public class SalesInvoiceDAO implements DAOinterface<SalesInvoiceDTO>{
                     saleInvoice.setUserId(rs.getString(2)); // name
                     saleInvoice.setTotalQuantity(rs.getInt(3)); // phone
                     saleInvoice.setFinalTotal(rs.getBigDecimal(4));
-                    LocalDate createDate = rs.getDate(5).toLocalDate();
-                    saleInvoice.setCreateDate(createDate);
+                    // Convert Timestamp to LocalDateTime
+                    Timestamp timestamp = rs.getTimestamp(5);               // sale_date
+                    if (timestamp != null) {
+                        saleInvoice.setCreateDate(timestamp.toLocalDateTime());
+                    }
+
                     saleInvoices.add(saleInvoice);
                 }
             } catch (SQLException e){

@@ -34,6 +34,13 @@ public class SalesInvoiceDTO {
         this.createDate = createDate;
     }
 
+
+
+    public SalesInvoiceDTO() {
+    }
+
+
+
     public String getInvoiceId() {
         return invoiceId;
     }

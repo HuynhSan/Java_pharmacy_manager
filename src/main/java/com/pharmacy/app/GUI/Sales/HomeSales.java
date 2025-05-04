@@ -119,6 +119,7 @@ public class HomeSales extends javax.swing.JPanel {
     
     
     public void loadAllData() {
+        System.out.println("Load Danh Sach");
         saleItemList = saleItemBUS.selectSaleItems();
         invoiceList = invoiceBUS.selectAll();
         showDataToTableProduct(saleItemList);
@@ -697,7 +698,7 @@ public class HomeSales extends javax.swing.JPanel {
         });
         tblInvoice.setMaximumSize(new java.awt.Dimension(325689, 326589));
         tblInvoice.setMinimumSize(new java.awt.Dimension(0, 0));
-        tblInvoice.setPreferredSize(new java.awt.Dimension(750, 700));
+        tblInvoice.setPreferredSize(new java.awt.Dimension(750, 1000));
         tblInvoice.setRowHeight(30);
         tblInvoice.setShowGrid(true);
         tblInvoice.addMouseListener(new java.awt.event.MouseAdapter() {
