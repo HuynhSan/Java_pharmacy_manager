@@ -50,6 +50,6 @@ public class SalesInvoiceBUS {
 //    }
     }
     public ArrayList<SalesInvoiceDTO> getSelectSaleInvoiceByCustomerID(String customerID){
-        return salesinvoiceDAO.selectSaleInvoiceByCustomerID(customerID);
+        return dao.selectSaleInvoiceByCustomerID(customerID);
     }
 }
