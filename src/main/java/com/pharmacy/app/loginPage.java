@@ -17,6 +17,7 @@ public class loginPage extends javax.swing.JFrame {
      */
     public loginPage() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -41,15 +42,20 @@ public class loginPage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        setMinimumSize(new java.awt.Dimension(600, 600));
+        setMaximumSize(new java.awt.Dimension(330, 280));
+        setMinimumSize(new java.awt.Dimension(330, 280));
+        setPreferredSize(new java.awt.Dimension(330, 280));
+        setResizable(false);
 
         pnlLogin.setBackground(new java.awt.Color(255, 255, 255));
         pnlLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        pnlLogin.setPreferredSize(new java.awt.Dimension(320, 240));
+        pnlLogin.setMaximumSize(new java.awt.Dimension(330, 280));
+        pnlLogin.setMinimumSize(new java.awt.Dimension(330, 280));
+        pnlLogin.setPreferredSize(new java.awt.Dimension(330, 280));
 
         lblLogin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblLogin.setText("Đăng nhập");
+        lblLogin.setText("ĐĂNG NHẬP");
         lblLogin.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         btnLogin.setBackground(new java.awt.Color(0, 204, 51));
@@ -106,7 +112,7 @@ public class loginPage extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         pnlLoginFields.add(jPasswordField, gridBagConstraints);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 2, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 0, 51));
         jLabel1.setText("Quên mật khẩu ?");
 
@@ -115,19 +121,20 @@ public class loginPage extends javax.swing.JFrame {
         pnlLoginLayout.setHorizontalGroup(
             pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlLoginLayout.createSequentialGroup()
-                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnlLoginLayout.createSequentialGroup()
-                            .addGap(30, 30, 30)
-                            .addComponent(pnlLoginFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(pnlLoginLayout.createSequentialGroup()
-                            .addGap(115, 115, 115)
-                            .addComponent(lblLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(pnlLoginLayout.createSequentialGroup()
-                            .addGap(111, 111, 111)
-                            .addComponent(btnLogin))))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel1)
+                        .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlLoginLayout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(pnlLoginFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlLoginLayout.createSequentialGroup()
+                                .addGap(115, 115, 115)
+                                .addComponent(lblLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(pnlLoginLayout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addComponent(btnLogin)))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         pnlLoginLayout.setVerticalGroup(
             pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,27 +145,12 @@ public class loginPage extends javax.swing.JFrame {
                 .addComponent(pnlLoginFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLogin)
-                .addGap(23, 23, 23))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(128, 128, 128)
-                .addComponent(pnlLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(152, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(159, 159, 159)
-                .addComponent(pnlLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(201, Short.MAX_VALUE))
-        );
+        getContentPane().add(pnlLogin, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);

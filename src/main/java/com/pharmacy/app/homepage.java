@@ -434,11 +434,11 @@ public class homepage extends javax.swing.JFrame {
         infoBtn.setBackground(new java.awt.Color(0, 102, 153));
         infoBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         infoBtn.setForeground(new java.awt.Color(255, 255, 255));
-        infoBtn.setText("THÔNG TIN CÁ NHÂN");
         infoBtn.setBorder(null);
         infoBtn.setBorderPainted(false);
         infoBtn.setContentAreaFilled(false);
         infoBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        infoBtn.setEnabled(false);
         infoBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         infoBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         infoBtn.setMinimumSize(new java.awt.Dimension(200, 30));

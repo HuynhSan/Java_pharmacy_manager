@@ -19,48 +19,96 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
     @Override
     public boolean insert(MedicalProductsDTO product) {
         boolean result = false;
-        
-        if(myconnect.openConnection()){
-            try{
-            String sql = "INSERT INTO medical_products(product_id, name, category_id, description, unit, quantity, packing_specification) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement ps = (PreparedStatement) myconnect.runQuery(sql);
-            
-            ps.setString(1, product.getMedicineID());
-            ps.setString(2, product.getName());
-            ps.setString(3, product.getCategory());
-            ps.setString(4, product.getDescription());
-            ps.setString(5, product.getUnit());
-            ps.setInt(6, product.getQuantity());
-            ps.setString(7, product.getPackingSpecification());
-            
-            if(ps.executeUpdate()>0){
-                result = true;
-            }
-            }catch(Exception e){
+
+        if (myconnect.openConnection()) {
+            try {
+                String sql = "INSERT INTO medical_products(product_id, name, category_id, description, unit, quantity, packing_specification) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                // Sử dụng phương thức prepareUpdate để thực thi câu lệnh SQL
+                int rowsAffected = myconnect.prepareUpdate(sql, 
+                    product.getMedicineID(),
+                    product.getName(),
+                    product.getCategory(),
+                    product.getDescription(),
+                    product.getUnit(),
+                    product.getQuantity(),
+                    product.getPackingSpecification()
+                );
+
+                if (rowsAffected > 0) {
+                    result = true;
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
-            }finally{
+            } finally {
                 myconnect.closeConnection();
             }
         }
-        
+
         return result;
-    }
+}
+
 
     @Override
     public boolean update(MedicalProductsDTO product) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        boolean result = false;
+
+        try {
+            myconnect.openConnection();
+
+            String sql = "UPDATE medical_products SET name = ?, category_id = ?, description = ?, unit = ?, packing_specification = ? WHERE product_id = ?";
+
+            int rowsAffected = myconnect.prepareUpdate(sql, 
+                product.getName(),
+                product.getCategory(),
+                product.getDescription(),
+                product.getUnit(),
+                product.getPackingSpecification(),
+                product.getMedicineID()
+            );
+            if (rowsAffected > 0) {
+                result = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            myconnect.closeConnection();
+        }
+
+        return result;
+}
+
+
 
     @Override
     public boolean delete(String ID) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            boolean result = false;
+
+            try {
+                myconnect.openConnection();
+
+                String sql = "DELETE FROM medical_products WHERE product_id = ?";
+
+                int rowsAffected = myconnect.prepareUpdate(sql, ID);
+
+                if (rowsAffected > 0) {
+                    result = true;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                // Đảm bảo đóng kết nối
+                myconnect.closeConnection();
+            }
+
+            return result;
     }
 
     @Override
     public ArrayList<MedicalProductsDTO> selectAll() {
         ArrayList<MedicalProductsDTO> medicineList = new ArrayList<MedicalProductsDTO>();
         if (myconnect.openConnection()){
-            String sql = "SELECT * FROM medical_products WHERE is_deleted = 0";
+            String sql = "SELECT * FROM medical_products m JOIN categories c ON m.category_id = c.category_id WHERE m.is_deleted = 0";
             ResultSet rs = myconnect.runQuery(sql);
             
             try {
@@ -68,7 +116,7 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
                        MedicalProductsDTO product = new MedicalProductsDTO(
                        rs.getString(1),
                        rs.getString(2),
-                       rs.getString(3),
+                       rs.getString(10),
                        rs.getString(4),
                        rs.getString(5),
                        rs.getInt(6),
@@ -90,15 +138,6 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
 
     @Override
     public MedicalProductsDTO selectByID(String ID) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public ArrayList<MedicalProductsDTO> search(String t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-        
-    public MedicalProductsDTO getProductbyID(String product_ID){
         if(myconnect.openConnection()){
             try {
                 String sql = "SELECT p.*, c.category_name FROM medical_products p " + 
@@ -106,7 +145,7 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
                              "WHERE p.product_id = ?";
 
                 PreparedStatement ps = myconnect.con.prepareStatement(sql);
-                ps.setString(1, product_ID);
+                ps.setString(1, ID);
 
                 ResultSet rs = ps.executeQuery();
 
@@ -130,18 +169,40 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
                 myconnect.closeConnection();
             }
         }
-        return null; 
+        return null;
     }
+
+    @Override
+    public ArrayList<MedicalProductsDTO> search(String t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+        
+
     public void updateSumQuantity(String productId, int quantity) {
-    if (myconnect.openConnection()) {
-        try {
-            String sql = "UPDATE medical_products SET quantity = ? WHERE product_id = ?";
-            myconnect.prepareUpdate(sql, quantity, productId);
-            
-        } finally {
-            myconnect.closeConnection();
+        if (myconnect.openConnection()) {
+            try {
+                String sql = "UPDATE medical_products SET quantity = ? WHERE product_id = ?";
+                myconnect.prepareUpdate(sql, quantity, productId);
+
+            } finally {
+                myconnect.closeConnection();
+            }
         }
     }
+    public String getLatestProductID() {
+        String latestID = null;
+        if (myconnect.openConnection()) {
+            try {
+                String sql = "SELECT MAX(product_id) AS max_id FROM medical_products";
+                ResultSet rs = myconnect.runQuery(sql);
+                if (rs.next()) {
+                    latestID = rs.getString("max_id"); // Có thể là null nếu chưa có sản phẩm
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return latestID;
 }
 
     

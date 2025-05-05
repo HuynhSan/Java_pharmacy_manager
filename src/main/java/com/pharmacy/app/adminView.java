@@ -490,12 +490,12 @@ public class adminView extends javax.swing.JFrame {
         authzBtn.setBackground(new java.awt.Color(0, 102, 153));
         authzBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         authzBtn.setForeground(new java.awt.Color(255, 255, 255));
-        authzBtn.setText("PHÂN QUYỀN");
         authzBtn.setToolTipText("");
         authzBtn.setBorder(null);
         authzBtn.setBorderPainted(false);
         authzBtn.setContentAreaFilled(false);
         authzBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        authzBtn.setEnabled(false);
         authzBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         authzBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         authzBtn.setMinimumSize(new java.awt.Dimension(200, 30));
@@ -521,11 +521,11 @@ public class adminView extends javax.swing.JFrame {
         reportBtn.setBackground(new java.awt.Color(0, 102, 153));
         reportBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         reportBtn.setForeground(new java.awt.Color(255, 255, 255));
-        reportBtn.setText("BÁO CÁO THỐNG KÊ");
         reportBtn.setBorder(null);
         reportBtn.setBorderPainted(false);
         reportBtn.setContentAreaFilled(false);
         reportBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        reportBtn.setEnabled(false);
         reportBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         reportBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         reportBtn.setMinimumSize(new java.awt.Dimension(200, 30));

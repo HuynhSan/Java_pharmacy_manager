@@ -3,9 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package com.pharmacy.app.GUI.Importing;
+import com.pharmacy.app.BUS.PurchaseOrderBUS;
+import com.pharmacy.app.BUS.PurchaseOrderDetailsBUS;
 import com.pharmacy.app.BUS.SuplierInvoiceDetailsBUS;
 import com.pharmacy.app.BUS.SuplierInvoicesBUS;
 import com.pharmacy.app.DAO.SupplierInvoicesDAO;
+import com.pharmacy.app.DTO.PurchaseOrderDTO;
 import com.pharmacy.app.DTO.SuplierInvoiceDTO;
 import com.pharmacy.app.DTO.SuplierInvoiceDetailsDTO;
 import com.toedter.calendar.JDateChooser;
@@ -15,7 +18,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.text.NumberFormat;
+
+import java.awt.event.MouseEvent;
+
 import java.time.format.DateTimeFormatter;
 //import java.util.List;
 import java.util.ArrayList;
@@ -32,8 +37,9 @@ public final class Invoices extends javax.swing.JPanel {
     private SuplierInvoicesBUS supInvoiceBUS;
     private SuplierInvoiceDetailsBUS supInvoiceDetailsBUS;
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private final NumberFormat currencyFomat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
-    JDateChooser dateChooser = new JDateChooser();
+
+    private PurchaseOrderBUS poBUS = new PurchaseOrderBUS();
+    private PurchaseOrderDetailsBUS poDeBUS = new PurchaseOrderDetailsBUS();
 
     /**
      * Creates new form Invoices
@@ -43,6 +49,7 @@ public final class Invoices extends javax.swing.JPanel {
         initBUS();
         loadSupInvoiceData();
         setupListeners();
+        loadApprovedPOlist();
     }
     private void initBUS(){
         supInvoiceBUS = new SuplierInvoicesBUS();
@@ -153,14 +160,24 @@ public final class Invoices extends javax.swing.JPanel {
         ArrayList<SuplierInvoiceDTO> searchResult = supInvoiceBUS.search(keyword);
         displayList(searchResult);
     }
+    private void loadApprovedPOlist (){
+        ArrayList<PurchaseOrderDTO> poList = poBUS.getAllPO();
+        DefaultTableModel model = (DefaultTableModel) newinvoiceTbl.getModel();
+        System.out.println("đã dô loadapprove");
+        model.setRowCount(0);
+        
+            for(PurchaseOrderDTO po : poList){
+                if ("Đã duyệt".equals(po.getStatus())){
+                    model.addRow(new Object[]{
+                        po.getPoID(),
+                        po.getOrderDate(),
+                        po.getManagerUserID(),
+                        po.getStatus()
+                    });
+                }
+            }
+    }
 
-
-//    private void filterByDate(LocalDate date){
-//        ArrayList<SuplierInvoiceDTO> result = supInvoiceBUS.filterByDate(date);
-//        displayList(result);
-//    }
-
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -176,7 +193,7 @@ public final class Invoices extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        newinvoiceTbl = new javax.swing.JTable();
         jComboBox5 = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
@@ -221,22 +238,28 @@ public final class Invoices extends javax.swing.JPanel {
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách đơn đặt hàng đã duyệt", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jScrollPane3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPane3MouseClicked(evt);
+            }
+        });
+
+        newinvoiceTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Mã đơn", "Ngày tạo", "Người tạo", "Tổng thành tiền", "Trạng thái"
+                "Mã đơn", "Ngày tạo", "Người tạo", "Trạng thái"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Float.class, java.lang.Boolean.class
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, true, true, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -247,9 +270,15 @@ public final class Invoices extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.setRowHeight(30);
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane3.setViewportView(jTable2);
+
+        newinvoiceTbl.getTableHeader().setReorderingAllowed(false);
+        newinvoiceTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                newinvoiceTblMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(newinvoiceTbl);
+
 
         jComboBox5.setEditable(true);
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo đơn", "Tên người tạo", "Nhà cung cấp" }));
@@ -307,6 +336,7 @@ public final class Invoices extends javax.swing.JPanel {
         importBtn.setForeground(new java.awt.Color(255, 255, 255));
         importBtn.setText("NHẬP KHO");
         importBtn.setAlignmentX(0.5F);
+        importBtn.setEnabled(false);
         importBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 importBtnMouseClicked(evt);
@@ -628,8 +658,18 @@ public final class Invoices extends javax.swing.JPanel {
 
     private void importBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importBtnMouseClicked
         ConfirmStockIn confirmDialog = new ConfirmStockIn((Frame)SwingUtilities.getWindowAncestor(importBtn), true);
-        confirmDialog.setLocationRelativeTo(null);
-        confirmDialog.setVisible(true);
+        
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            int row = newinvoiceTbl.getSelectedRow();
+            if (row >= 0) {
+                String ID = newinvoiceTbl.getValueAt(row, 0).toString();
+                PurchaseOrderDTO selectedPO = poBUS.getPOByID(ID);
+                
+                confirmDialog.loadStockInDialog(selectedPO);
+                confirmDialog.setLocationRelativeTo(null);
+                confirmDialog.setVisible(true);
+            }
+        }
     }//GEN-LAST:event_importBtnMouseClicked
 
     private void tbInvoiceHistoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbInvoiceHistoryMouseClicked
@@ -647,6 +687,15 @@ public final class Invoices extends javax.swing.JPanel {
 //            txtTotal.setText(String.format("%,.0f VND", calculateTotalAmount()));
         }
     }//GEN-LAST:event_tbInvoiceHistoryMouseClicked
+
+    private void jScrollPane3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane3MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jScrollPane3MouseClicked
+
+    private void newinvoiceTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newinvoiceTblMouseClicked
+       importBtn.setEnabled(true);
+    }//GEN-LAST:event_newinvoiceTblMouseClicked
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -675,8 +724,10 @@ public final class Invoices extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
+private javax.swing.JTextField jTextField3;
+
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTable newinvoiceTbl;
     private javax.swing.JTable tbInvoiceHistory;
     private javax.swing.JTable tbSupInvoiceDetail;
     private javax.swing.JTextField txtInvoiceID;

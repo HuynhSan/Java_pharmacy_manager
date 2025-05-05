@@ -40,6 +40,20 @@ public class SuplierInvoicesBUS {
     public SuplierInvoiceDTO getSupInvoiceByID(String invoiceID){
         return supInvoiceDAO.selectByID(invoiceID);
     }
+
+    public String generateNextProductID() {
+        String lastID = supInvoiceDAO.getLatestProductID();  // Có thể là null
+
+        if (lastID == null || lastID.isEmpty()) {
+            return "INV001"; // Mặc định nếu bảng rỗng
+        }
+
+        String numericPart = lastID.substring(3); // Bỏ "INV", lấy số
+        int lastNumber = Integer.parseInt(numericPart);
+        int nextNumber = lastNumber + 1;
+
+        return "INV" + String.format("%03d", nextNumber);
+    }
     
     public ArrayList<SuplierInvoiceDTO> getSupInvoiceBySupplierID(String supplierID){
         return supInvoiceDAO.selectBySupplierID(supplierID);
