@@ -133,4 +133,8 @@ public class UserBUS {
         // If not found in the list, query the database
         return userDAO.checkLogin(username, password);
     }
+
+    public String getUserNameById(String userId) {
+        return userDAO.getUserNameById(userId);
+    }
 }

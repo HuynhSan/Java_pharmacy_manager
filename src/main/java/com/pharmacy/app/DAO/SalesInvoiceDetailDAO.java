@@ -5,7 +5,11 @@
 package com.pharmacy.app.DAO;
 
 import com.pharmacy.app.DTO.SalesInvoiceDetailDTO;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -58,6 +62,31 @@ public class SalesInvoiceDetailDAO implements DAOinterface<SalesInvoiceDetailDTO
     @Override
     public ArrayList<SalesInvoiceDetailDTO> search(String t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public ArrayList<SalesInvoiceDetailDTO> selectInvoiceByID(String invoiceId) {
+        ArrayList<SalesInvoiceDetailDTO> list = new ArrayList<>();
+        
+        if (myconnect.openConnection()){
+            String sql = "SELECT *FROM sales_invoice_details WHERE sales_invoice_id = ?";
+            ResultSet rs = myconnect.runPreparedQuery(sql, invoiceId);
+            try {
+                while (rs.next()){
+                    SalesInvoiceDetailDTO detail = new SalesInvoiceDetailDTO(
+                            rs.getString(1),
+                            rs.getString(2),
+                            rs.getInt(3),
+                            rs.getBigDecimal(4)
+                    );
+                    list.add(detail);
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return list;
     }
     
 }

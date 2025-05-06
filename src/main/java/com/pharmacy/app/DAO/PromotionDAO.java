@@ -126,8 +126,7 @@ public class PromotionDAO implements DAOinterface<PromotionDTO>{
         ArrayList<PromotionDTO> promos = new ArrayList<>();
         
         if (myconnect.openConnection()){
-            String sql = "SELECT * FROM promotions WHERE is_deleted=0";
-            
+            String sql = "SELECT * FROM promotions WHERE is_deleted=0";        
             ResultSet rs = myconnect.runQuery(sql);
             
             try {
