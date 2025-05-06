@@ -142,7 +142,10 @@
         <Component class="javax.swing.JComboBox" name="cbUserRole">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
+              <StringArray count="2">
+                <StringItem index="0" value="Qu&#x1ea3;n l&#xfd;"/>
+                <StringItem index="1" value="Nh&#xe2;n vi&#xea;n d&#x1b0;&#x1ee3;c s&#x129;"/>
+              </StringArray>
             </Property>
           </Properties>
           <Events>
