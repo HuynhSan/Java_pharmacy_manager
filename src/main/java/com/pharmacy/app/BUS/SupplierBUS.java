@@ -84,4 +84,23 @@ public class SupplierBUS {
         }
         return -1;
     }
+    
+    public ArrayList<SupplierDTO> getSupList() {
+        try{
+            return supplierDAO.selectAll();
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public SupplierDTO getSupplierByName(String name) {
+        for (SupplierDTO sup : getSupList()) {
+            if (sup.getName().equalsIgnoreCase(name)) {
+                return sup;
+            }
+        }
+        return null; // Không tìm thấy
+    }
+
 }

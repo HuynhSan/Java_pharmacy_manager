@@ -295,7 +295,7 @@ public class PaymentDialog extends javax.swing.JDialog {
                 salesInvoiceDetailBUS.addInvoiceDetail(detail);
                 
                 // Cập nhật tồn kho theo batchId và product_Id
-                batchBus.updateInventoryQuantity(item.getBatchId(), item.getProductId(), item.getQuantity());
+                batchBus.saleInventoryQuantity(item.getBatchId(), item.getProductId(), item.getQuantity());
             }
             
             if (customerID != null){

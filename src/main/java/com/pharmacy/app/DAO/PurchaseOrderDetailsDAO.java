@@ -20,8 +20,47 @@ import java.util.logging.Logger;
 public class PurchaseOrderDetailsDAO implements DAOinterface<PurchaseOrderDetailsDTO>{
     MyConnection myconnect = new MyConnection();
     @Override
-    public boolean insert(PurchaseOrderDetailsDTO t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean insert(PurchaseOrderDetailsDTO poDeDTO) {
+        boolean result = false;
+
+        if (myconnect.openConnection()) {
+            try {
+                String sql = "INSERT INTO purchase_order_details(po_id, product_id, quantity) VALUES (?, ?, ?)";
+                    // Enhanced logging before execution
+                System.out.println("Executing SQL: " + sql);
+                System.out.println("With parameters: ");
+                System.out.println(" - PoID: " + poDeDTO.getPoID());
+                System.out.println(" - ProductID: " + poDeDTO.getProductID());
+                System.out.println(" - quantity: " + poDeDTO.getQuantity());
+
+                // Corrected parameter order
+                int rowsAffected = myconnect.prepareUpdate(sql, 
+                    poDeDTO.getPoID(),
+                    poDeDTO.getProductID(),
+                    poDeDTO.getQuantity()  
+                );
+
+                System.out.println("Rows affected: " + rowsAffected);
+                if (rowsAffected > 0) {
+                    result = true;
+                }
+            } catch (Exception e) {
+                System.err.println("SQL Insert Error:");
+                e.printStackTrace();
+                System.err.println("Full error details: " + e);
+
+                // Log SQL state if available (helps identify constraint violations)
+                if (e instanceof SQLException) {
+                    SQLException sqlEx = (SQLException)e;
+                    System.err.println("SQL State: " + sqlEx.getSQLState());
+                    System.err.println("Error Code: " + sqlEx.getErrorCode());
+                }
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+
+        return result;
     }
 
     @Override

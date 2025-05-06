@@ -86,7 +86,7 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
             try {
                 myconnect.openConnection();
 
-                String sql = "DELETE FROM medical_products WHERE product_id = ?";
+                String sql = "UPDATE medical_products SET is_deleted = 1 WHERE product_id = ?";
 
                 int rowsAffected = myconnect.prepareUpdate(sql, ID);
 
@@ -120,9 +120,13 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
                        rs.getString(4),
                        rs.getString(5),
                        rs.getInt(6),
-                       rs.getString(7),
-                       rs.getBoolean(8)
+                       rs.getString(7)
                     );
+                       if(rs.getBoolean(8) == false){
+                           product.setStatus("Còn kinh doanh");
+                       }else {
+                           product.setStatus("Ngừng kinh doanh");
+                       }
                        medicineList.add(product);
                 }
             } catch (SQLException ex) {
@@ -132,7 +136,6 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
                 myconnect.closeConnection();
                     }
         }
-        
         return medicineList;
     }
 
@@ -159,7 +162,11 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
                     product.setPackingSpecification(rs.getString("packing_specification"));
                     product.setUnit(rs.getString("unit"));
                     product.setQuantity(rs.getInt("quantity"));
-                    product.setStatus(rs.getBoolean("is_deleted"));
+                    if(rs.getBoolean("is_deleted") == false){
+                           product.setStatus("Còn kinh doanh");
+                       }else {
+                           product.setStatus("Ngừng kinh doanh");
+                       }
 
                     return product;
                 }

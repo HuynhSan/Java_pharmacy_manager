@@ -5,19 +5,21 @@
 package com.pharmacy.app.DTO;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  *
  * @author LENOVO
  */
 public class PurchaseOrderDTO {
-    public String poID;
-    public String managerUserID;
-    public String supplierID;
-    public int totalQuantity;
-    public LocalDate orderDate; // hoặc dùng java.time.LocalDate
-    public String status;
-    public String adminID;
+    private String poID;
+    private String managerUserID;
+    private String supplierID;
+    private int totalQuantity;
+    private LocalDate orderDate; // hoặc dùng java.time.LocalDate
+    private String status;
+    private String adminID;
+    private List<PurchaseOrderDetailsDTO> poDetails;
 
     public PurchaseOrderDTO(String poID, String managerUserID, String supplierID, LocalDate orderDate, String status, String adminID) {
         this.poID = poID;
@@ -28,6 +30,18 @@ public class PurchaseOrderDTO {
         this.adminID = adminID;
     }
 
+    public List<PurchaseOrderDetailsDTO> getPoDetails() {
+        return poDetails;
+    }
+
+    public void setPoDetails(List<PurchaseOrderDetailsDTO> poDetails) {
+        this.poDetails = poDetails;
+    }
+    
+    
+    public PurchaseOrderDTO(){
+        
+    }
     public String getPoID() {
         return poID;
     }

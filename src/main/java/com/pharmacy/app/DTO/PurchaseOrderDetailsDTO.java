@@ -27,11 +27,11 @@ public class PurchaseOrderDetailsDTO {
         this.poID = poID;
     }
 
-    public String getproductID() {
+    public String getProductID() {
         return productID;
     }
 
-    public void setproductID(String productID) {
+    public void setProductID(String productID) {
         this.productID = productID;
     }
 
