@@ -86,7 +86,13 @@ public class CustomerBUS {
     }
     
     public String getCustomerNameById(String id){
-        return customerDAO.getCustomerNameById(id);
+//        return customerDAO.getCustomerNameById(id);
+        try {
+            return customerDAO.selectByID(id).getName();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     

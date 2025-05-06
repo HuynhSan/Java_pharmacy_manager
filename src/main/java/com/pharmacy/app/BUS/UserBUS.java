@@ -3,11 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.pharmacy.app.BUS;
-
 import com.pharmacy.app.DAO.UserDAO;
 import com.pharmacy.app.DTO.UserDTO;
 import java.util.ArrayList;
-
 /**
  *
  * @author phong
@@ -22,7 +20,14 @@ public class UserBUS {
     }
     
     public ArrayList<UserDTO> getUserList() {
-        return userList;
+        // Filter out USER001 from the returned list
+        ArrayList<UserDTO> filteredList = new ArrayList<>();
+        for (UserDTO user : userList) {
+            if (!user.getUserID().equals("USER001")) {
+                filteredList.add(user);
+            }
+        }
+        return filteredList;
     }
     
     public void loadUserList() {
@@ -51,6 +56,11 @@ public class UserBUS {
     }
     
     public boolean deleteUser(String userID) {
+        // Prevent deletion of USER001
+        if (userID.equals("USER001")) {
+            return false;
+        }
+        
         boolean result = userDAO.delete(userID);
         if (result) {
             for (int i = 0; i < userList.size(); i++) {
@@ -73,11 +83,27 @@ public class UserBUS {
     }
     
     public ArrayList<UserDTO> searchUsers(String keyword) {
-        return userDAO.search(keyword);
+        ArrayList<UserDTO> searchResults = userDAO.search(keyword);
+        // Filter out USER001 from search results
+        ArrayList<UserDTO> filteredResults = new ArrayList<>();
+        for (UserDTO user : searchResults) {
+            if (!user.getUserID().equals("USER001")) {
+                filteredResults.add(user);
+            }
+        }
+        return filteredResults;
     }
     
     public ArrayList<UserDTO> filterUsersByStatus(boolean status) {
-        return userDAO.filterByStatus(status);
+        ArrayList<UserDTO> statusResults = userDAO.filterByStatus(status);
+        // Filter out USER001 from status filtered results
+        ArrayList<UserDTO> filteredResults = new ArrayList<>();
+        for (UserDTO user : statusResults) {
+            if (!user.getUserID().equals("USER001")) {
+                filteredResults.add(user);
+            }
+        }
+        return filteredResults;
     }
     
     public String generateNewUserID() {
@@ -104,8 +130,11 @@ public class UserBUS {
                 return user;
             }
         }
-
         // If not found in the list, query the database
         return userDAO.checkLogin(username, password);
+    }
+
+    public String getUserNameById(String userId) {
+        return userDAO.getUserNameById(userId);
     }
 }

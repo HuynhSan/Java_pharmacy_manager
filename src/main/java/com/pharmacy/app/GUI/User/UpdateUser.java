@@ -44,7 +44,7 @@ public class UpdateUser extends javax.swing.JDialog {
         setupRadioButtons();
 
         // Load roles and set current data
-        loadRoles();
+//        loadRoles();
         setData(user);
     }
 
@@ -62,15 +62,15 @@ public class UpdateUser extends javax.swing.JDialog {
     }
 
     // Load roles into combo box
-    private void loadRoles() {
-        ArrayList<RoleDTO> roles = roleBUS.getRoleList();
-        cbUserRole.removeAllItems();
-
-        // Add each role to the combo box
-        for(RoleDTO role : roles) {
-            cbUserRole.addItem(role.getRoleName());
-        }
-    }
+//    private void loadRoles() {
+//        ArrayList<RoleDTO> roles = roleBUS.getRoleList();
+//        cbUserRole.removeAllItems();
+//
+//        // Add each role to the combo box
+//        for(RoleDTO role : roles) {
+//            cbUserRole.addItem(role.getRoleName());
+//        }
+//    }
 
     // Update setData method to fully populate form with user data
     private void setData(UserDTO user) {
@@ -216,6 +216,7 @@ public class UpdateUser extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 0);
         pnlUpdateUserFields.add(txtUsername, gridBagConstraints);
 
+        cbUserRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quản lý", "Nhân viên dược sĩ" }));
         cbUserRole.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbUserRoleActionPerformed(evt);

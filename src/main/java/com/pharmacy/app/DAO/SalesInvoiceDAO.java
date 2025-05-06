@@ -147,7 +147,31 @@ public class SalesInvoiceDAO implements DAOinterface<SalesInvoiceDTO>{
 
     @Override
     public SalesInvoiceDTO selectByID(String t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        SalesInvoiceDTO invoice = null;
+        
+        if(myconnect.openConnection()){
+            String sql = "SELECT *FROM sales_invoices WHERE sales_invoice_id = ?";
+            ResultSet rs = myconnect.runPreparedQuery(sql, t);
+            try {
+                while (rs != null && rs.next()){
+                    invoice = new SalesInvoiceDTO(
+                            rs.getString(1),
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getInt(4),
+                            rs.getBigDecimal("original_amount"),
+                            rs.getBigDecimal("discount_amount"),
+                            rs.getBigDecimal("total_amount"),
+                            rs.getTimestamp(8).toLocalDateTime()
+                    );
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return invoice;
     }
 
     @Override
