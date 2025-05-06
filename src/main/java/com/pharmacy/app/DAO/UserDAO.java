@@ -226,4 +226,22 @@ public class UserDAO implements DAOinterface<UserDTO> {
         
         return new UserDTO(userID, username, password, roleID, status);
     }
+
+    public String getUserNameById(String userId) {
+        String name = "";
+        if (myConnection.openConnection()){
+            String sql = "SELECT name FROM employees WHERE user_id = ?";
+            ResultSet rs = myConnection.prepareQuery(sql, userId);
+            try {
+                while (rs != null && rs.next()){
+                    name = rs.getString(1);
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                myConnection.closeConnection();
+            }
+        }
+        return name;
+    }
 }

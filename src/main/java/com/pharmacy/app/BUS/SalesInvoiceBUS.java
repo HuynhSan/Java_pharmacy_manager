@@ -31,25 +31,18 @@ public class SalesInvoiceBUS {
     }
     
     public ArrayList<SalesInvoiceDTO> searchInvoice(String keyword) {
-//        return dao.selectAll().stream()
-//            .filter(p -> p.getInvoiceId().toLowerCase().contains(keyword.toLowerCase()) ||
-//                         p.getCustomerId().toLowerCase().contains(keyword.toLowerCase()) ||
-//                         p.getUserId().toLowerCase().contains(keyword.toLowerCase()) ||
-//                         String.valueOf(p.getFinalTotal()).contains(keyword.toLowerCase())) ||
-//                         p.getCreateDate().toString().contains(keyword.toLowerCase()))
-//            .collect(Collectors.toCollection(ArrayList::new));
-//    }
-        return null;
-//        return dao.selectAll().stream()
-//            .filter(p -> p.getInvoiceId().toLowerCase().contains(keyword.toLowerCase()) ||
-//                         p.getCustomerId().toLowerCase().contains(keyword.toLowerCase()) ||
-//                         p.getUserId().toLowerCase().contains(keyword.toLowerCase()) ||
-//                         String.valueOf(p.getFinalTotal()).contains(keyword.toLowerCase())) ||
-//                         p.getCreateDate().toString().contains(keyword.toLowerCase()))
-//            .collect(Collectors.toCollection(ArrayList::new));
-//    }
+        return dao.selectAll().stream()
+            .filter(p -> p.getInvoiceId().toLowerCase().contains(keyword.toLowerCase()) ||
+                         p.getCustomerId().toLowerCase().contains(keyword.toLowerCase()) ||
+                         p.getCreateDate().toString().contains(keyword.toLowerCase()))
+            .collect(Collectors.toCollection(ArrayList::new));
+    
     }
     public ArrayList<SalesInvoiceDTO> getSelectSaleInvoiceByCustomerID(String customerID){
         return dao.selectSaleInvoiceByCustomerID(customerID);
+    }
+
+    public SalesInvoiceDTO getInvoiceById(String invoiceId) {
+        return dao.selectByID(invoiceId);
     }
 }
