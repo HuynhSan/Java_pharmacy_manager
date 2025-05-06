@@ -44,7 +44,6 @@ public class loginPage extends javax.swing.JFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(330, 280));
         setMinimumSize(new java.awt.Dimension(330, 280));
-        setPreferredSize(new java.awt.Dimension(330, 280));
         setResizable(false);
 
         pnlLogin.setBackground(new java.awt.Color(255, 255, 255));
