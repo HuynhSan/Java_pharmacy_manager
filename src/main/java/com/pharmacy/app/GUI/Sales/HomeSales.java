@@ -8,12 +8,14 @@ import com.pharmacy.app.BUS.CustomerBUS;
 import com.pharmacy.app.BUS.PromotionBUS;
 import com.pharmacy.app.BUS.SalesBUS;
 import com.pharmacy.app.BUS.SalesInvoiceBUS;
+import com.pharmacy.app.BUS.SalesInvoiceDetailBUS;
 import com.pharmacy.app.DAO.SalesDAO;
 import com.pharmacy.app.DTO.CartItemDTO;
 import com.pharmacy.app.DTO.CustomerDTO;
 import com.pharmacy.app.DTO.PromotionDTO;
 import com.pharmacy.app.DTO.SaleItemDTO;
 import com.pharmacy.app.DTO.SalesInvoiceDTO;
+import com.pharmacy.app.DTO.SalesInvoiceDetailDTO;
 import com.pharmacy.app.DTO.SessionDTO;
 import com.pharmacy.app.DTO.UserDTO;
 import com.pharmacy.app.GUI.Authorization.*;
@@ -25,8 +27,10 @@ import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -54,13 +58,15 @@ public class HomeSales extends javax.swing.JPanel {
     private SalesBUS saleItemBUS = new SalesBUS();    
     private CustomerBUS customerBUS = new CustomerBUS();
     private PromotionBUS promoBUS = new PromotionBUS();    
-    private SalesInvoiceBUS invoiceBUS = new SalesInvoiceBUS();
+    private SalesInvoiceBUS invoiceBUS = new SalesInvoiceBUS();    
+    private SalesInvoiceDetailBUS invoicedetailsBUS = new SalesInvoiceDetailBUS();
+
 
     private ArrayList<SaleItemDTO> saleItemList = new ArrayList<>();
     private ArrayList<SalesInvoiceDTO> invoiceList = new ArrayList<>();
 
     private Map<String, CartItemDTO> cartItemsMap = new HashMap<>(); // Khai báo ở class để lưu các thuốc đã thêm, key là batch_id
-
+    private Map<String, String> customerNameCache = new HashMap<>();
     /**
      * Creates new form AuthorizationManagement
      */
@@ -146,8 +152,6 @@ public class HomeSales extends javax.swing.JPanel {
 
     }
     
-    
-        
     public void showDataToTableProduct(ArrayList<SaleItemDTO> list) {
         DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
         model.setRowCount(0); // Xóa dữ liệu cũ
@@ -172,15 +176,22 @@ public class HomeSales extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tblInvoice.getModel();
         model.setRowCount(0); // Xóa dữ liệu cũ
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         for (SalesInvoiceDTO invoice : list) {
-            String customerName = "";
-            if (invoice.getCustomerId() != null) {
-                customerName = customerBUS.getCustomerNameById(invoice.getCustomerId());
+            String customerId = invoice.getCustomerId();
+            String customerName;
+            
+            if (customerNameCache.containsKey(customerId)){
+                customerName = customerNameCache.get(customerId);
+            } else {
+                customerName = customerBUS.getCustomerNameById(customerId);
+                customerNameCache.put(customerId, customerName);
             }
+           
             Object[] row = new Object[] {
                 invoice.getInvoiceId(),
                 customerName,
-                invoice.getCreateDate(),
+                invoice.getCreateDate().format(formatter),
                 invoice.getFinalTotal(),
             };
             model.addRow(row);
@@ -828,10 +839,30 @@ public class HomeSales extends javax.swing.JPanel {
     }//GEN-LAST:event_txtPhoneCustomerKeyTyped
 
     private void tblInvoiceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInvoiceMouseClicked
-        int selected_row = tblInvoice.getSelectedRow();
-        System.out.println(selected_row);
-        if (selected_row != -1) {
-            String invoiceId = tblInvoice.getValueAt(selected_row, 0).toString();
+        int selectedRow = tblInvoice.getSelectedRow();
+        if (selectedRow != -1) {
+            // Lấy mã hóa đơn từ dòng được chọn
+            String invoiceId = tblInvoice.getValueAt(selectedRow, 0).toString();
+
+            // Lấy hóa đơn từ BUS
+            SalesInvoiceDTO invoice = invoiceBUS.getInvoiceById(invoiceId); // cần cài đặt phương thức này trong BUS
+            if (invoice == null) {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy hóa đơn.");
+                return;
+            }
+
+            // Lấy danh sách chi tiết hóa đơn
+            ArrayList<SalesInvoiceDetailDTO> detailList = invoicedetailsBUS.getByInvoiceId(invoiceId);
+            if (detailList == null || detailList.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Hóa đơn này không có chi tiết.");
+                return;
+            }
+
+            // Hiển thị dialog
+            InvoiceDetailDialog dialog = new InvoiceDetailDialog((JFrame) SwingUtilities.getWindowAncestor(this), invoice, detailList);
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+        }
               // lấy chi tiết
 
 //            if (promo != null) {
@@ -840,7 +871,6 @@ public class HomeSales extends javax.swing.JPanel {
 //            } else {
 //                JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin khuyến mãi.", "Lỗi", JOptionPane.ERROR_MESSAGE);
 //            }
-        }
     }//GEN-LAST:event_tblInvoiceMouseClicked
 
     private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
@@ -1157,9 +1187,9 @@ public class HomeSales extends javax.swing.JPanel {
         showDataToTableProduct(result);
     }
     
-//    private void searchInvoice() {
-//        String keyword = txtSearch1.getText();
-//        ArrayList<SalesInvoiceDTO> result = invoiceBUS.searchInvoice(keyword);
-//        showDataToTable(result);
-//    }
+    private void searchInvoice() {
+        String keyword = txtSearch1.getText();
+        ArrayList<SalesInvoiceDTO> result = invoiceBUS.searchInvoice(keyword);
+        showDataToTableInvoice(result);
+    }
 }

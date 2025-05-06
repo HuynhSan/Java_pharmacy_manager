@@ -62,5 +62,4 @@ public class PromotionBUS {
         return promoDAO.selectByID(promoId);
     }
     
-    
 }
