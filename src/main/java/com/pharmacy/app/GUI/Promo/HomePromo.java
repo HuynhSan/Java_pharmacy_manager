@@ -12,11 +12,15 @@ import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
 /**
@@ -31,6 +35,7 @@ public class HomePromo extends javax.swing.JPanel{
     public HomePromo() {
         initComponents();
         loadAllData();
+        centerTableContent(tblPromo);
 
         
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
@@ -202,7 +207,6 @@ public class HomePromo extends javax.swing.JPanel{
         jScrollPane2.setMinimumSize(new java.awt.Dimension(760, 510));
         jScrollPane2.setPreferredSize(new java.awt.Dimension(1180, 620));
 
-        tblPromo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tblPromo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"KM01", "Sale Ngày Nhà Thuốc VN", null, null, null},
@@ -336,6 +340,21 @@ public class HomePromo extends javax.swing.JPanel{
         String keyword = txtSearch.getText();
         ArrayList<PromotionDTO> result = promoBUS.searchAll(keyword);
         showDataToTable(result);
+    }
+    
+    private void centerTableContent(JTable table) {
+        // Căn giữa tiêu đề
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Căn giữa nội dung
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

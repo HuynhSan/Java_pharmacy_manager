@@ -290,6 +290,7 @@ public final class Invoices extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        newinvoiceTbl.setRowHeight(30);
         newinvoiceTbl.getTableHeader().setReorderingAllowed(false);
         newinvoiceTbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
