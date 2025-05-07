@@ -5,6 +5,7 @@
 package com.pharmacy.app.GUI.Importing;
 
 import com.pharmacy.app.BUS.MedicalProductsBUS;
+import com.pharmacy.app.BUS.PurchaseOrderBUS;
 import com.pharmacy.app.BUS.PurchaseOrderDetailsBUS;
 import com.pharmacy.app.BUS.SuplierInvoiceDetailsBUS;
 import com.pharmacy.app.BUS.SuplierInvoicesBUS;
@@ -12,11 +13,13 @@ import com.pharmacy.app.DAO.SupplierInvoiceDetailsDAO;
 import com.pharmacy.app.DTO.MedicalProductsDTO;
 import com.pharmacy.app.DTO.PurchaseOrderDTO;
 import com.pharmacy.app.DTO.PurchaseOrderDetailsDTO;
+import com.pharmacy.app.DTO.SuplierInvoiceDTO;
+import com.pharmacy.app.DTO.SuplierInvoiceDetailsDTO;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,6 +30,7 @@ public class ConfirmStockIn extends javax.swing.JDialog {
 
     private SuplierInvoicesBUS supInvBUS = new SuplierInvoicesBUS();
     private SuplierInvoiceDetailsBUS supInvDeBUS = new SuplierInvoiceDetailsBUS();
+    private PurchaseOrderBUS poBUS = new PurchaseOrderBUS();
     private PurchaseOrderDetailsBUS poDeBUS = new PurchaseOrderDetailsBUS();
     private MedicalProductsBUS productBUS = new MedicalProductsBUS();
 
@@ -51,7 +55,7 @@ public class ConfirmStockIn extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         detailsTbl = new javax.swing.JTable();
         importBtn = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        cancelBtn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtPOid = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -74,20 +78,20 @@ public class ConfirmStockIn extends javax.swing.JDialog {
 
         detailsTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "STT", "Mã thuốc", "Tên thuốc", "Số lượng", "Mã lô thuốc", "Giá nhập", "Số lượng thực nhận", "Thành tiền"
+                "STT", "Mã thuốc", "Tên thuốc", "Số lượng", "Mã lô thuốc", "NSX", "HSD", "Giá nhập", "Giá bán", "Số lượng thực nhận", "Thành tiền"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true, true, false
+                false, false, false, false, true, true, true, true, true, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -113,26 +117,27 @@ public class ConfirmStockIn extends javax.swing.JDialog {
         importBtn.setForeground(new java.awt.Color(255, 255, 255));
         importBtn.setText("NHẬP KHO");
         importBtn.setEnabled(false);
-
-        jButton8.setBackground(new java.awt.Color(255, 0, 0));
-        jButton8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(255, 255, 255));
-        jButton8.setText("HỦY ĐƠN");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        importBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                importBtnActionPerformed(evt);
+            }
+        });
+
+        cancelBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        cancelBtn.setText("THOÁT");
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelBtnActionPerformed(evt);
             }
         });
 
         jLabel5.setText("Mã đơn:");
 
         txtPOid.setEditable(false);
-        txtPOid.setText("DH001");
 
         jLabel3.setText("Nhà cung cấp:");
 
         txtManagerID.setEditable(false);
-        txtManagerID.setText("NV001");
 
         jLabel6.setText("Người lập:");
 
@@ -146,7 +151,6 @@ public class ConfirmStockIn extends javax.swing.JDialog {
         jLabel7.setText("Mã phiếu nhập:");
 
         txtInvoiceID.setEditable(false);
-        txtInvoiceID.setText("PN001");
         txtInvoiceID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtInvoiceIDActionPerformed(evt);
@@ -180,7 +184,7 @@ public class ConfirmStockIn extends javax.swing.JDialog {
                                 .addGap(289, 289, 289)
                                 .addComponent(importBtn)
                                 .addGap(50, 50, 50)
-                                .addComponent(jButton8))
+                                .addComponent(cancelBtn))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(16, 16, 16)
                                 .addComponent(jLabel7)
@@ -225,7 +229,7 @@ public class ConfirmStockIn extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(importBtn)
-                    .addComponent(jButton8))
+                    .addComponent(cancelBtn))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -239,20 +243,21 @@ public class ConfirmStockIn extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void loadStockInDialog(PurchaseOrderDTO selectedPO){
+
+        public void loadStockInDialog(PurchaseOrderDTO selectedPO) {
         txtInvoiceID.setText(supInvBUS.generateNextProductID());
         txtManagerID.setText(selectedPO.getManagerUserID());
         txtPOid.setText(selectedPO.getPoID());
         txtSup.setText(selectedPO.getSupplierID());
-        
-       // Load chi tiết PO
+
+        // Load chi tiết PO
         ArrayList<PurchaseOrderDetailsDTO> detailsList = poDeBUS.getAllPOdetails(selectedPO.getPoID());
         DefaultTableModel model = (DefaultTableModel) detailsTbl.getModel();
         model.setRowCount(0); // clear bảng
 
         int stt = 1;
         for (PurchaseOrderDetailsDTO detail : detailsList) {
-            String productID = detail.getproductID();
+            String productID = detail.getProductID();
             String productName = ""; // lấy từ MedicalProductsDTO
 
             MedicalProductsDTO product = productBUS.getProductByID(productID);
@@ -264,92 +269,137 @@ public class ConfirmStockIn extends javax.swing.JDialog {
                 stt++,
                 productID,
                 productName,
-                detail.getQuantity(),  // Số lượng từ đơn hàng
+                detail.getQuantity(), 
                 "",                    // Mã lô thuốc - nhập tay
-                0.0,                    // Giá nhập - nhập tay
-                0,                    // SL thực nhận - nhập tay
-                0.0                     // Thành tiền - tính sau
+                "",                   
+                "",
+                0.0,
+                0.0,
+                0,
+                0.0// Thành tiền - tính sau
             });
         }
-        addPriceCalculationListener(detailsTbl);
+
+        // Thêm TableModelListener để tính toán tự động
+        model.addTableModelListener(e -> {
+            if (e.getColumn() == 4 || e.getColumn() == 5 || e.getColumn() == 6|| e.getColumn() == 7 || e.getColumn() == 8 || e.getColumn() == 9) {
+                // Chỉ xử lý khi cột mã lô, giá nhập hoặc SL thực nhận thay đổi
+                calculateRowTotal(e.getFirstRow());
+                calculateTotalSum();
+                checkValidation();
+            }
+        });
+
+        // Ban đầu disable nút import
+        importBtn.setEnabled(false);
     }
-    private boolean isUpdating = false;
 
-   public void addPriceCalculationListener(JTable table) {
-    DefaultTableModel model = (DefaultTableModel) table.getModel();
-
-    table.getModel().addTableModelListener(e -> {
-        if (isUpdating || e.getType() != TableModelEvent.UPDATE) return;
-
-        int row = e.getFirstRow();
-        isUpdating = true;
-
+    private void calculateRowTotal(int row) {
+        DefaultTableModel model = (DefaultTableModel) detailsTbl.getModel();
         try {
-            Object priceObj = model.getValueAt(row, 4);    // Giá nhập (String -> float)
-            Object quantityObj = model.getValueAt(row, 5); // Số lượng (int)
+            // Lấy giá nhập và số lượng thực nhận
+            double importPrice = Double.parseDouble(model.getValueAt(row, 7).toString());
+            int actualQuantity = Integer.parseInt(model.getValueAt(row, 9).toString());
 
-            if (priceObj != null && quantityObj != null &&
-                !priceObj.toString().isBlank() && !quantityObj.toString().isBlank()) {
-
-                float price = Float.parseFloat(priceObj.toString().replace(",", "").trim());
-                int quantity = Integer.parseInt(quantityObj.toString().replace(",", "").trim());
-
-                float total = price * quantity;
-                model.setValueAt(total, row, 6); // Cột 6: Thành tiền
-            } else {
-                model.setValueAt(null, row, 6); // Clear nếu thiếu dữ liệu
-            }
-
-        } catch (NumberFormatException ex) {
-            model.setValueAt(null, row, 6); // Clear nếu lỗi định dạng
-        } finally {
-            isUpdating = false;
+            // Tính thành tiền
+            double total = importPrice * actualQuantity;
+            model.setValueAt(total, row, 10);
+        } catch (Exception e) {
+            // Nếu có lỗi (ô trống hoặc không phải số), set thành tiền về 0
+            model.setValueAt(0.0, row, 10);
         }
+    }
 
-        calculateSum(table);
-        importBtn.setEnabled(isAllRequiredCellsFilled(model));
-    });
-}
+    private void calculateTotalSum() {
+        DefaultTableModel model = (DefaultTableModel) detailsTbl.getModel();
+        double sum = 0;
 
-public void calculateSum(JTable table) {
-    DefaultTableModel model = (DefaultTableModel) table.getModel();
-    float sum = 0f;
-
-    for (int i = 0; i < model.getRowCount(); i++) {
-        Object val = model.getValueAt(i, 6); // Thành tiền ở cột 6
-
-        if (val != null) {
+        for (int i = 0; i < model.getRowCount(); i++) {
             try {
-                float value = (val instanceof Number) ?
-                    ((Number) val).floatValue() :
-                    Float.parseFloat(val.toString());
-                sum += value;
-            } catch (NumberFormatException ex) {
-                // Bỏ qua nếu lỗi định dạng
+                sum += Double.parseDouble(model.getValueAt(i, 10).toString());
+            } catch (Exception e) {
+                // Bỏ qua nếu có lỗi
             }
         }
+
+        txtSum.setText(String.valueOf(sum));
     }
 
-    txtSum.setText(String.format("%.2f", sum));
-}
+    private void checkValidation() {
+        DefaultTableModel model = (DefaultTableModel) detailsTbl.getModel();
+        boolean allRowsValid = true;
 
-public boolean isAllRequiredCellsFilled(DefaultTableModel model) {
-    for (int i = 0; i < model.getRowCount(); i++) {
-        for (int col = 4; col <= 6; col++) {
-            Object val = model.getValueAt(i, col);
-            if (val == null || val.toString().trim().isEmpty()) {
-                return false; // Nếu có bất kỳ ô nào trống thì chưa đủ
+        for (int i = 0; i < model.getRowCount(); i++) {
+            // Kiểm tra các ô mã lô, giá nhập, SL thực nhận
+            Object lotNumber = model.getValueAt(i, 4);    // Cột mã lô
+            Object manuDate = model.getValueAt(i, 5);
+            Object expDate = model.getValueAt(i, 6);
+            Object importPrice = model.getValueAt(i, 7);  
+            Object sellPrice = model.getValueAt(i, 8);  
+            Object actualQuantity = model.getValueAt(i, 9); // Cột SL thực nhận
+
+            // Kiểm tra không null và không rỗng
+            boolean isRowValid = (lotNumber != null && !lotNumber.toString().trim().isEmpty())
+                             && (importPrice != null && !importPrice.toString().trim().isEmpty())
+                             && (actualQuantity != null && !actualQuantity.toString().trim().isEmpty())
+                             && (manuDate != null && !manuDate.toString().trim().isEmpty())
+                             && (expDate != null && !expDate.toString().trim().isEmpty())
+                             && (sellPrice != null && !sellPrice.toString().trim().isEmpty());
+
+            // Nếu dòng này không valid, đánh dấu và thoát luôn
+            if (!isRowValid) {
+                allRowsValid = false;
+                System.out.println("có giá trị null trong table");
+                continue;
             }
+
+            // Kiểm tra giá trị số hợp lệ
+            try {
+                double price = Double.parseDouble(sellPrice.toString());
+                double imPrice = Double.parseDouble(importPrice.toString());
+                LocalDate manu = LocalDate.parse(manuDate.toString());
+                LocalDate exp = LocalDate.parse(expDate.toString());
+                int quantity = Integer.parseInt(actualQuantity.toString());
+                
+                // validate giá và số lượng
+                 if (imPrice <= 0 || price <= 0 || quantity <= 0) {
+                    JOptionPane.showMessageDialog(this, "Giá và số lượng phải > 0", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    allRowsValid = false;
+                    continue;
+                }
+                // validate hsd sau nsx
+                if (!exp.isAfter(manu)) {
+                    JOptionPane.showMessageDialog(this, "Ngày hết hạn phải sau ngày sản xuất", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    allRowsValid = false;
+                    continue;
+                }
+               
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Dữ liệu không hợp lệ hoặc sai định dạng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                allRowsValid = false;
+                continue;
+            }catch (DateTimeParseException e) {
+                JOptionPane.showMessageDialog(this, 
+                "Dòng " + (i+1) + ": Sai định dạng ngày (yyyy-MM-dd)\nVí dụ: 2026-07-03", 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE);
+                allRowsValid = false;
+                continue;
+            }catch (Exception e) {
+                System.out.println("Dòng " + (i+1) + ": Lỗi không xác định" ); 
+                e.printStackTrace();
+                allRowsValid = false;
+                continue;
         }
+
+        importBtn.setEnabled(allRowsValid);
     }
-    return true;
-}
-
-
+    }
     
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
+    
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_cancelBtnActionPerformed
 
     private void txtInvoiceIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtInvoiceIDActionPerformed
         // TODO add your handling code here:
@@ -358,6 +408,64 @@ public boolean isAllRequiredCellsFilled(DefaultTableModel model) {
     private void txtSupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSupActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSupActionPerformed
+
+    private void importBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importBtnActionPerformed
+        String[] options = { "Xác nhận", "Hủy bỏ" };
+        int choice = JOptionPane.showOptionDialog(
+            null,
+            "Bạn có chắc muốn nhập đơn hàng này không?",
+            "Xác nhận tạo phiếu nhập",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[0]
+        );
+        if(choice == 0){
+            //xác nhận
+            SuplierInvoiceDTO supInvNew = new SuplierInvoiceDTO(
+                    txtInvoiceID.getText(),
+                    txtPOid.getText(),
+                    txtSup.getText(),
+                    txtManagerID.getText(),
+                    Double.parseDouble(txtSum.getText()),
+                    LocalDate.now()
+            );
+            
+            List<SuplierInvoiceDetailsDTO> details = new ArrayList<>();
+            DefaultTableModel model = (DefaultTableModel) detailsTbl.getModel();
+
+            for (int i = 0; i < model.getRowCount(); i++) {
+                SuplierInvoiceDetailsDTO detail = new SuplierInvoiceDetailsDTO();
+                detail.setInvoiceID(txtInvoiceID.getText());
+                detail.setProductID(model.getValueAt(i, 1).toString());
+                detail.setBatchID(model.getValueAt(i, 4).toString());
+                detail.setManuDate(LocalDate.parse(model.getValueAt(i, 5).toString()));
+                detail.setExpDate(LocalDate.parse(model.getValueAt(i, 6).toString()));
+                detail.setUnitPrice(Double.valueOf(model.getValueAt(i, 7).toString()));
+                detail.setSellPrice(Double.valueOf(model.getValueAt(i, 8).toString()));
+                detail.setQuantity(Integer.parseInt(model.getValueAt(i, 9).toString()));
+                detail.setTotalPrice(Double.parseDouble(model.getValueAt(i, 10).toString()));
+
+                details.add(detail);
+            }
+
+            supInvNew.setDetails(details);
+            
+            boolean Result = supInvBUS.addSupInv(supInvNew);
+            if (Result) {
+                JOptionPane.showMessageDialog(this, "Tạo phiếu nhập thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+                // reset form hoac ko
+                PurchaseOrderDTO updatePO = poBUS.getPOByID(txtPOid.getText());
+                updatePO.setStatus("Đã nhập");
+            } else {
+                JOptionPane.showMessageDialog(this, "Tạo phiếu nhập thất bại. Vui lòng kiểm tra lại dữ liệu.", "Thất bại", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{ 
+            //hủy
+            this.dispose();
+        }
+    }//GEN-LAST:event_importBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -401,11 +509,10 @@ public boolean isAllRequiredCellsFilled(DefaultTableModel model) {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelBtn;
     private javax.swing.JTable detailsTbl;
     private javax.swing.JButton importBtn;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

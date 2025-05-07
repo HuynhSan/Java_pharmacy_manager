@@ -4,18 +4,23 @@
  */
 package com.pharmacy.app.DTO;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author LENOVO
  */
 public class SuplierInvoiceDetailsDTO {
-    public String invoiceID;
-    public String batchID;
-    public String productID;
-    public String name;
-    public int quantity;
-    public Double unitPrice;
-    public Double totalPrice;
+    private String invoiceID;
+    private String batchID;
+    private String productID;
+    private String name;
+    private int quantity;
+    private Double unitPrice;
+    private Double sellPrice;
+    private Double totalPrice;
+    private LocalDate manuDate;
+    private LocalDate expDate;
     
     public SuplierInvoiceDetailsDTO(){}
     
@@ -84,5 +89,31 @@ public class SuplierInvoiceDetailsDTO {
     public void setTotalPrice(Double totalPrice){
         this.totalPrice = totalPrice;
     }
+
+    public LocalDate getManuDate() {
+        return manuDate;
+    }
+
+    public void setManuDate(LocalDate manuDate) {
+        this.manuDate = manuDate;
+    }
+
+    public LocalDate getExpDate() {
+        return expDate;
+    }
+
+    public void setExpDate(LocalDate expDate) {
+        this.expDate = expDate;
+    }
+
+    public Double getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(Double sellPrice) {
+        this.sellPrice =  sellPrice;
+    }
+    
+    
     
 }

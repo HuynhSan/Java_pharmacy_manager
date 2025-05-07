@@ -6,6 +6,7 @@ package com.pharmacy.app.BUS;
 
 import com.pharmacy.app.DAO.SupplierInvoicesDAO;
 import com.pharmacy.app.DTO.SuplierInvoiceDTO;
+import com.pharmacy.app.DTO.SuplierInvoiceDetailsDTO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 public class SuplierInvoicesBUS {
     private final SupplierInvoicesDAO supInvoiceDAO;
     private ArrayList<SuplierInvoiceDTO> supInvoicesList;
+    private SuplierInvoiceDetailsBUS supInvDeBUS = new SuplierInvoiceDetailsBUS();
+    
     public SuplierInvoicesBUS(){
         supInvoiceDAO = new SupplierInvoicesDAO();
         supInvoicesList = new ArrayList<>();
@@ -65,5 +68,21 @@ public class SuplierInvoicesBUS {
     public ArrayList<SuplierInvoiceDTO> filterByDate(LocalDate date){
         return supInvoiceDAO.filterByDate(date);
     }
+    
+    public boolean addSupInv(SuplierInvoiceDTO supInvDTO){
+        if (!supInvoiceDAO.insert(supInvDTO)){
+            return false;
+        }
+        
+        // thêm ctpn
+        for(SuplierInvoiceDetailsDTO detail : supInvDTO.getDetails()){
+            System.out.println("Chi tiết đơn nhập: " + supInvDTO.getDetails());
+            System.out.println("Số dòng chi tiết: " + (supInvDTO.getDetails() == null ? "null" : supInvDTO.getDetails().size()));
 
+            if (!supInvDeBUS.addSupInvDe(detail)){
+                return false;
+            }
+        }
+        return true;
+    }
 }

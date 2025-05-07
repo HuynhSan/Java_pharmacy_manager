@@ -3,13 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package com.pharmacy.app.GUI.Importing;
+import com.pharmacy.app.BUS.MedicalProductsBUS;
 import com.pharmacy.app.BUS.PurchaseOrderBUS;
 import com.pharmacy.app.BUS.PurchaseOrderDetailsBUS;
+import com.pharmacy.app.BUS.SupplierBUS;
+import com.pharmacy.app.DTO.MedicalProductsDTO;
 import com.pharmacy.app.DTO.PurchaseOrderDTO;
 import com.pharmacy.app.DTO.PurchaseOrderDetailsDTO;
+import com.pharmacy.app.DTO.SessionDTO;
+import com.pharmacy.app.DTO.SuplierInvoiceDetailsDTO;
+import com.pharmacy.app.DTO.SupplierDTO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -29,8 +36,11 @@ public class PurchaseOrder extends javax.swing.JPanel {
         loadPOlist();
         id = poBUS.generateNextProductID();  
         txtcreateID.setText(id);
+        txtUserID.setText(SessionDTO.getCurrentUser().getUserID());
+        txtDate.setText(LocalDate.now().toString());
+        loadCbbProduct();
+        loadCbbSup();
     }
-
     
     private void loadPOlist (){
         ArrayList<PurchaseOrderDTO> poList = poBUS.getAllPO();
@@ -57,14 +67,49 @@ public class PurchaseOrder extends javax.swing.JPanel {
         ArrayList<PurchaseOrderDetailsDTO> poDetailsList = poDeBUS.getAllPOdetails(selectedPO.getPoID());
         DefaultTableModel model = (DefaultTableModel) podetailsTbl.getModel();
         model.setRowCount(0);
-        int stt = 0;
+        int stt = 1;
         for(PurchaseOrderDetailsDTO pode : poDetailsList){
             model.addRow(new Object[]{
                 stt++,
-                pode.getproductID(),
+                pode.getProductID(),
                 pode.getQuantity()
             });
         }
+    }
+    
+    private void loadCbbProduct() {
+        MedicalProductsBUS proBus = new MedicalProductsBUS();
+        ArrayList<MedicalProductsDTO> products = proBus.getAllProducts();
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        for (MedicalProductsDTO product : products) {
+            model.addElement(product.getMedicineID()+ " - " + product.getName());
+        }
+        productCbb.setModel(model);
+    }
+    
+    private void loadCbbSup() {
+        SupplierBUS supBus = new SupplierBUS();
+        ArrayList<SupplierDTO> sups = supBus.getSupList();
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        for (SupplierDTO sup : sups) {
+            model.addElement(sup.getName());
+        }
+        supCbb.setModel(model);
+//try {
+//    SupplierBUS supBus = new SupplierBUS();
+//    ArrayList<SupplierDTO> sups = supBus.getSupList();
+//    System.out.println("Number of suppliers: " + sups.size());
+//    
+//    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+//    for (SupplierDTO sup : sups) {
+//        System.out.println("Adding supplier: " + sup.getName());
+//        model.addElement(sup.getName());
+//    }
+//    supCbb.setModel(model);
+//} catch (Exception e) {
+//    System.err.println("Error in loadCbbSup: " + e.getMessage());
+//    e.printStackTrace();
+//}
     }
     
     /**
@@ -82,39 +127,30 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jLabel12 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
         txtcreateID = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        supCbb = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
+        txtDate = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        txtUserID = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        productCbb = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtQuantity = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        saveDeBtn = new javax.swing.JButton();
+        deleteDeBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         poTbl = new javax.swing.JTable();
         jPanel14 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        savePOBtn = new javax.swing.JButton();
+        clearBtn = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         jPanel15 = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
@@ -123,10 +159,9 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel18 = new javax.swing.JPanel();
         jScrollpane = new javax.swing.JScrollPane();
         poListTbl = new javax.swing.JTable();
-        jComboBox6 = new javax.swing.JComboBox<>();
-        jLabel20 = new javax.swing.JLabel();
         jTextField13 = new javax.swing.JTextField();
         jButton9 = new javax.swing.JButton();
+        refreshBtn = new javax.swing.JButton();
         jPanel19 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
@@ -156,75 +191,63 @@ public class PurchaseOrder extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(557, 75));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("LẬP ĐƠN ĐẶT MUA HÀNG");
+        jPanel1.add(jLabel2, java.awt.BorderLayout.NORTH);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
-
-        jLabel11.setText("Nhà cung cấp:");
-        jPanel5.add(jLabel11);
-
-        jComboBox4.setEditable(true);
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ABC", "XYZ" }));
-        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox4ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jComboBox4);
-
-        jLabel12.setText("Ngày lập:");
-        jPanel5.add(jLabel12);
-
-        jTextField8.setEditable(false);
-        jTextField8.setText("1/4/2025");
-        jTextField8.setMaximumSize(new java.awt.Dimension(64, 22));
-        jTextField8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField8ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jTextField8);
-
-        jLabel13.setText("Người lập:");
-        jPanel5.add(jLabel13);
-
-        jTextField9.setEditable(false);
-        jTextField9.setText("NV001");
-        jTextField9.setMaximumSize(new java.awt.Dimension(64, 22));
-        jTextField9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField9ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jTextField9);
+        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
 
         jLabel27.setText("Mã đơn:");
         jPanel5.add(jLabel27);
 
         txtcreateID.setEditable(false);
-        txtcreateID.setText("DH001");
         jPanel5.add(txtcreateID);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 1014, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jLabel11.setText("Nhà cung cấp:");
+        jPanel5.add(jLabel11);
+
+        supCbb.setEditable(true);
+        supCbb.setMinimumSize(new java.awt.Dimension(200, 22));
+        supCbb.setPreferredSize(new java.awt.Dimension(200, 22));
+        supCbb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supCbbActionPerformed(evt);
+            }
+        });
+        jPanel5.add(supCbb);
+
+        jLabel12.setText("Ngày lập:");
+        jPanel5.add(jLabel12);
+
+        txtDate.setEditable(false);
+        txtDate.setMaximumSize(new java.awt.Dimension(90, 22));
+        txtDate.setMinimumSize(new java.awt.Dimension(90, 22));
+        txtDate.setPreferredSize(new java.awt.Dimension(90, 22));
+        txtDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDateActionPerformed(evt);
+            }
+        });
+        jPanel5.add(txtDate);
+
+        jLabel13.setText("Người lập:");
+        jPanel5.add(jLabel13);
+
+        txtUserID.setEditable(false);
+        txtUserID.setMaximumSize(new java.awt.Dimension(90, 22));
+        txtUserID.setPreferredSize(new java.awt.Dimension(90, 22));
+        txtUserID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUserIDActionPerformed(evt);
+            }
+        });
+        jPanel5.add(txtUserID);
+
+        jPanel1.add(jPanel5, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel1, java.awt.BorderLayout.NORTH);
 
@@ -234,93 +257,62 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jPanel13.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel13.setLayout(new java.awt.BorderLayout());
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
 
-        jLabel5.setText("Loại thuốc:");
+        jLabel5.setText("Sản phẩm:");
         jPanel6.add(jLabel5);
 
-        jComboBox3.setEditable(true);
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "*hiển thị mã và tên thuốc*" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+        productCbb.setEditable(true);
+        productCbb.setMinimumSize(new java.awt.Dimension(300, 22));
+        productCbb.setPreferredSize(new java.awt.Dimension(400, 22));
+        productCbb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
+                productCbbActionPerformed(evt);
             }
         });
-        jPanel6.add(jComboBox3);
+        jPanel6.add(productCbb);
 
         jLabel6.setText("Số lượng:");
         jPanel6.add(jLabel6);
 
-        jTextField4.setText("20");
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        txtQuantity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                txtQuantityActionPerformed(evt);
             }
         });
-        jPanel6.add(jTextField4);
+        jPanel6.add(txtQuantity);
 
-        jLabel7.setText("Giá nhập:");
-        jPanel6.add(jLabel7);
-
-        jTextField5.setText("100000");
-        jPanel6.add(jTextField5);
-
-        jLabel8.setText("Phần trăm:");
-        jPanel6.add(jLabel8);
-
-        jTextField6.setText("10");
-        jPanel6.add(jTextField6);
-
-        jLabel9.setText("Giá bán:");
-        jPanel6.add(jLabel9);
-
-        jTextField3.setEditable(false);
-        jTextField3.setText("110000");
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jTextField3);
+        jPanel13.add(jPanel6, java.awt.BorderLayout.NORTH);
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 40, 5));
 
-        jButton3.setBackground(new java.awt.Color(0, 204, 51));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("LƯU");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        saveDeBtn.setBackground(new java.awt.Color(0, 204, 51));
+        saveDeBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        saveDeBtn.setForeground(new java.awt.Color(255, 255, 255));
+        saveDeBtn.setText("LƯU SẢN PHẨM");
+        saveDeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                saveDeBtnActionPerformed(evt);
             }
         });
-        jPanel7.add(jButton3);
+        jPanel7.add(saveDeBtn);
 
-        jButton4.setText("CẬP NHẬT");
-        jPanel7.add(jButton4);
+        deleteDeBtn.setBackground(new java.awt.Color(255, 0, 0));
+        deleteDeBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        deleteDeBtn.setForeground(new java.awt.Color(255, 255, 255));
+        deleteDeBtn.setText("XÓA");
+        deleteDeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteDeBtnActionPerformed(evt);
+            }
+        });
+        jPanel7.add(deleteDeBtn);
 
-        jButton5.setBackground(new java.awt.Color(255, 0, 0));
-        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setText("XÓA");
-        jPanel7.add(jButton5);
-
-        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
-        jPanel13.setLayout(jPanel13Layout);
-        jPanel13Layout.setHorizontalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 1004, Short.MAX_VALUE)
-            .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel13Layout.setVerticalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel13Layout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        jPanel13.add(jPanel7, java.awt.BorderLayout.SOUTH);
 
         jPanel2.add(jPanel13, java.awt.BorderLayout.NORTH);
 
@@ -328,47 +320,39 @@ public class PurchaseOrder extends javax.swing.JPanel {
 
         poTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "STT", "Mã thuốc", "Tên thuốc", "Giá nhập", "Số lượng", "Thành tiền"
+                "STT", "Mã thuốc", "Tên thuốc", "Số lượng"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
+        poTbl.setRowHeight(30);
         jScrollPane1.setViewportView(poTbl);
-
+        if (poTbl.getColumnModel().getColumnCount() > 0) {
+            poTbl.getColumnModel().getColumn(0).setMinWidth(50);
+            poTbl.getColumnModel().getColumn(0).setPreferredWidth(60);
+            poTbl.getColumnModel().getColumn(0).setMaxWidth(70);
+            poTbl.getColumnModel().getColumn(1).setMinWidth(70);
+            poTbl.getColumnModel().getColumn(1).setPreferredWidth(100);
+            poTbl.getColumnModel().getColumn(1).setMaxWidth(120);
+            poTbl.getColumnModel().getColumn(3).setMinWidth(70);
+            poTbl.getColumnModel().getColumn(3).setPreferredWidth(100);
+            poTbl.getColumnModel().getColumn(3).setMaxWidth(120);
+        }
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         jPanel14.setBackground(new java.awt.Color(255, 255, 255));
         jPanel14.setPreferredSize(new java.awt.Dimension(1041, 34));
         jPanel14.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 5));
-
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel10.setText("TỔNG TIỀN:");
-        jPanel14.add(jLabel10);
-
-        jTextField7.setEditable(false);
-        jTextField7.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField7.setText("12300000");
-        jTextField7.setPreferredSize(new java.awt.Dimension(100, 25));
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
-            }
-        });
-        jPanel14.add(jTextField7);
-
         jPanel2.add(jPanel14, java.awt.BorderLayout.SOUTH);
 
         jPanel4.add(jPanel2, java.awt.BorderLayout.CENTER);
@@ -376,20 +360,25 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setPreferredSize(new java.awt.Dimension(1051, 40));
 
-        jButton1.setBackground(new java.awt.Color(0, 204, 51));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("TẠO");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        savePOBtn.setBackground(new java.awt.Color(0, 204, 51));
+        savePOBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        savePOBtn.setForeground(new java.awt.Color(255, 255, 255));
+        savePOBtn.setText("TẠO");
+        savePOBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                savePOBtnActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(255, 0, 0));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("HỦY BỎ");
+        clearBtn.setBackground(new java.awt.Color(255, 0, 0));
+        clearBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        clearBtn.setForeground(new java.awt.Color(255, 255, 255));
+        clearBtn.setText("HỦY BỎ");
+        clearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -399,9 +388,9 @@ public class PurchaseOrder extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(0, 358, Short.MAX_VALUE)
-                    .addComponent(jButton1)
+                    .addComponent(savePOBtn)
                     .addGap(151, 151, 151)
-                    .addComponent(jButton2)
+                    .addComponent(clearBtn)
                     .addGap(0, 358, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
@@ -411,10 +400,10 @@ public class PurchaseOrder extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(0, 8, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jButton1)
+                        .addComponent(savePOBtn)
                         .addGroup(jPanel3Layout.createSequentialGroup()
                             .addGap(1, 1, 1)
-                            .addComponent(jButton2)))
+                            .addComponent(clearBtn)))
                     .addGap(0, 8, Short.MAX_VALUE)))
         );
 
@@ -482,7 +471,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-
         poListTbl.getTableHeader().setReorderingAllowed(false);
         poListTbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -497,17 +485,20 @@ public class PurchaseOrder extends javax.swing.JPanel {
             poListTbl.getColumnModel().getColumn(1).setResizable(false);
         }
 
-
-        jComboBox6.setEditable(true);
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo đơn", "Tên người tạo", "Nhà cung cấp" }));
-
-        jLabel20.setText("Tìm theo: ");
-
         jTextField13.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jTextField13.setForeground(new java.awt.Color(204, 204, 204));
         jTextField13.setText("Nhập....");
 
+        jButton9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton9.setText("TÌM KIẾM");
+
+        refreshBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        refreshBtn.setText("TẢI LẠI");
+        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
         jPanel18.setLayout(jPanel18Layout);
@@ -515,32 +506,26 @@ public class PurchaseOrder extends javax.swing.JPanel {
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel18Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollpane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel18Layout.createSequentialGroup()
-                        .addGap(83, 83, 83)
-                        .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel18Layout.createSequentialGroup()
-                                .addComponent(jLabel20)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton9)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollpane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(refreshBtn)
+                .addGap(44, 44, 44))
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel20)
-                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
+                .addGap(17, 17, 17)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jButton9)
+                    .addComponent(refreshBtn))
+                .addGap(36, 36, 36)
                 .addComponent(jScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -586,9 +571,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
-
         jscrollpane.setViewportView(podetailsTbl);
-
 
         jLabel22.setText("Ngày lập:");
 
@@ -713,29 +696,184 @@ public class PurchaseOrder extends javax.swing.JPanel {
         add(jTabbedPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+    private void productCbbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productCbbActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
+    }//GEN-LAST:event_productCbbActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void txtQuantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtQuantityActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_txtQuantityActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    private void savePOBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePOBtnActionPerformed
+        String[] options = { "Xác nhận", "Hủy bỏ" };
+    int choice = JOptionPane.showOptionDialog(
+        null,
+        "Bạn có chắc muốn tạo đơn đặt này không?",
+        "Xác nhận tạo đơn đặt hàng",
+        JOptionPane.DEFAULT_OPTION,
+        JOptionPane.QUESTION_MESSAGE,
+        null,
+        options,
+        options[0]
+    );
+    
+    if(choice == 0){
+        try {
+            System.out.println("Bắt đầu quá trình tạo đơn đặt hàng...");
+            
+            // Lấy thông tin nhà cung cấp
+            SupplierBUS supBUS = new SupplierBUS();
+            String selectedName = (String) supCbb.getSelectedItem();
+            System.out.println("Nhà cung cấp được chọn: " + selectedName);
+            
+            SupplierDTO selectedSupplier = supBUS.getSupplierByName(selectedName);
+            if(selectedSupplier == null) {
+                System.out.println("Không tìm thấy thông tin nhà cung cấp!");
+                JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin nhà cung cấp!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            String supplierId = selectedSupplier.getId();
+            System.out.println("ID nhà cung cấp: " + supplierId);
+            
+            // Tạo đối tượng PurchaseOrderDTO
+            String poId = txtcreateID.getText();
+            String managerId = txtUserID.getText();
+            String dateText = txtDate.getText();
+            
+            System.out.println("Thông tin đơn hàng:");
+            System.out.println(" - ID đơn hàng: " + poId);
+            System.out.println(" - ID người quản lý: " + managerId);
+            System.out.println(" - Ngày tạo: " + dateText);
+            
+            LocalDate orderDate;
+            try {
+                orderDate = LocalDate.parse(dateText);
+            } catch (Exception e) {
+                System.out.println("Lỗi định dạng ngày: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Định dạng ngày không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            PurchaseOrderDTO poNew = new PurchaseOrderDTO(
+                    poId,
+                    managerId,
+                    supplierId,
+                    orderDate,
+                    "Chưa duyệt",
+                    ""
+            );
+            
+            // Lấy chi tiết đơn hàng từ bảng
+            ArrayList<PurchaseOrderDetailsDTO> details = new ArrayList<>();
+            DefaultTableModel model = (DefaultTableModel) poTbl.getModel();
+            System.out.println("Số dòng chi tiết: " + model.getRowCount());
+            
+            for (int i = 0; i < model.getRowCount(); i++) {
+                try {
+                    String productId = model.getValueAt(i, 1).toString();
+                    String quantityStr = model.getValueAt(i, 3).toString();
+                    
+                    System.out.println("Chi tiết dòng " + i + ":");
+                    System.out.println(" - ID sản phẩm: " + productId);
+                    System.out.println(" - Số lượng: " + quantityStr);
+                    
+                    int quantity = Integer.parseInt(quantityStr);
+                    PurchaseOrderDetailsDTO detail = new PurchaseOrderDetailsDTO(
+                        poId,
+                        productId,
+                        quantity
+                    );
+                    details.add(detail);
+                } catch (Exception e) {
+                    System.out.println("Lỗi khi xử lý dòng " + i + ": " + e.getMessage());
+                    JOptionPane.showMessageDialog(this, "Lỗi dữ liệu ở dòng " + (i+1) + "!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            
+            poNew.setPoDetails(details);
+            
+            System.out.println("Đang gửi dữ liệu đến BUS...");
+            boolean result = poBUS.addPO(poNew);
+            
+            if (result) {
+                System.out.println("Tạo đơn hàng thành công!");
+                JOptionPane.showMessageDialog(this, "Tạo đơn đặt hàng thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                System.out.println("Tạo đơn hàng thất bại (BUS trả về false)");
+                JOptionPane.showMessageDialog(this, "Tạo đơn đặt hàng thất bại. Vui lòng kiểm tra lại dữ liệu.", "Thất bại", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi không mong muốn: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi không mong muốn: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+        System.out.println("Người dùng đã hủy thao tác");
+    }
+    }//GEN-LAST:event_savePOBtnActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void saveDeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveDeBtnActionPerformed
+        String selectedValue = (String) productCbb.getSelectedItem();
+    
+        // Kiểm tra đã chọn sản phẩm chưa
+        if (selectedValue == null || selectedValue.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        // Kiểm tra số lượng
+        String quantityText = txtQuantity.getText().trim();
+        if (quantityText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            txtQuantity.requestFocus(); // Đặt con trỏ vào ô số lượng
+            return;
+        }
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
+        // Kiểm tra số lượng có phải là số dương
+        try {
+            int quantity = Integer.parseInt(quantityText);
+            if (quantity <= 0) {
+                JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                txtQuantity.requestFocus();
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtQuantity.requestFocus();
+            return;
+        }
+
+        // Tách chuỗi sản phẩm
+        String[] parts = selectedValue.split(" - ");
+        if (parts.length < 2) {
+            JOptionPane.showMessageDialog(this, "Dữ liệu sản phẩm không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String productName = parts[1];
+        String productId = parts[0];
+        DefaultTableModel tableModel = (DefaultTableModel) poTbl.getModel();
+
+        // Kiểm tra trùng lặp
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            String idInTable = tableModel.getValueAt(i, 1).toString();
+            if (idInTable.equals(productId)) {
+                JOptionPane.showMessageDialog(this, "Sản phẩm đã có trong danh sách", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+        
+        // Thêm vào bảng
+        int stt = tableModel.getRowCount() + 1;
+        tableModel.addRow(new Object[]{stt, productId, productName, txtQuantity.getText()});
+
+        // Reset các trường
+        productCbb.setSelectedIndex(-1);
+        txtQuantity.setText("");
+        productCbb.requestFocus();
+    }//GEN-LAST:event_saveDeBtnActionPerformed
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         String[] options = { "Xác nhận", "Hủy bỏ" };
@@ -757,17 +895,17 @@ public class PurchaseOrder extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_cancelBtnActionPerformed
 
-    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+    private void supCbbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supCbbActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox4ActionPerformed
+    }//GEN-LAST:event_supCbbActionPerformed
 
-    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+    private void txtDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField8ActionPerformed
+    }//GEN-LAST:event_txtDateActionPerformed
 
-    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+    private void txtUserIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserIDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField9ActionPerformed
+    }//GEN-LAST:event_txtUserIDActionPerformed
 
     private void approveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approveBtnActionPerformed
         String[] options = { "Xác nhận", "Hủy bỏ" };
@@ -797,10 +935,10 @@ public class PurchaseOrder extends javax.swing.JPanel {
                 PurchaseOrderDTO selectedPO = poBUS.getPOByID(ID);
                 loadPODetails(selectedPO);
                 
-                cancelBtn.setEnabled(true);
-                // if(role == ...){
-                approveBtn.setEnabled(true);
-                //}
+                    cancelBtn.setEnabled(true);
+                if(SessionDTO.getCurrentUser().getRoleID().equals("ROLE001")){
+                    approveBtn.setEnabled(true);
+                }
             }
     }//GEN-LAST:event_poListTblMouseClicked
     }
@@ -808,26 +946,36 @@ public class PurchaseOrder extends javax.swing.JPanel {
 
     }//GEN-LAST:event_txtSupActionPerformed
 
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+        loadPOlist();
+    }//GEN-LAST:event_refreshBtnActionPerformed
+
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+        ((DefaultTableModel) poTbl.getModel()).setRowCount(0);
+    }//GEN-LAST:event_clearBtnActionPerformed
+
+    private void deleteDeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDeBtnActionPerformed
+        if (poTbl.getSelectedRow() != -1) {
+            ((DefaultTableModel) poTbl.getModel()).removeRow(poTbl.getSelectedRow());
+        }
+        for (int i = 0; i < poTbl.getRowCount(); i++) {
+            poTbl.getModel().setValueAt(i + 1, i, 0); // Cột 0 là STT
+        }
+
+    }//GEN-LAST:event_deleteDeBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton approveBtn;
     private javax.swing.JButton cancelBtn;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton clearBtn;
+    private javax.swing.JButton deleteDeBtn;
     private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox6;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
@@ -836,9 +984,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
@@ -861,21 +1006,22 @@ public class PurchaseOrder extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollpane;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JScrollPane jscrollpane;
     private javax.swing.JTable poListTbl;
     private javax.swing.JTable poTbl;
     private javax.swing.JTable podetailsTbl;
+    private javax.swing.JComboBox<String> productCbb;
+    private javax.swing.JButton refreshBtn;
+    private javax.swing.JButton saveDeBtn;
+    private javax.swing.JButton savePOBtn;
+    private javax.swing.JComboBox<String> supCbb;
+    private javax.swing.JTextField txtDate;
     private javax.swing.JTextField txtDateOrder;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtManagerID;
+    private javax.swing.JTextField txtQuantity;
     private javax.swing.JTextField txtSup;
+    private javax.swing.JTextField txtUserID;
     private javax.swing.JTextField txtcreateID;
     // End of variables declaration//GEN-END:variables
 }

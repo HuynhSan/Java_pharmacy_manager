@@ -6,6 +6,8 @@ package com.pharmacy.app.BUS;
 
 import com.pharmacy.app.DAO.PurchaseOrderDAO;
 import com.pharmacy.app.DTO.PurchaseOrderDTO;
+import com.pharmacy.app.DTO.PurchaseOrderDetailsDTO;
+import com.pharmacy.app.DTO.SessionDTO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 public class PurchaseOrderBUS {
     private PurchaseOrderDAO poDAO = new PurchaseOrderDAO();
     private PurchaseOrderDTO poDTO;
+    private PurchaseOrderDetailsBUS POdeBUS = new PurchaseOrderDetailsBUS();
     
     public ArrayList<PurchaseOrderDTO> getAllPO(){
         try{
@@ -39,7 +42,7 @@ public class PurchaseOrderBUS {
                         po.getSupplierID(), 
                         po.getOrderDate(), 
                         "Đã duyệt", 
-                        "user ID chưa xử lý");
+                        SessionDTO.getCurrentUser().getUserID());
             }
         }
         poDAO.update(poDTO);
@@ -68,7 +71,21 @@ public class PurchaseOrderBUS {
         return "PO" + String.format("%03d", nextNumber);
     }
     
-//    public boolean updateProduct(PurchaseOrderDTO po){
-//        return poDAO.update(po);
-//    }
+     public boolean addPO(PurchaseOrderDTO newPO){
+         if (!poDAO.insert(newPO)){
+            return false;
+        }
+        
+        // thêm ctpn
+        for(PurchaseOrderDetailsDTO detail : newPO.getPoDetails()){
+            System.out.println("Chi tiết đơn đặt: " + newPO.getPoDetails());
+            System.out.println("Số dòng chi tiết: " + (newPO.getPoDetails() == null ? "null" : newPO.getPoDetails().size()));
+
+            if (!POdeBUS.addPOde(detail)){
+                return false;
+            }
+        }
+        return true;
+    }
 }
+

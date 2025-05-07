@@ -15,20 +15,19 @@ public class MedicalProductsDTO {
     private String description;
     private String unit;
     private int quantity;
-    private boolean status;
+    private String status;
     private String packingSpecification;
 
     public MedicalProductsDTO(){
      
     }
-    public MedicalProductsDTO(String medicineID, String name, String category, String description, String unit, int quantity,  String packingSpecification, boolean status) {
+    public MedicalProductsDTO(String medicineID, String name, String category, String description, String unit, int quantity,  String packingSpecification) {
         this.medicineID = medicineID;
         this.name = name;
         this.category = category;
         this.description = description;
         this.unit = unit;
         this.quantity = quantity;
-        this.status = status;
         this.packingSpecification = packingSpecification;
     }
 
@@ -80,11 +79,11 @@ public class MedicalProductsDTO {
         this.quantity = quantity;
     }
 
-    public boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

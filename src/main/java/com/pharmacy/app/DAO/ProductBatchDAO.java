@@ -18,8 +18,36 @@ import java.util.ArrayList;
 public class ProductBatchDAO implements DAOinterface<ProductBatchDTO>{
     MyConnection myconnect = new MyConnection();
     @Override
-    public boolean insert(ProductBatchDTO t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean insert(ProductBatchDTO batch) {
+boolean result = false;
+
+        if (myconnect.openConnection()) {
+            try {
+                String sql = "INSERT INTO product_batches( batch_id, product_id, manufacturing_date, expiration_date, recieved_quantity, inventory_quantity, sell_price) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                // Sử dụng phương thức prepareUpdate để thực thi câu lệnh SQL
+                int rowsAffected = myconnect.prepareUpdate(sql, 
+                    batch.getBatchID(),
+                    batch.getMedicineID(),
+                    batch.getManufacturingDate(),
+                    batch.getExpirationDate(),
+                    batch.getQuantityReceived(),
+                    batch.getQuantityInStock(),
+                    batch.getSellPrice()
+                );
+
+                if (rowsAffected > 0) {
+                    result = true;
+                }
+            }catch (Exception e) {
+                System.err.println("SQL Error: " + e.getMessage()); // In lỗi cụ thể
+                e.printStackTrace();
+                return false;
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -124,7 +152,7 @@ public class ProductBatchDAO implements DAOinterface<ProductBatchDTO>{
     public boolean updateBatchQuantity(String batchId, String productId, int quantity) {
         boolean isSuccess = false;
         if (myconnect.openConnection()) {
-        String sql = "UPDATE product_batches SET inventory_quantity = inventory_quantity -  ? WHERE batch_id = ? AND product_id = ?";
+        String sql = "UPDATE product_batches SET inventory_quantity = inventory_quantity +  ? WHERE batch_id = ? AND product_id = ?";
         int result = myconnect.prepareUpdate(sql, quantity, batchId, productId);
             
         if (result > 0) {
