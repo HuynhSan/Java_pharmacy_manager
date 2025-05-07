@@ -265,6 +265,7 @@ public class UserManagement extends javax.swing.JPanel {
         tblUsers.setFocusable(false);
         tblUsers.setMinimumSize(new java.awt.Dimension(500, 80));
         tblUsers.setPreferredSize(new java.awt.Dimension(500, 80));
+        tblUsers.setRowHeight(30);
         tblUsers.setShowGrid(true);
         tblUsers.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

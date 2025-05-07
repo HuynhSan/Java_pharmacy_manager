@@ -62,8 +62,8 @@ public class SuplierInvoicesBUS {
     public ArrayList<SuplierInvoiceDTO> search(String keyword){
         return supInvoiceDAO.search(keyword);
     }
-    public ArrayList<SuplierInvoiceDTO> filterByDate(LocalDate date){
-        return supInvoiceDAO.filterByDate(date);
-    }
+//    public ArrayList<SuplierInvoiceDTO> filterByDate(LocalDate date){
+//        return supInvoiceDAO.filterByDate(date);
+//    }
 
 }

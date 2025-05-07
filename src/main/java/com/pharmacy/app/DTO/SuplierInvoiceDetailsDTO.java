@@ -4,6 +4,8 @@
  */
 package com.pharmacy.app.DTO;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author LENOVO
@@ -14,12 +16,12 @@ public class SuplierInvoiceDetailsDTO {
     public String productID;
     public String name;
     public int quantity;
-    public Double unitPrice;
-    public Double totalPrice;
+    public BigDecimal unitPrice;
+    public BigDecimal totalPrice;
     
     public SuplierInvoiceDetailsDTO(){}
     
-    public SuplierInvoiceDetailsDTO(String invoiceID, String batchID, String productID, String name, int quantity, Double unitPrice, Double totalPrice) {
+    public SuplierInvoiceDetailsDTO(String invoiceID, String batchID, String productID, String name, int quantity, BigDecimal unitPrice, BigDecimal totalPrice) {
         this.invoiceID = invoiceID;
         this.batchID = batchID;
         this.productID = productID;
@@ -69,19 +71,19 @@ public class SuplierInvoiceDetailsDTO {
         this.quantity = quantity;
     }
 
-    public Double getUnitPrice() {
+    public BigDecimal getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(Double unitPrice) {
+    public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
     
-    public Double getTotalPrice(){
+    public BigDecimal getTotalPrice(){
         return totalPrice;
     }
     
-    public void setTotalPrice(Double totalPrice){
+    public void setTotalPrice(BigDecimal totalPrice){
         this.totalPrice = totalPrice;
     }
     

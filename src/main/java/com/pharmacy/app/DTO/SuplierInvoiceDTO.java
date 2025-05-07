@@ -4,6 +4,7 @@
  */
 package com.pharmacy.app.DTO;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -18,12 +19,12 @@ public class SuplierInvoiceDTO {
     public String managerID;
     public String managerName;
     public int totalQuantity;
-    public Double totalPrice;
+    public BigDecimal totalPrice;
     public LocalDate purchaseDate;
 
     public SuplierInvoiceDTO(){}
     
-    public SuplierInvoiceDTO(String invoiceID, String poID, String supplierID, String managerID, String supplierName, String managerName, int totalQuantity, Double totalPrice, LocalDate purchaseDate) {
+    public SuplierInvoiceDTO(String invoiceID, String poID, String supplierID, String managerID, String supplierName, String managerName, int totalQuantity, BigDecimal totalPrice, LocalDate purchaseDate) {
         this.invoiceID = invoiceID;
         this.poID = poID;
         this.supplierID = supplierID;
@@ -91,11 +92,11 @@ public class SuplierInvoiceDTO {
         this.totalQuantity = totalQuantity;
     }
 
-    public Double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 

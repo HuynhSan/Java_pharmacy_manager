@@ -180,8 +180,11 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel5.add(jLabel12);
 
         jTextField8.setEditable(false);
+        jTextField8.setBackground(new java.awt.Color(255, 255, 255));
         jTextField8.setText("1/4/2025");
+        jTextField8.setBorder(null);
         jTextField8.setMaximumSize(new java.awt.Dimension(64, 22));
+        jTextField8.setPreferredSize(new java.awt.Dimension(100, 22));
         jTextField8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField8ActionPerformed(evt);
@@ -193,8 +196,11 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel5.add(jLabel13);
 
         jTextField9.setEditable(false);
+        jTextField9.setBackground(new java.awt.Color(255, 255, 255));
         jTextField9.setText("NV001");
+        jTextField9.setBorder(null);
         jTextField9.setMaximumSize(new java.awt.Dimension(64, 22));
+        jTextField9.setPreferredSize(new java.awt.Dimension(100, 22));
         jTextField9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField9ActionPerformed(evt);
@@ -206,7 +212,10 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel5.add(jLabel27);
 
         txtcreateID.setEditable(false);
+        txtcreateID.setBackground(new java.awt.Color(255, 255, 255));
         txtcreateID.setText("DH001");
+        txtcreateID.setBorder(null);
+        txtcreateID.setPreferredSize(new java.awt.Dimension(100, 22));
         jPanel5.add(txtcreateID);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -276,6 +285,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel6.add(jLabel9);
 
         jTextField3.setEditable(false);
+        jTextField3.setBackground(new java.awt.Color(255, 255, 255));
         jTextField3.setText("110000");
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -345,8 +355,8 @@ public class PurchaseOrder extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        poTbl.setRowHeight(30);
         jScrollPane1.setViewportView(poTbl);
-
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -359,6 +369,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel14.add(jLabel10);
 
         jTextField7.setEditable(false);
+        jTextField7.setBackground(new java.awt.Color(255, 255, 255));
         jTextField7.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField7.setText("12300000");
         jTextField7.setPreferredSize(new java.awt.Dimension(100, 25));
@@ -482,7 +493,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-
         poListTbl.getTableHeader().setReorderingAllowed(false);
         poListTbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -496,7 +506,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
             poListTbl.getColumnModel().getColumn(0).setMaxWidth(60);
             poListTbl.getColumnModel().getColumn(1).setResizable(false);
         }
-
 
         jComboBox6.setEditable(true);
         jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo đơn", "Tên người tạo", "Nhà cung cấp" }));
@@ -586,25 +595,37 @@ public class PurchaseOrder extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
-
         jscrollpane.setViewportView(podetailsTbl);
-
 
         jLabel22.setText("Ngày lập:");
 
         txtDateOrder.setEditable(false);
+        txtDateOrder.setBackground(new java.awt.Color(255, 255, 255));
+        txtDateOrder.setBorder(null);
+        txtDateOrder.setPreferredSize(new java.awt.Dimension(100, 22));
 
         jLabel23.setText("Mã đơn:");
 
         txtID.setEditable(false);
+        txtID.setBackground(new java.awt.Color(255, 255, 255));
+        txtID.setBorder(null);
+        txtID.setFocusable(false);
+        txtID.setPreferredSize(new java.awt.Dimension(100, 22));
 
         jLabel24.setText("Nhà cung cấp:");
 
         txtManagerID.setEditable(false);
+        txtManagerID.setBackground(new java.awt.Color(255, 255, 255));
+        txtManagerID.setBorder(null);
+        txtManagerID.setFocusable(false);
+        txtManagerID.setPreferredSize(new java.awt.Dimension(100, 22));
 
         jLabel25.setText("Người lập:");
 
         txtSup.setEditable(false);
+        txtSup.setBackground(new java.awt.Color(255, 255, 255));
+        txtSup.setBorder(null);
+        txtSup.setPreferredSize(new java.awt.Dimension(100, 22));
         txtSup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSupActionPerformed(evt);
@@ -631,7 +652,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
                                 .addComponent(jLabel25)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtManagerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                         .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel24)
                             .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))

@@ -33,8 +33,8 @@ public class adminView extends javax.swing.JFrame {
     
     public adminView() {
         initComponents();
+        ContentPn.setLayout(cardlayout);
         this.setLocationRelativeTo(null);
-
     }
 
     /**
@@ -554,7 +554,6 @@ public class adminView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 // cardlayout
     public void switchToPanel(String panelName) {
-        ContentPn.setLayout(cardlayout);
         cardlayout.show(ContentPn, panelName);
         ContentPn.revalidate();
         ContentPn.repaint();

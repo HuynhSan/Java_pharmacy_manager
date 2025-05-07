@@ -136,7 +136,6 @@
                             <Column editable="false" title="Tr&#x1ea1;ng th&#xe1;i" type="java.lang.String"/>
                           </Table>
                         </Property>
-<<<<<<< HEAD
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                           <TableColumnModel selectionModel="0">
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
@@ -161,9 +160,6 @@
                             </Column>
                           </TableColumnModel>
                         </Property>
-=======
-                        <Property name="rowHeight" type="int" value="30"/>
->>>>>>> 7c4c0003821ad03ffe2230cc68e0443074c8bd93
                         <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                           <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                         </Property>
@@ -567,9 +563,9 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jScrollPane2" min="-2" pref="295" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="txtTotal" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>

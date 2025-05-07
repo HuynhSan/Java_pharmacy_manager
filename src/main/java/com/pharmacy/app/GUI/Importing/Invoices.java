@@ -20,11 +20,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 import java.time.format.DateTimeFormatter;
 //import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
+import javax.swing.table.DefaultTableCellRenderer;
 
 
 import javax.swing.table.DefaultTableModel;
@@ -86,7 +89,6 @@ public final class Invoices extends javax.swing.JPanel {
             }
         });
     }
-    
     private void displayList(ArrayList<SuplierInvoiceDTO> supInvoiceList) {
         DefaultTableModel model = (DefaultTableModel) tbInvoiceHistory.getModel();
         model.setRowCount(0);
@@ -270,7 +272,6 @@ public final class Invoices extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-
         newinvoiceTbl.getTableHeader().setReorderingAllowed(false);
         newinvoiceTbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -278,7 +279,6 @@ public final class Invoices extends javax.swing.JPanel {
             }
         });
         jScrollPane3.setViewportView(newinvoiceTbl);
-
 
         jComboBox5.setEditable(true);
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo đơn", "Tên người tạo", "Nhà cung cấp" }));
@@ -613,9 +613,9 @@ public final class Invoices extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -724,8 +724,6 @@ public final class Invoices extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-private javax.swing.JTextField jTextField3;
-
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTable newinvoiceTbl;
     private javax.swing.JTable tbInvoiceHistory;

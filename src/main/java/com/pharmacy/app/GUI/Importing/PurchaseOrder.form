@@ -139,9 +139,18 @@
                     <Component class="javax.swing.JTextField" name="jTextField8">
                       <Properties>
                         <Property name="editable" type="boolean" value="false"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="1/4/2025"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="null"/>
+                        </Property>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[64, 22]"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[100, 22]"/>
                         </Property>
                       </Properties>
                       <Events>
@@ -156,9 +165,18 @@
                     <Component class="javax.swing.JTextField" name="jTextField9">
                       <Properties>
                         <Property name="editable" type="boolean" value="false"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="NV001"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="null"/>
+                        </Property>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[64, 22]"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[100, 22]"/>
                         </Property>
                       </Properties>
                       <Events>
@@ -173,7 +191,16 @@
                     <Component class="javax.swing.JTextField" name="txtcreateID">
                       <Properties>
                         <Property name="editable" type="boolean" value="false"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="DH001"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="null"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[100, 22]"/>
+                        </Property>
                       </Properties>
                     </Component>
                   </SubComponents>
@@ -305,6 +332,9 @@
                         <Component class="javax.swing.JTextField" name="jTextField3">
                           <Properties>
                             <Property name="editable" type="boolean" value="false"/>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="110000"/>
                           </Properties>
                           <Events>
@@ -463,6 +493,9 @@
                     <Component class="javax.swing.JTextField" name="jTextField7">
                       <Properties>
                         <Property name="editable" type="boolean" value="false"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
                         <Property name="horizontalAlignment" type="int" value="4"/>
                         <Property name="text" type="java.lang.String" value="12300000"/>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -724,7 +757,6 @@
                                     <Column editable="false" title="Tr&#x1ea1;ng th&#xe1;i" type="java.lang.String"/>
                                   </Table>
                                 </Property>
-<<<<<<< HEAD
                                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                                   <TableColumnModel selectionModel="0">
                                     <Column maxWidth="60" minWidth="30" prefWidth="50" resizable="true">
@@ -749,9 +781,6 @@
                                     </Column>
                                   </TableColumnModel>
                                 </Property>
-=======
-                                <Property name="rowHeight" type="int" value="30"/>
->>>>>>> 7c4c0003821ad03ffe2230cc68e0443074c8bd93
                                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                                 </Property>
@@ -895,7 +924,7 @@
                                                   <Component id="txtManagerID" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
-                                          <EmptySpace pref="139" max="32767" attributes="0"/>
+                                          <EmptySpace pref="67" max="32767" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="jLabel24" alignment="0" min="-2" max="-2" attributes="0"/>
                                               <Component id="jLabel22" alignment="0" min="-2" pref="56" max="-2" attributes="0"/>
@@ -950,7 +979,6 @@
                                     <Column editable="true" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng" type="java.lang.Integer"/>
                                   </Table>
                                 </Property>
-<<<<<<< HEAD
                                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                                   <TableColumnModel selectionModel="0">
                                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
@@ -970,9 +998,6 @@
                                     </Column>
                                   </TableColumnModel>
                                 </Property>
-=======
-                                <Property name="rowHeight" type="int" value="30"/>
->>>>>>> 7c4c0003821ad03ffe2230cc68e0443074c8bd93
                                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                                 </Property>
@@ -988,6 +1013,15 @@
                         <Component class="javax.swing.JTextField" name="txtDateOrder">
                           <Properties>
                             <Property name="editable" type="boolean" value="false"/>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
+                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                              <Border info="null"/>
+                            </Property>
+                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[100, 22]"/>
+                            </Property>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel23">
@@ -998,6 +1032,16 @@
                         <Component class="javax.swing.JTextField" name="txtID">
                           <Properties>
                             <Property name="editable" type="boolean" value="false"/>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
+                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                              <Border info="null"/>
+                            </Property>
+                            <Property name="focusable" type="boolean" value="false"/>
+                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[100, 22]"/>
+                            </Property>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel24">
@@ -1008,6 +1052,16 @@
                         <Component class="javax.swing.JTextField" name="txtManagerID">
                           <Properties>
                             <Property name="editable" type="boolean" value="false"/>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
+                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                              <Border info="null"/>
+                            </Property>
+                            <Property name="focusable" type="boolean" value="false"/>
+                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[100, 22]"/>
+                            </Property>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel25">
@@ -1018,6 +1072,15 @@
                         <Component class="javax.swing.JTextField" name="txtSup">
                           <Properties>
                             <Property name="editable" type="boolean" value="false"/>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
+                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                              <Border info="null"/>
+                            </Property>
+                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[100, 22]"/>
+                            </Property>
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSupActionPerformed"/>
