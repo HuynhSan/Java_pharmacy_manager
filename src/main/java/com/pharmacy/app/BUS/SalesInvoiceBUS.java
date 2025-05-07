@@ -5,8 +5,11 @@
 package com.pharmacy.app.BUS;
 
 import com.pharmacy.app.DAO.SalesInvoiceDAO;
+import com.pharmacy.app.DTO.CustomerDTO;
 import com.pharmacy.app.DTO.SalesInvoiceDTO;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Map;
 
 import java.util.stream.Collectors;
 
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
  */
 public class SalesInvoiceBUS {
     SalesInvoiceDAO dao = new SalesInvoiceDAO();
+    CustomerBUS customerBus = new CustomerBUS();
     
     public String generateNewId(){
         return dao.generateNewSalesInvoiceId();
@@ -31,12 +35,7 @@ public class SalesInvoiceBUS {
     }
     
     public ArrayList<SalesInvoiceDTO> searchInvoice(String keyword) {
-        return dao.selectAll().stream()
-            .filter(p -> p.getInvoiceId().toLowerCase().contains(keyword.toLowerCase()) ||
-                         p.getCustomerId().toLowerCase().contains(keyword.toLowerCase()) ||
-                         p.getCreateDate().toString().contains(keyword.toLowerCase()))
-            .collect(Collectors.toCollection(ArrayList::new));
-    
+        return dao.search(keyword);
     }
     public ArrayList<SalesInvoiceDTO> getSelectSaleInvoiceByCustomerID(String customerID){
         return dao.selectSaleInvoiceByCustomerID(customerID);
@@ -44,5 +43,25 @@ public class SalesInvoiceBUS {
 
     public SalesInvoiceDTO getInvoiceById(String invoiceId) {
         return dao.selectByID(invoiceId);
+    }
+    
+    public ArrayList<SalesInvoiceDTO> filterByDateRange(LocalDate from, LocalDate to) {
+        return dao.selectAll().stream()
+            .filter(invoice -> {
+                LocalDate d = invoice.getCreateDate().toLocalDate();
+                return (d.isEqual(from) || d.isAfter(from)) &&
+                       (d.isEqual(to) || d.isBefore(to));
+            })
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
+    
+    public ArrayList<SalesInvoiceDTO> filterByDateRangeMix(ArrayList<SalesInvoiceDTO> salesInvoice, LocalDate from, LocalDate to) {
+        return salesInvoice.stream()
+            .filter(invoice -> {
+                LocalDate d = invoice.getCreateDate().toLocalDate();
+                return (d.isEqual(from) || d.isAfter(from)) &&
+                       (d.isEqual(to) || d.isBefore(to));
+            })
+            .collect(Collectors.toCollection(ArrayList::new));
     }
 }

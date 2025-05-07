@@ -18,7 +18,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 /**
  *
  * @author LENOVO
@@ -40,6 +42,9 @@ public class PurchaseOrder extends javax.swing.JPanel {
         txtDate.setText(LocalDate.now().toString());
         loadCbbProduct();
         loadCbbSup();
+        centerTableContent(poTbl);
+        centerTableContent(poListTbl);
+        centerTableContent(podetailsTbl);
     }
     
     private void loadPOlist (){
@@ -110,6 +115,21 @@ public class PurchaseOrder extends javax.swing.JPanel {
 //    System.err.println("Error in loadCbbSup: " + e.getMessage());
 //    e.printStackTrace();
 //}
+    }
+    
+    private void centerTableContent(JTable table) {
+        // Căn giữa tiêu đề
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Căn giữa nội dung
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
     
     /**
