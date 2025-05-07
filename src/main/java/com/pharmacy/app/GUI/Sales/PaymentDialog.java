@@ -239,7 +239,7 @@ public class PaymentDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnConfirmPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmPaymentActionPerformed
@@ -295,7 +295,7 @@ public class PaymentDialog extends javax.swing.JDialog {
                 salesInvoiceDetailBUS.addInvoiceDetail(detail);
                 
                 // Cập nhật tồn kho theo batchId và product_Id
-                batchBus.updateInventoryQuantity(item.getBatchId(), item.getProductId(), item.getQuantity());
+                batchBus.saleInventoryQuantity(item.getBatchId(), item.getProductId(), item.getQuantity());
             }
             
             if (customerID != null){

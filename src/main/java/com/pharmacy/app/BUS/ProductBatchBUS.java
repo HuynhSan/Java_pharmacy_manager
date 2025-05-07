@@ -50,11 +50,52 @@ public class ProductBatchBUS {
     }
     
 
-    public boolean updateInventoryQuantity(String batchId, String productId, int quantity){
+    public boolean saleInventoryQuantity(String batchId, String productId, int quantity) {
+        if (batchId == null || productId == null || quantity <= 0) {
+            return false;
+        }
+        quantity = - quantity;
         return batchDAO.updateBatchQuantity(batchId, productId, quantity);
     }
+    
+    public boolean importInventoryQuantity(String batchId, String productId, int quantity, LocalDate manuDate, LocalDate expDate, double sellprice) {
+        if (batchId == null || productId == null || quantity <= 0) {
+            return false;
+        }
+            // Kiểm tra batch đã tồn tại chưa
+        ProductBatchDTO existingBatch = getProductBatchByProductID(batchId);
+        if (existingBatch == null) {
+            System.out.println("🔄 Tạo mới lô hàng " + batchId);
+
+            ProductBatchDTO newBatch = new ProductBatchDTO();
+            newBatch.setBatchID(batchId);
+            newBatch.setMedicineID(productId);
+            newBatch.setQuantityReceived(quantity);
+            newBatch.setQuantityInStock(quantity);
+            newBatch.setExpirationDate(expDate);
+            newBatch.setManufacturingDate(manuDate);
+            newBatch.setSellPrice(sellprice);
+
+            if (!batchDAO.insert(newBatch)) {
+                System.err.println("❌ Không thể tạo lô hàng mới");
+                return false;
+            }
+            return true;
+        }
+        return batchDAO.updateBatchQuantity(batchId, productId, quantity);
+    }
+    
+    
    public ProductBatchDTO getProductBatchByProductID(String ID){
        ProductBatchDTO pd = batchDAO.selectByID(ID);
        return pd; 
    }
+   
+   public boolean addBatch(ProductBatchDTO batchDTO){
+       if (!batchDAO.insert(batchDTO)){
+            return false;
+        }
+       return true;
+   }
+   
 }

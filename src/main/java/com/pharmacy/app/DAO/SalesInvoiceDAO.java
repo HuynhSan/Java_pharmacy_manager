@@ -176,7 +176,36 @@ public class SalesInvoiceDAO implements DAOinterface<SalesInvoiceDTO>{
 
     @Override
     public ArrayList<SalesInvoiceDTO> search(String t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<SalesInvoiceDTO> invoices = new ArrayList<>();
+        if (myconnect.openConnection()){
+            String sql = "SELECT i.* FROM sales_invoices i "
+                   + "JOIN customers c ON i.customer_id = c.customer_id "
+                   + "WHERE ("
+                   + "LOWER(i.sales_invoice_id) LIKE N'%" + t + "%' OR "
+                   + "LOWER(c.customer_name) LIKE N'%" + t + "%'"
+                   + ")";
+            ResultSet rs = myconnect.runQuery(sql);
+            try {
+                while (rs.next()) {
+                    SalesInvoiceDTO invoice = new SalesInvoiceDTO(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getInt(4),
+                        rs.getBigDecimal("original_amount"),
+                        rs.getBigDecimal("discount_amount"),
+                        rs.getBigDecimal("total_amount"),
+                        rs.getTimestamp(8).toLocalDateTime()
+                    );
+                    invoices.add(invoice);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return invoices;
     }
     
 }

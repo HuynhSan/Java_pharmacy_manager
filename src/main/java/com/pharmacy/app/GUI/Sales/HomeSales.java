@@ -26,11 +26,18 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -67,12 +74,17 @@ public class HomeSales extends javax.swing.JPanel {
 
     private Map<String, CartItemDTO> cartItemsMap = new HashMap<>(); // Khai báo ở class để lưu các thuốc đã thêm, key là batch_id
     private Map<String, String> customerNameCache = new HashMap<>();
+    
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
     /**
      * Creates new form AuthorizationManagement
      */
     public HomeSales() {
         initComponents();
         loadAllData();
+        setupListeners();
+        setupDateFilterListener();
         
         txtSearchProduct.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -89,7 +101,6 @@ public class HomeSales extends javax.swing.JPanel {
             public void changedUpdate(DocumentEvent e) {
                 searchProduct();
             }
-
 
         });
         
@@ -109,9 +120,100 @@ public class HomeSales extends javax.swing.JPanel {
                 handlePhoneInput();
             }
         });
-
+        
     }
     
+    private void setupListeners(){
+        // Setup search text field key listener
+        txtSearchInvoice.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+//                String keyword = txtSearchInvoice.getText();
+//                if (!keyword.isEmpty()) {
+//                    searchInvoice(keyword);
+//                } else {
+//                    loadAllData();
+//                }
+                searchInvoice();
+                
+            }
+
+            private void searchInvoice() {
+                String keyword = txtSearchInvoice.getText().trim();
+                Date fromDate = date_start.getDate();
+                Date toDate = date_end.getDate();
+
+                boolean hasKeyword = !keyword.isEmpty();
+                boolean hasFromDate = fromDate != null;
+                boolean hasToDate = toDate != null;
+
+                ArrayList<SalesInvoiceDTO> result;
+
+                // Nếu có cả ngày bắt đầu và kết thúc
+                if (hasFromDate && hasToDate) {
+                    LocalDate from = fromDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    LocalDate to = toDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                    if (from.isAfter(to)) {
+                        JOptionPane.showMessageDialog(null, "Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc!");
+                        return;
+                    }
+
+                    if (hasKeyword) {
+                        ArrayList<SalesInvoiceDTO> searchResult = invoiceBUS.searchInvoice(keyword);
+                        result = invoiceBUS.filterByDateRangeMix(searchResult, from, to);
+                    } else {
+                        result = invoiceBUS.filterByDateRange(from, to);
+                    }
+                    showDataToTableInvoice(result);
+                }
+
+                // Nếu chỉ có từ khoá
+                else if (hasKeyword) {
+                    result = invoiceBUS.searchInvoice(keyword);
+                    showDataToTableInvoice(result);
+                }
+
+                // Nếu không có gì cả → load lại tất cả
+                else {
+                    loadAllData();
+                }
+            }
+        });
+    }
+    
+    private void setupDateFilterListener() {
+        PropertyChangeListener dateFilterListener = evt -> {
+            ArrayList<SalesInvoiceDTO> result;
+            if (date_start.getDate() != null && date_end.getDate() != null) {
+                Date fromDate = date_start.getDate();
+                Date toDate = date_end.getDate();
+
+                LocalDate from = fromDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate to = toDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                if (from.isAfter(to)){
+                    JOptionPane.showMessageDialog(null, "Ngày bắt đầu phải nhỏ hơn ngày kết thúc!");
+                    return;
+                }
+                if (to.isBefore(from)){
+                    JOptionPane.showMessageDialog(null, "Ngày kết thúc phải lớn hơn ngày bắt đầu!");
+                    return;
+                }
+                result = invoiceBUS.filterByDateRange(from, to);
+                showDataToTableInvoice(result); // cập nhật lại bảng
+
+                System.out.println("From: " + from + ", To: " + to);
+                System.out.println("Result: " + result);
+            }
+            
+        };
+
+
+        date_start.getDateEditor().addPropertyChangeListener("date", dateFilterListener);
+        date_end.getDateEditor().addPropertyChangeListener("date", dateFilterListener);
+    }
+        
     public void reload(){
         tblProduct.clearSelection();  // Bỏ mọi dòng đang được chọn
         cartItemsMap.clear();
@@ -161,12 +263,12 @@ public class HomeSales extends javax.swing.JPanel {
                 saleItem.getBatchId(),
                 saleItem.getName(),
                 saleItem.getUnit(),
-                saleItem.getSellPrice(),
+                formatMoney_1(saleItem.getSellPrice()),
                 saleItem.getInventoryQuantity(),
                 saleItem.getExpirationDate(),
                 saleItem.getPercentDiscount(),
-                saleItem.getDiscountAmount(),
-                saleItem.getFinalPrice()
+                formatMoney_1(saleItem.getDiscountAmount()),
+                formatMoney_1(saleItem.getFinalPrice())
             };
             model.addRow(row);
         }
@@ -176,7 +278,6 @@ public class HomeSales extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tblInvoice.getModel();
         model.setRowCount(0); // Xóa dữ liệu cũ
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         for (SalesInvoiceDTO invoice : list) {
             String customerId = invoice.getCustomerId();
             String customerName;
@@ -192,7 +293,7 @@ public class HomeSales extends javax.swing.JPanel {
                 invoice.getInvoiceId(),
                 customerName,
                 invoice.getCreateDate().format(formatter),
-                invoice.getFinalTotal(),
+                formatMoney(invoice.getFinalTotal()),
             };
             model.addRow(row);
         }
@@ -213,7 +314,6 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
-        cbxAll = new javax.swing.JComboBox<>();
         txtSearchProduct = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         btnAddMedicineToCart = new javax.swing.JButton();
@@ -260,10 +360,13 @@ public class HomeSales extends javax.swing.JPanel {
         btnPayment = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
-        cbxAll1 = new javax.swing.JComboBox<>();
-        txtSearch1 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        txtSearchInvoice = new javax.swing.JTextField();
+        btnRefreshInvoice = new javax.swing.JButton();
         btnExportPDF = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        date_start = new com.toedter.calendar.JDateChooser();
+        jLabel8 = new javax.swing.JLabel();
+        date_end = new com.toedter.calendar.JDateChooser();
         jPanel18 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblInvoice = new javax.swing.JTable();
@@ -294,12 +397,7 @@ public class HomeSales extends javax.swing.JPanel {
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setPreferredSize(new java.awt.Dimension(500, 40));
-        jPanel8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
-
-        cbxAll.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cbxAll.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Active", "IsActive" }));
-        cbxAll.setPreferredSize(new java.awt.Dimension(80, 35));
-        jPanel8.add(cbxAll);
+        jPanel8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         txtSearchProduct.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         txtSearchProduct.setMinimumSize(new java.awt.Dimension(80, 30));
@@ -646,36 +744,58 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel10.setMaximumSize(new java.awt.Dimension(800, 50));
         jPanel10.setMinimumSize(new java.awt.Dimension(800, 54));
         jPanel10.setPreferredSize(new java.awt.Dimension(1250, 70));
+        jPanel10.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 15));
 
-        cbxAll1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cbxAll1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Active", "IsActive" }));
-        cbxAll1.setMinimumSize(new java.awt.Dimension(75, 25));
-        cbxAll1.setPreferredSize(new java.awt.Dimension(80, 35));
-        jPanel10.add(cbxAll1);
+        txtSearchInvoice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtSearchInvoice.setMinimumSize(new java.awt.Dimension(80, 30));
+        txtSearchInvoice.setPreferredSize(new java.awt.Dimension(500, 35));
+        jPanel10.add(txtSearchInvoice);
 
-        txtSearch1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtSearch1.setMinimumSize(new java.awt.Dimension(80, 30));
-        txtSearch1.setPreferredSize(new java.awt.Dimension(500, 35));
-        jPanel10.add(txtSearch1);
-
-        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton4.setText("Refresh");
-        jButton4.setMaximumSize(new java.awt.Dimension(325689, 326589));
-        jButton4.setMinimumSize(new java.awt.Dimension(0, 0));
-        jButton4.setPreferredSize(new java.awt.Dimension(80, 35));
-        jPanel10.add(jButton4);
+        btnRefreshInvoice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnRefreshInvoice.setText("Refresh");
+        btnRefreshInvoice.setMaximumSize(new java.awt.Dimension(325689, 326589));
+        btnRefreshInvoice.setMinimumSize(new java.awt.Dimension(0, 0));
+        btnRefreshInvoice.setPreferredSize(new java.awt.Dimension(80, 35));
+        btnRefreshInvoice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshInvoiceActionPerformed(evt);
+            }
+        });
+        jPanel10.add(btnRefreshInvoice);
 
         btnExportPDF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnExportPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pdf.png"))); // NOI18N
         btnExportPDF.setMaximumSize(new java.awt.Dimension(325689, 326589));
         btnExportPDF.setMinimumSize(new java.awt.Dimension(0, 0));
-        btnExportPDF.setPreferredSize(new java.awt.Dimension(80, 35));
+        btnExportPDF.setPreferredSize(new java.awt.Dimension(70, 35));
         btnExportPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportPDFActionPerformed(evt);
             }
         });
         jPanel10.add(btnExportPDF);
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("Từ ngày");
+        jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setPreferredSize(new java.awt.Dimension(100, 16));
+        jPanel10.add(jLabel7);
+
+        date_start.setMinimumSize(new java.awt.Dimension(100, 30));
+        date_start.setPreferredSize(new java.awt.Dimension(100, 30));
+        date_start.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                date_startPropertyChange(evt);
+            }
+        });
+        jPanel10.add(date_start);
+
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel8.setText("Đến ngày");
+        jPanel10.add(jLabel8);
+
+        date_end.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel10.add(date_end);
 
         jPanel9.add(jPanel10, java.awt.BorderLayout.NORTH);
 
@@ -863,14 +983,6 @@ public class HomeSales extends javax.swing.JPanel {
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
         }
-              // lấy chi tiết
-
-//            if (promo != null) {
-//                PromoDetail dialog = new PromoDetail((JFrame) SwingUtilities.getWindowAncestor(this), true, this, promo);
-//                dialog.setVisible(true);
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin khuyến mãi.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//            }
     }//GEN-LAST:event_tblInvoiceMouseClicked
 
     private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
@@ -889,6 +1001,18 @@ public class HomeSales extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnExportPDFActionPerformed
 
+    private void btnRefreshInvoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshInvoiceActionPerformed
+        txtSearchInvoice.setText("");
+        tblInvoice.clearSelection();
+        date_start.setDate(null);
+        date_end.setDate(null);
+        loadAllData();
+    }//GEN-LAST:event_btnRefreshInvoiceActionPerformed
+
+    private void date_startPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_date_startPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_date_startPropertyChange
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddMedicineToCart;
@@ -896,10 +1020,10 @@ public class HomeSales extends javax.swing.JPanel {
     private javax.swing.JButton btnExportPDF;
     private javax.swing.JButton btnPayment;
     private javax.swing.JButton btnRefresh;
+    private javax.swing.JButton btnRefreshInvoice;
     private javax.swing.JPanel cartPanel;
-    private javax.swing.JComboBox<String> cbxAll;
-    private javax.swing.JComboBox<String> cbxAll1;
-    private javax.swing.JButton jButton4;
+    private com.toedter.calendar.JDateChooser date_end;
+    private com.toedter.calendar.JDateChooser date_start;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
@@ -907,6 +1031,8 @@ public class HomeSales extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -946,7 +1072,7 @@ public class HomeSales extends javax.swing.JPanel {
     private javax.swing.JTextField txtPhoneCustomer;
     private javax.swing.JTextField txtProductDiscount;
     private javax.swing.JTextField txtPromoId;
-    private javax.swing.JTextField txtSearch1;
+    private javax.swing.JTextField txtSearchInvoice;
     private javax.swing.JTextField txtSearchProduct;
     private javax.swing.JTextField txtSubtotal;
     private javax.swing.JTextField txtTotalProduct;
@@ -1187,9 +1313,12 @@ public class HomeSales extends javax.swing.JPanel {
         showDataToTableProduct(result);
     }
     
-    private void searchInvoice() {
-        String keyword = txtSearch1.getText();
-        ArrayList<SalesInvoiceDTO> result = invoiceBUS.searchInvoice(keyword);
-        showDataToTableInvoice(result);
+    
+    private String formatMoney(BigDecimal amount) {
+        return String.format("%,.0f VNĐ", amount);
+    }
+    
+    private String formatMoney_1(BigDecimal amount) {
+        return String.format("%,.0f", amount);
     }
 }

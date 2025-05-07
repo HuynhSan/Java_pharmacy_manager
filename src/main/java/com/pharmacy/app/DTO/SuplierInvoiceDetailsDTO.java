@@ -5,12 +5,14 @@
 package com.pharmacy.app.DTO;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  *
  * @author LENOVO
  */
 public class SuplierInvoiceDetailsDTO {
+
     public String invoiceID;
     public String batchID;
     public String productID;
@@ -18,6 +20,10 @@ public class SuplierInvoiceDetailsDTO {
     public int quantity;
     public BigDecimal unitPrice;
     public BigDecimal totalPrice;
+    private Double sellPrice;
+    private LocalDate manuDate;
+    private LocalDate expDate;
+
     
     public SuplierInvoiceDetailsDTO(){}
     
@@ -86,5 +92,31 @@ public class SuplierInvoiceDetailsDTO {
     public void setTotalPrice(BigDecimal totalPrice){
         this.totalPrice = totalPrice;
     }
+
+    public LocalDate getManuDate() {
+        return manuDate;
+    }
+
+    public void setManuDate(LocalDate manuDate) {
+        this.manuDate = manuDate;
+    }
+
+    public LocalDate getExpDate() {
+        return expDate;
+    }
+
+    public void setExpDate(LocalDate expDate) {
+        this.expDate = expDate;
+    }
+
+    public Double getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(Double sellPrice) {
+        this.sellPrice =  sellPrice;
+    }
+    
+    
     
 }

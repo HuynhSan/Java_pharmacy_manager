@@ -7,6 +7,7 @@ package com.pharmacy.app.BUS;
 import com.pharmacy.app.DAO.MedicalProductsDAO;
 import com.pharmacy.app.DTO.MedicalProductsDTO;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -75,4 +76,22 @@ public class MedicalProductsBUS {
         return productDAO.delete(ID);
     }
     
-}
+    private boolean matchesKeyword(String value, String keyword) {
+        return value != null && value.toLowerCase().contains(keyword.toLowerCase());
+    }
+    
+    public ArrayList<MedicalProductsDTO> searchAll(String keyword){
+            if (keyword == null || keyword.trim().isEmpty()) {
+                return new ArrayList<>(productDAO.selectAll());
+                }
+            String lowerKeyword = keyword.toLowerCase();
+            return productDAO.selectAll().stream()
+                .filter(p -> 
+                    matchesKeyword(p.getMedicineID(), lowerKeyword) ||
+                    matchesKeyword(p.getName(), lowerKeyword) ||
+                    matchesKeyword(p.getCategory(), lowerKeyword) ||
+                    matchesKeyword(p.getStatus(), lowerKeyword)
+                )
+                .collect(Collectors.toCollection(ArrayList::new));
+        }
+    }

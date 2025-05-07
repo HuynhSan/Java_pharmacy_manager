@@ -72,7 +72,7 @@
                                   <EmptySpace min="-2" pref="289" max="-2" attributes="0"/>
                                   <Component id="importBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                                  <Component id="jButton8" min="-2" max="-2" attributes="0"/>
+                                  <Component id="cancelBtn" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
@@ -128,7 +128,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="importBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton8" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cancelBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -143,20 +143,38 @@
             <Component class="javax.swing.JTable" name="detailsTbl">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="8" rowCount="4">
+                  <Table columnCount="11" rowCount="4">
                     <Column editable="false" title="STT" type="java.lang.Integer"/>
                     <Column editable="false" title="M&#xe3; thu&#x1ed1;c" type="java.lang.String"/>
                     <Column editable="false" title="T&#xea;n thu&#x1ed1;c" type="java.lang.String"/>
                     <Column editable="false" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng" type="java.lang.Integer"/>
                     <Column editable="true" title="M&#xe3; l&#xf4; thu&#x1ed1;c" type="java.lang.String"/>
-                    <Column editable="true" title="Gi&#xe1; nh&#x1ead;p" type="java.lang.Float"/>
+                    <Column editable="true" title="NSX" type="java.lang.String"/>
+                    <Column editable="true" title="HSD" type="java.lang.String"/>
+                    <Column editable="true" title="Gi&#xe1; nh&#x1ead;p" type="java.lang.Double"/>
+                    <Column editable="true" title="Gi&#xe1; b&#xe1;n" type="java.lang.Double"/>
                     <Column editable="true" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng th&#x1ef1;c nh&#x1ead;n" type="java.lang.Integer"/>
-                    <Column editable="false" title="Th&#xe0;nh ti&#x1ec1;n" type="java.lang.Float"/>
+                    <Column editable="false" title="Th&#xe0;nh ti&#x1ec1;n" type="java.lang.Double"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
                     <Column maxWidth="50" minWidth="30" prefWidth="40" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -223,22 +241,19 @@
             <Property name="text" type="java.lang.String" value="NH&#x1eac;P KHO"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="importBtnActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton8">
+        <Component class="javax.swing.JButton" name="cancelBtn">
           <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="ff" type="rgb"/>
-            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="1"/>
             </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="H&#x1ee6;Y &#x110;&#x1a0;N"/>
+            <Property name="text" type="java.lang.String" value="THO&#xc1;T"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton8ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelBtnActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
@@ -249,7 +264,6 @@
         <Component class="javax.swing.JTextField" name="txtPOid">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
-            <Property name="text" type="java.lang.String" value="DH001"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
@@ -260,7 +274,6 @@
         <Component class="javax.swing.JTextField" name="txtManagerID">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
-            <Property name="text" type="java.lang.String" value="NV001"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
@@ -291,7 +304,6 @@
         <Component class="javax.swing.JTextField" name="txtInvoiceID">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
-            <Property name="text" type="java.lang.String" value="PN001"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtInvoiceIDActionPerformed"/>

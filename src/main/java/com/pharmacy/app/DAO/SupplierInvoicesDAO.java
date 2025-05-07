@@ -25,8 +25,35 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
     }
     
     @Override
-    public boolean insert(SuplierInvoiceDTO t){
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean insert(SuplierInvoiceDTO supInv){
+         boolean result = false;
+
+        if (myconnect.openConnection()) {
+            try {
+                String sql = "INSERT INTO supplier_invoices(supplier_invoice_id, po_id, supplier_id, total_price, purchase_date) VALUES (?, ?, ?, ?, ?)";
+                // Sử dụng phương thức prepareUpdate để thực thi câu lệnh SQL
+                int rowsAffected = myconnect.prepareUpdate(sql, 
+                    supInv.getInvoiceID(),
+                    supInv.getPoID(),
+                    supInv.getSupplierID(),
+                    supInv.getTotalPrice(),
+                    supInv.getImportDate()
+                );
+               
+                if (rowsAffected > 0) {
+                    result = true;
+                    System.out.println("da them phieu nhap");
+                }
+            }catch (Exception e) {
+                System.err.println("SQL Error: " + e.getMessage()); // In lỗi cụ thể
+                e.printStackTrace();
+                return false;
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+
+        return result;
     }
 
     @Override

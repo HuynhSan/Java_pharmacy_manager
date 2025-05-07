@@ -44,7 +44,7 @@ public class AddProduct extends javax.swing.JDialog {
         }
 
         cbbCate.setModel(model);
-}
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -351,7 +351,7 @@ public class AddProduct extends javax.swing.JDialog {
         newProduct.setUnit(unit);
         newProduct.setPackingSpecification(packing);
         newProduct.setCategory(categoryID);
-        newProduct.setStatus(false);
+        newProduct.setStatus("Còn kinh doanh");
         
         // Thêm vào DB
         boolean success = bus.addProduct(newProduct);
