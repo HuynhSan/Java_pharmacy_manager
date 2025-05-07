@@ -39,7 +39,7 @@ public class PromoDetail extends javax.swing.JDialog {
         initComponents();
         
         // Gán giá trị vào các trường
-        fillFields(promo);
+        showDetail(promo);
         setLocationRelativeTo(parent);
     }
 
@@ -227,30 +227,7 @@ public class PromoDetail extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Vui lòng nhập tên chương trình khuyến mãi!");
                 return;
             }
-
-            // ==== Kiểm tra bắt buộc: Ngày bắt đầu và ngày kết thúc ====
-            Date startDateRaw = startDatePicker.getDate();
-            Date endDateRaw = endDatePicker.getDate();
-
-            if (startDateRaw == null || endDateRaw == null) {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày bắt đầu và ngày kết thúc!");
-                return;
-            }
-
-            // ==== Chuyển đổi sang LocalDate ====
-            LocalDate startDate = startDateRaw.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-            LocalDate endDate = endDateRaw.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-
-            // ==== Kiểm tra logic: Ngày bắt đầu phải trước ngày kết thúc ====
-            if (startDate.isAfter(endDate)) {
-                JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải trước ngày kết thúc!");
-                return;
-            }
-
+            
             // ==== Kiểm tra loại khuyến mãi và validate các trường cần thiết ====
             Float discountPercent = null;
             Float minAccumulatedPoints = null;
@@ -294,8 +271,30 @@ public class PromoDetail extends javax.swing.JDialog {
                     return;
                 }
             }
-            
-            
+
+            // ==== Kiểm tra bắt buộc: Ngày bắt đầu và ngày kết thúc ====
+            Date startDateRaw = startDatePicker.getDate();
+            Date endDateRaw = endDatePicker.getDate();
+
+            if (startDateRaw == null || endDateRaw == null) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày bắt đầu và ngày kết thúc!");
+                return;
+            }
+
+            // ==== Chuyển đổi sang LocalDate ====
+            LocalDate startDate = startDateRaw.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+            LocalDate endDate = endDateRaw.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+            // ==== Kiểm tra logic: Ngày bắt đầu phải trước ngày kết thúc ====
+            if (startDate.isAfter(endDate)) {
+                JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải trước ngày kết thúc!");
+                
+                return;
+            }
             
             // ==== Tạo đối tượng DTO từ dữ liệu đã kiểm tra ====
             PromotionDTO promo = new PromotionDTO(
@@ -349,7 +348,7 @@ public class PromoDetail extends javax.swing.JDialog {
         }
     }
     
-    private void fillFields(PromotionDTO t) {
+    private void showDetail(PromotionDTO t) {
         // Kiểm tra nếu đối tượng PromotionDTO không null để tránh NullPointerException
         if (t != null) {
             // Điền thông tin vào các trường TextField
@@ -366,6 +365,7 @@ public class PromoDetail extends javax.swing.JDialog {
         }
     }
 
+    
     /**
      * @param args the command line arguments
      */
