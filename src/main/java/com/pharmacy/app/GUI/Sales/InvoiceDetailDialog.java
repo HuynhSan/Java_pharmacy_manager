@@ -116,7 +116,7 @@ public class InvoiceDetailDialog extends JDialog{
 
         JLabel lblTableTitle = new JLabel("Danh sách sản phẩm");
         lblTableTitle.setFont(new Font("Segoe UI", Font.BOLD, 17));
-        lblTableTitle.setAlignmentX(Component.CENTER_ALIGNMENT); // Căn trái
+        lblTableTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblTableTitle.setBorder(new EmptyBorder(0, 0, 10, 0));
 
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT); // Căn cho bảng khớp label

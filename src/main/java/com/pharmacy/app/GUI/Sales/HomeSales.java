@@ -46,12 +46,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -84,7 +88,9 @@ public class HomeSales extends javax.swing.JPanel {
         initComponents();
         loadAllData();
         setupListeners();
-        setupDateFilterListener();
+        centerTableContent(tblInvoice);
+        centerTableContent(tblProduct);
+//        setupDateFilterListener();
         
         txtSearchProduct.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -314,6 +320,7 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
         txtSearchProduct = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         btnAddMedicineToCart = new javax.swing.JButton();
@@ -399,6 +406,9 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel8.setPreferredSize(new java.awt.Dimension(500, 40));
         jPanel8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        jLabel9.setText("Tìm thuốc");
+        jPanel8.add(jLabel9);
+
         txtSearchProduct.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         txtSearchProduct.setMinimumSize(new java.awt.Dimension(80, 30));
         txtSearchProduct.setPreferredSize(new java.awt.Dimension(400, 35));
@@ -415,7 +425,7 @@ public class HomeSales extends javax.swing.JPanel {
         btnAddMedicineToCart.setMargin(new java.awt.Insets(2, 10, 3, 10));
         btnAddMedicineToCart.setMaximumSize(new java.awt.Dimension(150, 27));
         btnAddMedicineToCart.setMinimumSize(new java.awt.Dimension(150, 27));
-        btnAddMedicineToCart.setPreferredSize(new java.awt.Dimension(135, 35));
+        btnAddMedicineToCart.setPreferredSize(new java.awt.Dimension(120, 35));
         btnAddMedicineToCart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddMedicineToCartActionPerformed(evt);
@@ -424,8 +434,8 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel3.add(btnAddMedicineToCart);
 
         btnRefresh.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnRefresh.setText("Refresh");
-        btnRefresh.setPreferredSize(new java.awt.Dimension(80, 35));
+        btnRefresh.setText("Làm mới ");
+        btnRefresh.setPreferredSize(new java.awt.Dimension(90, 35));
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefreshActionPerformed(evt);
@@ -489,9 +499,10 @@ public class HomeSales extends javax.swing.JPanel {
             tblProduct.getColumnModel().getColumn(0).setPreferredWidth(60);
             tblProduct.getColumnModel().getColumn(1).setPreferredWidth(120);
             tblProduct.getColumnModel().getColumn(2).setPreferredWidth(10);
-            tblProduct.getColumnModel().getColumn(3).setPreferredWidth(50);
+            tblProduct.getColumnModel().getColumn(3).setPreferredWidth(55);
             tblProduct.getColumnModel().getColumn(4).setPreferredWidth(10);
             tblProduct.getColumnModel().getColumn(5).setPreferredWidth(60);
+            tblProduct.getColumnModel().getColumn(6).setPreferredWidth(20);
         }
 
         jPanel1.add(jScrollPane2);
@@ -554,7 +565,7 @@ public class HomeSales extends javax.swing.JPanel {
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setPreferredSize(new java.awt.Dimension(790, 50));
-        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 0));
+        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 0));
 
         btnClearCart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnClearCart.setText("Xóa giỏ hàng");
@@ -744,7 +755,7 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel10.setMaximumSize(new java.awt.Dimension(800, 50));
         jPanel10.setMinimumSize(new java.awt.Dimension(800, 54));
         jPanel10.setPreferredSize(new java.awt.Dimension(1250, 70));
-        jPanel10.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 15));
+        jPanel10.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 15));
 
         txtSearchInvoice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtSearchInvoice.setMinimumSize(new java.awt.Dimension(80, 30));
@@ -752,10 +763,10 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel10.add(txtSearchInvoice);
 
         btnRefreshInvoice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnRefreshInvoice.setText("Refresh");
+        btnRefreshInvoice.setText("Làm mới");
         btnRefreshInvoice.setMaximumSize(new java.awt.Dimension(325689, 326589));
         btnRefreshInvoice.setMinimumSize(new java.awt.Dimension(0, 0));
-        btnRefreshInvoice.setPreferredSize(new java.awt.Dimension(80, 35));
+        btnRefreshInvoice.setPreferredSize(new java.awt.Dimension(85, 35));
         btnRefreshInvoice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefreshInvoiceActionPerformed(evt);
@@ -767,7 +778,7 @@ public class HomeSales extends javax.swing.JPanel {
         btnExportPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pdf.png"))); // NOI18N
         btnExportPDF.setMaximumSize(new java.awt.Dimension(325689, 326589));
         btnExportPDF.setMinimumSize(new java.awt.Dimension(0, 0));
-        btnExportPDF.setPreferredSize(new java.awt.Dimension(70, 35));
+        btnExportPDF.setPreferredSize(new java.awt.Dimension(40, 35));
         btnExportPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportPDFActionPerformed(evt);
@@ -782,7 +793,7 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel10.add(jLabel7);
 
         date_start.setMinimumSize(new java.awt.Dimension(100, 30));
-        date_start.setPreferredSize(new java.awt.Dimension(100, 30));
+        date_start.setPreferredSize(new java.awt.Dimension(120, 30));
         date_start.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 date_startPropertyChange(evt);
@@ -794,7 +805,7 @@ public class HomeSales extends javax.swing.JPanel {
         jLabel8.setText("Đến ngày");
         jPanel10.add(jLabel8);
 
-        date_end.setPreferredSize(new java.awt.Dimension(100, 30));
+        date_end.setPreferredSize(new java.awt.Dimension(120, 30));
         jPanel10.add(date_end);
 
         jPanel9.add(jPanel10, java.awt.BorderLayout.NORTH);
@@ -802,7 +813,7 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel18.setBackground(new java.awt.Color(255, 255, 255));
         jPanel18.setMinimumSize(new java.awt.Dimension(800, 550));
         jPanel18.setPreferredSize(new java.awt.Dimension(1250, 550));
-        jPanel18.setLayout(new java.awt.BorderLayout());
+        jPanel18.setLayout(new java.awt.BorderLayout(0, 10));
 
         jScrollPane3.setMinimumSize(new java.awt.Dimension(0, 0));
         jScrollPane3.setPreferredSize(new java.awt.Dimension(1210, 600));
@@ -1033,6 +1044,7 @@ public class HomeSales extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -1321,4 +1333,20 @@ public class HomeSales extends javax.swing.JPanel {
     private String formatMoney_1(BigDecimal amount) {
         return String.format("%,.0f", amount);
     }
+    
+    private void centerTableContent(JTable table) {
+        // Căn giữa tiêu đề
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Căn giữa nội dung
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+
 }

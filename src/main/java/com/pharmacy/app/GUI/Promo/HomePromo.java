@@ -151,11 +151,10 @@ public class HomePromo extends javax.swing.JPanel{
 
         btnPrintPDF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnPrintPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pdf.png"))); // NOI18N
-        btnPrintPDF.setText("PDF");
         btnPrintPDF.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnPrintPDF.setMaximumSize(new java.awt.Dimension(90, 30));
         btnPrintPDF.setMinimumSize(new java.awt.Dimension(90, 30));
-        btnPrintPDF.setPreferredSize(new java.awt.Dimension(90, 30));
+        btnPrintPDF.setPreferredSize(new java.awt.Dimension(40, 30));
         btnPrintPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPrintPDFActionPerformed(evt);
