@@ -72,12 +72,10 @@ boolean result = false;
             ResultSet rs = ps.executeQuery();
              
             while(rs.next()){
-                       ProductBatchDTO product = new ProductBatchDTO();
-                       MedicalProductsBUS pd_name = new MedicalProductsBUS();
-                       String name = pd_name.getMedicineNameByID(rs.getString("product_id"));
+                       ProductBatchDTO product = new ProductBatchDTO();                     
                        
                        product.setBatchID(rs.getString("batch_id"));
-                       product.setMedicineID(name);
+                       product.setMedicineID(rs.getString("product_id"));
                        product.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
                        product.setManufacturingDate(rs.getDate("manufacturing_date").toLocalDate());
                        product.setQuantityInStock(rs.getInt("inventory_quantity"));
@@ -162,6 +160,35 @@ boolean result = false;
         }
         return isSuccess;
     }
+    
+    public String getSupplierNameByBatchID(String batchID) {
+        String supplierName = null;
+        try {
+            myconnect.openConnection();
+            String sql = """
+                SELECT s.name, s.supplier_id
+                                FROM supplier_invoice_details sid
+                                JOIN supplier_invoices si ON sid.supplier_invoice_id = si.supplier_invoice_id
+                                JOIN suppliers s ON s.supplier_id = si.supplier_id 
+                                WHERE sid.batch_id = ?
+            """;
+
+            PreparedStatement ps = myconnect.con.prepareStatement(sql);
+            ps.setString(1, batchID);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                supplierName = rs.getString("name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            myconnect.closeConnection();
+        }
+
+        return supplierName;
+    }
+
 }
 
 
