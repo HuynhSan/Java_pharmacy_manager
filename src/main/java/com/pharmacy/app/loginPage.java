@@ -100,13 +100,15 @@ public class loginPage extends javax.swing.JFrame {
         lblUsername.setPreferredSize(new java.awt.Dimension(98, 40));
         pnlLoginFields.add(lblUsername);
 
-        txtUsername.setPreferredSize(new java.awt.Dimension(300, 30));
+        txtUsername.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtUsername.setPreferredSize(new java.awt.Dimension(300, 32));
         pnlLoginFields.add(txtUsername);
 
         lblPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblPassword.setText("Mật khẩu:");
         pnlLoginFields.add(lblPassword);
 
+        jPasswordField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jPasswordField.setPreferredSize(new java.awt.Dimension(300, 30));
         jPasswordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,7 +136,7 @@ public class loginPage extends javax.swing.JFrame {
 
         pnlLogin.add(jPanel2);
 
-        btnLogin.setBackground(new java.awt.Color(0, 102, 152));
+        btnLogin.setBackground(new java.awt.Color(0, 102, 155));
         btnLogin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnLogin.setForeground(new java.awt.Color(255, 255, 255));
         btnLogin.setText("Đăng nhập");
