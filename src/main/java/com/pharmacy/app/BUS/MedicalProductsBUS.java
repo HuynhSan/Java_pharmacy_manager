@@ -36,7 +36,7 @@ public class MedicalProductsBUS {
 }
     public MedicalProductsDTO getProductByID(String productID) {
         for (MedicalProductsDTO product : getAllProducts()) {
-            if (product.getMedicineID().equals(productID)) {
+            if (product.getMedicineID().equals(productID.trim())) {
                 return product;
             }
         }

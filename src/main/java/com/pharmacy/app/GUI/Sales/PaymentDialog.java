@@ -309,7 +309,7 @@ public class PaymentDialog extends javax.swing.JDialog {
                 salesPromoBUS.add(new SalesInvoicePromotionDTO(invoiceId, promoID));
             }
 
-            JOptionPane.showMessageDialog(this, "Xuất hóa đơn thành công!");
+            JOptionPane.showMessageDialog(this, "Lưu hóa đơn thành công!");
             this.dispose(); // Đóng dialog
             homesales.loadAllData();
             homesales.reload();

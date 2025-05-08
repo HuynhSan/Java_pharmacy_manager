@@ -16,6 +16,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -23,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MedicalProducts extends javax.swing.JPanel {
     MedicalProductsBUS medBUS = new MedicalProductsBUS();
+    ProductBatchBUS pbBUS = new ProductBatchBUS();
     /**
      * Creates new form MedicinesBatch
      */
@@ -35,11 +37,15 @@ public class MedicalProducts extends javax.swing.JPanel {
         dateTbl.setDefaultEditor(Object.class, null);
         loadDateList();
         setupTableRenderer();
+        centerTableContent(dateTbl);
+        centerTableContent(batchListTbl);
+        centerTableContent(medListTbl);
         
         searchPdtxt.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 searchProduct();
+                
             }
 
             @Override
@@ -54,15 +60,71 @@ public class MedicalProducts extends javax.swing.JPanel {
 
             }
         });
+        searchPBtxt.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                searchProductBatch();
+                
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                searchProductBatch();
+
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                searchProductBatch();
+
+            }
+        });
     }
-    
+        
+    private void searchProductBatch(){
+        String keywordPB = searchPBtxt.getText();
+        ArrayList<ProductBatchDTO> result = pbBUS.searchAll(keywordPB);
+        showPBToTable(result);
+    }
+    private void centerTableContent(JTable table) {
+        // Căn giữa tiêu đề
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Căn giữa nội dung
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
     
     private void searchProduct() {
-        String keyword = searchPdtxt.getText();
-        ArrayList<MedicalProductsDTO> result = medBUS.searchAll(keyword);
-        showDataToTable(result);
+        String keywordPd = searchPdtxt.getText();
+        ArrayList<MedicalProductsDTO> result = medBUS.searchAll(keywordPd);
+        showProductToTable(result);
     }
-    public void showDataToTable(ArrayList<MedicalProductsDTO> list) {
+    
+    public void showPBToTable(ArrayList<ProductBatchDTO> list) {
+        DefaultTableModel model = (DefaultTableModel) batchListTbl.getModel();
+        model.setRowCount(0); // Xóa dữ liệu cũ
+        int stt = 1;
+        for (ProductBatchDTO batch : list) {
+            model.addRow(new Object[]{
+                stt++,
+                batch.getBatchID(),
+                batch.getMedicineName(),
+                batch.getQuantityInStock(),
+                batch.getSupplierName(),
+                batch.getManufacturingDate(),
+                batch.getExpirationDate()
+            });
+        }
+    }
+    
+    public void showProductToTable(ArrayList<MedicalProductsDTO> list) {
         DefaultTableModel model = (DefaultTableModel) medListTbl.getModel();
         model.setRowCount(0); // Xóa dữ liệu cũ
         int stt = 1;
@@ -77,6 +139,7 @@ public class MedicalProducts extends javax.swing.JPanel {
             });
         }
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -91,15 +154,16 @@ public class MedicalProducts extends javax.swing.JPanel {
         medListPn = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        searchPdtxt = new javax.swing.JTextField();
         addBtn = new javax.swing.JButton();
         refreshBtn = new javax.swing.JButton();
-        searchPdtxt = new javax.swing.JTextField();
-        jPanel9 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         medListTbl = new javax.swing.JTable();
         medBatPn = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         searchPBtxt = new javax.swing.JTextField();
         refreshBtn1 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
@@ -120,21 +184,26 @@ public class MedicalProducts extends javax.swing.JPanel {
         jTabbedPane1.setBackground(new java.awt.Color(231, 231, 231));
 
         medListPn.setBackground(new java.awt.Color(255, 255, 255));
+        medListPn.setPreferredSize(new java.awt.Dimension(838, 585));
         medListPn.setLayout(new java.awt.BorderLayout());
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setPreferredSize(new java.awt.Dimension(608, 90));
-        jPanel8.setLayout(new java.awt.GridBagLayout());
+        jPanel8.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("DANH SÁCH SẢN PHẨM");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 264, 0, 0);
-        jPanel8.add(jLabel5, gridBagConstraints);
+        jPanel8.add(jLabel5, java.awt.BorderLayout.NORTH);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
+
+        searchPdtxt.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        searchPdtxt.setForeground(new java.awt.Color(204, 204, 204));
+        searchPdtxt.setText("Nhập tên sản phẩm");
+        searchPdtxt.setPreferredSize(new java.awt.Dimension(250, 30));
+        jPanel2.add(searchPdtxt);
 
         addBtn.setText("THÊM THUỐC MỚI");
         addBtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -147,13 +216,7 @@ public class MedicalProducts extends javax.swing.JPanel {
                 addBtnActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipady = -1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(22, 30, 0, 101);
-        jPanel8.add(addBtn, gridBagConstraints);
+        jPanel2.add(addBtn);
 
         refreshBtn.setText("TẢI LẠI");
         refreshBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -161,31 +224,11 @@ public class MedicalProducts extends javax.swing.JPanel {
                 refreshBtnActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(21, 18, 0, 0);
-        jPanel8.add(refreshBtn, gridBagConstraints);
+        jPanel2.add(refreshBtn);
 
-        searchPdtxt.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        searchPdtxt.setForeground(new java.awt.Color(204, 204, 204));
-        searchPdtxt.setText("Nhập tên sản phẩm");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = 383;
-        gridBagConstraints.ipady = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 6, 12, 0);
-        jPanel8.add(searchPdtxt, gridBagConstraints);
+        jPanel8.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         medListPn.add(jPanel8, java.awt.BorderLayout.NORTH);
-
-        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel9.setLayout(new java.awt.BorderLayout());
 
         jScrollPane3.setEnabled(false);
 
@@ -220,9 +263,7 @@ public class MedicalProducts extends javax.swing.JPanel {
         });
         jScrollPane3.setViewportView(medListTbl);
 
-        jPanel9.add(jScrollPane3, java.awt.BorderLayout.CENTER);
-
-        medListPn.add(jPanel9, java.awt.BorderLayout.CENTER);
+        medListPn.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
         jTabbedPane1.addTab("Danh sách sản phẩm", medListPn);
 
@@ -231,13 +272,21 @@ public class MedicalProducts extends javax.swing.JPanel {
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setPreferredSize(new java.awt.Dimension(562, 90));
+        jPanel6.setLayout(new java.awt.BorderLayout());
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("DANH SÁCH LÔ SẢN PHẨM");
+        jPanel6.add(jLabel4, java.awt.BorderLayout.NORTH);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
 
         searchPBtxt.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         searchPBtxt.setForeground(new java.awt.Color(204, 204, 204));
         searchPBtxt.setText("Nhập tên sản phẩm");
+        searchPBtxt.setPreferredSize(new java.awt.Dimension(251, 30));
+        jPanel1.add(searchPBtxt);
 
         refreshBtn1.setText("TẢI LẠI");
         refreshBtn1.addActionListener(new java.awt.event.ActionListener() {
@@ -245,34 +294,9 @@ public class MedicalProducts extends javax.swing.JPanel {
                 refreshBtn1ActionPerformed(evt);
             }
         });
+        jPanel1.add(refreshBtn1);
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(210, 210, 210)
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(84, 84, 84)
-                        .addComponent(searchPBtxt, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(80, 80, 80)
-                        .addComponent(refreshBtn1)))
-                .addContainerGap(121, Short.MAX_VALUE))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(refreshBtn1)
-                    .addComponent(searchPBtxt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
+        jPanel6.add(jPanel1, java.awt.BorderLayout.CENTER);
 
         medBatPn.add(jPanel6, java.awt.BorderLayout.NORTH);
 
@@ -284,25 +308,52 @@ public class MedicalProducts extends javax.swing.JPanel {
 
         batchListTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "MÃ LÔ", "TÊN SẢN PHẨM", "SỐ LƯỢNG", "NHÀ CUNG CẤP", "NSX", "HSD"
+                "STT", "MÃ LÔ", "TÊN SẢN PHẨM", "SỐ LƯỢNG", "NHÀ CUNG CẤP", "NSX", "HSD"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         batchListTbl.setRowHeight(30);
         jScrollPane2.setViewportView(batchListTbl);
+        if (batchListTbl.getColumnModel().getColumnCount() > 0) {
+            batchListTbl.getColumnModel().getColumn(0).setMinWidth(40);
+            batchListTbl.getColumnModel().getColumn(0).setPreferredWidth(50);
+            batchListTbl.getColumnModel().getColumn(0).setMaxWidth(70);
+            batchListTbl.getColumnModel().getColumn(1).setMinWidth(70);
+            batchListTbl.getColumnModel().getColumn(1).setPreferredWidth(90);
+            batchListTbl.getColumnModel().getColumn(1).setMaxWidth(100);
+            batchListTbl.getColumnModel().getColumn(3).setMinWidth(60);
+            batchListTbl.getColumnModel().getColumn(3).setPreferredWidth(70);
+            batchListTbl.getColumnModel().getColumn(3).setMaxWidth(80);
+            batchListTbl.getColumnModel().getColumn(4).setMinWidth(200);
+            batchListTbl.getColumnModel().getColumn(4).setPreferredWidth(250);
+            batchListTbl.getColumnModel().getColumn(4).setMaxWidth(300);
+            batchListTbl.getColumnModel().getColumn(5).setMinWidth(90);
+            batchListTbl.getColumnModel().getColumn(5).setPreferredWidth(100);
+            batchListTbl.getColumnModel().getColumn(5).setMaxWidth(110);
+            batchListTbl.getColumnModel().getColumn(6).setMinWidth(90);
+            batchListTbl.getColumnModel().getColumn(6).setPreferredWidth(100);
+            batchListTbl.getColumnModel().getColumn(6).setMaxWidth(110);
+        }
 
         jPanel7.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
@@ -444,12 +495,13 @@ public class MedicalProducts extends javax.swing.JPanel {
             for(ProductBatchDTO batch : batchList){
                 model.addRow(new Object[]{
                     batch.getBatchID(),
-                    batch.getMedicineID(),
+                    batch.getMedicineName(),
                     batch.getQuantityInStock(),
-                    "supplier chưa xử lý",
+                    batch.getSupplierName(),
                     batch.getManufacturingDate(),
                     batch.getExpirationDate()
                 });
+                System.out.println(batch.getMedicineID());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -513,13 +565,15 @@ public class MedicalProducts extends javax.swing.JPanel {
     }   
     
     private void medListTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medListTblMouseClicked
-         
-        if (evt.getButton() == MouseEvent.BUTTON1) {
+            if (evt.getButton() == MouseEvent.BUTTON1) {
             int row = medListTbl.getSelectedRow();
             if (row >= 0) {
-                String ID = medListTbl.getValueAt(row, 0).toString();
-                
+                String ID = medListTbl.getValueAt(row, 1).toString();
+                System.out.println("com.pharmacy.app.GUI.Product.MedicalProducts.medListTblMouseClicked()");
                 MedicalProductsDTO selectedProduct = medBUS.getProductByID(ID);
+                System.out.println("Selected ID: " + ID);
+                System.out.println("Product: " + selectedProduct);
+
                 // Mở dialog
                 Frame frame = JOptionPane.getFrameForComponent(medListTbl);
                 ProductDetails dialog = new ProductDetails(frame, true, selectedProduct);
@@ -555,12 +609,13 @@ public class MedicalProducts extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

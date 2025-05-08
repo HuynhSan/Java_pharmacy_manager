@@ -28,18 +28,15 @@ import java.time.format.DateTimeFormatter;
 //import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
-import javax.swing.table.DefaultTableCellRenderer;
-
-import javax.swing.table.DefaultTableModel;
-
+import javax.swing.table.DefaultTableCellRenderer;import avax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 /**
  *
- * @author LENOVO
- */
-public final class Invoices extends javax.swing.JPanel {
+ * @aut
+
     private final SupplierInvoicesDAO supInvoiceDAO = new SupplierInvoicesDAO();
-    private SuplierInvoicesBUS supInvoiceBUS;
-    private SuplierInvoiceDetailsBUS supInvoiceDetailsBUS;
+    private SuplierInvoicesBUS supInvo    priate 
+
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private PurchaseOrderBUS poBUS = new PurchaseOrderBUS();
@@ -54,6 +51,9 @@ public final class Invoices extends javax.swing.JPanel {
         loadSupInvoiceData();
         setupListeners();
         loadApprovedPOlist();
+        centerTableContent(newinvoiceTbl);
+        centerTableContent(tbInvoiceHistory);
+        centerTableContent(tbSupInvoiceDetail);
     }
 
     private void initBUS() {
@@ -141,7 +141,21 @@ public final class Invoices extends javax.swing.JPanel {
             });
         }
     }
+    
+    private void centerTableContent(JTable table) {
+        // Căn giữa tiêu đề
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
+            Defa
+
+    
+
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+    
     public double calculateTotalAmount() {
         DefaultTableModel model = (DefaultTableModel) tbSupInvoiceDetail.getModel();
         Double total = 0.0;
@@ -151,9 +165,10 @@ public final class Invoices extends javax.swing.JPanel {
             if (value != null) {
                 try {
                     total += Double.parseDouble(value.toString());
-                } catch (NumberFormatException e) {
-                    System.out.println("Không thể chuyển thành tiền dòng " + i + ": " + value);
-                }
+     
+
+               
+
             }
         }
         return total;
@@ -278,14 +293,15 @@ public final class Invoices extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        newinvoiceTbl.setRowHeight(30);
         newinvoiceTbl.getTableHeader().setReorderingAllowed(false);
-        newinvoiceTbl.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                newinvoiceTblMouseClicked(evt);
-            }
-        });
-        jScrollPane3.setViewportView(newinvoiceTbl);
+        newinv
 
+        newinvoiceTblMouseClicked(evt);
+        
+    
+
+    
         jComboBox5.setEditable(true);
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo đơn", "Tên người tạo", "Nhà cung cấp" }));
 
@@ -417,8 +433,8 @@ public final class Invoices extends javax.swing.JPanel {
                 tbInvoiceHistoryMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tbInvoiceHistory);
 
+    
         refreshBtn1.setText("TẢI LẠI");
         refreshBtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -503,13 +519,13 @@ public final class Invoices extends javax.swing.JPanel {
         });
         tbSupInvoiceDetail.setPreferredSize(new java.awt.Dimension(400, 400));
         tbSupInvoiceDetail.setRowHeight(30);
-        jScrollPane2.setViewportView(tbSupInvoiceDetail);
-        if (tbSupInvoiceDetail.getColumnModel().getColumnCount() > 0) {
-            tbSupInvoiceDetail.getColumnModel().getColumn(0).setPreferredWidth(1);
-            tbSupInvoiceDetail.getColumnModel().getColumn(1).setPreferredWidth(5);
-            tbSupInvoiceDetail.getColumnModel().getColumn(2).setPreferredWidth(5);
-            tbSupInvoiceDetail.getColumnModel().getColumn(3).setPreferredWidth(100);
-            tbSupInvoiceDetail.getColumnModel().getColumn(4).setPreferredWidth(10);
+        jScrol
+
+    tbSupInvoiceDetail.getColumnModel().getColumn(
+        pInvoiceDetal.getColumnMod
+    t
+
+    tbSupInvoiceDetail.getColumnModel().getColumn(4).setPreferredWidth(10);
             tbSupInvoiceDetail.getColumnModel().getColumn(5).setPreferredWidth(10);
             tbSupInvoiceDetail.getColumnModel().getColumn(6).setPreferredWidth(10);
         }
