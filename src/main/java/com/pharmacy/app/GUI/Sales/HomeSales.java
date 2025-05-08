@@ -45,6 +45,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -129,19 +130,13 @@ public class HomeSales extends javax.swing.JPanel {
         
     }
     
+    //
     private void setupListeners(){
         // Setup search text field key listener
         txtSearchInvoice.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-//                String keyword = txtSearchInvoice.getText();
-//                if (!keyword.isEmpty()) {
-//                    searchInvoice(keyword);
-//                } else {
-//                    loadAllData();
-//                }
                 searchInvoice();
-                
             }
 
             private void searchInvoice() {
@@ -202,10 +197,6 @@ public class HomeSales extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(null, "Ngày bắt đầu phải nhỏ hơn ngày kết thúc!");
                     return;
                 }
-                if (to.isBefore(from)){
-                    JOptionPane.showMessageDialog(null, "Ngày kết thúc phải lớn hơn ngày bắt đầu!");
-                    return;
-                }
                 result = invoiceBUS.filterByDateRange(from, to);
                 showDataToTableInvoice(result); // cập nhật lại bảng
 
@@ -219,7 +210,7 @@ public class HomeSales extends javax.swing.JPanel {
         date_start.getDateEditor().addPropertyChangeListener("date", dateFilterListener);
         date_end.getDateEditor().addPropertyChangeListener("date", dateFilterListener);
     }
-        
+     
     public void reload(){
         tblProduct.clearSelection();  // Bỏ mọi dòng đang được chọn
         cartItemsMap.clear();
@@ -238,6 +229,7 @@ public class HomeSales extends javax.swing.JPanel {
         invoiceList = invoiceBUS.selectAll();
         showDataToTableProduct(saleItemList);
         showDataToTableInvoice(invoiceList);
+        adjustTableHeight(tblInvoice, jScrollPane3);
         txtPromoId.setText("Không có!");
         txtDiscount.setText("0");
     }
@@ -259,6 +251,28 @@ public class HomeSales extends javax.swing.JPanel {
         System.out.println("------------------------------");
 
     }
+    
+    public void adjustTableHeight(JTable table, JScrollPane scrollPane) {
+        int rowCount = table.getRowCount();
+        int rowHeight = table.getRowHeight();
+
+        // Tính tổng chiều cao cần thiết cho tất cả dòng
+        int totalHeight = rowCount * rowHeight;
+
+        // Đặt kích thước preferred viewport cho bảng
+        table.setPreferredScrollableViewportSize(new Dimension(
+            table.getPreferredScrollableViewportSize().width,
+            totalHeight
+        ));
+
+        // Làm cho bảng lấp đầy JScrollPane
+        table.setFillsViewportHeight(true);
+
+        // Gọi lại validate để cập nhật layout
+        scrollPane.revalidate();
+    }
+
+       
     
     public void showDataToTableProduct(ArrayList<SaleItemDTO> list) {
         DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
@@ -855,7 +869,6 @@ public class HomeSales extends javax.swing.JPanel {
         });
         tblInvoice.setMaximumSize(new java.awt.Dimension(1200, 326589));
         tblInvoice.setMinimumSize(new java.awt.Dimension(0, 0));
-        tblInvoice.setPreferredSize(new java.awt.Dimension(750, 1000));
         tblInvoice.setRowHeight(30);
         tblInvoice.setShowGrid(true);
         tblInvoice.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -887,41 +900,45 @@ public class HomeSales extends javax.swing.JPanel {
     }//GEN-LAST:event_btnPaymentMouseClicked
 
     private void btnPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentActionPerformed
-        BigDecimal totalAmount = calculateTotalAmount();        
-        BigDecimal productDiscount = calculateDiscountAmount();
-       
-        String discountText = txtDiscount.getText().trim();
-        BigDecimal promoDiscount = new BigDecimal(discountText);
+        BigDecimal totalAmount = calculateTotalAmount();
+        if (totalAmount.compareTo(BigDecimal.ZERO) > 0){
+            BigDecimal productDiscount = calculateDiscountAmount();
+            String discountText = txtDiscount.getText().trim();
+            BigDecimal promoDiscount = new BigDecimal(discountText);
 
-        BigDecimal subTotal = totalAmount
-                .subtract(productDiscount)
-                .subtract(promoDiscount);
-        BigDecimal totalDiscount = productDiscount.add(promoDiscount);
-        
-        String userId = user_id;
-        String customerId = currentCustomerId;
-        
-        
-        String promoId = txtPromoId.getText().trim();
-        if (promoId.equals("Không có!") && promoId.equals("Không có khuyến mãi!")){
-            promoId = null;
+            BigDecimal subTotal = totalAmount
+                    .subtract(productDiscount)
+                    .subtract(promoDiscount);
+            BigDecimal totalDiscount = productDiscount.add(promoDiscount);
+
+            String userId = user_id;
+            String customerId = currentCustomerId;
+
+
+            String promoId = txtPromoId.getText().trim();
+            if (promoId.equals("Không có!") && promoId.equals("Không có khuyến mãi!")){
+                promoId = null;
+            }
+
+            Window parenWindow = SwingUtilities.getWindowAncestor(this);
+            PaymentDialog dialog = new PaymentDialog(
+                (Frame) parenWindow,
+                true,
+                this,
+                totalAmount,
+                totalDiscount,
+                subTotal,
+                cartItemsMap,
+                userId,
+                customerId,
+                promoId
+            );
+            dialog.setLocationRelativeTo(parenWindow);
+            dialog.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Chưa có sản phẩm trong giỏ hàng", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
         
-        Window parenWindow = SwingUtilities.getWindowAncestor(this);
-        PaymentDialog dialog = new PaymentDialog(
-            (Frame) parenWindow,
-            true,
-            this,
-            totalAmount,
-            totalDiscount,
-            subTotal,
-            cartItemsMap,
-            userId,
-            customerId,
-            promoId
-        );
-        dialog.setLocationRelativeTo(parenWindow);
-        dialog.setVisible(true);
     }//GEN-LAST:event_btnPaymentActionPerformed
 
     private void tblInvoiceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInvoiceMousePressed
