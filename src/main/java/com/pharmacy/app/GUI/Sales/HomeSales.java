@@ -385,7 +385,7 @@ public class HomeSales extends javax.swing.JPanel {
 
         jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
         jTabbedPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(1229, 800));
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
@@ -452,11 +452,16 @@ public class HomeSales extends javax.swing.JPanel {
 
         jPanel1.add(jPanel4);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Danh sách thuốc");
+        jLabel1.setText("DANH SÁCH THUỐC");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel1.setPreferredSize(new java.awt.Dimension(200, 40));
+        jLabel1.setPreferredSize(new java.awt.Dimension(200, 35));
+        jLabel1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jLabel1PropertyChange(evt);
+            }
+        });
         jPanel1.add(jLabel1);
 
         jScrollPane2.setMinimumSize(new java.awt.Dimension(760, 510));
@@ -511,9 +516,10 @@ public class HomeSales extends javax.swing.JPanel {
 
         jPanel1.add(jScrollPane2);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Giỏ hàng");
+        jLabel2.setText("GIỎ HÀNG");
+        jLabel2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel2.setMaximumSize(new java.awt.Dimension(326589, 326589));
         jLabel2.setPreferredSize(new java.awt.Dimension(200, 40));
@@ -524,7 +530,7 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel11.setPreferredSize(new java.awt.Dimension(790, 30));
         jPanel11.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 10));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Tên thuốc");
         jLabel3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -533,7 +539,7 @@ public class HomeSales extends javax.swing.JPanel {
         jLabel3.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         jPanel11.add(jLabel3);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel4.setText("Giá tiền");
         jLabel4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -541,14 +547,14 @@ public class HomeSales extends javax.swing.JPanel {
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel11.add(jLabel4);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Số lượng");
         jLabel5.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel5.setPreferredSize(new java.awt.Dimension(125, 30));
         jPanel11.add(jLabel5);
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Xóa thuốc");
         jLabel6.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -571,7 +577,9 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel5.setPreferredSize(new java.awt.Dimension(790, 70));
         jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 0));
 
-        btnClearCart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnClearCart.setBackground(new java.awt.Color(255, 0, 0));
+        btnClearCart.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnClearCart.setForeground(new java.awt.Color(255, 255, 255));
         btnClearCart.setText("Xóa giỏ hàng");
         btnClearCart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnClearCart.setMaximumSize(new java.awt.Dimension(326589, 326589));
@@ -950,6 +958,7 @@ public class HomeSales extends javax.swing.JPanel {
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         tblProduct.clearSelection();  // Bỏ mọi dòng đang được chọn
+        loadAllData();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnClearCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearCartActionPerformed
@@ -1030,6 +1039,10 @@ public class HomeSales extends javax.swing.JPanel {
     private void date_startPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_date_startPropertyChange
         // TODO add your handling code here:
     }//GEN-LAST:event_date_startPropertyChange
+
+    private void jLabel1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jLabel1PropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel1PropertyChange
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
