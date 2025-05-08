@@ -186,8 +186,9 @@ public class HomePromo extends javax.swing.JPanel{
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMinimumSize(new java.awt.Dimension(800, 550));
         jPanel1.setPreferredSize(new java.awt.Dimension(1200, 650));
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        jPanel1.setLayout(new java.awt.GridLayout(1, 1));
 
+        jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane2.setMinimumSize(new java.awt.Dimension(760, 510));
         jScrollPane2.setPreferredSize(new java.awt.Dimension(1180, 620));
 
@@ -230,7 +231,7 @@ public class HomePromo extends javax.swing.JPanel{
         });
         jScrollPane2.setViewportView(tblPromo);
 
-        jPanel1.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        jPanel1.add(jScrollPane2);
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents

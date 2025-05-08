@@ -80,7 +80,7 @@ public class ProductPromoDAO implements DAOinterface<ProductPromoDTO>{
     public ProductPromoDTO selectPromoByProductID(String productID){
         if(myconnect.openConnection()){
             try {
-                String sql = "SELECT * FROM product_promotion WHERE productID = ? ";
+                String sql = "SELECT * FROM product_promotion WHERE product_id = ? ";
 
                 PreparedStatement ps = myconnect.con.prepareStatement(sql);
                 ps.setString(1, productID);
@@ -88,18 +88,13 @@ public class ProductPromoDAO implements DAOinterface<ProductPromoDTO>{
                 ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {
-                    ProductBatchDTO pdBatch = new ProductBatchDTO();
+                    ProductPromoDTO pp = new ProductPromoDTO();
 
-                    pdBatch.setMedicineID(rs.getString("product_id"));
-                    pdBatch.setBatchID(rs.getString("batch_id"));
-                    pdBatch.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
-                    pdBatch.setManufacturingDate(rs.getDate("manufacturing_date").toLocalDate());
-                    pdBatch.setQuantityInStock(rs.getInt("inventory_quantity"));
-                    pdBatch.setQuantityReceived(rs.getInt("recieved_quantity"));
-                    pdBatch.setSellPrice(rs.getDouble("sell_price"));
-                    pdBatch.setStatus(rs.getBoolean("is_deleted"));
-
-                    return pdBatch;
+                    pp.setProductID(rs.getString("product_id"));
+                    System.out.println(rs.getString("product_id"));
+                    pp.setPromoID(rs.getString("promo_id"));
+                    System.out.println(rs.getString("promo_id"));
+                    return pp;
                 }
             } catch (Exception e) {
                 e.printStackTrace();

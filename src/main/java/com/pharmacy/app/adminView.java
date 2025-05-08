@@ -34,10 +34,12 @@ public class adminView extends javax.swing.JFrame {
     private Color colorExited = new Color(0,102,153);
     private CardLayout cardlayout = new CardLayout();
     
+    
     public adminView() {
         initComponents();
         ContentPn.setLayout(cardlayout);
         this.setLocationRelativeTo(null);
+        this.setExtendedState(managerView.MAXIMIZED_BOTH);
     }
 
     /**
@@ -768,13 +770,13 @@ public class adminView extends javax.swing.JFrame {
 
 // Báo cáo thống kê
     private void reportBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseEntered
-//        reportBtn.setBackground(colorEntered);
-//       reportBtn.setOpaque(true);
+        reportBtn.setBackground(colorEntered);
+       reportBtn.setOpaque(true);
     }//GEN-LAST:event_reportBtnMouseEntered
 
     private void reportBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseExited
-//        reportBtn.setBackground(colorExited);
-//        reportBtn.setOpaque(true);
+        reportBtn.setBackground(colorExited);
+        reportBtn.setOpaque(true);
     }//GEN-LAST:event_reportBtnMouseExited
 
     private void usericonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usericonMouseEntered

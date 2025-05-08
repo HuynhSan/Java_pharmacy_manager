@@ -657,7 +657,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="productBtnActionPerformed"/>
               </Events>
             </Component>
-
             <Component class="javax.swing.JButton" name="reportBtn">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">

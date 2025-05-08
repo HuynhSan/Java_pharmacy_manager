@@ -38,6 +38,7 @@ public class managerView extends javax.swing.JFrame {
     
     public managerView() {
         initComponents();
+        this.setExtendedState(managerView.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         ContentPn.setLayout(cardlayout);
         ContentPn.add(homesales, "Sales");
@@ -644,7 +645,6 @@ public class managerView extends javax.swing.JFrame {
 
         getContentPane().add(MenuPn, java.awt.BorderLayout.LINE_START);
 
-        ContentPn.setBackground(new java.awt.Color(255, 255, 255));
         ContentPn.setPreferredSize(new java.awt.Dimension(1000, 700));
         ContentPn.setLayout(new java.awt.CardLayout());
         getContentPane().add(ContentPn, java.awt.BorderLayout.CENTER);

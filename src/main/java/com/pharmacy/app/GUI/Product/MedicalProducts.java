@@ -6,8 +6,10 @@ package com.pharmacy.app.GUI.Product;
 
 import com.pharmacy.app.BUS.MedicalProductsBUS;
 import com.pharmacy.app.BUS.ProductBatchBUS;
+import com.pharmacy.app.BUS.ProductPromoBUS;
 import com.pharmacy.app.DTO.MedicalProductsDTO;
 import com.pharmacy.app.DTO.ProductBatchDTO;
+import com.pharmacy.app.DTO.ProductPromoDTO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -451,7 +453,7 @@ public class MedicalProducts extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Quản lý hạn sử dụng", medDatePn);
 
-        add(jTabbedPane1, java.awt.BorderLayout.PAGE_START);
+        add(jTabbedPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
@@ -569,10 +571,7 @@ public class MedicalProducts extends javax.swing.JPanel {
             int row = medListTbl.getSelectedRow();
             if (row >= 0) {
                 String ID = medListTbl.getValueAt(row, 1).toString();
-                System.out.println("com.pharmacy.app.GUI.Product.MedicalProducts.medListTblMouseClicked()");
                 MedicalProductsDTO selectedProduct = medBUS.getProductByID(ID);
-                System.out.println("Selected ID: " + ID);
-                System.out.println("Product: " + selectedProduct);
 
                 // Mở dialog
                 Frame frame = JOptionPane.getFrameForComponent(medListTbl);
@@ -597,7 +596,7 @@ public class MedicalProducts extends javax.swing.JPanel {
     private void refreshBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtn2ActionPerformed
         loadDateList();
     }//GEN-LAST:event_refreshBtn2ActionPerformed
-
+    
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -58,10 +58,12 @@ public class ProductDetails extends javax.swing.JDialog {
         } else {
             txtSup.setText("Không xác định"); // hoặc "Không xác định"
         }
-        ProductPromoDTO promo = ppBUS.getPromoByProductID(txtID.getText());
-        String promoID = promo.getPromoID();
-        if(promoID != null){
-            txtPromo.setText(promoID);
+        ProductPromoDTO promo = ppBUS.getPromoByProductID(productDTO.getMedicineID());
+        System.out.println(productDTO.getMedicineID());
+        System.out.println(promo.getPromoID());
+        
+        if(promo != null){
+            txtPromo.setText(promo.getPromoID());
         }else{
             txtPromo.setText("");
         }
