@@ -38,6 +38,7 @@ public class homepage extends javax.swing.JFrame {
     public homepage() {
         initComponents();
         this.setLocationRelativeTo(null);
+        ContentPn.setLayout(cardlayout);
         ContentPn.add(homesales, "Sales");
         switchToPanel("Sales");
     }
@@ -470,7 +471,6 @@ public class homepage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 // cardlayout
     public void switchToPanel(String panelName) {
-        ContentPn.setLayout(cardlayout);
         cardlayout.show(ContentPn, panelName);
         ContentPn.revalidate();
         ContentPn.repaint();
@@ -619,13 +619,13 @@ public class homepage extends javax.swing.JFrame {
     }//GEN-LAST:event_infoBtnMouseClicked
 
     private void infoBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoBtnMouseEntered
-        infoBtn.setBackground(colorEntered);
-        infoBtn.setOpaque(true);
+ //       infoBtn.setBackground(colorEntered);
+ //       infoBtn.setOpaque(true);
     }//GEN-LAST:event_infoBtnMouseEntered
 
     private void infoBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoBtnMouseExited
-        infoBtn.setBackground(colorExited);
-        infoBtn.setOpaque(true);
+//        infoBtn.setBackground(colorExited);
+//        infoBtn.setOpaque(true);
     }//GEN-LAST:event_infoBtnMouseExited
 
     private void usericonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usericonMouseEntered

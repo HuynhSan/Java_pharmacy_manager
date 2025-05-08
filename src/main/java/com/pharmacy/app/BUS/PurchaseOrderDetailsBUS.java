@@ -24,4 +24,14 @@ public class PurchaseOrderDetailsBUS {
         }
     }
     
+    public boolean addPOde(PurchaseOrderDetailsDTO newpoDe){
+        System.out.println("➡️ Thêm chi tiết: " + newpoDe.getPoID()+ " - " + newpoDe.getProductID());
+        if (!poDetailsDAO.insert(newpoDe)) {
+            System.err.println("❌ Không insert được chi tiết phiếu nhập!");
+            return false;
+        }
+        System.out.println("✅ Insert chi tiết thành công");
+        return true;
+    }
+    
 }

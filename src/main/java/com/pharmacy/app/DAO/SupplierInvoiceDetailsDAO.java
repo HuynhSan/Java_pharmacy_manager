@@ -16,8 +16,49 @@ import java.util.ArrayList;
 public class SupplierInvoiceDetailsDAO implements DAOinterface<SuplierInvoiceDetailsDTO> {
     MyConnection myconnect = new MyConnection();
     @Override
-    public boolean insert(SuplierInvoiceDetailsDTO t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean insert(SuplierInvoiceDetailsDTO supInvDe) {
+        boolean result = false;
+
+        if (myconnect.openConnection()) {
+            try {
+                String sql = "INSERT INTO supplier_invoice_details(supplier_invoice_id, batch_id, quantity, unit_price) VALUES (?, ?, ?, ?)";
+                    // Enhanced logging before execution
+                System.out.println("Executing SQL: " + sql);
+                System.out.println("With parameters: ");
+                System.out.println(" - invoiceID: " + supInvDe.getInvoiceID());
+                System.out.println(" - batchID: " + supInvDe.getBatchID());
+                System.out.println(" - quantity: " + supInvDe.getQuantity());
+                System.out.println(" - unitPrice: " + supInvDe.getUnitPrice());
+
+                // Corrected parameter order
+                int rowsAffected = myconnect.prepareUpdate(sql, 
+                    supInvDe.getInvoiceID(),
+                    supInvDe.getBatchID(),
+                    supInvDe.getQuantity(),     // Now matches quantity in SQL
+                    supInvDe.getUnitPrice()     // Now matches unit_price in SQL
+                );
+
+                System.out.println("Rows affected: " + rowsAffected);
+                if (rowsAffected > 0) {
+                    result = true;
+                }
+            } catch (Exception e) {
+                System.err.println("SQL Insert Error:");
+                e.printStackTrace();
+                System.err.println("Full error details: " + e);
+
+                // Log SQL state if available (helps identify constraint violations)
+                if (e instanceof SQLException) {
+                    SQLException sqlEx = (SQLException)e;
+                    System.err.println("SQL State: " + sqlEx.getSQLState());
+                    System.err.println("Error Code: " + sqlEx.getErrorCode());
+                }
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -51,9 +92,9 @@ public class SupplierInvoiceDetailsDAO implements DAOinterface<SuplierInvoiceDet
                     supInvoiceDetail.setBatchID(rs.getString(1));
                     supInvoiceDetail.setProductID(rs.getString(2));
                     supInvoiceDetail.setName(rs.getString(3));
-                    supInvoiceDetail.setUnitPrice(rs.getDouble(4));
+                    supInvoiceDetail.setUnitPrice(rs.getBigDecimal(4));
                     supInvoiceDetail.setQuantity(rs.getInt(5));
-                    supInvoiceDetail.setTotalPrice(rs.getDouble(6));
+                    supInvoiceDetail.setTotalPrice(rs.getBigDecimal(6));
                     
                     supInvoiceDetails.add(supInvoiceDetail);
                 }

@@ -16,8 +16,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -37,6 +41,7 @@ public class UserManagement extends javax.swing.JPanel {
         initBUS();
         setupListeners();
         filterUsersByStatus();
+        centerTableContent(tblUsers);
     }
     
     private void initBUS(){
@@ -83,6 +88,21 @@ public class UserManagement extends javax.swing.JPanel {
         cbUser.addActionListener((e) -> {
             filterUsersByStatus();
         });
+    }
+    
+    private void centerTableContent(JTable table) {
+        // Căn giữa tiêu đề
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Căn giữa nội dung
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
     
     /**
@@ -265,6 +285,7 @@ public class UserManagement extends javax.swing.JPanel {
         tblUsers.setFocusable(false);
         tblUsers.setMinimumSize(new java.awt.Dimension(500, 80));
         tblUsers.setPreferredSize(new java.awt.Dimension(500, 80));
+        tblUsers.setRowHeight(30);
         tblUsers.setShowGrid(true);
         tblUsers.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

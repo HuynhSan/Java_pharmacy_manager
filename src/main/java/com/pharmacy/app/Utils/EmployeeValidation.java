@@ -99,7 +99,7 @@ public class EmployeeValidation {
             return null;
         }
     }
-    
+
     /**
      * Validates if the email already exists in the database
      * @param email Email to check
@@ -112,7 +112,7 @@ public class EmployeeValidation {
         }   
         return "";
     }
-
+    
     /**
      * Validates if the phone number already exists in the database
      * @param phone Phone number to check
@@ -121,6 +121,34 @@ public class EmployeeValidation {
      */
     public static String validatePhoneExists(String phone, com.pharmacy.app.DAO.EmployeeDAO employeeDAO) {
         if (employeeDAO.isPhoneExists(phone)) {
+            return "Số điện thoại đã tồn tại trong hệ thống";
+        }
+        return "";
+    }
+    
+        /**
+     * Validates if the email already exists in the database
+     * @param email Email to check
+     * @param id
+     * @param employeeDAO DAO to use for database check
+     * @return Error message or empty string if valid
+     */
+    public static String validateEmailExists(String email, String id, com.pharmacy.app.DAO.EmployeeDAO employeeDAO) {
+        if (employeeDAO.isUpdateEmailExists(email, id)) {
+            return "Email đã tồn tại trong hệ thống";
+        }   
+        return "";
+    }
+    
+    /**
+     * Validates if the phone number already exists in the database
+     * @param phone Phone number to check
+     * @param id
+     * @param employeeDAO DAO to use for database check
+     * @return Error message or empty string if valid
+     */
+    public static String validatePhoneExists(String phone, String id, com.pharmacy.app.DAO.EmployeeDAO employeeDAO) {
+        if (employeeDAO.isUpdatePhoneExists(phone, id)) {
             return "Số điện thoại đã tồn tại trong hệ thống";
         }
         return "";

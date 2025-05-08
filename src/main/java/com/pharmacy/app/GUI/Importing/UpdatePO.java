@@ -4,6 +4,11 @@
  */
 package com.pharmacy.app.GUI.Importing;
 
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+
 /**
  *
  * @author LENOVO
@@ -16,8 +21,23 @@ public class UpdatePO extends javax.swing.JDialog {
     public UpdatePO(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        centerTableContent(jTable1);
     }
 
+    private void centerTableContent(JTable table) {
+        // Căn giữa tiêu đề
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Căn giữa nội dung
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -62,6 +82,8 @@ public class UpdatePO extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -80,7 +102,9 @@ public class UpdatePO extends javax.swing.JDialog {
         jLabel1.setText("Ngày lập:");
 
         jTextField1.setEditable(false);
+        jTextField1.setBackground(new java.awt.Color(255, 255, 255));
         jTextField1.setText("1/4/2025");
+        jTextField1.setFocusable(false);
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -90,7 +114,9 @@ public class UpdatePO extends javax.swing.JDialog {
         jLabel4.setText("Người lập:");
 
         jTextField2.setEditable(false);
+        jTextField2.setBackground(new java.awt.Color(255, 255, 255));
         jTextField2.setText("NV001");
+        jTextField2.setFocusable(false);
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
@@ -100,7 +126,9 @@ public class UpdatePO extends javax.swing.JDialog {
         jLabel11.setText("Mã đơn:");
 
         jTextField8.setEditable(false);
+        jTextField8.setBackground(new java.awt.Color(255, 255, 255));
         jTextField8.setText("DH001");
+        jTextField8.setFocusable(false);
         jTextField8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField8ActionPerformed(evt);
@@ -199,7 +227,9 @@ public class UpdatePO extends javax.swing.JDialog {
         jLabel9.setText("Giá bán:");
 
         jTextField3.setEditable(false);
+        jTextField3.setBackground(new java.awt.Color(255, 255, 255));
         jTextField3.setText("110000");
+        jTextField3.setFocusable(false);
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);

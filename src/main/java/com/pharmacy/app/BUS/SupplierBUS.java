@@ -6,30 +6,30 @@ package com.pharmacy.app.BUS;
 
 import com.pharmacy.app.DAO.SupplierDAO;
 import com.pharmacy.app.DTO.SupplierDTO;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
  *
  * @author Giai Cuu Li San
  */
-public class SupplierBUS {
-    private SupplierDAO supplierDAO;
+public final class SupplierBUS {
+    private final SupplierDAO supplierDAO;
     private ArrayList<SupplierDTO> supplierList;
     
     public SupplierBUS(){
         supplierDAO = new SupplierDAO();
         supplierList = new ArrayList<>();
-    }
-    
-    public ArrayList<SupplierDTO> getSupplierList() {
-        return supplierList;
+        loadSupplierList();
     }
     
     public void loadSupplierList() {
         supplierList = supplierDAO.selectAll();
     }
     
+    public ArrayList<SupplierDTO> getSupplierList() {
+        return supplierList;
+    }
+        
     public SupplierDTO getSupplierByID(String supplierID) {
         for (SupplierDTO supplier : supplierList) {
             if (supplier.getId().equals(supplierID)) {
@@ -50,7 +50,7 @@ public class SupplierBUS {
     public boolean addSupplier(SupplierDTO supplier){
         boolean check = supplierDAO.insert(supplier);
         if (check){
-            this.supplierList.add(supplier);
+            loadSupplierList();
         }
         return check;
     }
@@ -58,16 +58,15 @@ public class SupplierBUS {
     public boolean updateSupplier(SupplierDTO supplier){
         boolean check = supplierDAO.update(supplier);
         if (check){
-            this.supplierList.set(getIndexBySupplierId(supplier.getId()), supplier);
+            loadSupplierList();
         }
         return check;
     }
     
     public boolean deleteSupplier(SupplierDTO supplier){
         boolean check = supplierDAO.delete(supplier.getId());
-        int index = getIndexBySupplierId(supplier.getId());
         if (check){
-            this.supplierList.remove(index);
+            loadSupplierList();
         }
         return check;
     }
@@ -84,4 +83,23 @@ public class SupplierBUS {
         }
         return -1;
     }
+    
+    public ArrayList<SupplierDTO> getSupList() {
+        try{
+            return supplierDAO.selectAll();
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public SupplierDTO getSupplierByName(String name) {
+        for (SupplierDTO sup : getSupList()) {
+            if (sup.getName().equalsIgnoreCase(name)) {
+                return sup;
+            }
+        }
+        return null; // Không tìm thấy
+    }
+
 }

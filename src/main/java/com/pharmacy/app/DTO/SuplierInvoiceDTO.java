@@ -4,7 +4,9 @@
  */
 package com.pharmacy.app.DTO;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  *
@@ -13,26 +15,40 @@ import java.time.LocalDate;
 public class SuplierInvoiceDTO {
     public String invoiceID;
     public String poID;
+
     public String supplierID;
+    public LocalDate purchaseDate;
+    public String managerName;
+    
     public String supplierName;
     public String managerID;
-    public String managerName;
     public int totalQuantity;
-    public Double totalPrice;
-    public LocalDate purchaseDate;
+
+    public BigDecimal totalPrice;
+    public LocalDate importDate;
+    public List<SuplierInvoiceDetailsDTO> details;
 
     public SuplierInvoiceDTO(){}
-    
-    public SuplierInvoiceDTO(String invoiceID, String poID, String supplierID, String managerID, String supplierName, String managerName, int totalQuantity, Double totalPrice, LocalDate purchaseDate) {
+
+    public SuplierInvoiceDTO(String invoiceID, String poID, String supplierID, LocalDate purchaseDate, String managerName, String supplierName, String managerID, int totalQuantity, BigDecimal totalPrice, LocalDate importDate) {
         this.invoiceID = invoiceID;
         this.poID = poID;
         this.supplierID = supplierID;
-        this.managerID = managerID;
+        this.purchaseDate = purchaseDate;
         this.managerName = managerName;
         this.supplierName = supplierName;
+        this.managerID = managerID;
         this.totalQuantity = totalQuantity;
         this.totalPrice = totalPrice;
-        this.purchaseDate = purchaseDate;
+        this.importDate = importDate;
+    }
+    
+    public List<SuplierInvoiceDetailsDTO> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<SuplierInvoiceDetailsDTO> details) {
+        this.details = details;
     }
 
     public String getInvoiceID() {
@@ -66,15 +82,6 @@ public class SuplierInvoiceDTO {
     public void setManagerID(String managerID) {
         this.managerID = managerID;
     }
-    
-    public void setManagerName(String managerName) {
-        this.managerName = managerName;
-    }
-        
-    public String getManagerName() {
-        return managerName;
-    }
-    
     public String getSupplierName() {
         return supplierName;
     }
@@ -83,28 +90,46 @@ public class SuplierInvoiceDTO {
         this.supplierName = supplierName;
     }
     
-    public int getTotalQuantity() {
-        return totalQuantity;
-    }
 
-    public void setTotalQuantity(int totalQuantity) {
-        this.totalQuantity = totalQuantity;
-    }
-
-    public Double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 
+    public LocalDate getImportDate() {
+        return importDate;
+    }
+
+    public void setImportDate(LocalDate importDate) {
+        this.importDate = importDate;
+    }
+    
+    
     public LocalDate getPurchaseDate() {
         return purchaseDate;
     }
 
     public void setPurchaseDate(LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
+    }
+
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
+    }
+
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
     
     

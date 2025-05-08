@@ -25,8 +25,35 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
     }
     
     @Override
-    public boolean insert(SuplierInvoiceDTO t){
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean insert(SuplierInvoiceDTO supInv){
+         boolean result = false;
+
+        if (myconnect.openConnection()) {
+            try {
+                String sql = "INSERT INTO supplier_invoices(supplier_invoice_id, po_id, supplier_id, total_price, purchase_date) VALUES (?, ?, ?, ?, ?)";
+                // Sử dụng phương thức prepareUpdate để thực thi câu lệnh SQL
+                int rowsAffected = myconnect.prepareUpdate(sql, 
+                    supInv.getInvoiceID(),
+                    supInv.getPoID(),
+                    supInv.getSupplierID(),
+                    supInv.getTotalPrice(),
+                    supInv.getImportDate()
+                );
+               
+                if (rowsAffected > 0) {
+                    result = true;
+                    System.out.println("da them phieu nhap");
+                }
+            }catch (Exception e) {
+                System.err.println("SQL Error: " + e.getMessage()); // In lỗi cụ thể
+                e.printStackTrace();
+                return false;
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -43,12 +70,12 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
     public ArrayList<SuplierInvoiceDTO> selectAll() {
         ArrayList<SuplierInvoiceDTO> supInvoices = new ArrayList<>();
         if (myconnect.openConnection()){
-            String sql = "SELECT si.supplier_invoice_id, SUM(sids.quantity), si.total_price, si.supplier_id, si.purchase_date, manager_user_id "
+            String sql = "SELECT si.supplier_invoice_id, SUM(sid.quantity), SUM(sid.quantity * unit_price) AS total_price, si.supplier_id, si.purchase_date, manager_user_id "
                     + " FROM supplier_invoices si"
                     + " INNER JOIN purchase_orders po ON po.po_id = si.po_id"
-                    + " INNER JOIN supplier_invoice_details sids ON sids.supplier_invoice_id = si.supplier_invoice_id"
+                    + " INNER JOIN supplier_invoice_details sid ON sid.supplier_invoice_id = si.supplier_invoice_id"
                     + " WHERE si.is_deleted = 0"
-                    + " GROUP BY si.supplier_invoice_id, si.total_price, si.supplier_id, si.purchase_date, manager_user_id ";
+                    + " GROUP BY si.supplier_invoice_id, si.supplier_id, si.purchase_date, manager_user_id ";
             ResultSet rs = myconnect.runQuery(sql);
 
             try {
@@ -56,7 +83,7 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
                     SuplierInvoiceDTO supInvoice = new SuplierInvoiceDTO();
                     supInvoice.setInvoiceID(rs.getString(1));
                     supInvoice.setTotalQuantity(rs.getInt(2));
-                    supInvoice.setTotalPrice(rs.getDouble(3));
+                    supInvoice.setTotalPrice(rs.getBigDecimal(3));
                     supInvoice.setSupplierID(rs.getString(4));
                     LocalDate purchaseDate = rs.getDate(5).toLocalDate();
                     supInvoice.setPurchaseDate(purchaseDate);
@@ -176,7 +203,7 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
                     SuplierInvoiceDTO supInvoice = new SuplierInvoiceDTO();
                     supInvoice.setInvoiceID(rs.getString(1));
                     supInvoice.setTotalQuantity(rs.getInt(2));
-                    supInvoice.setTotalPrice(rs.getDouble(3));
+                    supInvoice.setTotalPrice(rs.getBigDecimal(3));
                     supInvoice.setSupplierID(rs.getString(4));
                     LocalDate purchaseDate = rs.getDate(5).toLocalDate();
                     supInvoice.setPurchaseDate(purchaseDate);
@@ -212,7 +239,7 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
                     SuplierInvoiceDTO invoice = new SuplierInvoiceDTO();
                     invoice.setInvoiceID(rs.getString(1));
                     invoice.setTotalQuantity(rs.getInt(2));
-                    invoice.setTotalPrice(rs.getDouble(3));
+                    invoice.setTotalPrice(rs.getBigDecimal(3));
                     invoice.setSupplierID(rs.getString(4));
                     invoice.setPurchaseDate(rs.getDate(5).toLocalDate());
                     invoice.setManagerID(rs.getString(6));

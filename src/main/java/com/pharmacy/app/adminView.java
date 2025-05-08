@@ -8,6 +8,8 @@ import com.pharmacy.app.DTO.SessionDTO;
 import com.pharmacy.app.GUI.Authorization.AuthorizationManagement;
 import com.pharmacy.app.GUI.Customer.CustomerList;
 import com.pharmacy.app.GUI.Employee.EmployeeManagement;
+import com.pharmacy.app.GUI.Importing.Invoices;
+import com.pharmacy.app.GUI.Importing.PurchaseOrder;
 import com.pharmacy.app.GUI.Product.MedicalProducts;
 import java.awt.*;
 import javax.swing.*;
@@ -34,8 +36,8 @@ public class adminView extends javax.swing.JFrame {
     
     public adminView() {
         initComponents();
+        ContentPn.setLayout(cardlayout);
         this.setLocationRelativeTo(null);
-
     }
 
     /**
@@ -522,6 +524,7 @@ public class adminView extends javax.swing.JFrame {
         authzBtn.setContentAreaFilled(false);
         authzBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         authzBtn.setEnabled(false);
+        authzBtn.setFocusable(false);
         authzBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         authzBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         authzBtn.setMinimumSize(new java.awt.Dimension(200, 30));
@@ -543,7 +546,6 @@ public class adminView extends javax.swing.JFrame {
             }
         });
         MenuHidePn.add(authzBtn);
-
         MenuPn.add(MenuHidePn, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(MenuPn, java.awt.BorderLayout.LINE_START);
@@ -558,7 +560,6 @@ public class adminView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 // cardlayout
     public void switchToPanel(String panelName) {
-        ContentPn.setLayout(cardlayout);
         cardlayout.show(ContentPn, panelName);
         ContentPn.revalidate();
         ContentPn.repaint();
@@ -751,13 +752,13 @@ public class adminView extends javax.swing.JFrame {
     }//GEN-LAST:event_productBtnMouseClicked
 // Phân quyền
     private void authzBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_authzBtnMouseExited
-        authzBtn.setBackground(colorExited);
-        authzBtn.setOpaque(true);
+//        authzBtn.setBackground(colorExited);
+//        authzBtn.setOpaque(true);
     }//GEN-LAST:event_authzBtnMouseExited
 
     private void authzBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_authzBtnMouseEntered
-        authzBtn.setBackground(colorEntered);
-        authzBtn.setOpaque(true);
+//        authzBtn.setBackground(colorEntered);
+ //       authzBtn.setOpaque(true);
     }//GEN-LAST:event_authzBtnMouseEntered
 
     private void authzBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_authzBtnMouseClicked
@@ -767,13 +768,13 @@ public class adminView extends javax.swing.JFrame {
 
 // Báo cáo thống kê
     private void reportBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseEntered
-        reportBtn.setBackground(colorEntered);
-        reportBtn.setOpaque(true);
+//        reportBtn.setBackground(colorEntered);
+//       reportBtn.setOpaque(true);
     }//GEN-LAST:event_reportBtnMouseEntered
 
     private void reportBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseExited
-        reportBtn.setBackground(colorExited);
-        reportBtn.setOpaque(true);
+//        reportBtn.setBackground(colorExited);
+//        reportBtn.setOpaque(true);
     }//GEN-LAST:event_reportBtnMouseExited
 
     private void usericonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usericonMouseEntered
@@ -871,6 +872,7 @@ public class adminView extends javax.swing.JFrame {
     private javax.swing.JLabel minmaxicon;
     private javax.swing.JButton productBtn;
     private javax.swing.JButton promoBtn;
+    private javax.swing.JButton purchaseBtn;
     private javax.swing.JButton reportBtn;
     private javax.swing.JButton supBtn;
     private javax.swing.JButton userBtn;

@@ -18,8 +18,36 @@ import java.util.ArrayList;
 public class ProductBatchDAO implements DAOinterface<ProductBatchDTO>{
     MyConnection myconnect = new MyConnection();
     @Override
-    public boolean insert(ProductBatchDTO t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean insert(ProductBatchDTO batch) {
+boolean result = false;
+
+        if (myconnect.openConnection()) {
+            try {
+                String sql = "INSERT INTO product_batches( batch_id, product_id, manufacturing_date, expiration_date, recieved_quantity, inventory_quantity, sell_price) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                // Sử dụng phương thức prepareUpdate để thực thi câu lệnh SQL
+                int rowsAffected = myconnect.prepareUpdate(sql, 
+                    batch.getBatchID(),
+                    batch.getMedicineID(),
+                    batch.getManufacturingDate(),
+                    batch.getExpirationDate(),
+                    batch.getQuantityReceived(),
+                    batch.getQuantityInStock(),
+                    batch.getSellPrice()
+                );
+
+                if (rowsAffected > 0) {
+                    result = true;
+                }
+            }catch (Exception e) {
+                System.err.println("SQL Error: " + e.getMessage()); // In lỗi cụ thể
+                e.printStackTrace();
+                return false;
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -44,12 +72,10 @@ public class ProductBatchDAO implements DAOinterface<ProductBatchDTO>{
             ResultSet rs = ps.executeQuery();
              
             while(rs.next()){
-                       ProductBatchDTO product = new ProductBatchDTO();
-                       MedicalProductsBUS pd_name = new MedicalProductsBUS();
-                       String name = pd_name.getMedicineNameByID(rs.getString("product_id"));
+                       ProductBatchDTO product = new ProductBatchDTO();                     
                        
                        product.setBatchID(rs.getString("batch_id"));
-                       product.setMedicineID(name);
+                       product.setMedicineID(rs.getString("product_id"));
                        product.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
                        product.setManufacturingDate(rs.getDate("manufacturing_date").toLocalDate());
                        product.setQuantityInStock(rs.getInt("inventory_quantity"));
@@ -124,7 +150,7 @@ public class ProductBatchDAO implements DAOinterface<ProductBatchDTO>{
     public boolean updateBatchQuantity(String batchId, String productId, int quantity) {
         boolean isSuccess = false;
         if (myconnect.openConnection()) {
-        String sql = "UPDATE product_batches SET inventory_quantity = inventory_quantity -  ? WHERE batch_id = ? AND product_id = ?";
+        String sql = "UPDATE product_batches SET inventory_quantity = inventory_quantity +  ? WHERE batch_id = ? AND product_id = ?";
         int result = myconnect.prepareUpdate(sql, quantity, batchId, productId);
             
         if (result > 0) {
@@ -134,6 +160,35 @@ public class ProductBatchDAO implements DAOinterface<ProductBatchDTO>{
         }
         return isSuccess;
     }
+    
+    public String getSupplierNameByBatchID(String batchID) {
+        String supplierName = null;
+        try {
+            myconnect.openConnection();
+            String sql = """
+                SELECT s.name, s.supplier_id
+                                FROM supplier_invoice_details sid
+                                JOIN supplier_invoices si ON sid.supplier_invoice_id = si.supplier_invoice_id
+                                JOIN suppliers s ON s.supplier_id = si.supplier_id 
+                                WHERE sid.batch_id = ?
+            """;
+
+            PreparedStatement ps = myconnect.con.prepareStatement(sql);
+            ps.setString(1, batchID);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                supplierName = rs.getString("name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            myconnect.closeConnection();
+        }
+
+        return supplierName;
+    }
+
 }
 
 

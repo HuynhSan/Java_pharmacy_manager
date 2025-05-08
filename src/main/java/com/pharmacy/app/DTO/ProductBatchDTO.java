@@ -20,6 +20,8 @@ public class ProductBatchDTO {
     private int quantityReceived;
     private double sellPrice;
     private boolean status;
+    private String supplierName;
+    private String medicineName;
     
     public ProductBatchDTO(){};
     public ProductBatchDTO(String batchID, String medicineID, LocalDate manufacturingDate, LocalDate expirationDate, int quantityInStock, int quantityReceived, double sellPrice, boolean status) {
@@ -32,6 +34,15 @@ public class ProductBatchDTO {
         this.sellPrice = sellPrice;
     }
 
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+    
+    
     public String getBatchID() {
         return batchID;
     }
@@ -94,6 +105,14 @@ public class ProductBatchDTO {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getMedicineName() {
+        return medicineName;
+    }
+
+    public void setMedicineName(String medicineName) {
+        this.medicineName = medicineName;
     }
     
 }

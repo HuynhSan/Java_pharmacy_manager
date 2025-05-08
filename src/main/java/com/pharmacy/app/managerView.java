@@ -899,8 +899,8 @@ public class managerView extends javax.swing.JFrame {
     }//GEN-LAST:event_infoBtnMouseClicked
 
     private void infoBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoBtnMouseEntered
-        infoBtn.setBackground(colorEntered);
-        infoBtn.setOpaque(true);
+//        infoBtn.setBackground(colorEntered);
+//        infoBtn.setOpaque(true);
     }//GEN-LAST:event_infoBtnMouseEntered
 
     private void infoBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoBtnMouseExited
@@ -909,8 +909,8 @@ public class managerView extends javax.swing.JFrame {
     }//GEN-LAST:event_infoBtnMouseExited
 
     private void scheduleBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduleBtnMouseEntered
-        scheduleBtn.setBackground(colorEntered);
-        scheduleBtn.setOpaque(true);// TODO add your handling code here:
+//        scheduleBtn.setBackground(colorEntered);
+//        scheduleBtn.setOpaque(true);// TODO add your handling code here:
     }//GEN-LAST:event_scheduleBtnMouseEntered
 
     private void scheduleBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduleBtnMouseExited
@@ -919,8 +919,8 @@ public class managerView extends javax.swing.JFrame {
     }//GEN-LAST:event_scheduleBtnMouseExited
 
     private void reportBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseEntered
-        reportBtn.setBackground(colorEntered);
-        reportBtn.setOpaque(true);
+//        reportBtn.setBackground(colorEntered);
+//        reportBtn.setOpaque(true);
     }//GEN-LAST:event_reportBtnMouseEntered
 
     private void reportBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseExited
