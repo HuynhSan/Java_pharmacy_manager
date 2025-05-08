@@ -4,12 +4,17 @@
  */
 package com.pharmacy.app.GUI.Reports;
 
+import com.pharmacy.app.BUS.RevenueReportBUS;
+import com.pharmacy.app.Utils.FormatUtils;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ItemEvent;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.ButtonGroup;
 import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
@@ -27,6 +32,11 @@ public class ReportManagement extends javax.swing.JPanel {
     private ButtonGroup revenueFilterGroup, productFilterGroup, invoiceFilterGroup;
     // Date format for display
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private final RevenueReportBUS revenueBUS = new RevenueReportBUS();
+    
+    // Current revenue data
+    private Map<String, BigDecimal> currentRevenueData = new TreeMap<>();
+    private BigDecimal currentTotalRevenue = BigDecimal.ZERO;
     
     // Period types for statistics
     private enum PeriodType {
@@ -86,11 +96,6 @@ public class ReportManagement extends javax.swing.JPanel {
         btnRevenueApply.addActionListener(e -> applyRevenueFilter());
         btnProductApply.addActionListener(e -> applyProductFilter());
         btnInvoiceApply.addActionListener(e -> applyInvoiceFilter());
-        
-        // Export PDF button listeners
-        btnRevenueExport.addActionListener(e -> exportRevenueToPDF());
-        btnProductExport.addActionListener(e -> exportProductToPDF());
-        btnInvoiceExport.addActionListener(e -> exportInvoiceToPDF());
         
         // Month and Year combobox listeners
         cbRevenueMonth.addItemListener(e -> {
@@ -192,8 +197,10 @@ public class ReportManagement extends javax.swing.JPanel {
         Date today = cal.getTime();
         
         // Set default dates for date choosers
+        revenueCurrentDate.setDate(today);
         revenueStartDate.setDate(today);
         revenueEndDate.setDate(today);
+        invoiceCurrentDate.setDate(today);
         invoiceStartDate.setDate(today);
         invoiceEndDate.setDate(today);
         
@@ -203,7 +210,13 @@ public class ReportManagement extends javax.swing.JPanel {
             cbRevenueYear.addItem(String.valueOf(currentYear - i));
             cbProductYear.addItem(String.valueOf(currentYear - i));
             cbInvoiceYear.addItem(String.valueOf(currentYear - i));
+            cbRevenueYearOnly.addItem(String.valueOf(currentYear - i));
+            cbProductYearOnly.addItem(String.valueOf(currentYear - i));
+            cbInvoiceYearOnly.addItem(String.valueOf(currentYear - i));
         }
+        
+        // Set total revenue to 0 initially
+        lblRevenueTotalValue.setText(FormatUtils.formatCurrency(BigDecimal.ZERO));
         
         // Set initial view to daily
         revenueRadioDay.setSelected(true);
@@ -215,30 +228,14 @@ public class ReportManagement extends javax.swing.JPanel {
         invoiceRadioDay.setSelected(true);
         updateInvoiceView(PeriodType.DAY);
         
-        // Load mock data for demo
-        loadMockData();
+        // Load actual data for today
+        fetchAndDisplayRevenueData();
     }
     
     /**
      * Load mock data for demonstration
      */
     private void loadMockData() {
-        // Revenue table mock data
-        DefaultTableModel revenueModel = (DefaultTableModel) tblRevenue.getModel();
-        revenueModel.setRowCount(0);
-        
-        Object[] row1 = {"08/05/2025", "15,000,000"};
-        Object[] row2 = {"07/05/2025", "12,500,000"};
-        Object[] row3 = {"06/05/2025", "18,200,000"};
-        Object[] row4 = {"05/05/2025", "14,700,000"};
-        Object[] row5 = {"04/05/2025", "21,300,000"};
-        
-        revenueModel.addRow(row1);
-        revenueModel.addRow(row2);
-        revenueModel.addRow(row3);
-        revenueModel.addRow(row4);
-        revenueModel.addRow(row5);
-        
         // Products table mock data
         DefaultTableModel productModel = (DefaultTableModel) tblProducts.getModel();
         productModel.setRowCount(0);
@@ -285,30 +282,6 @@ public class ReportManagement extends javax.swing.JPanel {
      */
     private void updateCharts() {
         // Mock data for charts
-        // Revenue chart
-        DefaultCategoryDataset revenueDataset = new DefaultCategoryDataset();
-        revenueDataset.addValue(15000000, "Doanh thu", "08/05");
-        revenueDataset.addValue(12500000, "Doanh thu", "07/05");
-        revenueDataset.addValue(18200000, "Doanh thu", "06/05");
-        revenueDataset.addValue(14700000, "Doanh thu", "05/05");
-        revenueDataset.addValue(21300000, "Doanh thu", "04/05");
-        
-        JFreeChart revenueChart = ChartFactory.createLineChart(
-                "Doanh thu theo thời gian",
-                "Thời gian",
-                "Doanh thu (VNĐ)",
-                revenueDataset,
-                PlotOrientation.VERTICAL,
-                true,
-                true,
-                false
-        );
-        ChartPanel revenueChartPanel = new ChartPanel(revenueChart);
-        pnlRevenueChart.removeAll();
-        pnlRevenueChart.add(revenueChartPanel, BorderLayout.CENTER);
-        pnlRevenueChart.revalidate();
-        pnlRevenueChart.repaint();
-        
         // Product sales chart
         DefaultPieDataset productDataset = new DefaultPieDataset();
         productDataset.setValue("Paracetamol 500mg", 250);
@@ -455,16 +428,13 @@ public class ReportManagement extends javax.swing.JPanel {
     
     /**
      * Update revenue data based on selected period
-     * In a real application, this would fetch data from database
      */
     private void updateRevenueData() {
-        // This is a placeholder - in a real app, you would fetch data from your database
-        // For now, we'll just use the mock data already loaded
+        fetchAndDisplayRevenueData();
     }
     
     /**
      * Update best selling products data
-     * In a real application, this would fetch data from database
      */
     private void updateBestSellingProducts() {
         // This is a placeholder - in a real app, you would fetch data from your database
@@ -473,7 +443,6 @@ public class ReportManagement extends javax.swing.JPanel {
     
     /**
      * Update invoice statistics data
-     * In a real application, this would fetch data from database
      */
     private void updateInvoiceStatistics() {
         // This is a placeholder - in a real app, you would fetch data from your database
@@ -484,29 +453,7 @@ public class ReportManagement extends javax.swing.JPanel {
      * Apply filter for revenue statistics
      */
     private void applyRevenueFilter() {
-        if (revenueRadioDay.isSelected()) {
-            // Apply day filter
-            Date selectedDate = revenueCurrentDate.getDate();
-            // In real app, query database with this date
-        } else if (revenueRadioMonth.isSelected()) {
-            // Apply month filter
-            String month = cbRevenueMonth.getSelectedItem().toString();
-            String year = cbRevenueYear.getSelectedItem().toString();
-            // In real app, query database with month and year
-        } else if (revenueRadioYear.isSelected()) {
-            // Apply year filter
-            String year = cbRevenueYearOnly.getSelectedItem().toString();
-            // In real app, query database with year
-        } else if (revenueRadioCustom.isSelected()) {
-            // Apply custom date range filter
-            Date startDate = revenueStartDate.getDate();
-            Date endDate = revenueEndDate.getDate();
-            // In real app, query database with date range
-        }
-        
-        // For demo, just refresh the existing mock data
-        updateRevenueData();
-        updateCharts();
+        fetchAndDisplayRevenueData();
     }
     
     /**
@@ -558,75 +505,135 @@ public class ReportManagement extends javax.swing.JPanel {
     }
     
     /**
-     * Export revenue statistics to PDF
+     * Fetch revenue data from database and display it
      */
-    private void exportRevenueToPDF() {
+    private void fetchAndDisplayRevenueData() {
         try {
-            // Get table model
-            DefaultTableModel model = (DefaultTableModel) tblRevenue.getModel();
+            // Reset current data
+            currentRevenueData.clear();
+            currentTotalRevenue = BigDecimal.ZERO;
             
-            // Use the PDFExporter utility class to export revenue data
-            com.pharmacy.app.Utils.PDFExporter.exportRevenueToPDF(this, model);
+            // Determine which filter is active and fetch appropriate data
+            if (revenueRadioDay.isSelected()) {
+                // Get data for selected day
+                Date selectedDate = revenueCurrentDate.getDate();
+                if (selectedDate != null) {
+                    currentRevenueData = revenueBUS.getRevenueByDay(selectedDate);
+                    
+                    // For day view, we also calculate the total
+                    currentTotalRevenue = BigDecimal.ZERO;
+                    for (BigDecimal value : currentRevenueData.values()) {
+                        currentTotalRevenue = currentTotalRevenue.add(value);
+                    }
+                }
+            } else if (revenueRadioMonth.isSelected()) {
+                // Get data for selected month and year
+                int month = Integer.parseInt(cbRevenueMonth.getSelectedItem().toString());
+                int year = Integer.parseInt(cbRevenueYear.getSelectedItem().toString());
+                currentRevenueData = revenueBUS.getRevenueByMonth(month, year);
+                
+                // Calculate total for the month
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.MONTH, month - 1);
+                cal.set(Calendar.DAY_OF_MONTH, 1);
+                Date startDate = cal.getTime();
+                
+                cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+                Date endDate = cal.getTime();
+                
+                currentTotalRevenue = revenueBUS.getTotalRevenueForDateRange(startDate, endDate);
+            } else if (revenueRadioYear.isSelected()) {
+                // Get data for selected year
+                int year = Integer.parseInt(cbRevenueYearOnly.getSelectedItem().toString());
+                currentRevenueData = revenueBUS.getRevenueByYear(year);
+                
+                // Calculate total for the year
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.MONTH, Calendar.JANUARY);
+                cal.set(Calendar.DAY_OF_MONTH, 1);
+                Date startDate = cal.getTime();
+                
+                cal.set(Calendar.MONTH, Calendar.DECEMBER);
+                cal.set(Calendar.DAY_OF_MONTH, 31);
+                Date endDate = cal.getTime();
+                
+                currentTotalRevenue = revenueBUS.getTotalRevenueForDateRange(startDate, endDate);
+            } else if (revenueRadioCustom.isSelected()) {
+                // Get data for custom date range
+                Date startDate = revenueStartDate.getDate();
+                Date endDate = revenueEndDate.getDate();
+                
+                if (startDate != null && endDate != null) {
+                    currentRevenueData = revenueBUS.getRevenueByDateRange(startDate, endDate);
+                    currentTotalRevenue = revenueBUS.getTotalRevenueForDateRange(startDate, endDate);
+                }
+            }
             
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Xuất báo cáo PDF thành công!",
-                "Thông báo",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            // Update UI with new data
+            updateRevenueTable();
+            updateRevenueChart();
+            
+            // Update total label
+            lblRevenueTotalValue.setText(FormatUtils.formatCurrency(currentTotalRevenue));
+            
         } catch (Exception e) {
+            e.printStackTrace();
             javax.swing.JOptionPane.showMessageDialog(this,
-                "Lỗi khi xuất PDF: " + e.getMessage(),
+                "Lỗi khi tải dữ liệu doanh thu: " + e.getMessage(),
                 "Lỗi",
                 javax.swing.JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
         }
     }
     
     /**
-     * Export product statistics to PDF
+     * Update revenue table with current data
      */
-    private void exportProductToPDF() {
-        try {
-            // Get table model
-            DefaultTableModel model = (DefaultTableModel) tblProducts.getModel();
-            
-            // Use the PDFExporter utility class to export product data
-            com.pharmacy.app.Utils.PDFExporter.exportProductStatsToPDF(this, model);
-            
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Xuất báo cáo PDF thành công!",
-                "Thông báo",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Lỗi khi xuất PDF: " + e.getMessage(),
-                "Lỗi",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+    private void updateRevenueTable() {
+        DefaultTableModel model = (DefaultTableModel) tblRevenue.getModel();
+        model.setRowCount(0);
+        
+        for (Map.Entry<String, BigDecimal> entry : currentRevenueData.entrySet()) {
+            Object[] row = new Object[2];
+            row[0] = entry.getKey();
+            row[1] = FormatUtils.formatCurrency(entry.getValue());
+            model.addRow(row);
         }
     }
     
     /**
-     * Export invoice statistics to PDF
+     * Update chart with current data
      */
-    private void exportInvoiceToPDF() {
-        try {
-            // Get table model
-            DefaultTableModel model = (DefaultTableModel) tblInvoices.getModel();
-            
-            // Use the PDFExporter utility class to export invoice data
-            com.pharmacy.app.Utils.PDFExporter.exportInvoiceStatsToPDF(this, model);
-            
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Xuất báo cáo PDF thành công!",
-                "Thông báo",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Lỗi khi xuất PDF: " + e.getMessage(),
-                "Lỗi",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+    private void updateRevenueChart() {
+        // Create dataset from current revenue data
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        
+        // Add data to dataset
+        for (Map.Entry<String, BigDecimal> entry : currentRevenueData.entrySet()) {
+            String date = entry.getKey();
+            BigDecimal value = entry.getValue();
+            dataset.addValue(value, "Doanh thu", date);
         }
+        
+        // Create chart with dataset
+        JFreeChart chart = ChartFactory.createLineChart(
+                "Doanh thu theo thời gian",
+                "Thời gian",
+                "Doanh thu (VNĐ)",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
+        );
+        
+        // Update chart panel
+        ChartPanel chartPanel = new ChartPanel(chart);
+        pnlRevenueChart.removeAll();
+        pnlRevenueChart.add(chartPanel, BorderLayout.CENTER);
+        pnlRevenueChart.revalidate();
+        pnlRevenueChart.repaint();
     }
 
     /**
@@ -795,7 +802,6 @@ public class ReportManagement extends javax.swing.JPanel {
         lblRevenueMonthYear.setText("Năm:");
         pnlRevenueMonth.add(lblRevenueMonthYear);
 
-        cbRevenueYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         pnlRevenueMonth.add(cbRevenueYear);
 
         pnlRevenueControls.add(pnlRevenueMonth, "month");
@@ -806,7 +812,6 @@ public class ReportManagement extends javax.swing.JPanel {
         lblRevenueYear.setText("Năm:");
         pnlRevenueYear.add(lblRevenueYear);
 
-        cbRevenueYearOnly.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         pnlRevenueYear.add(cbRevenueYearOnly);
 
         pnlRevenueControls.add(pnlRevenueYear, "year");
@@ -848,6 +853,11 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlRevenueButtons.add(btnRevenueApply);
 
         btnRevenueExport.setText("Xuất PDF");
+        btnRevenueExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRevenueExportActionPerformed(evt);
+            }
+        });
         pnlRevenueButtons.add(btnRevenueExport);
 
         pnlRevenueFilter.add(pnlRevenueButtons, java.awt.BorderLayout.SOUTH);
@@ -954,7 +964,6 @@ public class ReportManagement extends javax.swing.JPanel {
         lblProductMonthYear.setText("Năm:");
         pnlProductMonth.add(lblProductMonthYear);
 
-        cbProductYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         pnlProductMonth.add(cbProductYear);
 
         pnlPoductControls.add(pnlProductMonth, "month");
@@ -965,7 +974,6 @@ public class ReportManagement extends javax.swing.JPanel {
         lblProductYear.setText("Năm:");
         pnlProductYear.add(lblProductYear);
 
-        cbProductYearOnly.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         pnlProductYear.add(cbProductYearOnly);
 
         pnlPoductControls.add(pnlProductYear, "year");
@@ -988,6 +996,11 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlProductButtons.add(btnProductApply);
 
         btnProductExport.setText("Xuất PDF");
+        btnProductExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProductExportActionPerformed(evt);
+            }
+        });
         pnlProductButtons.add(btnProductExport);
 
         pnlProductFilter.add(pnlProductButtons, java.awt.BorderLayout.SOUTH);
@@ -1112,7 +1125,6 @@ public class ReportManagement extends javax.swing.JPanel {
         lblInvoiceMonthYear.setText("Năm:");
         pnlInvoiceMonth.add(lblInvoiceMonthYear);
 
-        cbInvoiceYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         pnlInvoiceMonth.add(cbInvoiceYear);
 
         pnlInvoiceControls.add(pnlInvoiceMonth, "month");
@@ -1123,7 +1135,6 @@ public class ReportManagement extends javax.swing.JPanel {
         lblInvoiceYear.setText("Năm:");
         pnlInvoiceYear.add(lblInvoiceYear);
 
-        cbInvoiceYearOnly.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         pnlInvoiceYear.add(cbInvoiceYearOnly);
 
         pnlInvoiceControls.add(pnlInvoiceYear, "year");
@@ -1165,6 +1176,11 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlInvoiceButtons.add(btnInvoiceApply);
 
         btnInvoiceExport.setText("Xuất PDF");
+        btnInvoiceExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInvoiceExportActionPerformed(evt);
+            }
+        });
         pnlInvoiceButtons.add(btnInvoiceExport);
 
         pnlInvoiceFilter.add(pnlInvoiceButtons, java.awt.BorderLayout.SOUTH);
@@ -1251,6 +1267,57 @@ public class ReportManagement extends javax.swing.JPanel {
     private void btnInvoiceApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInvoiceApplyActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnInvoiceApplyActionPerformed
+
+    private void btnRevenueExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevenueExportActionPerformed
+        try {
+            // Get table model
+            DefaultTableModel model = (DefaultTableModel) tblRevenue.getModel();
+            
+            // Use the PDFExporter utility class to export revenue data
+            com.pharmacy.app.Utils.PDFExporter.exportRevenueToPDF(this, model);
+            
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Lỗi khi xuất PDF: " + e.getMessage(),
+                "Lỗi",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnRevenueExportActionPerformed
+
+    private void btnProductExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductExportActionPerformed
+        try {
+            // Get table model
+            DefaultTableModel model = (DefaultTableModel) tblProducts.getModel();
+            
+            // Use the PDFExporter utility class to export product data
+            com.pharmacy.app.Utils.PDFExporter.exportProductStatsToPDF(this, model);
+            
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Lỗi khi xuất PDF: " + e.getMessage(),
+                "Lỗi",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnProductExportActionPerformed
+
+    private void btnInvoiceExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInvoiceExportActionPerformed
+        try {
+            // Get table model
+            DefaultTableModel model = (DefaultTableModel) tblInvoices.getModel();
+            
+            // Use the PDFExporter utility class to export invoice data
+            com.pharmacy.app.Utils.PDFExporter.exportInvoiceStatsToPDF(this, model);
+            
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Lỗi khi xuất PDF: " + e.getMessage(),
+                "Lỗi",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnInvoiceExportActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
