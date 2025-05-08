@@ -768,13 +768,13 @@ public class adminView extends javax.swing.JFrame {
 
 // Báo cáo thống kê
     private void reportBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseEntered
-//        reportBtn.setBackground(colorEntered);
-//       reportBtn.setOpaque(true);
+        reportBtn.setBackground(colorEntered);
+       reportBtn.setOpaque(true);
     }//GEN-LAST:event_reportBtnMouseEntered
 
     private void reportBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseExited
-//        reportBtn.setBackground(colorExited);
-//        reportBtn.setOpaque(true);
+        reportBtn.setBackground(colorExited);
+        reportBtn.setOpaque(true);
     }//GEN-LAST:event_reportBtnMouseExited
 
     private void usericonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usericonMouseEntered
