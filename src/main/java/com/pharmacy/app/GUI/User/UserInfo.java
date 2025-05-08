@@ -57,8 +57,9 @@ public class UserInfo extends javax.swing.JDialog {
         btnChangePassword = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setBackground(new java.awt.Color(248, 248, 248));
+        setBackground(new java.awt.Color(255, 255, 255));
 
+        pnlUserInfo.setBackground(new java.awt.Color(255, 255, 255));
         pnlUserInfo.setLayout(new java.awt.BorderLayout());
 
         lblUserInfo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -66,6 +67,7 @@ public class UserInfo extends javax.swing.JDialog {
         lblUserInfo.setText("THÔNG TIN TÀI KHOẢN");
         pnlUserInfo.add(lblUserInfo, java.awt.BorderLayout.CENTER);
 
+        pnlInfoFields.setBackground(new java.awt.Color(255, 255, 255));
         pnlInfoFields.setLayout(new java.awt.GridBagLayout());
 
         lblUserID.setText("Mã người dùng:");
@@ -77,6 +79,7 @@ public class UserInfo extends javax.swing.JDialog {
         pnlInfoFields.add(lblUserID, gridBagConstraints);
 
         txtUserID.setEditable(false);
+        txtUserID.setBackground(new java.awt.Color(255, 255, 255));
         txtUserID.setFocusable(false);
         txtUserID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,6 +103,7 @@ public class UserInfo extends javax.swing.JDialog {
         pnlInfoFields.add(lblRole, gridBagConstraints);
 
         txtRole.setEditable(false);
+        txtRole.setBackground(new java.awt.Color(255, 255, 255));
         txtRole.setFocusable(false);
         txtRole.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,6 +127,7 @@ public class UserInfo extends javax.swing.JDialog {
         pnlInfoFields.add(lblUsername, gridBagConstraints);
 
         txtUsername.setEditable(false);
+        txtUsername.setBackground(new java.awt.Color(255, 255, 255));
         txtUsername.setFocusable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -141,6 +146,7 @@ public class UserInfo extends javax.swing.JDialog {
         pnlInfoFields.add(lblPassword, gridBagConstraints);
 
         txtPassword.setEditable(false);
+        txtPassword.setBackground(new java.awt.Color(255, 255, 255));
         txtPassword.setText("123456789");
         txtPassword.setFocusable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -149,6 +155,8 @@ public class UserInfo extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 5.0;
         pnlInfoFields.add(txtPassword, gridBagConstraints);
+
+        pnlButton.setBackground(new java.awt.Color(255, 255, 255));
 
         btnChangePassword.setBackground(new java.awt.Color(0, 204, 51));
         btnChangePassword.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -197,7 +205,7 @@ public class UserInfo extends javax.swing.JDialog {
     }//GEN-LAST:event_txtRoleActionPerformed
 
     private void btnChangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePasswordActionPerformed
-        UpdateUserPassword updatepassDialog = new UpdateUserPassword((JFrame) SwingUtilities.getWindowAncestor(this), true);
+        UpdateUserPassword updatepassDialog = new UpdateUserPassword((JFrame) SwingUtilities.getWindowAncestor(this), true, false);
         updatepassDialog.setLocationRelativeTo(null);
         updatepassDialog.setVisible(true);
     }//GEN-LAST:event_btnChangePasswordActionPerformed

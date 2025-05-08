@@ -17,14 +17,39 @@ import javax.swing.JOptionPane;
  */
 public class UpdateUserPassword extends javax.swing.JDialog {
 
+    private static boolean isForgotPasswordMode = false;
+
     /**
      * Creates new form UpdateUserPassword
+     * @param parent
+     * @param modal
+     * @param isForgot
      */
-    public UpdateUserPassword(java.awt.Frame parent, boolean modal) {
+    public UpdateUserPassword(java.awt.Frame parent, boolean modal, boolean isForgot) {
         super(parent, modal);
         initComponents();
+        setForgotPasswordMode(isForgot);
+        isForgotPasswordMode = isForgot;
     }
-
+    public final void setForgotPasswordMode(boolean forgotPassword) {
+        isForgotPasswordMode = forgotPassword;
+        if (isForgotPasswordMode) {
+            // Ẩn ô nhập mật khẩu hiện tại
+            txtCurrentPass.setVisible(false);
+            lblCurrentPass.setVisible(false);
+            // Có thể đổi tiêu đề Dialog nếu muốn
+            this.setTitle("Quên mật khẩu");
+            lblUpdatePassword.setText("Khôi phục mật khẩu");
+        } else {
+            txtCurrentPass.setVisible(true);
+            lblCurrentPass.setVisible(true);
+            this.setTitle("Đổi mật khẩu");
+        }
+    }
+    
+    public void ForgotPassword (){
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,15 +74,22 @@ public class UpdateUserPassword extends javax.swing.JDialog {
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
 
+        pnlUpdatePassword.setBackground(new java.awt.Color(255, 255, 255));
         pnlUpdatePassword.setLayout(new java.awt.BorderLayout());
 
+        lblUpdatePassword.setBackground(new java.awt.Color(255, 255, 255));
         lblUpdatePassword.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblUpdatePassword.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblUpdatePassword.setText("CẬP NHẬT MẬT KHẨU");
         pnlUpdatePassword.add(lblUpdatePassword, java.awt.BorderLayout.CENTER);
 
+        getContentPane().add(pnlUpdatePassword);
+
+        pnlUpdateFields.setBackground(new java.awt.Color(255, 255, 255));
         pnlUpdateFields.setLayout(new java.awt.GridBagLayout());
 
         lblCurrentPass.setText("Mật khẩu hiện tại:");
@@ -65,7 +97,7 @@ public class UpdateUserPassword extends javax.swing.JDialog {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 30, 20);
         pnlUpdateFields.add(lblCurrentPass, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -73,7 +105,7 @@ public class UpdateUserPassword extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 26;
         gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
         pnlUpdateFields.add(txtCurrentPass, gridBagConstraints);
 
         lblNewPass2.setText("Nhập lại mật khẩu mới:");
@@ -81,7 +113,7 @@ public class UpdateUserPassword extends javax.swing.JDialog {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 20);
         pnlUpdateFields.add(lblNewPass2, gridBagConstraints);
 
         lblNewPass.setText("Mật khẩu mới:");
@@ -89,7 +121,7 @@ public class UpdateUserPassword extends javax.swing.JDialog {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 30, 20);
         pnlUpdateFields.add(lblNewPass, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -97,6 +129,7 @@ public class UpdateUserPassword extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 26;
         gridBagConstraints.weightx = 10.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         pnlUpdateFields.add(txtNewPass2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -104,15 +137,20 @@ public class UpdateUserPassword extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 26;
         gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
         pnlUpdateFields.add(txtNewPass, gridBagConstraints);
 
+        getContentPane().add(pnlUpdateFields);
+
+        pnlUpdateButton.setBackground(new java.awt.Color(255, 255, 255));
+        pnlUpdateButton.setPreferredSize(new java.awt.Dimension(212, 50));
         pnlUpdateButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
 
         btnUpdate.setBackground(new java.awt.Color(0, 204, 51));
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("Cập nhật");
+        btnUpdate.setPreferredSize(new java.awt.Dimension(80, 30));
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -124,6 +162,7 @@ public class UpdateUserPassword extends javax.swing.JDialog {
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("Hủy");
+        btnCancel.setPreferredSize(new java.awt.Dimension(72, 30));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
@@ -131,29 +170,7 @@ public class UpdateUserPassword extends javax.swing.JDialog {
         });
         pnlUpdateButton.add(btnCancel);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlUpdateButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlUpdateFields, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
-                    .addComponent(pnlUpdatePassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(40, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(pnlUpdatePassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(pnlUpdateFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(pnlUpdateButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
-        );
+        getContentPane().add(pnlUpdateButton);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -275,7 +292,7 @@ public class UpdateUserPassword extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                UpdateUserPassword dialog = new UpdateUserPassword(new javax.swing.JFrame(), true);
+                UpdateUserPassword dialog = new UpdateUserPassword(new javax.swing.JFrame(), true, isForgotPasswordMode);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
