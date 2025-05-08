@@ -73,6 +73,7 @@ public class PromoDetail extends javax.swing.JDialog {
         startDatePicker = new com.toedter.calendar.JDateChooser();
         endDatePicker = new com.toedter.calendar.JDateChooser();
         jPanel2 = new javax.swing.JPanel();
+        btnCancel = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
 
@@ -156,6 +157,16 @@ public class PromoDetail extends javax.swing.JDialog {
         jPanel2.setMinimumSize(new java.awt.Dimension(400, 50));
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 50));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 15));
+
+        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        btnCancel.setText("Xóa");
+        btnCancel.setPreferredSize(new java.awt.Dimension(80, 28));
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnCancel);
 
         btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         btnEdit.setText("Sửa");
@@ -326,6 +337,10 @@ public class PromoDetail extends javax.swing.JDialog {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
     
     private void changeType() {
         String selectedValue = (String) cbxPromotionType.getSelectedItem();
@@ -405,6 +420,7 @@ public class PromoDetail extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JComboBox<String> cbxPromotionType;

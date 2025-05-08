@@ -188,16 +188,17 @@ public class MedicalProducts extends javax.swing.JPanel {
         medListPn.setLayout(new java.awt.BorderLayout());
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel8.setPreferredSize(new java.awt.Dimension(608, 90));
+        jPanel8.setPreferredSize(new java.awt.Dimension(608, 100));
         jPanel8.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("DANH SÁCH SẢN PHẨM");
+        jLabel5.setPreferredSize(new java.awt.Dimension(209, 40));
         jPanel8.add(jLabel5, java.awt.BorderLayout.NORTH);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
 
         searchPdtxt.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         searchPdtxt.setForeground(new java.awt.Color(204, 204, 204));
@@ -271,16 +272,17 @@ public class MedicalProducts extends javax.swing.JPanel {
         medBatPn.setLayout(new java.awt.BorderLayout());
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel6.setPreferredSize(new java.awt.Dimension(562, 90));
+        jPanel6.setPreferredSize(new java.awt.Dimension(562, 100));
         jPanel6.setLayout(new java.awt.BorderLayout());
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("DANH SÁCH LÔ SẢN PHẨM");
+        jLabel4.setPreferredSize(new java.awt.Dimension(237, 40));
         jPanel6.add(jLabel4, java.awt.BorderLayout.NORTH);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
 
         searchPBtxt.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         searchPBtxt.setForeground(new java.awt.Color(204, 204, 204));
@@ -365,7 +367,7 @@ public class MedicalProducts extends javax.swing.JPanel {
         medDatePn.setLayout(new java.awt.BorderLayout());
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setPreferredSize(new java.awt.Dimension(562, 90));
+        jPanel4.setPreferredSize(new java.awt.Dimension(562, 100));
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N

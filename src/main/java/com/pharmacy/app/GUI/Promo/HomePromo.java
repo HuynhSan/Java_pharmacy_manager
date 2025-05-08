@@ -189,7 +189,7 @@ public class HomePromo extends javax.swing.JPanel{
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jScrollPane2.setMinimumSize(new java.awt.Dimension(760, 510));
-        jScrollPane2.setPreferredSize(new java.awt.Dimension(1180, 620));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(1200, 760));
 
         tblPromo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -219,7 +219,7 @@ public class HomePromo extends javax.swing.JPanel{
         columnModel.getColumn(0).setPreferredWidth(50);
         tblPromo.setMaximumSize(new java.awt.Dimension(700, 600));
         tblPromo.setMinimumSize(new java.awt.Dimension(700, 450));
-        tblPromo.setPreferredSize(new java.awt.Dimension(1180, 600));
+        tblPromo.setPreferredSize(new java.awt.Dimension(1200, 1000));
         tblPromo.setRowHeight(30);
         tblPromo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         tblPromo.setShowGrid(true);

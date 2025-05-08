@@ -747,7 +747,7 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlRevenue.setLayout(new javax.swing.BoxLayout(pnlRevenue, javax.swing.BoxLayout.Y_AXIS));
 
         pnlRevenueFilter.setBackground(new java.awt.Color(255, 255, 255));
-        pnlRevenueFilter.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lọc theo thời gian", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        pnlRevenueFilter.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lọc theo thời gian", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 13))); // NOI18N
         pnlRevenueFilter.setLayout(new java.awt.BorderLayout());
 
         pnlRevenueRadio.setBackground(new java.awt.Color(255, 255, 255));
@@ -768,6 +768,7 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlRevenueFilter.add(pnlRevenueRadio, java.awt.BorderLayout.NORTH);
 
         pnlRevenueControls.setBackground(new java.awt.Color(255, 255, 255));
+        pnlRevenueControls.setMinimumSize(new java.awt.Dimension(509, 40));
         pnlRevenueControls.setLayout(new java.awt.CardLayout());
 
         pnlRevenueDay.setBackground(new java.awt.Color(255, 255, 255));
@@ -834,12 +835,13 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlRevenueButtons.setBackground(new java.awt.Color(255, 255, 255));
         pnlRevenueButtons.setPreferredSize(new java.awt.Dimension(303, 33));
-        pnlRevenueButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 5));
+        pnlRevenueButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 0));
 
         btnRevenueApply.setBackground(new java.awt.Color(0, 204, 51));
         btnRevenueApply.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRevenueApply.setForeground(new java.awt.Color(255, 255, 255));
         btnRevenueApply.setText("Áp dụng");
+        btnRevenueApply.setPreferredSize(new java.awt.Dimension(90, 30));
         btnRevenueApply.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRevenueApplyActionPerformed(evt);
@@ -848,6 +850,8 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlRevenueButtons.add(btnRevenueApply);
 
         btnRevenueExport.setText("Xuất PDF");
+        btnRevenueExport.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnRevenueExport.setPreferredSize(new java.awt.Dimension(90, 30));
         pnlRevenueButtons.add(btnRevenueExport);
 
         pnlRevenueFilter.add(pnlRevenueButtons, java.awt.BorderLayout.SOUTH);
@@ -862,7 +866,7 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlRevenueTableAndSummary.setLayout(new java.awt.BorderLayout());
 
         pnlRevenueTable.setBackground(new java.awt.Color(255, 255, 255));
-        pnlRevenueTable.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bảng doanh thu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        pnlRevenueTable.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bảng doanh thu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.BELOW_TOP, new java.awt.Font("Segoe UI", 1, 13))); // NOI18N
         pnlRevenueTable.setLayout(new java.awt.BorderLayout());
 
         scrollRevenue.setPreferredSize(new java.awt.Dimension(100, 100));
@@ -878,6 +882,7 @@ public class ReportManagement extends javax.swing.JPanel {
                 "Ngày", "Doanh thu (VNĐ)"
             }
         ));
+        tblRevenue.setRowHeight(25);
         scrollRevenue.setViewportView(tblRevenue);
 
         pnlRevenueTable.add(scrollRevenue, java.awt.BorderLayout.CENTER);
@@ -885,7 +890,8 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlRevenueTableAndSummary.add(pnlRevenueTable, java.awt.BorderLayout.CENTER);
 
         pnlRevenueSummary.setBackground(new java.awt.Color(255, 255, 255));
-        pnlRevenueSummary.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
+        pnlRevenueSummary.setPreferredSize(new java.awt.Dimension(187, 50));
+        pnlRevenueSummary.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 10));
 
         lblRevenueTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblRevenueTotal.setText("Tổng doanh thu:");
@@ -901,17 +907,17 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlRevenueData.add(pnlRevenueTableAndSummary, java.awt.BorderLayout.WEST);
 
         pnlRevenueChart.setBackground(new java.awt.Color(255, 255, 255));
-        pnlRevenueChart.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Biểu đồ doanh thu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        pnlRevenueChart.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Biểu đồ doanh thu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.BELOW_TOP, new java.awt.Font("Segoe UI", 1, 13))); // NOI18N
 
         javax.swing.GroupLayout pnlRevenueChartLayout = new javax.swing.GroupLayout(pnlRevenueChart);
         pnlRevenueChart.setLayout(pnlRevenueChartLayout);
         pnlRevenueChartLayout.setHorizontalGroup(
             pnlRevenueChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 656, Short.MAX_VALUE)
         );
         pnlRevenueChartLayout.setVerticalGroup(
             pnlRevenueChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 481, Short.MAX_VALUE)
         );
 
         pnlRevenueData.add(pnlRevenueChart, java.awt.BorderLayout.CENTER);
@@ -924,7 +930,7 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlProducts.setLayout(new javax.swing.BoxLayout(pnlProducts, javax.swing.BoxLayout.Y_AXIS));
 
         pnlProductFilter.setBackground(new java.awt.Color(255, 255, 255));
-        pnlProductFilter.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lọc theo thời gian", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        pnlProductFilter.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lọc theo thời gian", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 13))); // NOI18N
         pnlProductFilter.setLayout(new java.awt.BorderLayout());
 
         pnlProductRadio.setBackground(new java.awt.Color(255, 255, 255));
@@ -966,6 +972,11 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlProductYear.add(lblProductYear);
 
         cbProductYearOnly.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbProductYearOnly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbProductYearOnlyActionPerformed(evt);
+            }
+        });
         pnlProductYear.add(cbProductYearOnly);
 
         pnlPoductControls.add(pnlProductYear, "year");
@@ -974,12 +985,13 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlProductButtons.setBackground(new java.awt.Color(255, 255, 255));
         pnlProductButtons.setPreferredSize(new java.awt.Dimension(303, 33));
-        pnlProductButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 5));
+        pnlProductButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 0));
 
         btnProductApply.setBackground(new java.awt.Color(0, 204, 51));
         btnProductApply.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnProductApply.setForeground(new java.awt.Color(255, 255, 255));
         btnProductApply.setText("Áp dụng");
+        btnProductApply.setPreferredSize(new java.awt.Dimension(90, 30));
         btnProductApply.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnProductApplyActionPerformed(evt);
@@ -988,6 +1000,7 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlProductButtons.add(btnProductApply);
 
         btnProductExport.setText("Xuất PDF");
+        btnProductExport.setPreferredSize(new java.awt.Dimension(90, 30));
         pnlProductButtons.add(btnProductExport);
 
         pnlProductFilter.add(pnlProductButtons, java.awt.BorderLayout.SOUTH);
@@ -1002,7 +1015,7 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlProductTableAndSummary.setLayout(new java.awt.BorderLayout());
 
         pnlProductTable.setBackground(new java.awt.Color(255, 255, 255));
-        pnlProductTable.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sản phẩm bán chạy", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        pnlProductTable.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sản phẩm bán chạy", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.BELOW_TOP, new java.awt.Font("Segoe UI", 1, 13))); // NOI18N
         pnlProductTable.setLayout(new java.awt.BorderLayout());
 
         scrollProduct.setPreferredSize(new java.awt.Dimension(100, 100));
@@ -1018,6 +1031,7 @@ public class ReportManagement extends javax.swing.JPanel {
                 "Mã SP", "Tên SP", "Số lượng bán", "Doanh thu (VNĐ)"
             }
         ));
+        tblProducts.setRowHeight(25);
         scrollProduct.setViewportView(tblProducts);
 
         pnlProductTable.add(scrollProduct, java.awt.BorderLayout.CENTER);
@@ -1025,7 +1039,8 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlProductTableAndSummary.add(pnlProductTable, java.awt.BorderLayout.CENTER);
 
         pnlProductSummary.setBackground(new java.awt.Color(255, 255, 255));
-        pnlProductSummary.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
+        pnlProductSummary.setPreferredSize(new java.awt.Dimension(208, 50));
+        pnlProductSummary.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 10));
 
         lblProductTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblProductTotal.setText("Tổng doanh thu SP:");
@@ -1041,17 +1056,17 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlProductData.add(pnlProductTableAndSummary, java.awt.BorderLayout.WEST);
 
         pnlProductChart.setBackground(new java.awt.Color(255, 255, 255));
-        pnlProductChart.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Biểu đồ sản phẩm bán chạy", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        pnlProductChart.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Biểu đồ sản phẩm bán chạy", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.BELOW_TOP, new java.awt.Font("Segoe UI", 1, 13))); // NOI18N
 
         javax.swing.GroupLayout pnlProductChartLayout = new javax.swing.GroupLayout(pnlProductChart);
         pnlProductChart.setLayout(pnlProductChartLayout);
         pnlProductChartLayout.setHorizontalGroup(
             pnlProductChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 656, Short.MAX_VALUE)
         );
         pnlProductChartLayout.setVerticalGroup(
             pnlProductChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 481, Short.MAX_VALUE)
         );
 
         pnlProductData.add(pnlProductChart, java.awt.BorderLayout.CENTER);
@@ -1064,7 +1079,7 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlInvoices.setLayout(new javax.swing.BoxLayout(pnlInvoices, javax.swing.BoxLayout.Y_AXIS));
 
         pnlInvoiceFilter.setBackground(new java.awt.Color(255, 255, 255));
-        pnlInvoiceFilter.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lọc theo thời gian", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        pnlInvoiceFilter.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lọc theo thời gian", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 13))); // NOI18N
         pnlInvoiceFilter.setLayout(new java.awt.BorderLayout());
 
         pnlInvoiceRadio.setBackground(new java.awt.Color(255, 255, 255));
@@ -1151,12 +1166,13 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlInvoiceButtons.setBackground(new java.awt.Color(255, 255, 255));
         pnlInvoiceButtons.setPreferredSize(new java.awt.Dimension(303, 33));
-        pnlInvoiceButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 5));
+        pnlInvoiceButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 0));
 
         btnInvoiceApply.setBackground(new java.awt.Color(0, 204, 51));
         btnInvoiceApply.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnInvoiceApply.setForeground(new java.awt.Color(255, 255, 255));
         btnInvoiceApply.setText("Áp dụng");
+        btnInvoiceApply.setPreferredSize(new java.awt.Dimension(90, 30));
         btnInvoiceApply.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInvoiceApplyActionPerformed(evt);
@@ -1165,6 +1181,7 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlInvoiceButtons.add(btnInvoiceApply);
 
         btnInvoiceExport.setText("Xuất PDF");
+        btnInvoiceExport.setPreferredSize(new java.awt.Dimension(90, 30));
         pnlInvoiceButtons.add(btnInvoiceExport);
 
         pnlInvoiceFilter.add(pnlInvoiceButtons, java.awt.BorderLayout.SOUTH);
@@ -1179,7 +1196,7 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlInvoiceTableAndSummary.setLayout(new java.awt.BorderLayout());
 
         pnlInvoiceTable.setBackground(new java.awt.Color(255, 255, 255));
-        pnlInvoiceTable.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thống kê hóa đơn", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        pnlInvoiceTable.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thống kê hóa đơn", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.BELOW_TOP, new java.awt.Font("Segoe UI", 1, 13))); // NOI18N
         pnlInvoiceTable.setLayout(new java.awt.BorderLayout());
 
         scrollInvoices.setPreferredSize(new java.awt.Dimension(100, 100));
@@ -1195,6 +1212,7 @@ public class ReportManagement extends javax.swing.JPanel {
                 "Ngày", "Số hóa đơn", "Tổng tiền (VNĐ)"
             }
         ));
+        tblInvoices.setRowHeight(25);
         scrollInvoices.setViewportView(tblInvoices);
 
         pnlInvoiceTable.add(scrollInvoices, java.awt.BorderLayout.CENTER);
@@ -1202,7 +1220,8 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlInvoiceTableAndSummary.add(pnlInvoiceTable, java.awt.BorderLayout.CENTER);
 
         pnlInvoiceSummary.setBackground(new java.awt.Color(255, 255, 255));
-        pnlInvoiceSummary.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
+        pnlInvoiceSummary.setPreferredSize(new java.awt.Dimension(187, 50));
+        pnlInvoiceSummary.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 10));
 
         lblInvoiceTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblInvoiceTotal.setText("Tổng doanh thu:");
@@ -1218,17 +1237,17 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlInvoiceData.add(pnlInvoiceTableAndSummary, java.awt.BorderLayout.WEST);
 
         pnlInvoiceChart.setBackground(new java.awt.Color(255, 255, 255));
-        pnlInvoiceChart.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Biểu đồ doanh thu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        pnlInvoiceChart.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Biểu đồ doanh thu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.BELOW_TOP, new java.awt.Font("Segoe UI", 1, 13))); // NOI18N
 
         javax.swing.GroupLayout pnlInvoiceChartLayout = new javax.swing.GroupLayout(pnlInvoiceChart);
         pnlInvoiceChart.setLayout(pnlInvoiceChartLayout);
         pnlInvoiceChartLayout.setHorizontalGroup(
             pnlInvoiceChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 656, Short.MAX_VALUE)
         );
         pnlInvoiceChartLayout.setVerticalGroup(
             pnlInvoiceChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 481, Short.MAX_VALUE)
         );
 
         pnlInvoiceData.add(pnlInvoiceChart, java.awt.BorderLayout.CENTER);
@@ -1251,6 +1270,10 @@ public class ReportManagement extends javax.swing.JPanel {
     private void btnInvoiceApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInvoiceApplyActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnInvoiceApplyActionPerformed
+
+    private void cbProductYearOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProductYearOnlyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbProductYearOnlyActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
