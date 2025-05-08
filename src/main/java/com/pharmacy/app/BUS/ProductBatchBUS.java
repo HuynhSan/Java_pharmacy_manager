@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -22,8 +23,16 @@ public class ProductBatchBUS {
     private ProductBatchDTO batchDTO = new ProductBatchDTO();
     private MedicalProductsBUS productBUS = new MedicalProductsBUS();
     public ArrayList<ProductBatchDTO> getAllBatches(){
+        SuplierInvoiceDetailsBUS supInvDeBUS = new SuplierInvoiceDetailsBUS();
         try {
-            return batchDAO.selectAll();
+            ArrayList<ProductBatchDTO> list = batchDAO.selectAll();
+            for(ProductBatchDTO batch : list){
+                String medName = productBUS.getMedicineNameByID(batch.getMedicineID());
+                batch.setMedicineName(medName);
+                String supName = batchDAO.getSupplierNameByBatchID(batch.getBatchID());
+                batch.setSupplierName(supName);
+            }
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -97,5 +106,24 @@ public class ProductBatchBUS {
         }
        return true;
    }
+   
+   public ArrayList<ProductBatchDTO> searchAll(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return new ArrayList<>(batchDAO.selectAll());
+        }
+
+        String lowerKeyword = keyword.toLowerCase();
+        return batchDAO.selectAll().stream()
+            .filter(batch ->
+                matchesKeyword(batch.getBatchID(), lowerKeyword) ||
+                matchesKeyword(batch.getMedicineID(), lowerKeyword) ||
+                matchesKeyword(batch.getSupplierName(), lowerKeyword)
+            )
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
+    private boolean matchesKeyword(String value, String keyword) {
+        return value != null && value.toLowerCase().contains(keyword.toLowerCase());
+    }
+    
    
 }

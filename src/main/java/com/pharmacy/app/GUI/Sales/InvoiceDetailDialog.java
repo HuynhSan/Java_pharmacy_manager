@@ -49,7 +49,7 @@ public class InvoiceDetailDialog extends JDialog{
         setLayout(new BorderLayout(15, 15));
 
         Font labelFont = new Font("Segoe UI", Font.PLAIN, 13);
-        Font titleFont = new Font("Segoe UI", Font.BOLD, 15);
+        Font titleFont = new Font("Segoe UI", Font.BOLD, 12);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -115,8 +115,8 @@ public class InvoiceDetailDialog extends JDialog{
         tablePanel.setBorder(new EmptyBorder(10, 15, 10, 15));
 
         JLabel lblTableTitle = new JLabel("Danh sách sản phẩm");
-        lblTableTitle.setFont(new Font("Segoe UI", Font.BOLD, 17));
-        lblTableTitle.setAlignmentX(Component.CENTER_ALIGNMENT); // Căn trái
+        lblTableTitle.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblTableTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblTableTitle.setBorder(new EmptyBorder(0, 0, 10, 0));
 
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT); // Căn cho bảng khớp label
