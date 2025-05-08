@@ -28,8 +28,10 @@ import java.time.format.DateTimeFormatter;
 //import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
-import javax.swing.table.DefaultTableCellRenderer;import avax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
 /**
  *
  * @aut
@@ -141,7 +143,7 @@ import javax.swing.table.JTableHeader;
             });
         }
     }
-    
+
     private void centerTableContent(JTable table) {
         // Căn giữa tiêu đề
         JTableHeader header = table.getTableHeader();
@@ -155,7 +157,7 @@ import javax.swing.table.JTableHeader;
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-    
+
     public double calculateTotalAmount() {
         DefaultTableModel model = (DefaultTableModel) tbSupInvoiceDetail.getModel();
         Double total = 0.0;
