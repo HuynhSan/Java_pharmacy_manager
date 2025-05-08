@@ -72,7 +72,7 @@ public class AddProduct extends javax.swing.JDialog {
         txtUnit = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtPacking = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        imgBtn = new javax.swing.JButton();
         imgLbl = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         addBtn = new javax.swing.JButton();
@@ -154,15 +154,15 @@ public class AddProduct extends javax.swing.JDialog {
             }
         });
 
-        jButton3.setText("Chọn file ảnh");
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+        imgBtn.setText("Chọn file ảnh");
+        imgBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton3MouseClicked(evt);
+                imgBtnMouseClicked(evt);
             }
         });
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        imgBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                imgBtnActionPerformed(evt);
             }
         });
 
@@ -207,7 +207,7 @@ public class AddProduct extends javax.swing.JDialog {
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3)
+                    .addComponent(imgBtn)
                     .addComponent(imgLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
@@ -245,7 +245,7 @@ public class AddProduct extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
+                    .addComponent(imgBtn)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(imgLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -384,11 +384,11 @@ public class AddProduct extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPackingActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void imgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imgBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_imgBtnActionPerformed
 
-    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+    private void imgBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imgBtnMouseClicked
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("image","jpg", "png", "jpeg.");
         fileChooser.setFileFilter(imageFilter);
@@ -407,7 +407,7 @@ public class AddProduct extends javax.swing.JDialog {
             Image scaledImage = imgIcon.getImage().getScaledInstance(imgLbl.getWidth(), imgLbl.getHeight(), Image.SCALE_SMOOTH);
             imgLbl.setIcon(new ImageIcon(scaledImage));
         }
-    }//GEN-LAST:event_jButton3MouseClicked
+    }//GEN-LAST:event_imgBtnMouseClicked
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         this.dispose();
@@ -466,8 +466,8 @@ public class AddProduct extends javax.swing.JDialog {
     private javax.swing.JButton addBtn;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JComboBox<String> cbbCate;
+    private javax.swing.JButton imgBtn;
     private javax.swing.JLabel imgLbl;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
