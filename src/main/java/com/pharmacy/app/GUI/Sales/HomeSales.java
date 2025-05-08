@@ -410,7 +410,7 @@ public class HomeSales extends javax.swing.JPanel {
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(1250, 780));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(1250, 800));
 
         jPanel19.setBackground(new java.awt.Color(255, 255, 255));
         jPanel19.setMinimumSize(new java.awt.Dimension(800, 760));
@@ -516,7 +516,7 @@ public class HomeSales extends javax.swing.JPanel {
             }
         });
         tblProduct.setMaximumSize(new java.awt.Dimension(750, 600));
-        tblProduct.setPreferredSize(new java.awt.Dimension(790, 1000));
+        tblProduct.setPreferredSize(new java.awt.Dimension(790, 100));
         tblProduct.setRowHeight(30);
         tblProduct.setShowGrid(true);
         tblProduct.addMouseListener(new java.awt.event.MouseAdapter() {
