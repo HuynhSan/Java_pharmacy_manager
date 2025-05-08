@@ -58,28 +58,88 @@ public class ConfirmStockIn extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        detailsTbl = new javax.swing.JTable();
-        importBtn = new javax.swing.JButton();
-        cancelBtn = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         txtPOid = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtManagerID = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtSum = new javax.swing.JTextField();
+        txtSup = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtInvoiceID = new javax.swing.JTextField();
-        txtSup = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        detailsTbl = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        importBtn = new javax.swing.JButton();
+        cancelBtn = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        txtSum = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setMinimumSize(new java.awt.Dimension(700, 113));
+        setPreferredSize(new java.awt.Dimension(1200, 760));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chi tiết phiếu nhập", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jPanel3.setPreferredSize(new java.awt.Dimension(822, 407));
+        jPanel3.setMinimumSize(new java.awt.Dimension(700, 88));
+        jPanel3.setPreferredSize(new java.awt.Dimension(1200, 410));
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setMinimumSize(new java.awt.Dimension(700, 22));
+        jPanel2.setPreferredSize(new java.awt.Dimension(1200, 30));
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("Mã đơn:");
+        jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jPanel2.add(jLabel5);
+
+        txtPOid.setEditable(false);
+        jPanel2.add(txtPOid);
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("Nhà cung cấp:");
+        jLabel3.setPreferredSize(new java.awt.Dimension(100, 16));
+        jPanel2.add(jLabel3);
+
+        txtManagerID.setEditable(false);
+        jPanel2.add(txtManagerID);
+
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel6.setText("Người lập:");
+        jLabel6.setPreferredSize(new java.awt.Dimension(100, 16));
+        jPanel2.add(jLabel6);
+
+        txtSup.setEditable(false);
+        txtSup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSupActionPerformed(evt);
+            }
+        });
+        jPanel2.add(txtSup);
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("Mã phiếu nhập:");
+        jLabel7.setMinimumSize(new java.awt.Dimension(100, 16));
+        jLabel7.setPreferredSize(new java.awt.Dimension(100, 16));
+        jPanel2.add(jLabel7);
+
+        txtInvoiceID.setEditable(false);
+        txtInvoiceID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtInvoiceIDActionPerformed(evt);
+            }
+        });
+        jPanel2.add(txtInvoiceID);
+
+        jPanel3.add(jPanel2, java.awt.BorderLayout.NORTH);
+
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(1200, 402));
 
         detailsTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -107,7 +167,8 @@ public class ConfirmStockIn extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        detailsTbl.setPreferredSize(new java.awt.Dimension(600, 402));
+        detailsTbl.setMinimumSize(new java.awt.Dimension(700, 120));
+        detailsTbl.setPreferredSize(new java.awt.Dimension(1200, 402));
         detailsTbl.setRowHeight(30);
         detailsTbl.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(detailsTbl);
@@ -117,126 +178,59 @@ public class ConfirmStockIn extends javax.swing.JDialog {
             detailsTbl.getColumnModel().getColumn(0).setMaxWidth(50);
         }
 
+        jPanel3.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setMinimumSize(new java.awt.Dimension(700, 43));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1200, 100));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setMinimumSize(new java.awt.Dimension(700, 33));
+        jPanel4.setPreferredSize(new java.awt.Dimension(1200, 50));
+
         importBtn.setBackground(new java.awt.Color(0, 204, 51));
         importBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         importBtn.setForeground(new java.awt.Color(255, 255, 255));
         importBtn.setText("NHẬP KHO");
         importBtn.setEnabled(false);
+        importBtn.setPreferredSize(new java.awt.Dimension(93, 30));
         importBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 importBtnActionPerformed(evt);
             }
         });
+        jPanel4.add(importBtn);
 
         cancelBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         cancelBtn.setText("THOÁT");
+        cancelBtn.setPreferredSize(new java.awt.Dimension(72, 30));
         cancelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtnActionPerformed(evt);
             }
         });
+        jPanel4.add(cancelBtn);
 
-        jLabel5.setText("Mã đơn:");
+        jPanel1.add(jPanel4, java.awt.BorderLayout.CENTER);
 
-        txtPOid.setEditable(false);
-
-        jLabel3.setText("Nhà cung cấp:");
-
-        txtManagerID.setEditable(false);
-
-        jLabel6.setText("Người lập:");
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setMinimumSize(new java.awt.Dimension(700, 32));
+        jPanel5.setPreferredSize(new java.awt.Dimension(1200, 40));
+        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel2.setText("TỔNG THÀNH TIỀN:");
+        jPanel5.add(jLabel2);
 
         txtSum.setEditable(false);
         txtSum.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtSum.setText("0");
+        jPanel5.add(txtSum);
 
-        jLabel7.setText("Mã phiếu nhập:");
+        jPanel1.add(jPanel5, java.awt.BorderLayout.NORTH);
 
-        txtInvoiceID.setEditable(false);
-        txtInvoiceID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtInvoiceIDActionPerformed(evt);
-            }
-        });
-
-        txtSup.setEditable(false);
-        txtSup.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSupActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtSum, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(289, 289, 289)
-                                .addComponent(importBtn)
-                                .addGap(50, 50, 50)
-                                .addComponent(cancelBtn))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtInvoiceID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(53, 53, 53)
-                                .addComponent(jLabel5)
-                                .addGap(30, 30, 30)
-                                .addComponent(txtPOid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(84, 84, 84)
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtManagerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(51, 51, 51)
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtSup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 12, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(txtSup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel6)
-                        .addComponent(txtManagerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtPOid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)
-                        .addComponent(txtInvoiceID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtSum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(importBtn)
-                    .addComponent(cancelBtn))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jPanel3.add(jPanel1, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -244,6 +238,7 @@ public class ConfirmStockIn extends javax.swing.JDialog {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("XÁC NHẬN NHẬP HÀNG");
+        jLabel4.setPreferredSize(new java.awt.Dimension(800, 30));
         getContentPane().add(jLabel4, java.awt.BorderLayout.PAGE_START);
 
         pack();
@@ -540,7 +535,11 @@ public class ConfirmStockIn extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField txtInvoiceID;
     private javax.swing.JTextField txtManagerID;

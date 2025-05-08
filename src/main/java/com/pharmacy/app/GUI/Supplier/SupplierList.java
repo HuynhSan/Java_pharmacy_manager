@@ -142,6 +142,7 @@ public final class SupplierList extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(326589, 326589));
         setMinimumSize(new java.awt.Dimension(800, 580));
+        setPreferredSize(new java.awt.Dimension(1160, 800));
         setLayout(new java.awt.BorderLayout(10, 10));
 
         plHeader.setBackground(new java.awt.Color(255, 255, 255));
@@ -232,13 +233,13 @@ public final class SupplierList extends javax.swing.JPanel {
         plSupplierList.setBackground(new java.awt.Color(255, 255, 255));
         plSupplierList.setMaximumSize(new java.awt.Dimension(326589, 326589));
         plSupplierList.setMinimumSize(new java.awt.Dimension(800, 550));
-        plSupplierList.setPreferredSize(new java.awt.Dimension(1160, 550));
+        plSupplierList.setPreferredSize(new java.awt.Dimension(1160, 650));
         plSupplierList.setLayout(new java.awt.BorderLayout());
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setMaximumSize(new java.awt.Dimension(326589, 326589));
         jScrollPane1.setMinimumSize(new java.awt.Dimension(780, 400));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(1180, 550));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(1180, 650));
 
         tbSupplierList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -278,7 +279,7 @@ public final class SupplierList extends javax.swing.JPanel {
         tbSupplierList.setMaximumSize(new java.awt.Dimension(326589, 326589));
         tbSupplierList.setMinimumSize(new java.awt.Dimension(700, 400));
         tbSupplierList.setName(""); // NOI18N
-        tbSupplierList.setPreferredSize(new java.awt.Dimension(1180, 550));
+        tbSupplierList.setPreferredSize(new java.awt.Dimension(1180, 760));
         tbSupplierList.setRowHeight(30);
         tbSupplierList.setSelectionBackground(new java.awt.Color(51, 51, 51));
         tbSupplierList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);

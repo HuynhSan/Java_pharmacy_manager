@@ -143,7 +143,7 @@ public final class CustomerList extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(326589, 326589));
         setMinimumSize(new java.awt.Dimension(986, 578));
-        setPreferredSize(new java.awt.Dimension(986, 550));
+        setPreferredSize(new java.awt.Dimension(1200, 800));
         setLayout(new java.awt.BorderLayout());
 
         plHeader.setBackground(new java.awt.Color(255, 255, 255));
@@ -229,7 +229,7 @@ public final class CustomerList extends javax.swing.JPanel {
 
         jScrollPane1.setMaximumSize(new java.awt.Dimension(326589, 326589));
         jScrollPane1.setMinimumSize(new java.awt.Dimension(780, 400));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(1180, 400));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(1180, 760));
 
         tbCustomerList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -259,7 +259,7 @@ public final class CustomerList extends javax.swing.JPanel {
         });
         tbCustomerList.setMaximumSize(new java.awt.Dimension(326589, 326589));
         tbCustomerList.setMinimumSize(new java.awt.Dimension(780, 400));
-        tbCustomerList.setPreferredSize(new java.awt.Dimension(1180, 400));
+        tbCustomerList.setPreferredSize(new java.awt.Dimension(1180, 800));
         tbCustomerList.setRowHeight(30);
         tbCustomerList.setShowGrid(true);
         tbCustomerList.addMouseListener(new java.awt.event.MouseAdapter() {
