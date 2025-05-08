@@ -685,4 +685,49 @@ public class PDFExporter {
 
         );
     }
+    
+    public static boolean exportRevenueToPDF(Component parentComponent, TableModel revenueModel) {
+        // Define custom column widths for supplier table
+        float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
+        
+        return exportTableToPDF(
+                parentComponent,
+                revenueModel,
+                "THỐNG KÊ DOANH THU",
+                "ThongkeDoanhThu.pdf",
+                columnWidths,
+                true // landscape orientation
+
+        );
+    }
+    
+    public static boolean exportProductStatsToPDF(Component parentComponent, TableModel productStatsModel) {
+        // Define custom column widths for supplier table
+        float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
+        
+        return exportTableToPDF(
+                parentComponent,
+                productStatsModel,
+                "THỐNG KÊ SẢN PHẨM",
+                "ThongkeSanPham.pdf",
+                columnWidths,
+                true // landscape orientation
+
+        );
+    }
+    
+    public static boolean exportInvoiceStatsToPDF(Component parentComponent, TableModel invoiceStatsModel) {
+        // Define custom column widths for supplier table
+        float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};
+        
+        return exportTableToPDF(
+                parentComponent,
+                invoiceStatsModel,
+                "BÁO CÁO HÓA ĐƠN BÁN HÀNG",
+                "BaoCaoHoaDonBanHang.pdf",
+                columnWidths,
+                true // landscape orientation
+
+        );
+    }
 }
