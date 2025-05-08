@@ -18,8 +18,8 @@ import com.pharmacy.app.DTO.SalesInvoiceDTO;
 import com.pharmacy.app.DTO.SalesInvoiceDetailDTO;
 import com.pharmacy.app.DTO.SessionDTO;
 import com.pharmacy.app.DTO.UserDTO;
-import com.pharmacy.app.GUI.Authorization.*;
-import java.awt.Color;
+//import com.pharmacy.app.GUI.Authorization.*;
+//import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -254,7 +254,6 @@ public class HomeSales extends javax.swing.JPanel {
     }
     
     public void adjustTableHeight(JTable table, JScrollPane scrollPane) {
-        JOptionPane.showMessageDialog(null, "Điều chỉnh");
         int rowCount = table.getRowCount();
         int rowHeight = table.getRowHeight();
 
@@ -333,7 +332,6 @@ public class HomeSales extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel19 = new javax.swing.JPanel();
-        jPanel17 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
@@ -410,24 +408,22 @@ public class HomeSales extends javax.swing.JPanel {
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(1250, 800));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(1250, 770));
+        jScrollPane1.setViewportView(jPanel19);
 
         jPanel19.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel19.setMinimumSize(new java.awt.Dimension(800, 760));
+        jPanel19.setMinimumSize(new java.awt.Dimension(1250, 780));
+        jPanel19.setPreferredSize(new java.awt.Dimension(1250, 760));
         jPanel19.setLayout(new java.awt.BorderLayout());
-
-        jPanel17.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel17.setMinimumSize(new java.awt.Dimension(800, 510));
-        jPanel17.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 5));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMinimumSize(new java.awt.Dimension(400, 500));
-        jPanel1.setPreferredSize(new java.awt.Dimension(850, 800));
+        jPanel1.setPreferredSize(new java.awt.Dimension(850, 760));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setMinimumSize(new java.awt.Dimension(10, 57));
-        jPanel4.setPreferredSize(new java.awt.Dimension(800, 50));
-        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 5));
+        jPanel4.setPreferredSize(new java.awt.Dimension(800, 70));
+        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 10));
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setPreferredSize(new java.awt.Dimension(500, 40));
@@ -597,7 +593,7 @@ public class HomeSales extends javax.swing.JPanel {
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setMinimumSize(new java.awt.Dimension(10, 27));
-        jPanel5.setPreferredSize(new java.awt.Dimension(790, 70));
+        jPanel5.setPreferredSize(new java.awt.Dimension(790, 50));
         jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 0));
 
         btnClearCart.setBackground(new java.awt.Color(255, 0, 0));
@@ -616,11 +612,11 @@ public class HomeSales extends javax.swing.JPanel {
 
         jPanel1.add(jPanel5);
 
-        jPanel17.add(jPanel1);
+        jPanel19.add(jPanel1, java.awt.BorderLayout.WEST);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setName(""); // NOI18N
-        jPanel2.setPreferredSize(new java.awt.Dimension(400, 800));
+        jPanel2.setPreferredSize(new java.awt.Dimension(400, 780));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 20));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
@@ -775,9 +771,7 @@ public class HomeSales extends javax.swing.JPanel {
 
         jPanel2.add(jPanel7);
 
-        jPanel17.add(jPanel2);
-
-        jPanel19.add(jPanel17, java.awt.BorderLayout.PAGE_START);
+        jPanel19.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jScrollPane1.setViewportView(jPanel19);
 
@@ -786,7 +780,7 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setMaximumSize(new java.awt.Dimension(326589, 326589));
         jPanel9.setMinimumSize(new java.awt.Dimension(800, 80));
-        jPanel9.setPreferredSize(new java.awt.Dimension(1250, 750));
+        jPanel9.setPreferredSize(new java.awt.Dimension(1250, 770));
         jPanel9.setLayout(new java.awt.BorderLayout());
 
         jPanel16.setBackground(new java.awt.Color(255, 255, 255));
@@ -911,7 +905,7 @@ public class HomeSales extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Hóa đơn", jPanel9);
 
-        add(jTabbedPane1, java.awt.BorderLayout.PAGE_START);
+        add(jTabbedPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblProductMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductMousePressed
@@ -1115,7 +1109,6 @@ public class HomeSales extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
