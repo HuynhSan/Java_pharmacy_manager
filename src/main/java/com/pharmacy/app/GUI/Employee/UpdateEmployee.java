@@ -153,14 +153,17 @@ public class UpdateEmployee extends javax.swing.JDialog {
         txtEmployeeID = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(450, 550));
         setResizable(false);
 
+        pnlUpdateButton.setPreferredSize(new java.awt.Dimension(304, 40));
         pnlUpdateButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
 
         btnUpdate.setBackground(new java.awt.Color(0, 204, 51));
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("Cập nhật");
+        btnUpdate.setPreferredSize(new java.awt.Dimension(80, 30));
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -172,6 +175,7 @@ public class UpdateEmployee extends javax.swing.JDialog {
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("Xóa");
+        btnDelete.setPreferredSize(new java.awt.Dimension(72, 30));
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -183,6 +187,7 @@ public class UpdateEmployee extends javax.swing.JDialog {
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("Hủy");
+        btnCancel.setPreferredSize(new java.awt.Dimension(72, 30));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
@@ -190,13 +195,22 @@ public class UpdateEmployee extends javax.swing.JDialog {
         });
         pnlUpdateButton.add(btnCancel);
 
-        pnlUpdateEmployee.setLayout(new java.awt.BorderLayout());
+        pnlUpdateEmployee.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        pnlUpdateEmployee.setMinimumSize(new java.awt.Dimension(350, 20));
+        pnlUpdateEmployee.setPreferredSize(new java.awt.Dimension(350, 20));
+        pnlUpdateEmployee.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
         lblUpdateEmployee.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblUpdateEmployee.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblUpdateEmployee.setText("THÔNG TIN NHÂN VIÊN");
-        pnlUpdateEmployee.add(lblUpdateEmployee, java.awt.BorderLayout.CENTER);
+        lblUpdateEmployee.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblUpdateEmployee.setMaximumSize(new java.awt.Dimension(350, 20));
+        lblUpdateEmployee.setMinimumSize(new java.awt.Dimension(350, 20));
+        lblUpdateEmployee.setPreferredSize(new java.awt.Dimension(350, 20));
+        pnlUpdateEmployee.add(lblUpdateEmployee);
 
+        pnlUpdateEmployeeFields.setMinimumSize(new java.awt.Dimension(167, 360));
+        pnlUpdateEmployeeFields.setPreferredSize(new java.awt.Dimension(250, 360));
         pnlUpdateEmployeeFields.setLayout(new java.awt.GridBagLayout());
 
         lblName.setText("Họ tên:");
@@ -205,7 +219,7 @@ public class UpdateEmployee extends javax.swing.JDialog {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 20);
         pnlUpdateEmployeeFields.add(lblName, gridBagConstraints);
 
         lblGender.setText("Giới tính:");
@@ -214,7 +228,7 @@ public class UpdateEmployee extends javax.swing.JDialog {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 20);
         pnlUpdateEmployeeFields.add(lblGender, gridBagConstraints);
 
         lblEmail.setText("Email:");
@@ -223,7 +237,7 @@ public class UpdateEmployee extends javax.swing.JDialog {
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 20);
         pnlUpdateEmployeeFields.add(lblEmail, gridBagConstraints);
 
         lblDOB.setText("Ngày sinh:");
@@ -232,7 +246,7 @@ public class UpdateEmployee extends javax.swing.JDialog {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 20);
         pnlUpdateEmployeeFields.add(lblDOB, gridBagConstraints);
 
         lblPhone.setText("Số điện thoại:");
@@ -241,7 +255,7 @@ public class UpdateEmployee extends javax.swing.JDialog {
         gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 20);
         pnlUpdateEmployeeFields.add(lblPhone, gridBagConstraints);
 
         lblAddress.setText("Địa chỉ:");
@@ -250,9 +264,10 @@ public class UpdateEmployee extends javax.swing.JDialog {
         gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 20);
         pnlUpdateEmployeeFields.add(lblAddress, gridBagConstraints);
 
+        txtName.setPreferredSize(new java.awt.Dimension(64, 30));
         txtName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNameActionPerformed(evt);
@@ -263,10 +278,11 @@ public class UpdateEmployee extends javax.swing.JDialog {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
         pnlUpdateEmployeeFields.add(txtName, gridBagConstraints);
 
         cbGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ" }));
+        cbGender.setPreferredSize(new java.awt.Dimension(72, 30));
         cbGender.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbGenderActionPerformed(evt);
@@ -277,9 +293,10 @@ public class UpdateEmployee extends javax.swing.JDialog {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
         pnlUpdateEmployeeFields.add(cbGender, gridBagConstraints);
 
+        txtEmail.setPreferredSize(new java.awt.Dimension(64, 30));
         txtEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEmailActionPerformed(evt);
@@ -290,9 +307,10 @@ public class UpdateEmployee extends javax.swing.JDialog {
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
         pnlUpdateEmployeeFields.add(txtEmail, gridBagConstraints);
 
+        txtDOB.setPreferredSize(new java.awt.Dimension(64, 30));
         txtDOB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDOBActionPerformed(evt);
@@ -303,9 +321,10 @@ public class UpdateEmployee extends javax.swing.JDialog {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
         pnlUpdateEmployeeFields.add(txtDOB, gridBagConstraints);
 
+        txtPhone.setPreferredSize(new java.awt.Dimension(64, 30));
         txtPhone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPhoneActionPerformed(evt);
@@ -316,9 +335,10 @@ public class UpdateEmployee extends javax.swing.JDialog {
         gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
         pnlUpdateEmployeeFields.add(txtPhone, gridBagConstraints);
 
+        txtAddress.setPreferredSize(new java.awt.Dimension(64, 30));
         txtAddress.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtAddressActionPerformed(evt);
@@ -331,6 +351,7 @@ public class UpdateEmployee extends javax.swing.JDialog {
         gridBagConstraints.ipadx = 2;
         gridBagConstraints.weightx = 10.0;
         gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
         pnlUpdateEmployeeFields.add(txtAddress, gridBagConstraints);
 
         lblEmpoyeeID.setText("Mã nhân viên:");
@@ -338,18 +359,19 @@ public class UpdateEmployee extends javax.swing.JDialog {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 20);
         pnlUpdateEmployeeFields.add(lblEmpoyeeID, gridBagConstraints);
 
         txtEmployeeID.setEditable(false);
         txtEmployeeID.setEnabled(false);
         txtEmployeeID.setFocusable(false);
+        txtEmployeeID.setPreferredSize(new java.awt.Dimension(64, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 10;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
         pnlUpdateEmployeeFields.add(txtEmployeeID, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -359,25 +381,21 @@ public class UpdateEmployee extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(pnlUpdateEmployee, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pnlUpdateButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(40, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnlUpdateEmployeeFields, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(40, 40, 40))))
+                    .addComponent(pnlUpdateEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlUpdateButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlUpdateEmployeeFields, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(40, 40, 40))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(pnlUpdateEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlUpdateEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addComponent(pnlUpdateEmployeeFields, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(30, 30, 30)
+                .addComponent(pnlUpdateEmployeeFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlUpdateButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         pack();

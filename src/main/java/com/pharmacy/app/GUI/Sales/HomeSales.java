@@ -228,6 +228,7 @@ public class HomeSales extends javax.swing.JPanel {
         saleItemList = saleItemBUS.selectSaleItems();
         invoiceList = invoiceBUS.selectAll();
         showDataToTableProduct(saleItemList);
+        adjustTableHeight(tblProduct, jScrollPane2);
         showDataToTableInvoice(invoiceList);
         adjustTableHeight(tblInvoice, jScrollPane3);
         txtPromoId.setText("Không có!");
@@ -253,6 +254,7 @@ public class HomeSales extends javax.swing.JPanel {
     }
     
     public void adjustTableHeight(JTable table, JScrollPane scrollPane) {
+        JOptionPane.showMessageDialog(null, "Điều chỉnh");
         int rowCount = table.getRowCount();
         int rowHeight = table.getRowHeight();
 
@@ -408,9 +410,10 @@ public class HomeSales extends javax.swing.JPanel {
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(1250, 760));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(1250, 780));
 
         jPanel19.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel19.setMinimumSize(new java.awt.Dimension(800, 760));
         jPanel19.setLayout(new java.awt.BorderLayout());
 
         jPanel17.setBackground(new java.awt.Color(255, 255, 255));
@@ -445,12 +448,12 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         btnAddMedicineToCart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnAddMedicineToCart.setText("Thêm thuốc");
+        btnAddMedicineToCart.setText("Thêm thuốc vào giỏ ");
         btnAddMedicineToCart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAddMedicineToCart.setMargin(new java.awt.Insets(2, 10, 3, 10));
+        btnAddMedicineToCart.setMargin(new java.awt.Insets(2, 10, 3, 0));
         btnAddMedicineToCart.setMaximumSize(new java.awt.Dimension(150, 27));
         btnAddMedicineToCart.setMinimumSize(new java.awt.Dimension(150, 27));
-        btnAddMedicineToCart.setPreferredSize(new java.awt.Dimension(130, 35));
+        btnAddMedicineToCart.setPreferredSize(new java.awt.Dimension(170, 35));
         btnAddMedicineToCart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddMedicineToCartActionPerformed(evt);
@@ -550,7 +553,7 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel11.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 10));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("Tên thuốc");
         jLabel3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel3.setMinimumSize(new java.awt.Dimension(61, 25));
@@ -866,8 +869,7 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel18.setPreferredSize(new java.awt.Dimension(1250, 650));
         jPanel18.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane3.setMinimumSize(new java.awt.Dimension(400, 200));
-        jScrollPane3.setPreferredSize(new java.awt.Dimension(800, 650));
+        jScrollPane3.setPreferredSize(new java.awt.Dimension(1200, 650));
 
         tblInvoice.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -890,8 +892,6 @@ public class HomeSales extends javax.swing.JPanel {
         });
         tblInvoice.setFillsViewportHeight(true);
         tblInvoice.setMaximumSize(new java.awt.Dimension(32767, 326589));
-        tblInvoice.setMinimumSize(new java.awt.Dimension(400, 300));
-        tblInvoice.setPreferredSize(new java.awt.Dimension(1250, 120));
         tblInvoice.setRowHeight(30);
         tblInvoice.setShowGrid(true);
         tblInvoice.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -911,7 +911,7 @@ public class HomeSales extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Hóa đơn", jPanel9);
 
-        add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        add(jTabbedPane1, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblProductMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductMousePressed

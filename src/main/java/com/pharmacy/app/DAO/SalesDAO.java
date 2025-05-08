@@ -52,7 +52,7 @@ public class SalesDAO implements DAOinterface{
         ArrayList<SaleItemDTO> saleItems = new ArrayList<>();
         
         if (myconnect.openConnection()) {
-            String sql = "SELECT * FROM v_product_batch_discount_max_summary";
+            String sql = "SELECT * FROM v_product_batch_discount_summary";
             
             ResultSet rs = myconnect.runQuery(sql);
             

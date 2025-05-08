@@ -378,7 +378,6 @@ public class EmployeeManagement extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tblEmployees.setColumnSelectionAllowed(true);
         tblEmployees.setFocusable(false);
         tblEmployees.setMinimumSize(new java.awt.Dimension(500, 80));
         tblEmployees.setPreferredSize(new java.awt.Dimension(1180, 600));
