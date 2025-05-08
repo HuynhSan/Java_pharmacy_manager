@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package com.pharmacy.app.GUI.Importing;
+
 import com.pharmacy.app.BUS.MedicalProductsBUS;
 import com.pharmacy.app.BUS.PurchaseOrderBUS;
 import com.pharmacy.app.BUS.PurchaseOrderDetailsBUS;
@@ -18,7 +19,10 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+
 /**
  *
  * @author LENOVO
@@ -27,6 +31,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
     private PurchaseOrderBUS poBUS = new PurchaseOrderBUS();
     private PurchaseOrderDetailsBUS poDeBUS = new PurchaseOrderDetailsBUS();
     private String id;
+
     /**
      * Creates new form PurchaseOrder
      */
@@ -34,59 +39,62 @@ public class PurchaseOrder extends javax.swing.JPanel {
         initComponents();
         poListTbl.setDefaultEditor(Object.class, null);
         loadPOlist();
-        id = poBUS.generateNextProductID();  
+        id = poBUS.generateNextProductID();
         txtcreateID.setText(id);
         txtUserID.setText(SessionDTO.getCurrentUser().getUserID());
         txtDate.setText(LocalDate.now().toString());
         loadCbbProduct();
         loadCbbSup();
+        centerTableContent(poTbl);
+        centerTableContent(poListTbl);
+        centerTableContent(podetailsTbl);
     }
-    
-    private void loadPOlist (){
+
+    private void loadPOlist() {
         ArrayList<PurchaseOrderDTO> poList = poBUS.getAllPO();
         DefaultTableModel model = (DefaultTableModel) poListTbl.getModel();
         model.setRowCount(0);
-        
-        for(PurchaseOrderDTO po : poList){
-            model.addRow(new Object[]{
-                po.getPoID(),
-                po.getOrderDate(),
-                po.getManagerUserID(),
-                po.getStatus()
+
+        for (PurchaseOrderDTO po : poList) {
+            model.addRow(new Object[] {
+                    po.getPoID(),
+                    po.getOrderDate(),
+                    po.getManagerUserID(),
+                    po.getStatus()
             });
         }
     }
-    
-    private void loadPODetails(PurchaseOrderDTO selectedPO){
-        
+
+    private void loadPODetails(PurchaseOrderDTO selectedPO) {
+
         txtSup.setText(selectedPO.getSupplierID());
         txtID.setText(selectedPO.getPoID());
         txtManagerID.setText(selectedPO.getManagerUserID());
         txtDateOrder.setText(selectedPO.getOrderDate().toString());
-        
+
         ArrayList<PurchaseOrderDetailsDTO> poDetailsList = poDeBUS.getAllPOdetails(selectedPO.getPoID());
         DefaultTableModel model = (DefaultTableModel) podetailsTbl.getModel();
         model.setRowCount(0);
         int stt = 1;
-        for(PurchaseOrderDetailsDTO pode : poDetailsList){
-            model.addRow(new Object[]{
-                stt++,
-                pode.getProductID(),
-                pode.getQuantity()
+        for (PurchaseOrderDetailsDTO pode : poDetailsList) {
+            model.addRow(new Object[] {
+                    stt++,
+                    pode.getProductID(),
+                    pode.getQuantity()
             });
         }
     }
-    
+
     private void loadCbbProduct() {
         MedicalProductsBUS proBus = new MedicalProductsBUS();
         ArrayList<MedicalProductsDTO> products = proBus.getAllProducts();
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         for (MedicalProductsDTO product : products) {
-            model.addElement(product.getMedicineID()+ " - " + product.getName());
+            model.addElement(product.getMedicineID() + " - " + product.getName());
         }
         productCbb.setModel(model);
     }
-    
+
     private void loadCbbSup() {
         SupplierBUS supBus = new SupplierBUS();
         ArrayList<SupplierDTO> sups = supBus.getSupList();
@@ -95,30 +103,46 @@ public class PurchaseOrder extends javax.swing.JPanel {
             model.addElement(sup.getName());
         }
         supCbb.setModel(model);
-//try {
-//    SupplierBUS supBus = new SupplierBUS();
-//    ArrayList<SupplierDTO> sups = supBus.getSupList();
-//    System.out.println("Number of suppliers: " + sups.size());
-//    
-//    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-//    for (SupplierDTO sup : sups) {
-//        System.out.println("Adding supplier: " + sup.getName());
-//        model.addElement(sup.getName());
-//    }
-//    supCbb.setModel(model);
-//} catch (Exception e) {
-//    System.err.println("Error in loadCbbSup: " + e.getMessage());
-//    e.printStackTrace();
-//}
+        // try {
+        // SupplierBUS supBus = new SupplierBUS();
+        // ArrayList<SupplierDTO> sups = supBus.getSupList();
+        // System.out.println("Number of suppliers: " + sups.size());
+        //
+        // DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        // for (SupplierDTO sup : sups) {
+        // System.out.println("Adding supplier: " + sup.getName());
+        // model.addElement(sup.getName());
+        // }
+        // supCbb.setModel(model);
+        // } catch (Exception e) {
+        // System.err.println("Error in loadCbbSup: " + e.getMessage());
+        // e.printStackTrace();
+        // }
     }
-    
+
+    private void centerTableContent(JTable table) {
+        // Căn giữa tiêu đề
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Căn giữa nội dung
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
@@ -199,64 +223,12 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel1.add(jLabel2, java.awt.BorderLayout.NORTH);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-
-        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
-
-        jLabel11.setText("Nhà cung cấp:");
-        jPanel5.add(jLabel11);
-
-        jComboBox4.setEditable(true);
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ABC", "XYZ" }));
-        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox4ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jComboBox4);
-
-        jLabel12.setText("Ngày lập:");
-        jPanel5.add(jLabel12);
-
-        jTextField8.setEditable(false);
-        jTextField8.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField8.setText("1/4/2025");
-        jTextField8.setBorder(null);
-        jTextField8.setMaximumSize(new java.awt.Dimension(64, 22));
-        jTextField8.setPreferredSize(new java.awt.Dimension(100, 22));
-        jTextField8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField8ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jTextField8);
-
-        jLabel13.setText("Người lập:");
-        jPanel5.add(jLabel13);
-
-        jTextField9.setEditable(false);
-        jTextField9.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField9.setText("NV001");
-        jTextField9.setBorder(null);
-        jTextField9.setMaximumSize(new java.awt.Dimension(64, 22));
-        jTextField9.setPreferredSize(new java.awt.Dimension(100, 22));
-        jTextField9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField9ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jTextField9);
         jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
-
 
         jLabel27.setText("Mã đơn:");
         jPanel5.add(jLabel27);
 
         txtcreateID.setEditable(false);
-        txtcreateID.setBackground(new java.awt.Color(255, 255, 255));
-        txtcreateID.setText("DH001");
-        txtcreateID.setBorder(null);
-        txtcreateID.setPreferredSize(new java.awt.Dimension(100, 22));
-
         jPanel5.add(txtcreateID);
 
         jLabel11.setText("Nhà cung cấp:");
@@ -304,7 +276,9 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel4.add(jPanel1, java.awt.BorderLayout.NORTH);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chi tiết đơn đặt hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chi tiết đơn đặt hàng",
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
         jPanel2.setPreferredSize(new java.awt.Dimension(450, 363));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -337,34 +311,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
         });
         jPanel6.add(txtQuantity);
 
-
-        jLabel7.setText("Giá nhập:");
-        jPanel6.add(jLabel7);
-
-        jTextField5.setText("100000");
-        jPanel6.add(jTextField5);
-
-        jLabel8.setText("Phần trăm:");
-        jPanel6.add(jLabel8);
-
-        jTextField6.setText("10");
-        jPanel6.add(jTextField6);
-
-        jLabel9.setText("Giá bán:");
-        jPanel6.add(jLabel9);
-
-        jTextField3.setEditable(false);
-        jTextField3.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField3.setText("110000");
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jTextField3);
-
         jPanel13.add(jPanel6, java.awt.BorderLayout.NORTH);
-
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 40, 5));
@@ -398,19 +345,18 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 202));
 
         poTbl.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][] {
 
-            },
-            new String [] {
-                "STT", "Mã thuốc", "Tên thuốc", "Số lượng"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                },
+                new String[] {
+                        "STT", "Mã thuốc", "Tên thuốc", "Số lượng"
+                }) {
+            Class[] types = new Class[] {
+                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
         });
         poTbl.setRowHeight(30);
@@ -427,30 +373,11 @@ public class PurchaseOrder extends javax.swing.JPanel {
             poTbl.getColumnModel().getColumn(3).setMaxWidth(120);
         }
 
-
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         jPanel14.setBackground(new java.awt.Color(255, 255, 255));
         jPanel14.setPreferredSize(new java.awt.Dimension(1041, 34));
         jPanel14.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 5));
-
-
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel10.setText("TỔNG TIỀN:");
-        jPanel14.add(jLabel10);
-
-        jTextField7.setEditable(false);
-        jTextField7.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField7.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField7.setText("12300000");
-        jTextField7.setPreferredSize(new java.awt.Dimension(100, 25));
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
-            }
-        });
-        jPanel14.add(jTextField7);
-
         jPanel2.add(jPanel14, java.awt.BorderLayout.SOUTH);
 
         jPanel4.add(jPanel2, java.awt.BorderLayout.CENTER);
@@ -481,29 +408,28 @@ public class PurchaseOrder extends javax.swing.JPanel {
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1014, Short.MAX_VALUE)
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addGap(0, 358, Short.MAX_VALUE)
-                    .addComponent(savePOBtn)
-                    .addGap(151, 151, 151)
-                    .addComponent(clearBtn)
-                    .addGap(0, 358, Short.MAX_VALUE)))
-        );
+                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1014, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(0, 358, Short.MAX_VALUE)
+                                        .addComponent(savePOBtn)
+                                        .addGap(151, 151, 151)
+                                        .addComponent(clearBtn)
+                                        .addGap(0, 358, Short.MAX_VALUE))));
         jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 40, Short.MAX_VALUE)
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addGap(0, 8, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(savePOBtn)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGap(1, 1, 1)
-                            .addComponent(clearBtn)))
-                    .addGap(0, 8, Short.MAX_VALUE)))
-        );
+                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 40, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(0, 8, Short.MAX_VALUE)
+                                        .addGroup(jPanel3Layout
+                                                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(savePOBtn)
+                                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                                        .addGap(1, 1, 1)
+                                                        .addComponent(clearBtn)))
+                                        .addGap(0, 8, Short.MAX_VALUE))));
 
         jPanel4.add(jPanel3, java.awt.BorderLayout.SOUTH);
 
@@ -525,48 +451,47 @@ public class PurchaseOrder extends javax.swing.JPanel {
         javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
         jPanel17.setLayout(jPanel17Layout);
         jPanel17Layout.setHorizontalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
-                .addContainerGap(173, Short.MAX_VALUE)
-                .addComponent(jLabel19)
-                .addGap(164, 164, 164))
-        );
+                jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
+                                .addContainerGap(173, Short.MAX_VALUE)
+                                .addComponent(jLabel19)
+                                .addGap(164, 164, 164)));
         jPanel17Layout.setVerticalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel19))
-        );
+                jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel19)));
 
         jPanel16.add(jPanel17, java.awt.BorderLayout.NORTH);
 
         jPanel18.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách đơn đặt hàng\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
+        jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách đơn đặt hàng\n",
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
 
         poListTbl.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Mã đơn", "Ngày tạo", "Người tạo", "Trạng thái"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
+                new Object[][] {
+                        { null, null, null, null },
+                        { null, null, null, null },
+                        { null, null, null, null },
+                        { null, null, null, null }
+                },
+                new String[] {
+                        "Mã đơn", "Ngày tạo", "Người tạo", "Trạng thái"
+                }) {
+            Class[] types = new Class[] {
+                    java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         poListTbl.getTableHeader().setReorderingAllowed(false);
@@ -582,13 +507,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
             poListTbl.getColumnModel().getColumn(0).setMaxWidth(60);
             poListTbl.getColumnModel().getColumn(1).setResizable(false);
         }
-
-
-        jComboBox6.setEditable(true);
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo đơn", "Tên người tạo", "Nhà cung cấp" }));
-
-        jLabel20.setText("Tìm theo: ");
-
 
         jTextField13.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jTextField13.setForeground(new java.awt.Color(204, 204, 204));
@@ -608,32 +526,35 @@ public class PurchaseOrder extends javax.swing.JPanel {
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
         jPanel18.setLayout(jPanel18Layout);
         jPanel18Layout.setHorizontalGroup(
-            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel18Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollpane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
-            .addGroup(jPanel18Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(refreshBtn)
-                .addGap(44, 44, 44))
-        );
+                jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel18Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollpane, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(12, Short.MAX_VALUE))
+                        .addGroup(jPanel18Layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 198,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(refreshBtn)
+                                .addGap(44, 44, 44)));
         jPanel18Layout.setVerticalGroup(
-            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton9)
-                    .addComponent(refreshBtn))
-                .addGap(36, 36, 36)
-                .addComponent(jScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+                jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton9)
+                                        .addComponent(refreshBtn))
+                                .addGap(36, 36, 36)
+                                .addComponent(jScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
+                                .addContainerGap()));
 
         jPanel16.add(jPanel18, java.awt.BorderLayout.CENTER);
 
@@ -654,26 +575,27 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel20.add(jLabel21, java.awt.BorderLayout.NORTH);
 
         jPanel21.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel21.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chi tiết đơn đặt hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
+        jPanel21.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chi tiết đơn đặt hàng",
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
         jPanel21.setPreferredSize(new java.awt.Dimension(516, 445));
 
         podetailsTbl.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "STT", "Mã thuốc", "Số lượng"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+                new Object[][] {
+                        { null, null, null },
+                        { null, null, null },
+                        { null, null, null },
+                        { null, null, null }
+                },
+                new String[] {
+                        "STT", "Mã thuốc", "Số lượng"
+                }) {
+            Class[] types = new Class[] {
+                    java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
         });
         jscrollpane.setViewportView(podetailsTbl);
@@ -681,32 +603,18 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jLabel22.setText("Ngày lập:");
 
         txtDateOrder.setEditable(false);
-        txtDateOrder.setBackground(new java.awt.Color(255, 255, 255));
-        txtDateOrder.setBorder(null);
-        txtDateOrder.setPreferredSize(new java.awt.Dimension(100, 22));
 
         jLabel23.setText("Mã đơn:");
 
         txtID.setEditable(false);
-        txtID.setBackground(new java.awt.Color(255, 255, 255));
-        txtID.setBorder(null);
-        txtID.setFocusable(false);
-        txtID.setPreferredSize(new java.awt.Dimension(100, 22));
 
         jLabel24.setText("Nhà cung cấp:");
 
         txtManagerID.setEditable(false);
-        txtManagerID.setBackground(new java.awt.Color(255, 255, 255));
-        txtManagerID.setBorder(null);
-        txtManagerID.setFocusable(false);
-        txtManagerID.setPreferredSize(new java.awt.Dimension(100, 22));
 
         jLabel25.setText("Người lập:");
 
         txtSup.setEditable(false);
-        txtSup.setBackground(new java.awt.Color(255, 255, 255));
-        txtSup.setBorder(null);
-        txtSup.setPreferredSize(new java.awt.Dimension(100, 22));
         txtSup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSupActionPerformed(evt);
@@ -716,53 +624,76 @@ public class PurchaseOrder extends javax.swing.JPanel {
         javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
         jPanel21.setLayout(jPanel21Layout);
         jPanel21Layout.setHorizontalGroup(
-            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel21Layout.createSequentialGroup()
-                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel21Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jscrollpane))
-                    .addGroup(jPanel21Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel21Layout.createSequentialGroup()
-                                .addComponent(jLabel23)
-                                .addGap(30, 30, 30)
-                                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel21Layout.createSequentialGroup()
-                                .addComponent(jLabel25)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtManagerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel24)
-                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDateOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtSup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(69, 69, 69)))
-                .addContainerGap())
-        );
+                jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel21Layout.createSequentialGroup()
+                                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel21Layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(jscrollpane))
+                                        .addGroup(jPanel21Layout.createSequentialGroup()
+                                                .addGap(25, 25, 25)
+                                                .addGroup(jPanel21Layout
+                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(jPanel21Layout.createSequentialGroup()
+                                                                .addComponent(jLabel23)
+                                                                .addGap(30, 30, 30)
+                                                                .addComponent(txtID,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(jPanel21Layout.createSequentialGroup()
+                                                                .addComponent(jLabel25)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(txtManagerID,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                        139, Short.MAX_VALUE)
+                                                .addGroup(jPanel21Layout
+                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel24)
+                                                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(jPanel21Layout
+                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(txtDateOrder,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(txtSup, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(69, 69, 69)))
+                                .addContainerGap()));
         jPanel21Layout.setVerticalGroup(
-            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel24)
-                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel23)
-                    .addComponent(txtSup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDateOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel25)
-                    .addComponent(txtManagerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jscrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+                jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel24)
+                                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel23)
+                                        .addComponent(txtSup, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 22,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtDateOrder, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel25)
+                                        .addComponent(txtManagerID, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jscrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                                .addContainerGap()));
 
         jPanel20.add(jPanel21, java.awt.BorderLayout.CENTER);
 
@@ -815,127 +746,130 @@ public class PurchaseOrder extends javax.swing.JPanel {
         add(jTabbedPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void productCbbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productCbbActionPerformed
+    private void productCbbActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_productCbbActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_productCbbActionPerformed
+    }// GEN-LAST:event_productCbbActionPerformed
 
-    private void txtQuantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtQuantityActionPerformed
+    private void txtQuantityActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtQuantityActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtQuantityActionPerformed
+    }// GEN-LAST:event_txtQuantityActionPerformed
 
-    private void savePOBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePOBtnActionPerformed
+    private void savePOBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_savePOBtnActionPerformed
         String[] options = { "Xác nhận", "Hủy bỏ" };
-    int choice = JOptionPane.showOptionDialog(
-        null,
-        "Bạn có chắc muốn tạo đơn đặt này không?",
-        "Xác nhận tạo đơn đặt hàng",
-        JOptionPane.DEFAULT_OPTION,
-        JOptionPane.QUESTION_MESSAGE,
-        null,
-        options,
-        options[0]
-    );
-    
-    if(choice == 0){
-        try {
-            System.out.println("Bắt đầu quá trình tạo đơn đặt hàng...");
-            
-            // Lấy thông tin nhà cung cấp
-            SupplierBUS supBUS = new SupplierBUS();
-            String selectedName = (String) supCbb.getSelectedItem();
-            System.out.println("Nhà cung cấp được chọn: " + selectedName);
-            
-            SupplierDTO selectedSupplier = supBUS.getSupplierByName(selectedName);
-            if(selectedSupplier == null) {
-                System.out.println("Không tìm thấy thông tin nhà cung cấp!");
-                JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin nhà cung cấp!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            
-            String supplierId = selectedSupplier.getId();
-            System.out.println("ID nhà cung cấp: " + supplierId);
-            
-            // Tạo đối tượng PurchaseOrderDTO
-            String poId = txtcreateID.getText();
-            String managerId = txtUserID.getText();
-            String dateText = txtDate.getText();
-            
-            System.out.println("Thông tin đơn hàng:");
-            System.out.println(" - ID đơn hàng: " + poId);
-            System.out.println(" - ID người quản lý: " + managerId);
-            System.out.println(" - Ngày tạo: " + dateText);
-            
-            LocalDate orderDate;
+        int choice = JOptionPane.showOptionDialog(
+                null,
+                "Bạn có chắc muốn tạo đơn đặt này không?",
+                "Xác nhận tạo đơn đặt hàng",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        if (choice == 0) {
             try {
-                orderDate = LocalDate.parse(dateText);
-            } catch (Exception e) {
-                System.out.println("Lỗi định dạng ngày: " + e.getMessage());
-                JOptionPane.showMessageDialog(this, "Định dạng ngày không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            
-            PurchaseOrderDTO poNew = new PurchaseOrderDTO(
-                    poId,
-                    managerId,
-                    supplierId,
-                    orderDate,
-                    "Chưa duyệt",
-                    ""
-            );
-            
-            // Lấy chi tiết đơn hàng từ bảng
-            ArrayList<PurchaseOrderDetailsDTO> details = new ArrayList<>();
-            DefaultTableModel model = (DefaultTableModel) poTbl.getModel();
-            System.out.println("Số dòng chi tiết: " + model.getRowCount());
-            
-            for (int i = 0; i < model.getRowCount(); i++) {
-                try {
-                    String productId = model.getValueAt(i, 1).toString();
-                    String quantityStr = model.getValueAt(i, 3).toString();
-                    
-                    System.out.println("Chi tiết dòng " + i + ":");
-                    System.out.println(" - ID sản phẩm: " + productId);
-                    System.out.println(" - Số lượng: " + quantityStr);
-                    
-                    int quantity = Integer.parseInt(quantityStr);
-                    PurchaseOrderDetailsDTO detail = new PurchaseOrderDetailsDTO(
-                        poId,
-                        productId,
-                        quantity
-                    );
-                    details.add(detail);
-                } catch (Exception e) {
-                    System.out.println("Lỗi khi xử lý dòng " + i + ": " + e.getMessage());
-                    JOptionPane.showMessageDialog(this, "Lỗi dữ liệu ở dòng " + (i+1) + "!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                System.out.println("Bắt đầu quá trình tạo đơn đặt hàng...");
+
+                // Lấy thông tin nhà cung cấp
+                SupplierBUS supBUS = new SupplierBUS();
+                String selectedName = (String) supCbb.getSelectedItem();
+                System.out.println("Nhà cung cấp được chọn: " + selectedName);
+
+                SupplierDTO selectedSupplier = supBUS.getSupplierByName(selectedName);
+                if (selectedSupplier == null) {
+                    System.out.println("Không tìm thấy thông tin nhà cung cấp!");
+                    JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin nhà cung cấp!", "Lỗi",
+                            JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-            }
-            
-            poNew.setPoDetails(details);
-            
-            System.out.println("Đang gửi dữ liệu đến BUS...");
-            boolean result = poBUS.addPO(poNew);
-            
-            if (result) {
-                System.out.println("Tạo đơn hàng thành công!");
-                JOptionPane.showMessageDialog(this, "Tạo đơn đặt hàng thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                System.out.println("Tạo đơn hàng thất bại (BUS trả về false)");
-                JOptionPane.showMessageDialog(this, "Tạo đơn đặt hàng thất bại. Vui lòng kiểm tra lại dữ liệu.", "Thất bại", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception e) {
-            System.out.println("Lỗi không mong muốn: " + e.getMessage());
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi không mong muốn: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
-    } else {
-        System.out.println("Người dùng đã hủy thao tác");
-    }
-    }//GEN-LAST:event_savePOBtnActionPerformed
 
-    private void saveDeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveDeBtnActionPerformed
+                String supplierId = selectedSupplier.getId();
+                System.out.println("ID nhà cung cấp: " + supplierId);
+
+                // Tạo đối tượng PurchaseOrderDTO
+                String poId = txtcreateID.getText();
+                String managerId = txtUserID.getText();
+                String dateText = txtDate.getText();
+
+                System.out.println("Thông tin đơn hàng:");
+                System.out.println(" - ID đơn hàng: " + poId);
+                System.out.println(" - ID người quản lý: " + managerId);
+                System.out.println(" - Ngày tạo: " + dateText);
+
+                LocalDate orderDate;
+                try {
+                    orderDate = LocalDate.parse(dateText);
+                } catch (Exception e) {
+                    System.out.println("Lỗi định dạng ngày: " + e.getMessage());
+                    JOptionPane.showMessageDialog(this, "Định dạng ngày không hợp lệ!", "Lỗi",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                PurchaseOrderDTO poNew = new PurchaseOrderDTO(
+                        poId,
+                        managerId,
+                        supplierId,
+                        orderDate,
+                        "Chưa duyệt",
+                        "");
+
+                // Lấy chi tiết đơn hàng từ bảng
+                ArrayList<PurchaseOrderDetailsDTO> details = new ArrayList<>();
+                DefaultTableModel model = (DefaultTableModel) poTbl.getModel();
+                System.out.println("Số dòng chi tiết: " + model.getRowCount());
+
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    try {
+                        String productId = model.getValueAt(i, 1).toString();
+                        String quantityStr = model.getValueAt(i, 3).toString();
+
+                        System.out.println("Chi tiết dòng " + i + ":");
+                        System.out.println(" - ID sản phẩm: " + productId);
+                        System.out.println(" - Số lượng: " + quantityStr);
+
+                        int quantity = Integer.parseInt(quantityStr);
+                        PurchaseOrderDetailsDTO detail = new PurchaseOrderDetailsDTO(
+                                poId,
+                                productId,
+                                quantity);
+                        details.add(detail);
+                    } catch (Exception e) {
+                        System.out.println("Lỗi khi xử lý dòng " + i + ": " + e.getMessage());
+                        JOptionPane.showMessageDialog(this, "Lỗi dữ liệu ở dòng " + (i + 1) + "!", "Lỗi",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+
+                poNew.setPoDetails(details);
+
+                System.out.println("Đang gửi dữ liệu đến BUS...");
+                boolean result = poBUS.addPO(poNew);
+
+                if (result) {
+                    System.out.println("Tạo đơn hàng thành công!");
+                    JOptionPane.showMessageDialog(this, "Tạo đơn đặt hàng thành công!", "Thành công",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    System.out.println("Tạo đơn hàng thất bại (BUS trả về false)");
+                    JOptionPane.showMessageDialog(this, "Tạo đơn đặt hàng thất bại. Vui lòng kiểm tra lại dữ liệu.",
+                            "Thất bại", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                System.out.println("Lỗi không mong muốn: " + e.getMessage());
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi không mong muốn: " + e.getMessage(), "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            System.out.println("Người dùng đã hủy thao tác");
+        }
+    }// GEN-LAST:event_savePOBtnActionPerformed
+
+    private void saveDeBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_saveDeBtnActionPerformed
         String selectedValue = (String) productCbb.getSelectedItem();
-    
+
         // Kiểm tra đã chọn sản phẩm chưa
         if (selectedValue == null || selectedValue.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm", "Thông báo", JOptionPane.WARNING_MESSAGE);
@@ -979,101 +913,101 @@ public class PurchaseOrder extends javax.swing.JPanel {
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             String idInTable = tableModel.getValueAt(i, 1).toString();
             if (idInTable.equals(productId)) {
-                JOptionPane.showMessageDialog(this, "Sản phẩm đã có trong danh sách", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Sản phẩm đã có trong danh sách", "Thông báo",
+                        JOptionPane.WARNING_MESSAGE);
                 return;
             }
         }
-        
+
         // Thêm vào bảng
         int stt = tableModel.getRowCount() + 1;
-        tableModel.addRow(new Object[]{stt, productId, productName, txtQuantity.getText()});
+        tableModel.addRow(new Object[] { stt, productId, productName, txtQuantity.getText() });
 
         // Reset các trường
         productCbb.setSelectedIndex(-1);
         txtQuantity.setText("");
         productCbb.requestFocus();
-    }//GEN-LAST:event_saveDeBtnActionPerformed
+    }// GEN-LAST:event_saveDeBtnActionPerformed
 
-    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cancelBtnActionPerformed
         String[] options = { "Xác nhận", "Hủy bỏ" };
         int choice = JOptionPane.showOptionDialog(
-            null,
-            "Bạn có chắc chắn muốn hủy đơn đặt hàng này không?",
-            "Xác nhận hủy đơn đặt hàng",
-            JOptionPane.DEFAULT_OPTION,
-            JOptionPane.QUESTION_MESSAGE,
-            null,
-            options,
-            options[0]
-        );
-        if(choice == 0){
-            //xác nhận
+                null,
+                "Bạn có chắc chắn muốn hủy đơn đặt hàng này không?",
+                "Xác nhận hủy đơn đặt hàng",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+        if (choice == 0) {
+            // xác nhận
             poBUS.deletePO(txtID.getText());
-        }else{
-            //hủy
+        } else {
+            // hủy
         }
-    }//GEN-LAST:event_cancelBtnActionPerformed
+    }// GEN-LAST:event_cancelBtnActionPerformed
 
-    private void supCbbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supCbbActionPerformed
+    private void supCbbActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_supCbbActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_supCbbActionPerformed
+    }// GEN-LAST:event_supCbbActionPerformed
 
-    private void txtDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateActionPerformed
+    private void txtDateActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtDateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtDateActionPerformed
+    }// GEN-LAST:event_txtDateActionPerformed
 
-    private void txtUserIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserIDActionPerformed
+    private void txtUserIDActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtUserIDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtUserIDActionPerformed
+    }// GEN-LAST:event_txtUserIDActionPerformed
 
-    private void approveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approveBtnActionPerformed
+    private void approveBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_approveBtnActionPerformed
         String[] options = { "Xác nhận", "Hủy bỏ" };
         int choice = JOptionPane.showOptionDialog(
-            null,
-            "Bạn có chắc chắn muốn phê duyệt đơn hàng này không?",
-            "Xác nhận phê duyệt",
-            JOptionPane.DEFAULT_OPTION,
-            JOptionPane.QUESTION_MESSAGE,
-            null,
-            options,
-            options[0]
-        );
-        if(choice == 0){
+                null,
+                "Bạn có chắc chắn muốn phê duyệt đơn hàng này không?",
+                "Xác nhận phê duyệt",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+        if (choice == 0) {
             poBUS.approvePO(txtID.getText());
-        }else{
-            //hủy
+        } else {
+            // hủy
         }
-    }//GEN-LAST:event_approveBtnActionPerformed
+    }// GEN-LAST:event_approveBtnActionPerformed
 
-    private void poListTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_poListTblMouseClicked
-       if (evt.getButton() == MouseEvent.BUTTON1) {
+    private void poListTblMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_poListTblMouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON1) {
             int row = poListTbl.getSelectedRow();
             if (row >= 0) {
                 String ID = poListTbl.getValueAt(row, 0).toString();
-                
+
                 PurchaseOrderDTO selectedPO = poBUS.getPOByID(ID);
                 loadPODetails(selectedPO);
-                
-                    cancelBtn.setEnabled(true);
-                if(SessionDTO.getCurrentUser().getRoleID().equals("ROLE001")){
+
+                cancelBtn.setEnabled(true);
+                if (SessionDTO.getCurrentUser().getRoleID().equals("ROLE001")) {
                     approveBtn.setEnabled(true);
                 }
             }
-    }//GEN-LAST:event_poListTblMouseClicked
+        } // GEN-LAST:event_poListTblMouseClicked
     }
-    private void txtSupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSupActionPerformed
 
-    }//GEN-LAST:event_txtSupActionPerformed
+    private void txtSupActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtSupActionPerformed
 
-    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+    }// GEN-LAST:event_txtSupActionPerformed
+
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_refreshBtnActionPerformed
         loadPOlist();
-    }//GEN-LAST:event_refreshBtnActionPerformed
+    }// GEN-LAST:event_refreshBtnActionPerformed
 
-    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_clearBtnActionPerformed
         ((DefaultTableModel) poTbl.getModel()).setRowCount(0);
-    }//GEN-LAST:event_clearBtnActionPerformed
+    }// GEN-LAST:event_clearBtnActionPerformed
 
-    private void deleteDeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDeBtnActionPerformed
+    private void deleteDeBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_deleteDeBtnActionPerformed
         if (poTbl.getSelectedRow() != -1) {
             ((DefaultTableModel) poTbl.getModel()).removeRow(poTbl.getSelectedRow());
         }
@@ -1081,8 +1015,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
             poTbl.getModel().setValueAt(i + 1, i, 0); // Cột 0 là STT
         }
 
-    }//GEN-LAST:event_deleteDeBtnActionPerformed
-
+    }// GEN-LAST:event_deleteDeBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton approveBtn;

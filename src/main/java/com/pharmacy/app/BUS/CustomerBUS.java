@@ -11,12 +11,13 @@ import java.util.ArrayList;
  *
  * @author BOI QUAN
  */
-public class CustomerBUS {
+public final class CustomerBUS {
     private CustomerDAO customerDAO;
     private ArrayList<CustomerDTO> customerList;
     public CustomerBUS(){
         customerDAO = new CustomerDAO();
         customerList = new ArrayList<>();
+        loadCustomerList();
     }
     public ArrayList<CustomerDTO> getCustomerList() {
         return customerList;
@@ -54,22 +55,17 @@ public class CustomerBUS {
     public boolean updateCustomer(CustomerDTO customer){
         boolean check = customerDAO.update(customer);
         if (check){
-            this.customerList.set(getIndexByCustomerId(customer.getId()), customer);
+            loadCustomerList();
         }
         return check;
     }
     
     public boolean deleteCustomer(CustomerDTO customer){
         boolean check = customerDAO.delete(customer.getId());
-        int index = getIndexByCustomerId(customer.getId());
         if (check){
-            this.customerList.remove(index);
+            loadCustomerList();
         }
         return check;
-    }
-    
-    public ArrayList<CustomerDTO> search(String txt){
-        return customerDAO.search(txt);
     }
     
     public int getIndexByCustomerId(String id) {
@@ -79,6 +75,10 @@ public class CustomerBUS {
             }
         }
         return -1;
+    }
+    
+    public ArrayList<CustomerDTO> search(String txt){
+        return customerDAO.search(txt);
     }
     
     public CustomerDTO findCustomerByPhone(String phone) {

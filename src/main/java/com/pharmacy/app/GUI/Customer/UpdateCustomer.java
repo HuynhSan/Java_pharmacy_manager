@@ -5,7 +5,12 @@
 package com.pharmacy.app.GUI.Customer;
 
 import com.pharmacy.app.BUS.CustomerBUS;
+import com.pharmacy.app.DAO.CustomerDAO;
+import com.pharmacy.app.DAO.EmployeeDAO;
 import com.pharmacy.app.DTO.CustomerDTO;
+import com.pharmacy.app.Utils.EmployeeValidation;
+import com.pharmacy.app.Utils.CustomerValidation;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -19,6 +24,8 @@ public class UpdateCustomer extends javax.swing.JDialog {
      * Creates new form AddCustomer
      * @param parent
      * @param modal
+     * @param customerDTO
+     * @param customerBUS
      */
     public UpdateCustomer(java.awt.Frame parent, boolean modal, CustomerDTO customerDTO, CustomerBUS customerBUS) {
         super(parent, modal);
@@ -33,6 +40,45 @@ public class UpdateCustomer extends javax.swing.JDialog {
         txtPhone.setText(customer.getPhone());
         txtPoint.setText(String.valueOf(customer.getPoint()));
     }
+    
+    public boolean Validation(){
+        // Create DAO instance for duplicate checks
+        EmployeeDAO employeeDAO = new EmployeeDAO();    
+        CustomerDAO customerDAO = new CustomerDAO();
+        // Validate name (required)
+        String nameError = EmployeeValidation.validateRequired(txtName.getText(), "Họ và Tên");
+        if (!nameError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, nameError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtName.requestFocus();
+            return false;
+        }
+        
+        // Validate phone (required)
+        String phoneError = EmployeeValidation.validateRequired(txtPhone.getText(), "Số điện thoại");
+        if (!phoneError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, phoneError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtName.requestFocus();
+            return false;
+        }
+        
+        // Validate phone format
+        String phoneFormatError = EmployeeValidation.validatePhone(txtPhone.getText());
+        if (!phoneFormatError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, phoneFormatError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtPhone.requestFocus();
+            return false;
+        }
+
+        // Check if phone already exists
+        String phoneExistsError = CustomerValidation.validatePhoneExists(txtPhone.getText(), txtId.getText(), customerDAO);
+        if (!phoneExistsError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, phoneExistsError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtPhone.requestFocus();
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -225,6 +271,9 @@ public class UpdateCustomer extends javax.swing.JDialog {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
+        if (!Validation()){
+            return;
+        }
         String id = txtId.getText();
         String name = txtName.getText();
         String phone = txtPhone.getText();

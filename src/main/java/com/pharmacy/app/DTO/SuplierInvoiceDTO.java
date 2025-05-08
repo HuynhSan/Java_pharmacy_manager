@@ -25,34 +25,30 @@ public class SuplierInvoiceDTO {
     public int totalQuantity;
 
     public BigDecimal totalPrice;
-    public LocalDate purchaseDate;
-
-    public Double totalPrice;
     public LocalDate importDate;
     public List<SuplierInvoiceDetailsDTO> details;
 
+    public SuplierInvoiceDTO(){}
 
+    public SuplierInvoiceDTO(String invoiceID, String poID, String supplierID, LocalDate purchaseDate, String managerName, String supplierName, String managerID, int totalQuantity, BigDecimal totalPrice, LocalDate importDate) {
+        this.invoiceID = invoiceID;
+        this.poID = poID;
+        this.supplierID = supplierID;
+        this.purchaseDate = purchaseDate;
+        this.managerName = managerName;
+        this.supplierName = supplierName;
+        this.managerID = managerID;
+        this.totalQuantity = totalQuantity;
+        this.totalPrice = totalPrice;
+        this.importDate = importDate;
+    }
+    
     public List<SuplierInvoiceDetailsDTO> getDetails() {
         return details;
     }
 
     public void setDetails(List<SuplierInvoiceDetailsDTO> details) {
         this.details = details;
-    }
-            
-    public SuplierInvoiceDTO(){}
-    
-
-    public SuplierInvoiceDTO(String invoiceID, String poID, String supplierID, String managerID, String supplierName, String managerName, int totalQuantity, BigDecimal totalPrice, LocalDate purchaseDate) {
-
-    public SuplierInvoiceDTO(String invoiceID, String poID, String supplierID, String managerID, Double totalPrice, LocalDate importDate) {
-
-        this.invoiceID = invoiceID;
-        this.poID = poID;
-        this.supplierID = supplierID;
-        this.managerID = managerID;
-        this.totalPrice = totalPrice;
-        this.importDate = importDate;
     }
 
     public String getInvoiceID() {

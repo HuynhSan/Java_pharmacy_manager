@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author BOI QUAN
  */
 public class SuplierInvoicesBUS {
-    private final SupplierInvoicesDAO supInvoiceDAO;
+    private SupplierInvoicesDAO supInvoiceDAO;
     private ArrayList<SuplierInvoiceDTO> supInvoicesList;
     private SuplierInvoiceDetailsBUS supInvDeBUS = new SuplierInvoiceDetailsBUS();
 

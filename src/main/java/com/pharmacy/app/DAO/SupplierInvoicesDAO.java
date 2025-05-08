@@ -220,37 +220,37 @@ public class SupplierInvoicesDAO implements DAOinterface<SuplierInvoiceDTO> {
         return supInvoices;
     }
     
-//    public ArrayList<SuplierInvoiceDTO> filterByDate(LocalDate date) {
-//        ArrayList<SuplierInvoiceDTO> result = new ArrayList<>();
-//        if (myconnect.openConnection()) {
-//            String query = "SELECT si.supplier_invoice_id, SUM(sids.quantity), total_price, si.supplier_id, purchase_date, po.manager_user_id "
-//                         + " FROM supplier_invoices si"
-//                         + " INNER JOIN supplier_invoice_details sids ON sids.supplier_invoice_id = si.supplier_invoice_id"
-//                         + " INNER JOIN purchase_orders po ON po.po_id = si.po_id"
-//                         + " WHERE purchase_date >= ? AND purchase_date < ?"
-//                         + " GROUP BY si.supplier_invoice_id, total_price, si.supplier_id, purchase_date, po.manager_user_id";
-//
-//            try {
-//                // Truyền vào khoảng thời gian trong ngày
-//                LocalDate nextDay = date.plusDays(1);
-//                ResultSet rs = myconnect.prepareQuery(query, Date.valueOf(date), Date.valueOf(nextDay));
-//
-//                while (rs.next()) {
-//                    SuplierInvoiceDTO invoice = new SuplierInvoiceDTO();
-//                    invoice.setInvoiceID(rs.getString(1));
-//                    invoice.setTotalQuantity(rs.getInt(2));
-//                    invoice.setTotalPrice(rs.getDouble(3));
-//                    invoice.setSupplierID(rs.getString(4));
-//                    invoice.setPurchaseDate(rs.getDate(5).toLocalDate());
-//                    invoice.setManagerID(rs.getString(6));
-//                    result.add(invoice);
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            } finally {
-//                myconnect.closeConnection();
-//            }
-//        }
-//        return result;
-//    }
+    public ArrayList<SuplierInvoiceDTO> filterByDate(LocalDate date) {
+        ArrayList<SuplierInvoiceDTO> result = new ArrayList<>();
+        if (myconnect.openConnection()) {
+            String query = "SELECT si.supplier_invoice_id, SUM(sids.quantity), total_price, si.supplier_id, purchase_date, po.manager_user_id "
+                         + " FROM supplier_invoices si"
+                         + " INNER JOIN supplier_invoice_details sids ON sids.supplier_invoice_id = si.supplier_invoice_id"
+                         + " INNER JOIN purchase_orders po ON po.po_id = si.po_id"
+                         + " WHERE purchase_date >= ? AND purchase_date < ?"
+                         + " GROUP BY si.supplier_invoice_id, total_price, si.supplier_id, purchase_date, po.manager_user_id";
+
+            try {
+                // Truyền vào khoảng thời gian trong ngày
+                LocalDate nextDay = date.plusDays(1);
+                ResultSet rs = myconnect.prepareQuery(query, Date.valueOf(date), Date.valueOf(nextDay));
+
+                while (rs.next()) {
+                    SuplierInvoiceDTO invoice = new SuplierInvoiceDTO();
+                    invoice.setInvoiceID(rs.getString(1));
+                    invoice.setTotalQuantity(rs.getInt(2));
+                    invoice.setTotalPrice(rs.getBigDecimal(3));
+                    invoice.setSupplierID(rs.getString(4));
+                    invoice.setPurchaseDate(rs.getDate(5).toLocalDate());
+                    invoice.setManagerID(rs.getString(6));
+                    result.add(invoice);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return result;
+    }
 }

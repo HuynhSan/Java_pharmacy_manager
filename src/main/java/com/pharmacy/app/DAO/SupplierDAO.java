@@ -4,6 +4,7 @@
  */
 package com.pharmacy.app.DAO;
 import com.pharmacy.app.DTO.SupplierDTO;
+import com.pharmacy.app.DAO.EmployeeDAO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -175,5 +176,105 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
             }
         }
         return suppliers;
+    }
+
+    public boolean isNameExists(String name) {
+        boolean exists = false;
+        if (myconnect.openConnection()){
+            String query = "SELECT COUNT(*) as count FROM suppliers WHERE name = ?";
+            try {
+                ResultSet rs = myconnect.prepareQuery(query, name);
+                if (rs.next()) {
+                    exists = rs.getInt("count") > 0;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return exists;
+    }
+    
+    /**
+     * Checks if an email already exists in the database
+     * @param email The email to check
+     * @param supplier_id
+     * @return true if the email exists, false otherwise
+     */
+    public boolean isUpdateEmailExists(String email, String supplier_id) {
+        boolean exists = false;
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+        if(myconnect.openConnection()){
+            try{
+                String query = "SELECT email FROM suppliers WHERE supplier_id = ?";
+                ResultSet rs = myconnect.prepareQuery(query, supplier_id);
+                if (rs.next()){
+                    String currentEmail = rs.getString(1);
+                    if(currentEmail.equalsIgnoreCase(email)){
+                        return false;
+                    }
+                }
+                exists = employeeDAO.isEmailExists(email);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        
+        return exists;
+    }
+
+    /**
+     * Checks if a phone number already exists in the database
+     * @param phone The phone number to check
+     * @param supplier_id
+     * @return true if the phone number exists, false otherwise
+     */
+    public boolean isUpdatePhoneExists(String phone, String supplier_id) {
+        boolean exists = false;
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+        if(myconnect.openConnection()){
+            try{
+                String query = "SELECT phone_number FROM suppliers WHERE supplier_id = ?";
+                ResultSet rs = myconnect.prepareQuery(query, supplier_id);
+                if (rs.next()){
+                    String currentEmail = rs.getString(1);
+                    if(currentEmail.equalsIgnoreCase(phone)){
+                        return false;
+                    }
+                }
+                exists = employeeDAO.isPhoneExists(phone);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        
+        return exists;
+    }
+    
+    public boolean isUpdateNameExists(String name, String supplier_id) {
+        boolean exists = false;
+        if(myconnect.openConnection()){
+            try{
+                String query = "SELECT name FROM suppliers WHERE supplier_id = ?";
+                ResultSet rs = myconnect.prepareQuery(query, supplier_id);
+                if (rs.next()){
+                    String currentName = rs.getString(1);
+                    if(currentName.equalsIgnoreCase(name)){
+                        return false;
+                    }
+                }
+                exists = isNameExists(name);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return exists;
     }
 }

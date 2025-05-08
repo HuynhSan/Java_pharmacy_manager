@@ -36,6 +36,7 @@ public final class SupplierDetail extends javax.swing.JDialog {
     public SupplierDetail(java.awt.Frame parent, boolean modal, SupplierDTO supplier) {
         super(parent, modal);
         initComponents();
+        supplierDTO = supplier;
         setData(supplier);
         loadSupplierInvoiceData(supplier.getId());
     }
