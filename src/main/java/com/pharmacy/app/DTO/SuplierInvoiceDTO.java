@@ -4,6 +4,7 @@
  */
 package com.pharmacy.app.DTO;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,27 +23,32 @@ public class SuplierInvoiceDTO {
     public String supplierName;
     public String managerID;
     public int totalQuantity;
-    public Double totalPrice;
+
+    public BigDecimal totalPrice;
     public LocalDate importDate;
     public List<SuplierInvoiceDetailsDTO> details;
 
+    public SuplierInvoiceDTO(){}
+
+    public SuplierInvoiceDTO(String invoiceID, String poID, String supplierID, LocalDate purchaseDate, String managerName, String supplierName, String managerID, int totalQuantity, BigDecimal totalPrice, LocalDate importDate) {
+        this.invoiceID = invoiceID;
+        this.poID = poID;
+        this.supplierID = supplierID;
+        this.purchaseDate = purchaseDate;
+        this.managerName = managerName;
+        this.supplierName = supplierName;
+        this.managerID = managerID;
+        this.totalQuantity = totalQuantity;
+        this.totalPrice = totalPrice;
+        this.importDate = importDate;
+    }
+    
     public List<SuplierInvoiceDetailsDTO> getDetails() {
         return details;
     }
 
     public void setDetails(List<SuplierInvoiceDetailsDTO> details) {
         this.details = details;
-    }
-            
-    public SuplierInvoiceDTO(){}
-    
-    public SuplierInvoiceDTO(String invoiceID, String poID, String supplierID, String managerID, Double totalPrice, LocalDate importDate) {
-        this.invoiceID = invoiceID;
-        this.poID = poID;
-        this.supplierID = supplierID;
-        this.managerID = managerID;
-        this.totalPrice = totalPrice;
-        this.importDate = importDate;
     }
 
     public String getInvoiceID() {
@@ -85,11 +91,11 @@ public class SuplierInvoiceDTO {
     }
     
 
-    public Double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 

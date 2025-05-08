@@ -5,7 +5,12 @@
 package com.pharmacy.app.GUI.Supplier;
 
 import com.pharmacy.app.BUS.SupplierBUS;
+import com.pharmacy.app.DAO.EmployeeDAO;
+import com.pharmacy.app.DAO.SupplierDAO;
 import com.pharmacy.app.DTO.SupplierDTO;
+import com.pharmacy.app.Utils.EmployeeValidation;
+import com.pharmacy.app.Utils.SupplierValidation;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -13,11 +18,15 @@ import javax.swing.JOptionPane;
  * @author BOI QUAN
  */
 public class UpdateSupplier extends javax.swing.JDialog {
-    private SupplierBUS supplierBUS;
-    private SupplierDTO supplierDTO;
+    private final SupplierBUS supplierBUS;
+    private final SupplierDTO supplierDTO;
 
     /**
      * Creates new form UpdateSupplier
+     * @param parent
+     * @param modal
+     * @param supplierDTO
+     * @param supplierBUS
      */
     public UpdateSupplier(java.awt.Frame parent, boolean modal, SupplierDTO supplierDTO, SupplierBUS supplierBUS) {
         super(parent, modal);
@@ -33,6 +42,70 @@ public class UpdateSupplier extends javax.swing.JDialog {
         txtPhone.setText(supplier.getPhone());
         txtEmail.setText(supplier.getEmail());
         txtAddress.setText(supplier.getAddress());
+    }
+    
+    public boolean Validation(){
+        // Create DAO instance for duplicate checks
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+        SupplierDAO supplierDAO = new SupplierDAO();      
+        
+        // Validate address (required)
+        String nameError = EmployeeValidation.validateRequired(txtName.getText(), "Tên");
+        if (!nameError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, nameError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtName.requestFocus();
+            return false;
+        }
+        
+        // Check if name already exists
+        String nameExistsError = SupplierValidation.validateNameExists(txtName.getText(), txtId.getText(), supplierDAO);
+        if (!nameExistsError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, nameExistsError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtName.requestFocus();
+            return false;
+        }
+        
+        // Validate email format
+        String emailError = EmployeeValidation.validateEmail(txtEmail.getText());
+        if (!emailError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, emailError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtEmail.requestFocus();
+            return false;
+        }
+
+        // Check if email already exists
+        String emailExistsError = SupplierValidation.validateEmailExists(txtEmail.getText(), txtId.getText(), supplierDAO);
+        if (!emailExistsError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, emailExistsError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtEmail.requestFocus();
+            return false;
+        }
+
+        // Validate phone format
+        String phoneError = EmployeeValidation.validatePhone(txtPhone.getText());
+        if (!phoneError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, phoneError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtPhone.requestFocus();
+            return false;
+        }
+
+        // Check if phone already exists
+        String phoneExistsError = SupplierValidation.validatePhoneExists(txtPhone.getText(), txtId.getText(), supplierDAO);
+        if (!phoneExistsError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, phoneExistsError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtPhone.requestFocus();
+            return false;
+        }
+
+        // Validate address (required)
+        String addressError = EmployeeValidation.validateRequired(txtAddress.getText(), "Địa chỉ");
+        if (!addressError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, addressError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtAddress.requestFocus();
+            return false;
+        }
+
+        return true;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -235,6 +308,9 @@ public class UpdateSupplier extends javax.swing.JDialog {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
+        if (!Validation()){
+            return ;
+        }
         SupplierDTO updateSupplier = new SupplierDTO(
             txtId.getText(),
             txtName.getText(),

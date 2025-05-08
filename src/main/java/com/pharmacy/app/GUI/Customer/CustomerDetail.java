@@ -34,6 +34,7 @@ public final class CustomerDetail extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 //        centerTableCells();
+        customerDTO = customer;
         setData(customer);
         loadCustomerInvoiceData(customer.getId());
         

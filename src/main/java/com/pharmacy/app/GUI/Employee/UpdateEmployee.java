@@ -5,6 +5,7 @@
 package com.pharmacy.app.GUI.Employee;
 
 import com.pharmacy.app.BUS.EmployeeBUS;
+import com.pharmacy.app.DAO.EmployeeDAO;
 import com.pharmacy.app.DTO.EmployeeDTO;
 import com.pharmacy.app.Utils.EmployeeValidation;
 import java.time.LocalDate;
@@ -52,6 +53,8 @@ public class UpdateEmployee extends javax.swing.JDialog {
      * @return true if all inputs are valid, false otherwise
      */
     private boolean validateForm() {
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+        
         String name = txtName.getText().trim();
         String dob = txtDOB.getText().trim();
         String email = txtEmail.getText().trim();
@@ -81,7 +84,15 @@ public class UpdateEmployee extends javax.swing.JDialog {
             txtPhone.requestFocus();
             return false;
         }
-
+        
+        // Check if phone already exists
+        String phoneErrorExists = EmployeeValidation.validatePhoneExists(phone, txtEmployeeID.getText(), employeeDAO);
+        if (!phoneErrorExists.isEmpty()){
+            JOptionPane.showMessageDialog(this, phoneErrorExists, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtPhone.requestFocus();
+            return false;
+        }
+        
         // Validate email if provided
         String emailError = EmployeeValidation.validateEmail(email);
         if (!emailError.isEmpty()) {
@@ -89,7 +100,15 @@ public class UpdateEmployee extends javax.swing.JDialog {
             txtEmail.requestFocus();
             return false;
         }
-
+        
+        // Check if email already exists
+        String emailErrorExists = EmployeeValidation.validateEmailExists(email, txtEmployeeID.getText(), employeeDAO);
+        if (!emailErrorExists.isEmpty()){
+            JOptionPane.showMessageDialog(this, emailErrorExists, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtEmail.requestFocus();
+            return false;
+        }
+        
         // Validate address
         String addressError = EmployeeValidation.validateRequired(address, "Địa chỉ");
         if (!addressError.isEmpty()) {

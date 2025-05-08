@@ -15,6 +15,7 @@ import com.pharmacy.app.DTO.PurchaseOrderDTO;
 import com.pharmacy.app.DTO.PurchaseOrderDetailsDTO;
 import com.pharmacy.app.DTO.SuplierInvoiceDTO;
 import com.pharmacy.app.DTO.SuplierInvoiceDetailsDTO;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -443,14 +444,14 @@ public class ConfirmStockIn extends javax.swing.JDialog {
         );
         if(choice == 0){
             //xác nhận
-            SuplierInvoiceDTO supInvNew = new SuplierInvoiceDTO(
-                    txtInvoiceID.getText(),
-                    txtPOid.getText(),
-                    txtSup.getText(),
-                    txtManagerID.getText(),
-                    Double.parseDouble(txtSum.getText()),
-                    LocalDate.now()
-            );
+            
+            SuplierInvoiceDTO supInvNew = new SuplierInvoiceDTO();
+            supInvNew.setInvoiceID(txtInvoiceID.getText());
+            supInvNew.setPoID(txtPOid.getText());
+            supInvNew.setSupplierID(txtSup.getText());
+            supInvNew.setManagerID(txtManagerID.getText());
+            supInvNew.setTotalPrice(new BigDecimal(txtSum.getText()));
+            supInvNew.setPurchaseDate(LocalDate.now());
             
             List<SuplierInvoiceDetailsDTO> details = new ArrayList<>();
             DefaultTableModel model = (DefaultTableModel) detailsTbl.getModel();
@@ -462,10 +463,10 @@ public class ConfirmStockIn extends javax.swing.JDialog {
                 detail.setBatchID(model.getValueAt(i, 4).toString());
                 detail.setManuDate(LocalDate.parse(model.getValueAt(i, 5).toString()));
                 detail.setExpDate(LocalDate.parse(model.getValueAt(i, 6).toString()));
-                detail.setUnitPrice(Double.valueOf(model.getValueAt(i, 7).toString()));
+                detail.setUnitPrice(new BigDecimal((model.getValueAt(i, 7).toString())));
                 detail.setSellPrice(Double.valueOf(model.getValueAt(i, 8).toString()));
                 detail.setQuantity(Integer.parseInt(model.getValueAt(i, 9).toString()));
-                detail.setTotalPrice(Double.parseDouble(model.getValueAt(i, 10).toString()));
+                detail.setTotalPrice(new BigDecimal((model.getValueAt(i, 10).toString())));
 
                 details.add(detail);
             }

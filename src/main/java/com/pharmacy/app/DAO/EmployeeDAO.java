@@ -178,7 +178,6 @@ public class EmployeeDAO implements DAOinterface<EmployeeDTO> {
         }
         return maxID;
     }
-    
     /**
      * Checks if an email already exists in the database
      * @param email The email to check
@@ -186,20 +185,21 @@ public class EmployeeDAO implements DAOinterface<EmployeeDTO> {
      */
     public boolean isEmailExists(String email) {
         myConnection.openConnection();
-        String query = "SELECT COUNT(*) as count FROM employees WHERE email = '" + email + "' AND is_deleted = 0";
+        String query = "SELECT * FROM ("
+            + "	SELECT email FROM suppliers"
+            + "	UNION"
+            + "	SELECT email FROM employees"
+            + " ) AS TEMP"
+            + " WHERE email = ?";
         boolean exists = false;
-
         try {
-            ResultSet rs = myConnection.runQuery(query);
-            if (rs.next()) {
-                exists = rs.getInt("count") > 0;
-            }
+            ResultSet rs = myConnection.prepareQuery(query, email);
+            exists = rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             myConnection.closeConnection();
         }
-
         return exists;
     }
 
@@ -210,20 +210,77 @@ public class EmployeeDAO implements DAOinterface<EmployeeDTO> {
      */
     public boolean isPhoneExists(String phone) {
         myConnection.openConnection();
-        String query = "SELECT COUNT(*) as count FROM employees WHERE phone_number = '" + phone + "' AND is_deleted = 0";
+        String query = "SELECT * FROM ("
+            + "	SELECT phone_number FROM suppliers"
+            + "	UNION"
+            + "	SELECT phone_number FROM employees"
+            + "	UNION "
+            + "	SELECT phone_number FROM customers"
+            + " ) AS TEMP"
+            + " WHERE phone_number = ? ";
         boolean exists = false;
-
         try {
-            ResultSet rs = myConnection.runQuery(query);
+            ResultSet rs = myConnection.prepareQuery(query, phone);
+            exists = rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            myConnection.closeConnection();
+        }
+        return exists;
+    }
+    
+    /**
+     * Checks if an email already exists in the database
+     * @param email The email to check
+     * @param employee_id
+     * @return true if the email exists, false otherwise
+     */
+    public boolean isUpdateEmailExists(String email, String employee_id) {
+        myConnection.openConnection();
+        String query = "SELECT email FROM employees WHERE employee_id = ?";
+        boolean exists = false;
+        try {
+            ResultSet rs = myConnection.prepareQuery(query, employee_id);
             if (rs.next()) {
-                exists = rs.getInt("count") > 0;
+                String currentEmail = rs.getString(1);
+                if (currentEmail.equalsIgnoreCase(email)){
+                    return false;
+                }
+                exists = isEmailExists(email);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             myConnection.closeConnection();
         }
+        return exists;
+    }
 
+    /**
+     * Checks if a phone number already exists in the database
+     * @param phone The phone number to check
+     * @param employee_id
+     * @return true if the phone number exists, false otherwise
+     */
+    public boolean isUpdatePhoneExists(String phone, String employee_id) {
+        myConnection.openConnection();
+        String query = "SELECT phone_number FROM employees WHERE employee_id = ?";
+        boolean exists = false;
+        try {
+            ResultSet rs = myConnection.prepareQuery(query, employee_id);
+            if (rs.next()) {
+                String currentEmail = rs.getString(1);
+                if (currentEmail.equalsIgnoreCase(phone)){
+                    return false;
+                }
+                exists = isPhoneExists(phone);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            myConnection.closeConnection();
+        }
         return exists;
     }
     

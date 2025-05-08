@@ -43,7 +43,7 @@ public final class CustomerList extends javax.swing.JPanel {
 
     private void initBUS(){
         customerBUS = new CustomerBUS();
-        customerBUS.loadCustomerList();
+//        customerBUS.loadCustomerList();
     }
     
     private void setupListeners(){
@@ -101,7 +101,6 @@ public final class CustomerList extends javax.swing.JPanel {
             loadCustomerData(); // Hiển thị lại toàn bộ nếu người dùng xóa từ khóa
             return;
         }
-        
         List<CustomerDTO> searchResult = customerBUS.search(keyword);
         displayList(searchResult);
     }
@@ -282,8 +281,6 @@ public final class CustomerList extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddMouseClicked
 
     private void tbCustomerListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCustomerListMouseClicked
-        // TODO add your handling code here:
-//        customerDAO = new CustomerDAO();
         int selectedRow = tbCustomerList.getSelectedRow();
         if (selectedRow != -1){
             // Lấy dữ liệu từ các cột trong dòng được chọn

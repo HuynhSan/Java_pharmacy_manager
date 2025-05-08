@@ -15,37 +15,37 @@ import java.util.ArrayList;
  * @author BOI QUAN
  */
 public class SuplierInvoicesBUS {
-    private final SupplierInvoicesDAO supInvoiceDAO;
+    private SupplierInvoicesDAO supInvoiceDAO;
     private ArrayList<SuplierInvoiceDTO> supInvoicesList;
     private SuplierInvoiceDetailsBUS supInvDeBUS = new SuplierInvoiceDetailsBUS();
-    
-    public SuplierInvoicesBUS(){
+
+    public SuplierInvoicesBUS() {
         supInvoiceDAO = new SupplierInvoicesDAO();
         supInvoicesList = new ArrayList<>();
     }
-    
-    public void getSearchFiled(String field){
+
+    public void getSearchFiled(String field) {
         supInvoiceDAO.setSearchField(field);
     }
-    
+
     public ArrayList<SuplierInvoiceDTO> getCustomerList() {
         return supInvoicesList;
     }
-    
+
     public void loadSupInvoiceList() {
         supInvoicesList = supInvoiceDAO.selectAll();
     }
-    
-    public ArrayList<SuplierInvoiceDTO> getAllSuplierInvoice(){
+
+    public ArrayList<SuplierInvoiceDTO> getAllSuplierInvoice() {
         return this.supInvoicesList;
     }
-    
-    public SuplierInvoiceDTO getSupInvoiceByID(String invoiceID){
+
+    public SuplierInvoiceDTO getSupInvoiceByID(String invoiceID) {
         return supInvoiceDAO.selectByID(invoiceID);
     }
 
     public String generateNextProductID() {
-        String lastID = supInvoiceDAO.getLatestProductID();  // Có thể là null
+        String lastID = supInvoiceDAO.getLatestProductID(); // Có thể là null
 
         if (lastID == null || lastID.isEmpty()) {
             return "INV001"; // Mặc định nếu bảng rỗng
@@ -57,29 +57,31 @@ public class SuplierInvoicesBUS {
 
         return "INV" + String.format("%03d", nextNumber);
     }
-    
-    public ArrayList<SuplierInvoiceDTO> getSupInvoiceBySupplierID(String supplierID){
+
+    public ArrayList<SuplierInvoiceDTO> getSupInvoiceBySupplierID(String supplierID) {
         return supInvoiceDAO.selectBySupplierID(supplierID);
     }
-    
-    public ArrayList<SuplierInvoiceDTO> search(String keyword){
+
+    public ArrayList<SuplierInvoiceDTO> search(String keyword) {
         return supInvoiceDAO.search(keyword);
     }
-    public ArrayList<SuplierInvoiceDTO> filterByDate(LocalDate date){
+
+    public ArrayList<SuplierInvoiceDTO> filterByDate(LocalDate date) {
         return supInvoiceDAO.filterByDate(date);
     }
-    
-    public boolean addSupInv(SuplierInvoiceDTO supInvDTO){
-        if (!supInvoiceDAO.insert(supInvDTO)){
+
+    public boolean addSupInv(SuplierInvoiceDTO supInvDTO) {
+        if (!supInvoiceDAO.insert(supInvDTO)) {
             return false;
         }
-        
-        // thêm ctpn
-        for(SuplierInvoiceDetailsDTO detail : supInvDTO.getDetails()){
-            System.out.println("Chi tiết đơn nhập: " + supInvDTO.getDetails());
-            System.out.println("Số dòng chi tiết: " + (supInvDTO.getDetails() == null ? "null" : supInvDTO.getDetails().size()));
 
-            if (!supInvDeBUS.addSupInvDe(detail)){
+        // thêm ctpn
+        for (SuplierInvoiceDetailsDTO detail : supInvDTO.getDetails()) {
+            System.out.println("Chi tiết đơn nhập: " + supInvDTO.getDetails());
+            System.out.println(
+                    "Số dòng chi tiết: " + (supInvDTO.getDetails() == null ? "null" : supInvDTO.getDetails().size()));
+
+            if (!supInvDeBUS.addSupInvDe(detail)) {
                 return false;
             }
         }
