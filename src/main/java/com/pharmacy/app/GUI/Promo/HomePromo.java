@@ -100,19 +100,19 @@ public class HomePromo extends javax.swing.JPanel{
         plHeader.add(jLabel2);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setMinimumSize(new java.awt.Dimension(765, 80));
+        jPanel2.setMinimumSize(new java.awt.Dimension(700, 80));
         jPanel2.setPreferredSize(new java.awt.Dimension(1200, 80));
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 0));
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
         plSearch.setBackground(new java.awt.Color(255, 255, 255));
         plSearch.setMaximumSize(new java.awt.Dimension(450, 70));
-        plSearch.setMinimumSize(new java.awt.Dimension(450, 70));
+        plSearch.setMinimumSize(new java.awt.Dimension(300, 70));
         plSearch.setPreferredSize(new java.awt.Dimension(450, 50));
-        plSearch.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
+        plSearch.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 15, 10));
 
         cbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Đổi điểm", "Giảm phần trăm" }));
         cbSort.setMinimumSize(new java.awt.Dimension(100, 30));
-        cbSort.setPreferredSize(new java.awt.Dimension(100, 30));
+        cbSort.setPreferredSize(new java.awt.Dimension(90, 30));
         cbSort.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbSortActionPerformed(evt);
@@ -121,7 +121,7 @@ public class HomePromo extends javax.swing.JPanel{
         plSearch.add(cbSort);
 
         txtSearch.setMaximumSize(new java.awt.Dimension(300, 30));
-        txtSearch.setMinimumSize(new java.awt.Dimension(300, 30));
+        txtSearch.setMinimumSize(new java.awt.Dimension(100, 30));
         txtSearch.setPreferredSize(new java.awt.Dimension(300, 30));
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,9 +134,9 @@ public class HomePromo extends javax.swing.JPanel{
 
         plButton.setBackground(new java.awt.Color(255, 255, 255));
         plButton.setMaximumSize(new java.awt.Dimension(300, 70));
-        plButton.setMinimumSize(new java.awt.Dimension(300, 70));
+        plButton.setMinimumSize(new java.awt.Dimension(200, 70));
         plButton.setPreferredSize(new java.awt.Dimension(300, 50));
-        plButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
+        plButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 10));
 
         btnAdd.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnAdd.setText("Thêm");
@@ -189,7 +189,7 @@ public class HomePromo extends javax.swing.JPanel{
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jScrollPane2.setMinimumSize(new java.awt.Dimension(760, 510));
-        jScrollPane2.setPreferredSize(new java.awt.Dimension(1180, 620));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(1200, 760));
 
         tblPromo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -219,7 +219,7 @@ public class HomePromo extends javax.swing.JPanel{
         columnModel.getColumn(0).setPreferredWidth(50);
         tblPromo.setMaximumSize(new java.awt.Dimension(700, 600));
         tblPromo.setMinimumSize(new java.awt.Dimension(700, 450));
-        tblPromo.setPreferredSize(new java.awt.Dimension(1180, 600));
+        tblPromo.setPreferredSize(new java.awt.Dimension(1200, 1000));
         tblPromo.setRowHeight(30);
         tblPromo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         tblPromo.setShowGrid(true);
