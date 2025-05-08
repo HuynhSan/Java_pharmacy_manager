@@ -15,12 +15,17 @@ import com.pharmacy.app.DTO.PurchaseOrderDTO;
 import com.pharmacy.app.DTO.PurchaseOrderDetailsDTO;
 import com.pharmacy.app.DTO.SuplierInvoiceDTO;
 import com.pharmacy.app.DTO.SuplierInvoiceDetailsDTO;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -40,6 +45,7 @@ public class ConfirmStockIn extends javax.swing.JDialog {
     public ConfirmStockIn(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        centerTableContent(detailsTbl);
     }
 
     /**
@@ -244,7 +250,7 @@ public class ConfirmStockIn extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
 
-        public void loadStockInDialog(PurchaseOrderDTO selectedPO) {
+    public void loadStockInDialog(PurchaseOrderDTO selectedPO) {
         txtInvoiceID.setText(supInvBUS.generateNextProductID());
         txtManagerID.setText(selectedPO.getManagerUserID());
         txtPOid.setText(selectedPO.getPoID());
@@ -292,6 +298,21 @@ public class ConfirmStockIn extends javax.swing.JDialog {
 
         // Ban đầu disable nút import
         importBtn.setEnabled(false);
+    }
+    
+    private void centerTableContent(JTable table) {
+        // Căn giữa tiêu đề
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Căn giữa nội dung
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
 
     private void calculateRowTotal(int row) {
@@ -423,14 +444,14 @@ public class ConfirmStockIn extends javax.swing.JDialog {
         );
         if(choice == 0){
             //xác nhận
-            SuplierInvoiceDTO supInvNew = new SuplierInvoiceDTO(
-                    txtInvoiceID.getText(),
-                    txtPOid.getText(),
-                    txtSup.getText(),
-                    txtManagerID.getText(),
-                    Double.parseDouble(txtSum.getText()),
-                    LocalDate.now()
-            );
+            
+            SuplierInvoiceDTO supInvNew = new SuplierInvoiceDTO();
+            supInvNew.setInvoiceID(txtInvoiceID.getText());
+            supInvNew.setPoID(txtPOid.getText());
+            supInvNew.setSupplierID(txtSup.getText());
+            supInvNew.setManagerID(txtManagerID.getText());
+            supInvNew.setTotalPrice(new BigDecimal(txtSum.getText()));
+            supInvNew.setPurchaseDate(LocalDate.now());
             
             List<SuplierInvoiceDetailsDTO> details = new ArrayList<>();
             DefaultTableModel model = (DefaultTableModel) detailsTbl.getModel();
@@ -442,10 +463,10 @@ public class ConfirmStockIn extends javax.swing.JDialog {
                 detail.setBatchID(model.getValueAt(i, 4).toString());
                 detail.setManuDate(LocalDate.parse(model.getValueAt(i, 5).toString()));
                 detail.setExpDate(LocalDate.parse(model.getValueAt(i, 6).toString()));
-                detail.setUnitPrice(Double.valueOf(model.getValueAt(i, 7).toString()));
+                detail.setUnitPrice(new BigDecimal((model.getValueAt(i, 7).toString())));
                 detail.setSellPrice(Double.valueOf(model.getValueAt(i, 8).toString()));
                 detail.setQuantity(Integer.parseInt(model.getValueAt(i, 9).toString()));
-                detail.setTotalPrice(Double.parseDouble(model.getValueAt(i, 10).toString()));
+                detail.setTotalPrice(new BigDecimal((model.getValueAt(i, 10).toString())));
 
                 details.add(detail);
             }

@@ -6,7 +6,11 @@ package com.pharmacy.app.GUI.Payroll;
 
 import com.pharmacy.app.GUI.Supplier.AddSupplier;
 import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -19,6 +23,23 @@ public class PayrollManagement extends javax.swing.JPanel {
      */
     public PayrollManagement() {
         initComponents();
+        centerTableContent(tblPayroll);
+        centerTableContent(tblComponent);
+    }
+    
+    private void centerTableContent(JTable table) {
+        // Căn giữa tiêu đề
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Căn giữa nội dung
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
 
     /**

@@ -12,8 +12,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 
 /**
@@ -36,8 +40,11 @@ public final class SupplierDetail extends javax.swing.JDialog {
     public SupplierDetail(java.awt.Frame parent, boolean modal, SupplierDTO supplier) {
         super(parent, modal);
         initComponents();
+        supplierDTO = supplier;
         setData(supplier);
         loadSupplierInvoiceData(supplier.getId());
+        centerTableContent(tbHistory);
+        
     }
     
     private void setData(SupplierDTO supplier) {
@@ -46,6 +53,21 @@ public final class SupplierDetail extends javax.swing.JDialog {
         txtPhone.setText(supplier.getPhone());
         txtEmail.setText(supplier.getEmail());
         txtAddress.setText(supplier.getAddress());
+    }
+    
+    private void centerTableContent(JTable table) {
+        // Căn giữa tiêu đề
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Căn giữa nội dung
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
     
     private void displayList(List<SuplierInvoiceDTO> suppliersList) {

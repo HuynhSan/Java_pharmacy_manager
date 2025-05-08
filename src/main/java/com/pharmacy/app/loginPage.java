@@ -28,126 +28,125 @@ public class loginPage extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         pnlLogin = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         lblLogin = new javax.swing.JLabel();
-        btnLogin = new javax.swing.JButton();
         pnlLoginFields = new javax.swing.JPanel();
         lblUsername = new javax.swing.JLabel();
-        lblPassword = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
+        lblPassword = new javax.swing.JLabel();
         jPasswordField = new javax.swing.JPasswordField();
+        jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        btnLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Đăng nhập");
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(330, 280));
-        setMinimumSize(new java.awt.Dimension(330, 280));
+        setMinimumSize(new java.awt.Dimension(400, 280));
         setResizable(false);
+        getContentPane().setLayout(new java.awt.BorderLayout(0, 10));
 
         pnlLogin.setBackground(new java.awt.Color(255, 255, 255));
         pnlLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        pnlLogin.setMaximumSize(new java.awt.Dimension(330, 280));
-        pnlLogin.setMinimumSize(new java.awt.Dimension(330, 280));
-        pnlLogin.setPreferredSize(new java.awt.Dimension(330, 280));
+        pnlLogin.setMaximumSize(new java.awt.Dimension(330, 330));
+        pnlLogin.setMinimumSize(new java.awt.Dimension(330, 330));
+        pnlLogin.setPreferredSize(new java.awt.Dimension(330, 330));
+        pnlLogin.setVerifyInputWhenFocusTarget(false);
+        pnlLogin.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 0));
+
+        jPanel1.setBackground(new java.awt.Color(0, 102, 153));
+        jPanel1.setPreferredSize(new java.awt.Dimension(400, 50));
 
         lblLogin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblLogin.setForeground(new java.awt.Color(255, 255, 255));
         lblLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLogin.setText("ĐĂNG NHẬP");
         lblLogin.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        btnLogin.setBackground(new java.awt.Color(0, 204, 51));
-        btnLogin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnLogin.setForeground(new java.awt.Color(255, 255, 255));
-        btnLogin.setText("Đăng nhập");
-        btnLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoginActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(0, 156, Short.MAX_VALUE)
+                    .addComponent(lblLogin)
+                    .addGap(0, 156, Short.MAX_VALUE)))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(0, 15, Short.MAX_VALUE)
+                    .addComponent(lblLogin)
+                    .addGap(0, 15, Short.MAX_VALUE)))
+        );
+
+        pnlLogin.add(jPanel1);
 
         pnlLoginFields.setBackground(new java.awt.Color(255, 255, 255));
-        pnlLoginFields.setLayout(new java.awt.GridBagLayout());
+        pnlLoginFields.setMinimumSize(new java.awt.Dimension(300, 170));
+        pnlLoginFields.setPreferredSize(new java.awt.Dimension(300, 170));
+        pnlLoginFields.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 10));
 
         lblUsername.setBackground(new java.awt.Color(255, 255, 255));
-        lblUsername.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblUsername.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblUsername.setText("Tên đăng nhập:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 20);
-        pnlLoginFields.add(lblUsername, gridBagConstraints);
+        lblUsername.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        lblUsername.setPreferredSize(new java.awt.Dimension(98, 40));
+        pnlLoginFields.add(lblUsername);
 
-        lblPassword.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtUsername.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtUsername.setPreferredSize(new java.awt.Dimension(300, 32));
+        pnlLoginFields.add(txtUsername);
+
+        lblPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblPassword.setText("Mật khẩu:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
-        pnlLoginFields.add(lblPassword, gridBagConstraints);
+        pnlLoginFields.add(lblPassword);
 
-        txtUsername.setPreferredSize(new java.awt.Dimension(100, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 50;
-        gridBagConstraints.weightx = 5.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
-        pnlLoginFields.add(txtUsername, gridBagConstraints);
-
-        jPasswordField.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPasswordField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPasswordField.setPreferredSize(new java.awt.Dimension(300, 30));
         jPasswordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordFieldActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        pnlLoginFields.add(jPasswordField, gridBagConstraints);
+        pnlLoginFields.add(jPasswordField);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 2, 11)); // NOI18N
+        pnlLogin.add(pnlLoginFields);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setPreferredSize(new java.awt.Dimension(300, 30));
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 0));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 0, 51));
         jLabel1.setText("Quên mật khẩu ?");
+        jLabel1.setPreferredSize(new java.awt.Dimension(90, 16));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel1);
 
-        javax.swing.GroupLayout pnlLoginLayout = new javax.swing.GroupLayout(pnlLogin);
-        pnlLogin.setLayout(pnlLoginLayout);
-        pnlLoginLayout.setHorizontalGroup(
-            pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlLoginLayout.createSequentialGroup()
-                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel1)
-                        .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlLoginLayout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(pnlLoginFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlLoginLayout.createSequentialGroup()
-                                .addGap(115, 115, 115)
-                                .addComponent(lblLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(pnlLoginLayout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addComponent(btnLogin)))
-                .addContainerGap(42, Short.MAX_VALUE))
-        );
-        pnlLoginLayout.setVerticalGroup(
-            pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlLoginLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(lblLogin)
-                .addGap(29, 29, 29)
-                .addComponent(pnlLoginFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLogin)
-                .addContainerGap(72, Short.MAX_VALUE))
-        );
+        pnlLogin.add(jPanel2);
+
+        btnLogin.setBackground(new java.awt.Color(0, 102, 155));
+        btnLogin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnLogin.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogin.setText("Đăng nhập");
+        btnLogin.setPreferredSize(new java.awt.Dimension(300, 40));
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+        pnlLogin.add(btnLogin);
 
         getContentPane().add(pnlLogin, java.awt.BorderLayout.CENTER);
 
@@ -234,6 +233,10 @@ public class loginPage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordFieldActionPerformed
 
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        
+    }//GEN-LAST:event_jLabel1MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -273,6 +276,8 @@ public class loginPage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField jPasswordField;
     private javax.swing.JLabel lblLogin;
     private javax.swing.JLabel lblPassword;

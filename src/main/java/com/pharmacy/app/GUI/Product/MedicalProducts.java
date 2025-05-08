@@ -16,6 +16,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -36,6 +37,9 @@ public class MedicalProducts extends javax.swing.JPanel {
         dateTbl.setDefaultEditor(Object.class, null);
         loadDateList();
         setupTableRenderer();
+        centerTableContent(dateTbl);
+        centerTableContent(batchListTbl);
+        centerTableContent(medListTbl);
         
         searchPdtxt.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -77,12 +81,26 @@ public class MedicalProducts extends javax.swing.JPanel {
         });
     }
         
-    
     private void searchProductBatch(){
         String keywordPB = searchPBtxt.getText();
         ArrayList<ProductBatchDTO> result = pbBUS.searchAll(keywordPB);
         showPBToTable(result);
     }
+    private void centerTableContent(JTable table) {
+        // Căn giữa tiêu đề
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Căn giữa nội dung
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+    
     private void searchProduct() {
         String keywordPd = searchPdtxt.getText();
         ArrayList<MedicalProductsDTO> result = medBUS.searchAll(keywordPd);

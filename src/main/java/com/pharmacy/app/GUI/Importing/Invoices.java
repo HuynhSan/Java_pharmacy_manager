@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package com.pharmacy.app.GUI.Importing;
+
 import com.pharmacy.app.BUS.PurchaseOrderBUS;
 import com.pharmacy.app.BUS.PurchaseOrderDetailsBUS;
 import com.pharmacy.app.BUS.SuplierInvoiceDetailsBUS;
@@ -20,14 +21,17 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 import java.time.format.DateTimeFormatter;
 //import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
-
-
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+
 /**
  *
  * @author LENOVO
@@ -50,14 +54,19 @@ public final class Invoices extends javax.swing.JPanel {
         loadSupInvoiceData();
         setupListeners();
         loadApprovedPOlist();
+        centerTableContent(newinvoiceTbl);
+        centerTableContent(tbInvoiceHistory);
+        centerTableContent(tbSupInvoiceDetail);
     }
-    private void initBUS(){
+
+    private void initBUS() {
         supInvoiceBUS = new SuplierInvoicesBUS();
         supInvoiceDetailsBUS = new SuplierInvoiceDetailsBUS();
         supInvoiceBUS.loadSupInvoiceList();
     }
-    private void setupListeners(){
-        txtSearch.addFocusListener(new FocusAdapter(){
+
+    private void setupListeners() {
+        txtSearch.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 if (txtSearch.getText().equals("Tìm kiếm")) {
@@ -66,6 +75,7 @@ public final class Invoices extends javax.swing.JPanel {
                     txtSearch.setForeground(new java.awt.Color(0, 0, 0));
                 }
             }
+
             @Override
             public void focusLost(FocusEvent e) {
                 if (txtSearch.getText().isEmpty()) {
@@ -86,29 +96,29 @@ public final class Invoices extends javax.swing.JPanel {
             }
         });
     }
-    
+
     private void displayList(ArrayList<SuplierInvoiceDTO> supInvoiceList) {
         DefaultTableModel model = (DefaultTableModel) tbInvoiceHistory.getModel();
         model.setRowCount(0);
 
-        for (SuplierInvoiceDTO si: supInvoiceList){
-            model.addRow(new Object[]{
-                si.getInvoiceID(),
-                si.getTotalQuantity(),
-                si.getTotalPrice(),
-                si.getSupplierID(),
-                si.getPurchaseDate().format(DATE_FORMAT),
-                si.getManagerID()
+        for (SuplierInvoiceDTO si : supInvoiceList) {
+            model.addRow(new Object[] {
+                    si.getInvoiceID(),
+                    si.getTotalQuantity(),
+                    si.getTotalPrice(),
+                    si.getSupplierID(),
+                    si.getPurchaseDate().format(DATE_FORMAT),
+                    si.getManagerID()
             });
         }
     }
 
-    public void loadSupInvoiceData(){
+    public void loadSupInvoiceData() {
         ArrayList<SuplierInvoiceDTO> supInvoiceList = supInvoiceBUS.getAllSuplierInvoice();
         displayList(supInvoiceList);
     }
-    
-    public void loadSupInvoiceDetail(String supInvoiceID){
+
+    public void loadSupInvoiceDetail(String supInvoiceID) {
         // Lay thong tin chi tiet cua supplier invoice
         SuplierInvoiceDTO infoSupInvoice = supInvoiceBUS.getSupInvoiceByID(supInvoiceID);
         txtInvoiceID.setText(infoSupInvoice.getInvoiceID());
@@ -122,19 +132,34 @@ public final class Invoices extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tbSupInvoiceDetail.getModel();
         model.setRowCount(0);
         int stt = 1;
-        for (SuplierInvoiceDetailsDTO sid: supInvoiceDetails){
-            model.addRow(new Object[]{
-                stt++,
-                sid.getBatchID(),
-                sid.getProductID(),
-                sid.getName(),
-                sid.getUnitPrice(),
-                sid.getQuantity(),
-                sid.getTotalPrice()
+        for (SuplierInvoiceDetailsDTO sid : supInvoiceDetails) {
+            model.addRow(new Object[] {
+                    stt++,
+                    sid.getBatchID(),
+                    sid.getProductID(),
+                    sid.getName(),
+                    sid.getUnitPrice(),
+                    sid.getQuantity(),
+                    sid.getTotalPrice()
             });
         }
     }
-    
+  
+    private void centerTableContent(JTable table) {
+        // Căn giữa tiêu đề
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Căn giữa nội dung
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+
     public double calculateTotalAmount() {
         DefaultTableModel model = (DefaultTableModel) tbSupInvoiceDetail.getModel();
         Double total = 0.0;
@@ -151,8 +176,8 @@ public final class Invoices extends javax.swing.JPanel {
         }
         return total;
     }
-    
-    private void searchInvoice(String keyword){
+
+    private void searchInvoice(String keyword) {
         if (keyword.isEmpty() || keyword.equals("Tìm kiếm")) {
             loadSupInvoiceData(); // Hiển thị lại toàn bộ nếu người dùng xóa từ khóa
             return;
@@ -160,21 +185,22 @@ public final class Invoices extends javax.swing.JPanel {
         ArrayList<SuplierInvoiceDTO> searchResult = supInvoiceBUS.search(keyword);
         displayList(searchResult);
     }
-    private void loadApprovedPOlist (){
+
+    private void loadApprovedPOlist() {
         ArrayList<PurchaseOrderDTO> poList = poBUS.getAllPO();
         DefaultTableModel model = (DefaultTableModel) newinvoiceTbl.getModel();
         model.setRowCount(0);
-        
-            for(PurchaseOrderDTO po : poList){
-                if ("Đã duyệt".equals(po.getStatus())){
-                    model.addRow(new Object[]{
+
+        for (PurchaseOrderDTO po : poList) {
+            if ("Đã duyệt".equals(po.getStatus())) {
+                model.addRow(new Object[] {
                         po.getPoID(),
                         po.getOrderDate(),
                         po.getManagerUserID(),
                         po.getStatus()
-                    });
-                }
+                });
             }
+        }
     }
 
     /**
@@ -270,6 +296,7 @@ public final class Invoices extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        newinvoiceTbl.setRowHeight(30);
         newinvoiceTbl.getTableHeader().setReorderingAllowed(false);
         newinvoiceTbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -628,6 +655,8 @@ public final class Invoices extends javax.swing.JPanel {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                // .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    // .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanel5.add(jPanel6, java.awt.BorderLayout.CENTER);
@@ -639,11 +668,11 @@ public final class Invoices extends javax.swing.JPanel {
         add(jTabbedPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchActionPerformed
+    }// GEN-LAST:event_txtSearchActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
         try {
             // Get table model
@@ -653,7 +682,8 @@ public final class Invoices extends javax.swing.JPanel {
             String managerName = txtManagerName.getText();
             String purchaseDate = txtPurchaseDate.getText();
             // Use the PDFExporter utility class to export employee data
-            com.pharmacy.app.Utils.PDFExporter.exportSupInvoiceToPDF(this, model, invoiceID, supplier, managerName, purchaseDate);
+            com.pharmacy.app.Utils.PDFExporter.exportSupInvoiceToPDF(this, model, invoiceID, supplier, managerName,
+                    purchaseDate);
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -661,61 +691,59 @@ public final class Invoices extends javax.swing.JPanel {
                     "Lỗi",
                     javax.swing.JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButton8ActionPerformed
+    }// GEN-LAST:event_jButton8ActionPerformed
 
-    private void importBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importBtnActionPerformed
+    private void importBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_importBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_importBtnActionPerformed
+    }// GEN-LAST:event_importBtnActionPerformed
 
-    private void importBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importBtnMouseClicked
-        ConfirmStockIn confirmDialog = new ConfirmStockIn((Frame)SwingUtilities.getWindowAncestor(importBtn), true);
-        
+    private void importBtnMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_importBtnMouseClicked
+        ConfirmStockIn confirmDialog = new ConfirmStockIn((Frame) SwingUtilities.getWindowAncestor(importBtn), true);
+
         if (evt.getButton() == MouseEvent.BUTTON1) {
             int row = newinvoiceTbl.getSelectedRow();
             if (row >= 0) {
                 String ID = newinvoiceTbl.getValueAt(row, 0).toString();
                 PurchaseOrderDTO selectedPO = poBUS.getPOByID(ID);
-                
+
                 confirmDialog.loadStockInDialog(selectedPO);
                 confirmDialog.setLocationRelativeTo(null);
                 confirmDialog.setVisible(true);
             }
         }
-    }//GEN-LAST:event_importBtnMouseClicked
+    }// GEN-LAST:event_importBtnMouseClicked
 
-    private void tbInvoiceHistoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbInvoiceHistoryMouseClicked
+    private void tbInvoiceHistoryMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tbInvoiceHistoryMouseClicked
         // TODO add your handling code here:
         int selectedRow = tbInvoiceHistory.getSelectedRow();
-        if (selectedRow != -1){
+        if (selectedRow != -1) {
             // Lấy dữ liệu từ các cột trong dòng được chọn
             String id = tbInvoiceHistory.getValueAt(selectedRow, 0).toString();
-            
+
             loadSupInvoiceDetail(id);
             SwingUtilities.invokeLater(() -> {
                 txtTotal.setText(String.format("%,.0f VND", calculateTotalAmount()));
             });
             // Tong tien
-//            txtTotal.setText(String.format("%,.0f VND", calculateTotalAmount()));
+            // txtTotal.setText(String.format("%,.0f VND", calculateTotalAmount()));
         }
-    }//GEN-LAST:event_tbInvoiceHistoryMouseClicked
+    }// GEN-LAST:event_tbInvoiceHistoryMouseClicked
 
-    private void jScrollPane3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane3MouseClicked
+    private void jScrollPane3MouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jScrollPane3MouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jScrollPane3MouseClicked
+    }// GEN-LAST:event_jScrollPane3MouseClicked
 
-    private void newinvoiceTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newinvoiceTblMouseClicked
-       importBtn.setEnabled(true);
-    }//GEN-LAST:event_newinvoiceTblMouseClicked
+    private void newinvoiceTblMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_newinvoiceTblMouseClicked
+        importBtn.setEnabled(true);
+    }// GEN-LAST:event_newinvoiceTblMouseClicked
 
-    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_refreshBtnActionPerformed
         loadApprovedPOlist();
-    }//GEN-LAST:event_refreshBtnActionPerformed
+    }// GEN-LAST:event_refreshBtnActionPerformed
 
-    private void refreshBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtn1ActionPerformed
+    private void refreshBtn1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_refreshBtn1ActionPerformed
         loadSupInvoiceData();
-    }//GEN-LAST:event_refreshBtn1ActionPerformed
-
-
+    }// GEN-LAST:event_refreshBtn1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton importBtn;

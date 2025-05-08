@@ -15,11 +15,8 @@ import com.pharmacy.app.DTO.PromotionDTO;
 import com.pharmacy.app.DTO.SalesInvoiceDTO;
 import com.pharmacy.app.DTO.SalesInvoiceDetailDTO;
 import com.pharmacy.app.DTO.SalesInvoicePromotionDTO;
-import java.awt.Frame;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -52,7 +49,7 @@ public class PaymentDialog extends javax.swing.JDialog {
      * Creates new form PaymentDialog
      */
     public PaymentDialog(java.awt.Frame parent, boolean modal, HomeSales homesales, BigDecimal totalProductPrice, BigDecimal totalDiscount, BigDecimal subTotal, Map<String, CartItemDTO> cartItemsMap, String userId, String customerId, String promoId) {
-        super(parent, modal);
+        super(parent,"Xác nhận thanh toán", modal);
         initComponents();
         
         // Gán dữ liệu truyền vào
@@ -65,40 +62,34 @@ public class PaymentDialog extends javax.swing.JDialog {
         this.subTotal = subTotal;
         this.totalProduct = homesales.calculateTotalProduct();
         this.homesales = homesales;
-
-
-        System.out.println(userId);        
-        System.out.println(customerId);
-//        System.out.println(newSalesInvoiceId);
-
-        
         showHashMap(cartItems);
         
         // Hiển thị dữ liệu lên các trường trong dialog
-        txtTotalProductPrice.setText(totalProductPrice.toString());
-        txtDiscountAmount.setText(totalDiscount.toString());
-        txtFinalTotal.setText(subTotal.toString());
-        System.out.println(promoId);
-        
-
+        txtTotalProductPrice.setText(formatMoney(totalProductPrice));
+        txtDiscountAmount.setText(formatMoney(totalDiscount));
+        txtFinalTotal.setText(formatMoney(subTotal));
     }
     
         public void showHashMap(Map<String, CartItemDTO> cartItems){
-        // Sau khi thêm vào cartPanel, thêm đoạn này để debug
-        System.out.println("==> Giỏ hàng thanh toán:");
-        for (Map.Entry<String, CartItemDTO> entry : cartItems.entrySet()) {
-            CartItemDTO cartitem = entry.getValue();
-            System.out.println("Batch ID: " + cartitem.getBatchId()
-               + ", Product ID: " + cartitem.getProductId()
-               + ", Tên: " + cartitem.getName()
-               + ", SL: " + cartitem.getQuantityFromSpinner()
-               + ", Giá gốc: " + cartitem.getSellPrice()
-               + ", Tiền khuyến mãi: " + cartitem.getDiscountAmount()
-               + ", Giá sau KM: " + cartitem.getFinalPrice());
-        }
-        System.out.println("------------------------------");
+            // Sau khi thêm vào cartPanel, thêm đoạn này để debug
+            System.out.println("==> Giỏ hàng thanh toán:");
+            for (Map.Entry<String, CartItemDTO> entry : cartItems.entrySet()) {
+                CartItemDTO cartitem = entry.getValue();
+                System.out.println("Batch ID: " + cartitem.getBatchId()
+                   + ", Product ID: " + cartitem.getProductId()
+                   + ", Tên: " + cartitem.getName()
+                   + ", SL: " + cartitem.getQuantityFromSpinner()
+                   + ", Giá gốc: " + cartitem.getSellPrice()
+                   + ", Tiền khuyến mãi: " + cartitem.getDiscountAmount()
+                   + ", Giá sau KM: " + cartitem.getFinalPrice());
+            }
+            System.out.println("------------------------------");
 
-    }
+        }
+    
+        private String formatMoney(BigDecimal amount) {
+            return String.format("%,.0f", amount);
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -108,94 +99,118 @@ public class PaymentDialog extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
+        lblTitle = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
         lblTotalAmount = new javax.swing.JLabel();
         txtTotalProductPrice = new javax.swing.JTextField();
-        txtDiscountAmount = new javax.swing.JTextField();
         lblDiscountAmount = new javax.swing.JLabel();
+        txtDiscountAmount = new javax.swing.JTextField();
         lblFinalTotal = new javax.swing.JLabel();
         txtFinalTotal = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        txtCash = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtChange = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnConfirmPayment = new javax.swing.JButton();
-        lblTitle = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Thanh Toán");
-        setMinimumSize(new java.awt.Dimension(400, 300));
+        setMinimumSize(new java.awt.Dimension(510, 400));
         setModal(true);
+        setPreferredSize(new java.awt.Dimension(510, 420));
         setResizable(false);
         getContentPane().setLayout(new java.awt.FlowLayout());
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(500, 300));
-        jPanel1.setLayout(new java.awt.GridBagLayout());
+        jPanel1.setMinimumSize(new java.awt.Dimension(500, 43));
+        jPanel1.setPreferredSize(new java.awt.Dimension(500, 350));
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
+
+        lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitle.setText("XÁC NHẬN THANH TOÁN");
+        lblTitle.setMinimumSize(new java.awt.Dimension(224, 30));
+        lblTitle.setPreferredSize(new java.awt.Dimension(400, 35));
+        jPanel1.add(lblTitle);
+
+        jPanel3.setMinimumSize(new java.awt.Dimension(400, 250));
+        jPanel3.setPreferredSize(new java.awt.Dimension(400, 250));
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 15));
 
         lblTotalAmount.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTotalAmount.setText("Tổng thành tiền");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jPanel1.add(lblTotalAmount, gridBagConstraints);
+        lblTotalAmount.setMaximumSize(new java.awt.Dimension(120, 20));
+        lblTotalAmount.setMinimumSize(new java.awt.Dimension(120, 20));
+        lblTotalAmount.setPreferredSize(new java.awt.Dimension(120, 20));
+        jPanel3.add(lblTotalAmount);
 
         txtTotalProductPrice.setEnabled(false);
-        txtTotalProductPrice.setPreferredSize(new java.awt.Dimension(200, 25));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.ipadx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(7, 20, 7, 15);
-        jPanel1.add(txtTotalProductPrice, gridBagConstraints);
-
-        txtDiscountAmount.setEditable(false);
-        txtDiscountAmount.setEnabled(false);
-        txtDiscountAmount.setPreferredSize(new java.awt.Dimension(200, 25));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.ipadx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(7, 20, 7, 15);
-        jPanel1.add(txtDiscountAmount, gridBagConstraints);
+        txtTotalProductPrice.setPreferredSize(new java.awt.Dimension(250, 30));
+        jPanel3.add(txtTotalProductPrice);
 
         lblDiscountAmount.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblDiscountAmount.setText("Tiền khuyến mãi");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jPanel1.add(lblDiscountAmount, gridBagConstraints);
+        lblDiscountAmount.setPreferredSize(new java.awt.Dimension(120, 20));
+        jPanel3.add(lblDiscountAmount);
+
+        txtDiscountAmount.setEditable(false);
+        txtDiscountAmount.setEnabled(false);
+        txtDiscountAmount.setPreferredSize(new java.awt.Dimension(250, 30));
+        jPanel3.add(txtDiscountAmount);
 
         lblFinalTotal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblFinalTotal.setText("Tổng tiền");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.ipadx = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jPanel1.add(lblFinalTotal, gridBagConstraints);
+        lblFinalTotal.setMaximumSize(new java.awt.Dimension(312345, 321354));
+        lblFinalTotal.setMinimumSize(new java.awt.Dimension(120, 20));
+        lblFinalTotal.setPreferredSize(new java.awt.Dimension(120, 20));
+        jPanel3.add(lblFinalTotal);
 
         txtFinalTotal.setEnabled(false);
-        txtFinalTotal.setPreferredSize(new java.awt.Dimension(200, 25));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(7, 20, 7, 15);
-        jPanel1.add(txtFinalTotal, gridBagConstraints);
+        txtFinalTotal.setPreferredSize(new java.awt.Dimension(250, 30));
+        jPanel3.add(txtFinalTotal);
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(300, 30));
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setText("Tiền khách đưa");
+        jLabel1.setMaximumSize(new java.awt.Dimension(321581, 327819));
+        jLabel1.setMinimumSize(new java.awt.Dimension(120, 20));
+        jLabel1.setPreferredSize(new java.awt.Dimension(120, 20));
+        jPanel3.add(jLabel1);
+
+        txtCash.setPreferredSize(new java.awt.Dimension(250, 30));
+        txtCash.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCashFocusLost(evt);
+            }
+        });
+        txtCash.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCashKeyReleased(evt);
+            }
+        });
+        jPanel3.add(txtCash);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setText("Tiền thối");
+        jLabel2.setPreferredSize(new java.awt.Dimension(120, 20));
+        jPanel3.add(jLabel2);
+
+        txtChange.setEnabled(false);
+        txtChange.setPreferredSize(new java.awt.Dimension(250, 30));
+        jPanel3.add(txtChange);
+
+        jPanel1.add(jPanel3);
+
+        jPanel2.setMinimumSize(new java.awt.Dimension(400, 50));
+        jPanel2.setPreferredSize(new java.awt.Dimension(400, 50));
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
 
         btnCancel.setBackground(new java.awt.Color(255, 0, 0));
-        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("Hủy");
-        btnCancel.setPreferredSize(new java.awt.Dimension(80, 25));
+        btnCancel.setPreferredSize(new java.awt.Dimension(80, 30));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
@@ -204,10 +219,10 @@ public class PaymentDialog extends javax.swing.JDialog {
         jPanel2.add(btnCancel);
 
         btnConfirmPayment.setBackground(new java.awt.Color(0, 204, 51));
-        btnConfirmPayment.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnConfirmPayment.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnConfirmPayment.setForeground(new java.awt.Color(255, 255, 255));
         btnConfirmPayment.setText("Xác nhận");
-        btnConfirmPayment.setPreferredSize(new java.awt.Dimension(90, 25));
+        btnConfirmPayment.setPreferredSize(new java.awt.Dimension(100, 30));
         btnConfirmPayment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmPaymentActionPerformed(evt);
@@ -215,23 +230,7 @@ public class PaymentDialog extends javax.swing.JDialog {
         });
         jPanel2.add(btnConfirmPayment);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.ipady = 4;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
-        jPanel1.add(jPanel2, gridBagConstraints);
-
-        lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblTitle.setText("XÁC NHẬN THANH TOÁN");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 13, 0);
-        jPanel1.add(lblTitle, gridBagConstraints);
+        jPanel1.add(jPanel2);
 
         getContentPane().add(jPanel1);
 
@@ -239,12 +238,40 @@ public class PaymentDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnConfirmPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmPaymentActionPerformed
         handleConfirm();
     }//GEN-LAST:event_btnConfirmPaymentActionPerformed
+
+    private void txtCashKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCashKeyReleased
+
+    }//GEN-LAST:event_txtCashKeyReleased
+
+    private void txtCashFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCashFocusLost
+        if (!txtCash.getText().isEmpty()){    
+            try {
+                BigDecimal totalAmount = subTotal;
+                BigDecimal cashGiven = new BigDecimal(txtCash.getText());
+
+                if (cashGiven.compareTo(totalAmount) >= 0) {
+                    BigDecimal change = cashGiven.subtract(totalAmount);
+                    txtChange.setText(formatMoney(change));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Số tiền khách đưa không đủ để thanh toán!", "Thiếu tiền", JOptionPane.WARNING_MESSAGE);
+                    txtChange.setText("");
+                    txtCash.requestFocus();       // Đưa con trỏ trở lại ô nhập
+                    txtCash.selectAll();          // Chọn hết nội dung để dễ gõ lại
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập đúng định dạng số!", "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
+                txtChange.setText("");
+                txtCash.requestFocus();
+                txtCash.selectAll();
+            }
+        }
+    }//GEN-LAST:event_txtCashFocusLost
 
     /**
      * @param args the command line arguments
@@ -253,12 +280,17 @@ public class PaymentDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnConfirmPayment;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lblDiscountAmount;
     private javax.swing.JLabel lblFinalTotal;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblTotalAmount;
+    private javax.swing.JTextField txtCash;
+    private javax.swing.JTextField txtChange;
     private javax.swing.JTextField txtDiscountAmount;
     private javax.swing.JTextField txtFinalTotal;
     private javax.swing.JTextField txtTotalProductPrice;
@@ -281,42 +313,50 @@ public class PaymentDialog extends javax.swing.JDialog {
         }
 
         // 4. Gọi BUS lưu hoá đơn
-        boolean success = salesInvoiceBUS.insertInvoice(invoiceDTO);
-
-        // 5. Lưu chi tiết hoá đơn nếu hoá đơn được lưu thành công
-        if (success) {
-            for (CartItemDTO item : cartItems.values()) {
-                SalesInvoiceDetailDTO detail = new SalesInvoiceDetailDTO(
-                    invoiceId,
-                    item.getProductId(),
-                    item.getQuantity(),
-                    item.getFinalPrice()
-                );
-                salesInvoiceDetailBUS.addInvoiceDetail(detail);
-                
-                // Cập nhật tồn kho theo batchId và product_Id
-                batchBus.saleInventoryQuantity(item.getBatchId(), item.getProductId(), item.getQuantity());
-            }
+        if (!txtCash.getText().isEmpty()){
+            boolean success = salesInvoiceBUS.insertInvoice(invoiceDTO);
             
-            if (customerID != null){
-                System.out.println(promoID);
-                PromotionDTO promo = promoBUS.selectById(promoID);
-                // Cập nhật điểm
-                customerBUS.updateCustomerPointsAfterInvoice(customerID, promo, this.subTotal);
-            }
-            
-            if (promoID != null){
-                salesPromoBUS.add(new SalesInvoicePromotionDTO(invoiceId, promoID));
-            }
+            // 5. Lưu chi tiết hoá đơn nếu hoá đơn được lưu thành công
+            if (success) {
+                for (CartItemDTO item : cartItems.values()) {
+                    SalesInvoiceDetailDTO detail = new SalesInvoiceDetailDTO(
+                        invoiceId,
+                        item.getProductId(),
+                        item.getQuantity(),
+                        item.getFinalPrice()
+                    );
+                    salesInvoiceDetailBUS.addInvoiceDetail(detail);
 
-            JOptionPane.showMessageDialog(this, "Xuất hóa đơn thành công!");
-            this.dispose(); // Đóng dialog
-            homesales.loadAllData();
-            homesales.reload();
+                    // Cập nhật tồn kho theo batchId và product_Id
+                    batchBus.saleInventoryQuantity(item.getBatchId(), item.getProductId(), item.getQuantity());
+                }
+
+                if (customerID != null){
+                    System.out.println(promoID);
+                    PromotionDTO promo = promoBUS.selectById(promoID);
+                    // Cập nhật điểm
+                    customerBUS.updateCustomerPointsAfterInvoice(customerID, promo, this.subTotal);
+                }
+
+                if (promoID != null){
+                    salesPromoBUS.add(new SalesInvoicePromotionDTO(invoiceId, promoID));
+                }
+
+                JOptionPane.showMessageDialog(this, "Lưu hóa đơn thành công!");
+                this.dispose(); // Đóng dialog
+                homesales.loadAllData();
+                homesales.reload();
+            } else {
+                JOptionPane.showMessageDialog(this, "Lỗi khi lưu hoá đơn!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
         } else {
-            JOptionPane.showMessageDialog(this, "Lỗi khi lưu hoá đơn!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập tiền khách đưa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            txtCash.requestFocus();
+            txtCash.selectAll();
         }
+
+        
+    }
 
 }
 

@@ -217,6 +217,34 @@ public class CustomerDAO implements DAOinterface<CustomerDTO>{
         }
         return name;
     }
-    
+
+    /**
+     * Checks if a phone number already exists in the database
+     * @param phone The phone number to check
+     * @param customer_id
+     * @return true if the phone number exists, false otherwise
+     */
+    public boolean isUpdatePhoneExists(String phone, String customer_id) {
+        boolean exists = false;
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+        if(myconnect.openConnection()){
+            try{
+                String query = "SELECT phone_number FROM customers WHERE customer_id = ?";
+                ResultSet rs = myconnect.prepareQuery(query, customer_id);
+                if (rs.next()){
+                    String currentEmail = rs.getString(1);
+                    if(currentEmail.equalsIgnoreCase(phone)){
+                        return false;
+                    }
+                }
+                exists = employeeDAO.isPhoneExists(phone);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return exists;
+    }
     
 }

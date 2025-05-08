@@ -92,9 +92,9 @@ public class SupplierInvoiceDetailsDAO implements DAOinterface<SuplierInvoiceDet
                     supInvoiceDetail.setBatchID(rs.getString(1));
                     supInvoiceDetail.setProductID(rs.getString(2));
                     supInvoiceDetail.setName(rs.getString(3));
-                    supInvoiceDetail.setUnitPrice(rs.getDouble(4));
+                    supInvoiceDetail.setUnitPrice(rs.getBigDecimal(4));
                     supInvoiceDetail.setQuantity(rs.getInt(5));
-                    supInvoiceDetail.setTotalPrice(rs.getDouble(6));
+                    supInvoiceDetail.setTotalPrice(rs.getBigDecimal(6));
                     
                     supInvoiceDetails.add(supInvoiceDetail);
                 }

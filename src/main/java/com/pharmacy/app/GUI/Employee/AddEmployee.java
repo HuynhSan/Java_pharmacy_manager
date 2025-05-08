@@ -4,7 +4,9 @@
  */
 package com.pharmacy.app.GUI.Employee;
 
+import com.pharmacy.app.BUS.CustomerBUS;
 import com.pharmacy.app.BUS.EmployeeBUS;
+import com.pharmacy.app.BUS.SupplierBUS;
 import com.pharmacy.app.DTO.EmployeeDTO;
 import com.pharmacy.app.Utils.EmployeeValidation;
 import java.time.LocalDate;
@@ -15,7 +17,9 @@ import javax.swing.JOptionPane;
  * @author phong
  */
 public class AddEmployee extends javax.swing.JDialog {
-    private EmployeeBUS employeeBUS;
+    private final EmployeeBUS employeeBUS;
+    private final SupplierBUS supplierBUS;
+    private final CustomerBUS customerBUS;
 
     /**
      * Creates new form AddEmployee
@@ -29,6 +33,8 @@ public class AddEmployee extends javax.swing.JDialog {
         setLocationRelativeTo(parent);
         // Initialize BUS
         employeeBUS = new EmployeeBUS();
+        supplierBUS = new SupplierBUS();
+        customerBUS = new CustomerBUS();
         employeeBUS.loadEmployeeList();
     }
 
@@ -368,7 +374,7 @@ public class AddEmployee extends javax.swing.JDialog {
     private boolean validateForm() {
         // Create DAO instance for duplicate checks
         com.pharmacy.app.DAO.EmployeeDAO employeeDAO = new com.pharmacy.app.DAO.EmployeeDAO();
-
+        
         // Validate name (required)
         String nameError = EmployeeValidation.validateRequired(txtName.getText(), "Họ tên");
         if (!nameError.isEmpty()) {
@@ -394,7 +400,7 @@ public class AddEmployee extends javax.swing.JDialog {
         }
 
         // Check if email already exists
-        String emailExistsError = EmployeeValidation.validateEmailExists(txtEmail.getText(), employeeDAO);
+        String emailExistsError = EmployeeValidation.validateEmailExists(txtEmail.getText(),  employeeDAO);
         if (!emailExistsError.isEmpty()) {
             JOptionPane.showMessageDialog(this, emailExistsError, "Lỗi", JOptionPane.ERROR_MESSAGE);
             txtEmail.requestFocus();

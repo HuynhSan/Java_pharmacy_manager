@@ -5,7 +5,9 @@
 package com.pharmacy.app.GUI.Customer;
 
 import com.pharmacy.app.BUS.CustomerBUS;
+import com.pharmacy.app.BUS.EmployeeBUS;
 import com.pharmacy.app.DTO.CustomerDTO;
+import com.pharmacy.app.Utils.EmployeeValidation;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,19 +17,59 @@ import javax.swing.JOptionPane;
 public class AddCustomer extends javax.swing.JDialog {
 
     private final CustomerBUS customerBUS;
+    private final EmployeeBUS employeeBUS;
 
     /**
      * Creates new form AddCustomer
+     * @param parent
+     * @param modal
      */
     public AddCustomer(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         customerBUS = new CustomerBUS();
+        employeeBUS =  new EmployeeBUS();
+//        customerBUS.loadCustomerList();
         String newId = customerBUS.generateNextId();
-        System.out.println(newId);
-        txtID.setText(newId);
+        txtID.setText(newId);  
     }
+    
+    public boolean Validation(){
+        // Create DAO instance for duplicate checks
+        com.pharmacy.app.DAO.EmployeeDAO employeeDAO = new com.pharmacy.app.DAO.EmployeeDAO();    
+        
+        // Validate NAME (required)
+        String nameError = EmployeeValidation.validateRequired(txtName.getText(), "Họ và Tên");
+        if (!nameError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, nameError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtName.requestFocus();
+            return false;
+        }
+        // Validate PHONE (required)
+        String phoneError = EmployeeValidation.validateRequired(txtName.getText(), "Số điện thoại");
+        if (!phoneError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, phoneError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtName.requestFocus();
+            return false;
+        }
+        
+        // Validate phone format
+        String phoneFormatError = EmployeeValidation.validatePhone(txtPhone.getText());
+        if (!phoneFormatError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, phoneFormatError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtPhone.requestFocus();
+            return false;
+        }
 
+        // Check if phone already exists
+        String phoneExistsError = EmployeeValidation.validatePhoneExists(txtPhone.getText(), employeeDAO);
+        if (!phoneExistsError.isEmpty()) {
+            JOptionPane.showMessageDialog(this, phoneExistsError, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txtPhone.requestFocus();
+            return false;
+        }
+        return true;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -203,19 +245,16 @@ public class AddCustomer extends javax.swing.JDialog {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        String name = txtName.getText();
-        String phone = txtPhone.getText();
-        
-        if (name.isEmpty() || phone.isEmpty()){
-            JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin!");
+        if (!Validation()){
             return ;
         }
+        String name = txtName.getText();
+        String phone = txtPhone.getText();      
         
         CustomerDTO customer = new CustomerDTO();
         customer.setName(name);
         customer.setPhone(phone);
-        
-        System.out.println("Saving supplier: " + customer.getName() + ", " + customer.getPhone());
+     
         boolean success = customerBUS.addCustomer(customer);
         
         if (success){
