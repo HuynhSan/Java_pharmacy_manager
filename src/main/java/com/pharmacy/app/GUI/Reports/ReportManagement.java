@@ -738,9 +738,19 @@ public class ReportManagement extends javax.swing.JPanel {
         lblInvoiceTotalValue = new javax.swing.JLabel();
         pnlInvoiceChart = new javax.swing.JPanel();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+        setLayout(new java.awt.BorderLayout());
+
+        tpReports.setBackground(new java.awt.Color(255, 255, 255));
+
+        pnlRevenue.setBackground(new java.awt.Color(255, 255, 255));
+        pnlRevenue.setLayout(new javax.swing.BoxLayout(pnlRevenue, javax.swing.BoxLayout.Y_AXIS));
+
+        pnlRevenueFilter.setBackground(new java.awt.Color(255, 255, 255));
         pnlRevenueFilter.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lọc theo thời gian", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
         pnlRevenueFilter.setLayout(new java.awt.BorderLayout());
 
+        pnlRevenueRadio.setBackground(new java.awt.Color(255, 255, 255));
         pnlRevenueRadio.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 25, 5));
 
         revenueRadioDay.setText("Theo ngày");
@@ -757,8 +767,10 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlRevenueFilter.add(pnlRevenueRadio, java.awt.BorderLayout.NORTH);
 
+        pnlRevenueControls.setBackground(new java.awt.Color(255, 255, 255));
         pnlRevenueControls.setLayout(new java.awt.CardLayout());
 
+        pnlRevenueDay.setBackground(new java.awt.Color(255, 255, 255));
         pnlRevenueDay.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 5));
 
         lblRevenueCurrentDate.setText("Ngày hiện tại:");
@@ -770,6 +782,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlRevenueControls.add(pnlRevenueDay, "day");
 
+        pnlRevenueMonth.setBackground(new java.awt.Color(255, 255, 255));
         pnlRevenueMonth.setPreferredSize(new java.awt.Dimension(597, 40));
         pnlRevenueMonth.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 5));
 
@@ -787,6 +800,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlRevenueControls.add(pnlRevenueMonth, "month");
 
+        pnlRevenueYear.setBackground(new java.awt.Color(255, 255, 255));
         pnlRevenueYear.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 5));
 
         lblRevenueYear.setText("Năm:");
@@ -797,6 +811,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlRevenueControls.add(pnlRevenueYear, "year");
 
+        pnlRevenueCustom.setBackground(new java.awt.Color(255, 255, 255));
         pnlRevenueCustom.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 5));
 
         lblRevenueStartDate.setText("Từ ngày:");
@@ -817,6 +832,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlRevenueFilter.add(pnlRevenueControls, java.awt.BorderLayout.CENTER);
 
+        pnlRevenueButtons.setBackground(new java.awt.Color(255, 255, 255));
         pnlRevenueButtons.setPreferredSize(new java.awt.Dimension(303, 33));
         pnlRevenueButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 5));
 
@@ -836,11 +852,16 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlRevenueFilter.add(pnlRevenueButtons, java.awt.BorderLayout.SOUTH);
 
+        pnlRevenue.add(pnlRevenueFilter);
+
+        pnlRevenueData.setBackground(new java.awt.Color(255, 255, 255));
         pnlRevenueData.setLayout(new java.awt.BorderLayout());
 
-        pnlRevenueTableAndSummary.setPreferredSize(new java.awt.Dimension(320, 305));
+        pnlRevenueTableAndSummary.setBackground(new java.awt.Color(255, 255, 255));
+        pnlRevenueTableAndSummary.setPreferredSize(new java.awt.Dimension(500, 305));
         pnlRevenueTableAndSummary.setLayout(new java.awt.BorderLayout());
 
+        pnlRevenueTable.setBackground(new java.awt.Color(255, 255, 255));
         pnlRevenueTable.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bảng doanh thu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
         pnlRevenueTable.setLayout(new java.awt.BorderLayout());
 
@@ -863,6 +884,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlRevenueTableAndSummary.add(pnlRevenueTable, java.awt.BorderLayout.CENTER);
 
+        pnlRevenueSummary.setBackground(new java.awt.Color(255, 255, 255));
         pnlRevenueSummary.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
 
         lblRevenueTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -878,6 +900,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlRevenueData.add(pnlRevenueTableAndSummary, java.awt.BorderLayout.WEST);
 
+        pnlRevenueChart.setBackground(new java.awt.Color(255, 255, 255));
         pnlRevenueChart.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Biểu đồ doanh thu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
         javax.swing.GroupLayout pnlRevenueChartLayout = new javax.swing.GroupLayout(pnlRevenueChart);
@@ -893,31 +916,18 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlRevenueData.add(pnlRevenueChart, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout pnlRevenueLayout = new javax.swing.GroupLayout(pnlRevenue);
-        pnlRevenue.setLayout(pnlRevenueLayout);
-        pnlRevenueLayout.setHorizontalGroup(
-            pnlRevenueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlRevenueLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlRevenueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlRevenueFilter, javax.swing.GroupLayout.DEFAULT_SIZE, 704, Short.MAX_VALUE)
-                    .addComponent(pnlRevenueData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(8, Short.MAX_VALUE))
-        );
-        pnlRevenueLayout.setVerticalGroup(
-            pnlRevenueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlRevenueLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(pnlRevenueFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(pnlRevenueData, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))
-        );
+        pnlRevenue.add(pnlRevenueData);
 
         tpReports.addTab("Thống kê doanh thu", pnlRevenue);
 
+        pnlProducts.setBackground(new java.awt.Color(255, 255, 255));
+        pnlProducts.setLayout(new javax.swing.BoxLayout(pnlProducts, javax.swing.BoxLayout.Y_AXIS));
+
+        pnlProductFilter.setBackground(new java.awt.Color(255, 255, 255));
         pnlProductFilter.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lọc theo thời gian", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
         pnlProductFilter.setLayout(new java.awt.BorderLayout());
 
+        pnlProductRadio.setBackground(new java.awt.Color(255, 255, 255));
         pnlProductRadio.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 25, 5));
 
         productRadioMonth.setText("Theo tháng");
@@ -928,8 +938,10 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlProductFilter.add(pnlProductRadio, java.awt.BorderLayout.NORTH);
 
+        pnlPoductControls.setBackground(new java.awt.Color(255, 255, 255));
         pnlPoductControls.setLayout(new java.awt.CardLayout());
 
+        pnlProductMonth.setBackground(new java.awt.Color(255, 255, 255));
         pnlProductMonth.setPreferredSize(new java.awt.Dimension(597, 40));
         pnlProductMonth.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 5));
 
@@ -947,6 +959,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlPoductControls.add(pnlProductMonth, "month");
 
+        pnlProductYear.setBackground(new java.awt.Color(255, 255, 255));
         pnlProductYear.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 5));
 
         lblProductYear.setText("Năm:");
@@ -959,6 +972,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlProductFilter.add(pnlPoductControls, java.awt.BorderLayout.CENTER);
 
+        pnlProductButtons.setBackground(new java.awt.Color(255, 255, 255));
         pnlProductButtons.setPreferredSize(new java.awt.Dimension(303, 33));
         pnlProductButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 5));
 
@@ -978,11 +992,16 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlProductFilter.add(pnlProductButtons, java.awt.BorderLayout.SOUTH);
 
+        pnlProducts.add(pnlProductFilter);
+
+        pnlProductData.setBackground(new java.awt.Color(255, 255, 255));
         pnlProductData.setLayout(new java.awt.BorderLayout());
 
-        pnlProductTableAndSummary.setPreferredSize(new java.awt.Dimension(320, 305));
+        pnlProductTableAndSummary.setBackground(new java.awt.Color(255, 255, 255));
+        pnlProductTableAndSummary.setPreferredSize(new java.awt.Dimension(500, 305));
         pnlProductTableAndSummary.setLayout(new java.awt.BorderLayout());
 
+        pnlProductTable.setBackground(new java.awt.Color(255, 255, 255));
         pnlProductTable.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sản phẩm bán chạy", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
         pnlProductTable.setLayout(new java.awt.BorderLayout());
 
@@ -1005,6 +1024,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlProductTableAndSummary.add(pnlProductTable, java.awt.BorderLayout.CENTER);
 
+        pnlProductSummary.setBackground(new java.awt.Color(255, 255, 255));
         pnlProductSummary.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
 
         lblProductTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -1020,6 +1040,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlProductData.add(pnlProductTableAndSummary, java.awt.BorderLayout.WEST);
 
+        pnlProductChart.setBackground(new java.awt.Color(255, 255, 255));
         pnlProductChart.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Biểu đồ sản phẩm bán chạy", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
         javax.swing.GroupLayout pnlProductChartLayout = new javax.swing.GroupLayout(pnlProductChart);
@@ -1035,38 +1056,18 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlProductData.add(pnlProductChart, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout pnlProductsLayout = new javax.swing.GroupLayout(pnlProducts);
-        pnlProducts.setLayout(pnlProductsLayout);
-        pnlProductsLayout.setHorizontalGroup(
-            pnlProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlProductsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlProductFilter, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(pnlProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProductsLayout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlProductData, javax.swing.GroupLayout.PREFERRED_SIZE, 707, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
-        pnlProductsLayout.setVerticalGroup(
-            pnlProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlProductsLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(pnlProductFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(343, Short.MAX_VALUE))
-            .addGroup(pnlProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlProductsLayout.createSequentialGroup()
-                    .addContainerGap(156, Short.MAX_VALUE)
-                    .addComponent(pnlProductData, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
-        );
+        pnlProducts.add(pnlProductData);
 
         tpReports.addTab("Thống kê sản phẩm", pnlProducts);
 
+        pnlInvoices.setBackground(new java.awt.Color(255, 255, 255));
+        pnlInvoices.setLayout(new javax.swing.BoxLayout(pnlInvoices, javax.swing.BoxLayout.Y_AXIS));
+
+        pnlInvoiceFilter.setBackground(new java.awt.Color(255, 255, 255));
         pnlInvoiceFilter.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lọc theo thời gian", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
         pnlInvoiceFilter.setLayout(new java.awt.BorderLayout());
 
+        pnlInvoiceRadio.setBackground(new java.awt.Color(255, 255, 255));
         pnlInvoiceRadio.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 25, 5));
 
         invoiceRadioDay.setText("Theo ngày");
@@ -1083,8 +1084,10 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlInvoiceFilter.add(pnlInvoiceRadio, java.awt.BorderLayout.NORTH);
 
+        pnlInvoiceControls.setBackground(new java.awt.Color(255, 255, 255));
         pnlInvoiceControls.setLayout(new java.awt.CardLayout());
 
+        pnlInvoiceDay.setBackground(new java.awt.Color(255, 255, 255));
         pnlInvoiceDay.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 5));
 
         lblInvoiceCurrentDate.setText("Ngày hiện tại:");
@@ -1096,6 +1099,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlInvoiceControls.add(pnlInvoiceDay, "day");
 
+        pnlInvoiceMonth.setBackground(new java.awt.Color(255, 255, 255));
         pnlInvoiceMonth.setPreferredSize(new java.awt.Dimension(597, 40));
         pnlInvoiceMonth.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 5));
 
@@ -1113,6 +1117,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlInvoiceControls.add(pnlInvoiceMonth, "month");
 
+        pnlInvoiceYear.setBackground(new java.awt.Color(255, 255, 255));
         pnlInvoiceYear.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 5));
 
         lblInvoiceYear.setText("Năm:");
@@ -1123,6 +1128,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlInvoiceControls.add(pnlInvoiceYear, "year");
 
+        pnlInvoiceCustom.setBackground(new java.awt.Color(255, 255, 255));
         pnlInvoiceCustom.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 5));
 
         lblInvoiceStartDate.setText("Từ ngày:");
@@ -1143,6 +1149,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlInvoiceFilter.add(pnlInvoiceControls, java.awt.BorderLayout.CENTER);
 
+        pnlInvoiceButtons.setBackground(new java.awt.Color(255, 255, 255));
         pnlInvoiceButtons.setPreferredSize(new java.awt.Dimension(303, 33));
         pnlInvoiceButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 5));
 
@@ -1162,11 +1169,16 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlInvoiceFilter.add(pnlInvoiceButtons, java.awt.BorderLayout.SOUTH);
 
+        pnlInvoices.add(pnlInvoiceFilter);
+
+        pnlInvoiceData.setBackground(new java.awt.Color(255, 255, 255));
         pnlInvoiceData.setLayout(new java.awt.BorderLayout());
 
-        pnlInvoiceTableAndSummary.setPreferredSize(new java.awt.Dimension(320, 305));
+        pnlInvoiceTableAndSummary.setBackground(new java.awt.Color(255, 255, 255));
+        pnlInvoiceTableAndSummary.setPreferredSize(new java.awt.Dimension(500, 305));
         pnlInvoiceTableAndSummary.setLayout(new java.awt.BorderLayout());
 
+        pnlInvoiceTable.setBackground(new java.awt.Color(255, 255, 255));
         pnlInvoiceTable.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thống kê hóa đơn", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
         pnlInvoiceTable.setLayout(new java.awt.BorderLayout());
 
@@ -1189,6 +1201,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlInvoiceTableAndSummary.add(pnlInvoiceTable, java.awt.BorderLayout.CENTER);
 
+        pnlInvoiceSummary.setBackground(new java.awt.Color(255, 255, 255));
         pnlInvoiceSummary.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
 
         lblInvoiceTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -1204,6 +1217,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlInvoiceData.add(pnlInvoiceTableAndSummary, java.awt.BorderLayout.WEST);
 
+        pnlInvoiceChart.setBackground(new java.awt.Color(255, 255, 255));
         pnlInvoiceChart.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Biểu đồ doanh thu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
         javax.swing.GroupLayout pnlInvoiceChartLayout = new javax.swing.GroupLayout(pnlInvoiceChart);
@@ -1219,47 +1233,11 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlInvoiceData.add(pnlInvoiceChart, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout pnlInvoicesLayout = new javax.swing.GroupLayout(pnlInvoices);
-        pnlInvoices.setLayout(pnlInvoicesLayout);
-        pnlInvoicesLayout.setHorizontalGroup(
-            pnlInvoicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlInvoicesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlInvoiceFilter, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(pnlInvoicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlInvoicesLayout.createSequentialGroup()
-                    .addGap(7, 7, 7)
-                    .addComponent(pnlInvoiceData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(7, 7, 7)))
-        );
-        pnlInvoicesLayout.setVerticalGroup(
-            pnlInvoicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlInvoicesLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(pnlInvoiceFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(342, Short.MAX_VALUE))
-            .addGroup(pnlInvoicesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlInvoicesLayout.createSequentialGroup()
-                    .addContainerGap(157, Short.MAX_VALUE)
-                    .addComponent(pnlInvoiceData, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
-        );
+        pnlInvoices.add(pnlInvoiceData);
 
         tpReports.addTab("Thống kê hóa đơn", pnlInvoices);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tpReports, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tpReports, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 20, Short.MAX_VALUE))
-        );
+        add(tpReports, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRevenueApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevenueApplyActionPerformed
@@ -1317,9 +1295,7 @@ public class ReportManagement extends javax.swing.JPanel {
     private javax.swing.JLabel lblRevenueMonthYear;
     private javax.swing.JLabel lblRevenueStartDate;
     private javax.swing.JLabel lblRevenueTotal;
-    private javax.swing.JLabel lblRevenueTotal1;
     private javax.swing.JLabel lblRevenueTotalValue;
-    private javax.swing.JLabel lblRevenueTotalValue1;
     private javax.swing.JLabel lblRevenueYear;
     private javax.swing.JPanel pnlInvoiceButtons;
     private javax.swing.JPanel pnlInvoiceChart;
@@ -1350,21 +1326,16 @@ public class ReportManagement extends javax.swing.JPanel {
     private javax.swing.JPanel pnlRevenue;
     private javax.swing.JPanel pnlRevenueButtons;
     private javax.swing.JPanel pnlRevenueChart;
-    private javax.swing.JPanel pnlRevenueChart1;
     private javax.swing.JPanel pnlRevenueControls;
     private javax.swing.JPanel pnlRevenueCustom;
     private javax.swing.JPanel pnlRevenueData;
-    private javax.swing.JPanel pnlRevenueData1;
     private javax.swing.JPanel pnlRevenueDay;
     private javax.swing.JPanel pnlRevenueFilter;
     private javax.swing.JPanel pnlRevenueMonth;
     private javax.swing.JPanel pnlRevenueRadio;
     private javax.swing.JPanel pnlRevenueSummary;
-    private javax.swing.JPanel pnlRevenueSummary1;
     private javax.swing.JPanel pnlRevenueTable;
-    private javax.swing.JPanel pnlRevenueTable1;
     private javax.swing.JPanel pnlRevenueTableAndSummary;
-    private javax.swing.JPanel pnlRevenueTableAndSummary1;
     private javax.swing.JPanel pnlRevenueYear;
     private javax.swing.JRadioButton productRadioMonth;
     private javax.swing.JRadioButton productRadioYear;
@@ -1378,11 +1349,9 @@ public class ReportManagement extends javax.swing.JPanel {
     private javax.swing.JScrollPane scrollInvoices;
     private javax.swing.JScrollPane scrollProduct;
     private javax.swing.JScrollPane scrollRevenue;
-    private javax.swing.JScrollPane scrollRevenue1;
     private javax.swing.JTable tblInvoices;
     private javax.swing.JTable tblProducts;
     private javax.swing.JTable tblRevenue;
-    private javax.swing.JTable tblRevenue1;
     private javax.swing.JTabbedPane tpReports;
     // End of variables declaration//GEN-END:variables
 }

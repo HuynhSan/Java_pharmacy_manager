@@ -34,11 +34,12 @@ import javax.swing.table.JTableHeader;
 
 /**
  *
- * @aut
-
+ * @author LENOVO
+ */
+public final class Invoices extends javax.swing.JPanel {
     private final SupplierInvoicesDAO supInvoiceDAO = new SupplierInvoicesDAO();
-    private SuplierInvoicesBUS supInvo    priate 
-
+    private SuplierInvoicesBUS supInvoiceBUS;
+    private SuplierInvoiceDetailsBUS supInvoiceDetailsBUS;
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private PurchaseOrderBUS poBUS = new PurchaseOrderBUS();
@@ -143,17 +144,18 @@ import javax.swing.table.JTableHeader;
             });
         }
     }
-
+  
     private void centerTableContent(JTable table) {
         // Căn giữa tiêu đề
         JTableHeader header = table.getTableHeader();
         DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
         headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-            Defa
+        // Căn giữa nội dung
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-    
-
+        for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
@@ -167,10 +169,9 @@ import javax.swing.table.JTableHeader;
             if (value != null) {
                 try {
                     total += Double.parseDouble(value.toString());
-     
-
-               
-
+                } catch (NumberFormatException e) {
+                    System.out.println("Không thể chuyển thành tiền dòng " + i + ": " + value);
+                }
             }
         }
         return total;
@@ -297,13 +298,13 @@ import javax.swing.table.JTableHeader;
         });
         newinvoiceTbl.setRowHeight(30);
         newinvoiceTbl.getTableHeader().setReorderingAllowed(false);
-        newinv
+        newinvoiceTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                newinvoiceTblMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(newinvoiceTbl);
 
-        newinvoiceTblMouseClicked(evt);
-        
-    
-
-    
         jComboBox5.setEditable(true);
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo đơn", "Tên người tạo", "Nhà cung cấp" }));
 
@@ -435,8 +436,8 @@ import javax.swing.table.JTableHeader;
                 tbInvoiceHistoryMouseClicked(evt);
             }
         });
+        jScrollPane1.setViewportView(tbInvoiceHistory);
 
-    
         refreshBtn1.setText("TẢI LẠI");
         refreshBtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -521,13 +522,13 @@ import javax.swing.table.JTableHeader;
         });
         tbSupInvoiceDetail.setPreferredSize(new java.awt.Dimension(400, 400));
         tbSupInvoiceDetail.setRowHeight(30);
-        jScrol
-
-    tbSupInvoiceDetail.getColumnModel().getColumn(
-        pInvoiceDetal.getColumnMod
-    t
-
-    tbSupInvoiceDetail.getColumnModel().getColumn(4).setPreferredWidth(10);
+        jScrollPane2.setViewportView(tbSupInvoiceDetail);
+        if (tbSupInvoiceDetail.getColumnModel().getColumnCount() > 0) {
+            tbSupInvoiceDetail.getColumnModel().getColumn(0).setPreferredWidth(1);
+            tbSupInvoiceDetail.getColumnModel().getColumn(1).setPreferredWidth(5);
+            tbSupInvoiceDetail.getColumnModel().getColumn(2).setPreferredWidth(5);
+            tbSupInvoiceDetail.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tbSupInvoiceDetail.getColumnModel().getColumn(4).setPreferredWidth(10);
             tbSupInvoiceDetail.getColumnModel().getColumn(5).setPreferredWidth(10);
             tbSupInvoiceDetail.getColumnModel().getColumn(6).setPreferredWidth(10);
         }

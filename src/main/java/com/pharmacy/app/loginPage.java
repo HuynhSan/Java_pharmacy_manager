@@ -5,6 +5,9 @@
 package com.pharmacy.app;
 
 import com.pharmacy.app.DTO.SessionDTO;
+import com.pharmacy.app.GUI.User.UpdateUserPassword;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -38,7 +41,7 @@ public class loginPage extends javax.swing.JFrame {
         lblPassword = new javax.swing.JLabel();
         jPasswordField = new javax.swing.JPasswordField();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        txtForgetPassword = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -123,16 +126,16 @@ public class loginPage extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(300, 30));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 0));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 0, 51));
-        jLabel1.setText("Quên mật khẩu ?");
-        jLabel1.setPreferredSize(new java.awt.Dimension(90, 16));
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        txtForgetPassword.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        txtForgetPassword.setForeground(new java.awt.Color(255, 0, 51));
+        txtForgetPassword.setText("Quên mật khẩu ?");
+        txtForgetPassword.setPreferredSize(new java.awt.Dimension(90, 16));
+        txtForgetPassword.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
+                txtForgetPasswordMouseClicked(evt);
             }
         });
-        jPanel2.add(jLabel1);
+        jPanel2.add(txtForgetPassword);
 
         pnlLogin.add(jPanel2);
 
@@ -233,9 +236,11 @@ public class loginPage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordFieldActionPerformed
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        
-    }//GEN-LAST:event_jLabel1MouseClicked
+    private void txtForgetPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtForgetPasswordMouseClicked
+        UpdateUserPassword  passwordDialog = new UpdateUserPassword((JFrame) SwingUtilities.getWindowAncestor(this), true, true);
+        passwordDialog.setLocationRelativeTo(null);
+        passwordDialog.setVisible(true);
+    }//GEN-LAST:event_txtForgetPasswordMouseClicked
 
     /**
      * @param args the command line arguments
@@ -275,7 +280,6 @@ public class loginPage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField jPasswordField;
@@ -284,6 +288,7 @@ public class loginPage extends javax.swing.JFrame {
     private javax.swing.JLabel lblUsername;
     private javax.swing.JPanel pnlLogin;
     private javax.swing.JPanel pnlLoginFields;
+    private javax.swing.JLabel txtForgetPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }
