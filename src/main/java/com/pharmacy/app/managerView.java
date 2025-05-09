@@ -296,7 +296,7 @@ public class managerView extends javax.swing.JFrame {
             .addGroup(btnLogoutLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(logouticon)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
         btnLogoutLayout.setVerticalGroup(
             btnLogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -649,7 +649,7 @@ public class managerView extends javax.swing.JFrame {
         ContentPn.setLayout(new java.awt.CardLayout());
         getContentPane().add(ContentPn, java.awt.BorderLayout.CENTER);
 
-        setSize(new java.awt.Dimension(1000, 600));
+        setSize(new java.awt.Dimension(918, 600));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 // cardlayout

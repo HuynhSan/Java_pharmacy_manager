@@ -68,6 +68,7 @@ public class AddEmployee extends javax.swing.JDialog {
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(400, 500));
         setResizable(false);
 
         pnlAddEmployeeFields.setLayout(new java.awt.GridBagLayout());

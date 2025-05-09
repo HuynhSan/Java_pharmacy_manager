@@ -279,14 +279,14 @@ public class EmployeeManagement extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 255, 255));
         setToolTipText("");
-        setPreferredSize(new java.awt.Dimension(900, 508));
+        setPreferredSize(new java.awt.Dimension(1200, 800));
         setLayout(new java.awt.BorderLayout());
 
         tpEmployeeManagement.setBackground(new java.awt.Color(255, 255, 255));
-        tpEmployeeManagement.setPreferredSize(new java.awt.Dimension(900, 529));
+        tpEmployeeManagement.setPreferredSize(new java.awt.Dimension(1200, 800));
 
         pnlEmployees.setBackground(new java.awt.Color(255, 255, 255));
-        pnlEmployees.setPreferredSize(new java.awt.Dimension(900, 700));
+        pnlEmployees.setPreferredSize(new java.awt.Dimension(1200, 760));
         pnlEmployees.setLayout(new java.awt.BorderLayout());
 
         pnlEmployee1.setBackground(new java.awt.Color(255, 255, 255));
@@ -349,9 +349,9 @@ public class EmployeeManagement extends javax.swing.JPanel {
         pnlEmployees.add(pnlEmployee1, java.awt.BorderLayout.NORTH);
 
         pnlEmployee2.setBackground(new java.awt.Color(255, 255, 255));
-        pnlEmployee2.setPreferredSize(new java.awt.Dimension(600, 439));
+        pnlEmployee2.setPreferredSize(new java.awt.Dimension(1200, 650));
 
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(1180, 600));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(1180, 760));
 
         tblEmployees.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -378,10 +378,9 @@ public class EmployeeManagement extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tblEmployees.setColumnSelectionAllowed(true);
         tblEmployees.setFocusable(false);
         tblEmployees.setMinimumSize(new java.awt.Dimension(500, 80));
-        tblEmployees.setPreferredSize(new java.awt.Dimension(1180, 600));
+        tblEmployees.setPreferredSize(new java.awt.Dimension(1180, 800));
         tblEmployees.setRowHeight(30);
         tblEmployees.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblEmployees.setShowGrid(true);
@@ -397,13 +396,11 @@ public class EmployeeManagement extends javax.swing.JPanel {
         pnlEmployee2.setLayout(pnlEmployee2Layout);
         pnlEmployee2Layout.setHorizontalGroup(
             pnlEmployee2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1176, Short.MAX_VALUE)
         );
         pnlEmployee2Layout.setVerticalGroup(
             pnlEmployee2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlEmployee2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
         );
 
         pnlEmployees.add(pnlEmployee2, java.awt.BorderLayout.CENTER);
@@ -411,7 +408,7 @@ public class EmployeeManagement extends javax.swing.JPanel {
         tpEmployeeManagement.addTab("Nhân viên", pnlEmployees);
 
         pnlContracts.setBackground(new java.awt.Color(255, 255, 255));
-        pnlContracts.setPreferredSize(new java.awt.Dimension(900, 500));
+        pnlContracts.setPreferredSize(new java.awt.Dimension(1200, 760));
         pnlContracts.setLayout(new java.awt.BorderLayout());
 
         pnlContract1.setBackground(new java.awt.Color(255, 255, 255));
@@ -471,7 +468,7 @@ public class EmployeeManagement extends javax.swing.JPanel {
         pnlContract2.setPreferredSize(new java.awt.Dimension(1180, 500));
 
         jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane2.setPreferredSize(new java.awt.Dimension(1180, 500));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(1180, 760));
 
         tblContracts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -492,7 +489,7 @@ public class EmployeeManagement extends javax.swing.JPanel {
         ));
         tblContracts.setFocusable(false);
         tblContracts.setMinimumSize(new java.awt.Dimension(500, 80));
-        tblContracts.setPreferredSize(new java.awt.Dimension(1180, 500));
+        tblContracts.setPreferredSize(new java.awt.Dimension(1180, 800));
         tblContracts.setRowHeight(30);
         tblContracts.setShowGrid(true);
         tblContracts.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -506,7 +503,7 @@ public class EmployeeManagement extends javax.swing.JPanel {
         pnlContract2.setLayout(pnlContract2Layout);
         pnlContract2Layout.setHorizontalGroup(
             pnlContract2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1176, Short.MAX_VALUE)
         );
         pnlContract2Layout.setVerticalGroup(
             pnlContract2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

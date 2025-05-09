@@ -142,13 +142,13 @@ public final class SupplierList extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(326589, 326589));
         setMinimumSize(new java.awt.Dimension(800, 580));
+        setPreferredSize(new java.awt.Dimension(1160, 800));
         setLayout(new java.awt.BorderLayout(10, 10));
 
         plHeader.setBackground(new java.awt.Color(255, 255, 255));
         plHeader.setMaximumSize(new java.awt.Dimension(3265689, 326589));
         plHeader.setMinimumSize(new java.awt.Dimension(800, 100));
         plHeader.setPreferredSize(new java.awt.Dimension(800, 100));
-        plHeader.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
@@ -156,14 +156,14 @@ public final class SupplierList extends javax.swing.JPanel {
         jLabel1.setText("QUẢN LÝ NHÀ CUNG CẤP");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel1.setMaximumSize(new java.awt.Dimension(326589, 325689));
-        jLabel1.setPreferredSize(new java.awt.Dimension(221, 70));
-        plHeader.add(jLabel1, java.awt.BorderLayout.CENTER);
+        jLabel1.setPreferredSize(new java.awt.Dimension(1200, 40));
+        plHeader.add(jLabel1);
 
         plSearch.setBackground(new java.awt.Color(255, 255, 255));
         plSearch.setMaximumSize(new java.awt.Dimension(325689, 326589));
         plSearch.setMinimumSize(new java.awt.Dimension(450, 70));
-        plSearch.setPreferredSize(new java.awt.Dimension(450, 70));
-        plSearch.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 15));
+        plSearch.setPreferredSize(new java.awt.Dimension(1200, 70));
+        plSearch.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
 
         txtSearch.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         txtSearch.setForeground(new java.awt.Color(153, 153, 153));
@@ -225,20 +225,20 @@ public final class SupplierList extends javax.swing.JPanel {
         });
         plSearch.add(btnExportPDF);
 
-        plHeader.add(plSearch, java.awt.BorderLayout.PAGE_END);
+        plHeader.add(plSearch);
 
         add(plHeader, java.awt.BorderLayout.NORTH);
 
         plSupplierList.setBackground(new java.awt.Color(255, 255, 255));
         plSupplierList.setMaximumSize(new java.awt.Dimension(326589, 326589));
         plSupplierList.setMinimumSize(new java.awt.Dimension(800, 550));
-        plSupplierList.setPreferredSize(new java.awt.Dimension(1160, 550));
+        plSupplierList.setPreferredSize(new java.awt.Dimension(1160, 650));
         plSupplierList.setLayout(new java.awt.BorderLayout());
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setMaximumSize(new java.awt.Dimension(326589, 326589));
         jScrollPane1.setMinimumSize(new java.awt.Dimension(780, 400));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(1180, 550));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(1180, 650));
 
         tbSupplierList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -274,11 +274,11 @@ public final class SupplierList extends javax.swing.JPanel {
         });
         tbSupplierList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tbSupplierList.setFocusable(false);
-        tbSupplierList.setGridColor(new java.awt.Color(211, 211, 211));
+        tbSupplierList.setGridColor(new java.awt.Color(204, 204, 204));
         tbSupplierList.setMaximumSize(new java.awt.Dimension(326589, 326589));
         tbSupplierList.setMinimumSize(new java.awt.Dimension(700, 400));
         tbSupplierList.setName(""); // NOI18N
-        tbSupplierList.setPreferredSize(new java.awt.Dimension(1180, 550));
+        tbSupplierList.setPreferredSize(new java.awt.Dimension(1180, 760));
         tbSupplierList.setRowHeight(30);
         tbSupplierList.setSelectionBackground(new java.awt.Color(51, 51, 51));
         tbSupplierList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);

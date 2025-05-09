@@ -17,7 +17,9 @@ import com.pharmacy.app.DTO.SalesInvoiceDetailDTO;
 import com.pharmacy.app.DTO.SalesInvoicePromotionDTO;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,6 +29,7 @@ import javax.swing.JOptionPane;
 public class PaymentDialog extends javax.swing.JDialog {
 
     private Map<String, CartItemDTO> cartItems;
+    private Set<String> addedPromoIds = new HashSet<>();
     private String userID;
     private String customerID;
     private String promoID;
@@ -80,6 +83,7 @@ public class PaymentDialog extends javax.swing.JDialog {
                    + ", Tên: " + cartitem.getName()
                    + ", SL: " + cartitem.getQuantityFromSpinner()
                    + ", Giá gốc: " + cartitem.getSellPrice()
+                   + ", Mã khuyến mãi: " + cartitem.getPromoId()
                    + ", Tiền khuyến mãi: " + cartitem.getDiscountAmount()
                    + ", Giá sau KM: " + cartitem.getFinalPrice());
             }
@@ -329,6 +333,14 @@ public class PaymentDialog extends javax.swing.JDialog {
 
                     // Cập nhật tồn kho theo batchId và product_Id
                     batchBus.saleInventoryQuantity(item.getBatchId(), item.getProductId(), item.getQuantity());
+                }
+                
+                for (CartItemDTO item : cartItems.values()) {
+                    String promoIdForProduct = item.getPromoId();
+                    if (promoIdForProduct != null && !addedPromoIds.contains(promoIdForProduct)){
+                        salesPromoBUS.add(new SalesInvoicePromotionDTO(invoiceId, promoIdForProduct));
+                        addedPromoIds.add(promoIdForProduct);
+                    }
                 }
 
                 if (customerID != null){

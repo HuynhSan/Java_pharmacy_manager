@@ -143,27 +143,26 @@ public final class CustomerList extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(326589, 326589));
         setMinimumSize(new java.awt.Dimension(986, 578));
-        setPreferredSize(new java.awt.Dimension(986, 550));
+        setPreferredSize(new java.awt.Dimension(1200, 800));
         setLayout(new java.awt.BorderLayout());
 
         plHeader.setBackground(new java.awt.Color(255, 255, 255));
         plHeader.setMaximumSize(new java.awt.Dimension(800, 100));
         plHeader.setMinimumSize(new java.awt.Dimension(800, 100));
-        plHeader.setPreferredSize(new java.awt.Dimension(800, 100));
-        plHeader.setLayout(new java.awt.BorderLayout());
+        plHeader.setPreferredSize(new java.awt.Dimension(800, 110));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("QUẢN LÝ KHÁCH HÀNG");
         jLabel2.setMaximumSize(new java.awt.Dimension(326589, 326589));
-        jLabel2.setPreferredSize(new java.awt.Dimension(207, 70));
-        plHeader.add(jLabel2, java.awt.BorderLayout.CENTER);
+        jLabel2.setPreferredSize(new java.awt.Dimension(1200, 40));
+        plHeader.add(jLabel2);
 
         plSearch.setBackground(new java.awt.Color(255, 255, 255));
         plSearch.setMaximumSize(new java.awt.Dimension(450, 70));
         plSearch.setMinimumSize(new java.awt.Dimension(450, 70));
-        plSearch.setPreferredSize(new java.awt.Dimension(450, 70));
-        plSearch.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 20));
+        plSearch.setPreferredSize(new java.awt.Dimension(1200, 70));
+        plSearch.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
 
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -217,7 +216,7 @@ public final class CustomerList extends javax.swing.JPanel {
         });
         plSearch.add(btnExportPDF);
 
-        plHeader.add(plSearch, java.awt.BorderLayout.PAGE_END);
+        plHeader.add(plSearch);
 
         add(plHeader, java.awt.BorderLayout.NORTH);
 
@@ -229,7 +228,7 @@ public final class CustomerList extends javax.swing.JPanel {
 
         jScrollPane1.setMaximumSize(new java.awt.Dimension(326589, 326589));
         jScrollPane1.setMinimumSize(new java.awt.Dimension(780, 400));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(1180, 400));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(1180, 760));
 
         tbCustomerList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -257,9 +256,10 @@ public final class CustomerList extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tbCustomerList.setGridColor(new java.awt.Color(204, 204, 204));
         tbCustomerList.setMaximumSize(new java.awt.Dimension(326589, 326589));
         tbCustomerList.setMinimumSize(new java.awt.Dimension(780, 400));
-        tbCustomerList.setPreferredSize(new java.awt.Dimension(1180, 400));
+        tbCustomerList.setPreferredSize(new java.awt.Dimension(1180, 800));
         tbCustomerList.setRowHeight(30);
         tbCustomerList.setShowGrid(true);
         tbCustomerList.addMouseListener(new java.awt.event.MouseAdapter() {
