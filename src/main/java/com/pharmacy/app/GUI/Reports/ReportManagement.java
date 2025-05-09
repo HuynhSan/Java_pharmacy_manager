@@ -4,6 +4,7 @@
  */
 package com.pharmacy.app.GUI.Reports;
 
+import com.pharmacy.app.BUS.ProductReportBUS;
 import com.pharmacy.app.BUS.RevenueReportBUS;
 import com.pharmacy.app.Utils.FormatUtils;
 import java.awt.BorderLayout;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.swing.ButtonGroup;
@@ -30,9 +32,12 @@ import org.jfree.data.general.DefaultPieDataset;
  */
 public class ReportManagement extends javax.swing.JPanel {
     private ButtonGroup revenueFilterGroup, productFilterGroup, invoiceFilterGroup;
+    
     // Date format for display
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    
     private final RevenueReportBUS revenueBUS = new RevenueReportBUS();
+    private final ProductReportBUS productBUS = new ProductReportBUS();
     
     // Current revenue data
     private Map<String, BigDecimal> currentRevenueData = new TreeMap<>();
@@ -233,102 +238,6 @@ public class ReportManagement extends javax.swing.JPanel {
     }
     
     /**
-     * Load mock data for demonstration
-     */
-    private void loadMockData() {
-        // Products table mock data
-        DefaultTableModel productModel = (DefaultTableModel) tblProducts.getModel();
-        productModel.setRowCount(0);
-        
-        Object[] prod1 = {"P001", "Paracetamol 500mg", "250", "12,500,000"};
-        Object[] prod2 = {"P002", "Amoxicillin 250mg", "200", "10,000,000"};
-        Object[] prod3 = {"P003", "Omeprazole 20mg", "180", "9,000,000"};
-        Object[] prod4 = {"P004", "Vitamin C 1000mg", "150", "7,500,000"};
-        Object[] prod5 = {"P005", "Ibuprofen 400mg", "120", "6,000,000"};
-        
-        productModel.addRow(prod1);
-        productModel.addRow(prod2);
-        productModel.addRow(prod3);
-        productModel.addRow(prod4);
-        productModel.addRow(prod5);
-        
-        // Invoice table mock data
-        DefaultTableModel invoiceModel = (DefaultTableModel) tblInvoices.getModel();
-        invoiceModel.setRowCount(0);
-        
-        Object[] inv1 = {"08/05/2025", "10", "15,000,000"};
-        Object[] inv2 = {"07/05/2025", "8", "12,500,000"};
-        Object[] inv3 = {"06/05/2025", "12", "18,200,000"};
-        Object[] inv4 = {"05/05/2025", "9", "14,700,000"};
-        Object[] inv5 = {"04/05/2025", "15", "21,300,000"};
-        
-        invoiceModel.addRow(inv1);
-        invoiceModel.addRow(inv2);
-        invoiceModel.addRow(inv3);
-        invoiceModel.addRow(inv4);
-        invoiceModel.addRow(inv5);
-        
-        // Update summary labels
-        lblRevenueTotalValue.setText("81,700,000 VNĐ");
-        lblProductTotalValue.setText("45,000,000 VNĐ");
-        lblInvoiceTotalValue.setText("54 hóa đơn");
-        
-        // Update charts with mock data
-        updateCharts();
-    }
-    
-    /**
-     * Update charts with current data
-     */
-    private void updateCharts() {
-        // Mock data for charts
-        // Product sales chart
-        DefaultPieDataset productDataset = new DefaultPieDataset();
-        productDataset.setValue("Paracetamol 500mg", 250);
-        productDataset.setValue("Amoxicillin 250mg", 200);
-        productDataset.setValue("Omeprazole 20mg", 180);
-        productDataset.setValue("Vitamin C 1000mg", 150);
-        productDataset.setValue("Ibuprofen 400mg", 120);
-        
-        JFreeChart productChart = ChartFactory.createPieChart(
-                "Sản phẩm bán chạy",
-                productDataset,
-                true,
-                true,
-                false
-        );
-        ChartPanel productChartPanel = new ChartPanel(productChart);
-        pnlProductChart.removeAll();
-        pnlProductChart.add(productChartPanel, BorderLayout.CENTER);
-        pnlProductChart.revalidate();
-        pnlProductChart.repaint();
-        
-        // Invoice chart
-        DefaultCategoryDataset invoiceDataset = new DefaultCategoryDataset();
-        invoiceDataset.addValue(10, "Số lượng", "08/05");
-        invoiceDataset.addValue(8, "Số lượng", "07/05");
-        invoiceDataset.addValue(12, "Số lượng", "06/05");
-        invoiceDataset.addValue(9, "Số lượng", "05/05");
-        invoiceDataset.addValue(15, "Số lượng", "04/05");
-        
-        JFreeChart invoiceChart = ChartFactory.createBarChart(
-                "Số hóa đơn theo thời gian",
-                "Thời gian",
-                "Số lượng hóa đơn",
-                invoiceDataset,
-                PlotOrientation.VERTICAL,
-                true,
-                true,
-                false
-        );
-        ChartPanel invoiceChartPanel = new ChartPanel(invoiceChart);
-        pnlInvoiceChart.removeAll();
-        pnlInvoiceChart.add(invoiceChartPanel, BorderLayout.CENTER);
-        pnlInvoiceChart.revalidate();
-        pnlInvoiceChart.repaint();
-    }
-    
-    /**
      * Update revenue view based on selected period type
      */
     private void updateRevenueView(PeriodType type) {
@@ -460,48 +369,14 @@ public class ReportManagement extends javax.swing.JPanel {
      * Apply filter for product statistics
      */
     private void applyProductFilter() {
-        if (productRadioMonth.isSelected()) {
-            // Apply month filter
-            String month = cbProductMonth.getSelectedItem().toString();
-            String year = cbProductYear.getSelectedItem().toString();
-            // In real app, query database with month and year
-        } else if (productRadioYear.isSelected()) {
-            // Apply year filter
-            String year = cbProductYearOnly.getSelectedItem().toString();
-            // In real app, query database with year
-        }
-        // For demo, just refresh the existing mock data
-        updateBestSellingProducts();
-        updateCharts();
+        
     }
     
     /**
      * Apply filter for invoice statistics
      */
     private void applyInvoiceFilter() {
-        if (invoiceRadioDay.isSelected()) {
-            // Apply day filter
-            Date selectedDate = invoiceCurrentDate.getDate();
-            // In real app, query database with this date
-        } else if (invoiceRadioMonth.isSelected()) {
-            // Apply month filter
-            String month = cbInvoiceMonth.getSelectedItem().toString();
-            String year = cbInvoiceYear.getSelectedItem().toString();
-            // In real app, query database with month and year
-        } else if (invoiceRadioYear.isSelected()) {
-            // Apply year filter
-            String year = cbInvoiceYearOnly.getSelectedItem().toString();
-            // In real app, query database with year
-        } else if (invoiceRadioCustom.isSelected()) {
-            // Apply custom date range filter
-            Date startDate = invoiceStartDate.getDate();
-            Date endDate = invoiceEndDate.getDate();
-            // In real app, query database with date range
-        }
         
-        // For demo, just refresh the existing mock data
-        updateInvoiceStatistics();
-        updateCharts();
     }
     
     /**
@@ -635,7 +510,7 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlRevenueChart.revalidate();
         pnlRevenueChart.repaint();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -687,7 +562,7 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlProductRadio = new javax.swing.JPanel();
         productRadioMonth = new javax.swing.JRadioButton();
         productRadioYear = new javax.swing.JRadioButton();
-        pnlPoductControls = new javax.swing.JPanel();
+        pnlProductControls = new javax.swing.JPanel();
         pnlProductMonth = new javax.swing.JPanel();
         lblProductMonth = new javax.swing.JLabel();
         cbProductMonth = new javax.swing.JComboBox<>();
@@ -704,9 +579,6 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlProductTable = new javax.swing.JPanel();
         scrollProduct = new javax.swing.JScrollPane();
         tblProducts = new javax.swing.JTable();
-        pnlProductSummary = new javax.swing.JPanel();
-        lblProductTotal = new javax.swing.JLabel();
-        lblProductTotalValue = new javax.swing.JLabel();
         pnlProductChart = new javax.swing.JPanel();
         pnlInvoices = new javax.swing.JPanel();
         pnlInvoiceFilter = new javax.swing.JPanel();
@@ -948,8 +820,8 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlProductFilter.add(pnlProductRadio, java.awt.BorderLayout.NORTH);
 
-        pnlPoductControls.setBackground(new java.awt.Color(255, 255, 255));
-        pnlPoductControls.setLayout(new java.awt.CardLayout());
+        pnlProductControls.setBackground(new java.awt.Color(255, 255, 255));
+        pnlProductControls.setLayout(new java.awt.CardLayout());
 
         pnlProductMonth.setBackground(new java.awt.Color(255, 255, 255));
         pnlProductMonth.setPreferredSize(new java.awt.Dimension(597, 40));
@@ -966,7 +838,7 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlProductMonth.add(cbProductYear);
 
-        pnlPoductControls.add(pnlProductMonth, "month");
+        pnlProductControls.add(pnlProductMonth, "month");
 
         pnlProductYear.setBackground(new java.awt.Color(255, 255, 255));
         pnlProductYear.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 5));
@@ -976,9 +848,9 @@ public class ReportManagement extends javax.swing.JPanel {
 
         pnlProductYear.add(cbProductYearOnly);
 
-        pnlPoductControls.add(pnlProductYear, "year");
+        pnlProductControls.add(pnlProductYear, "year");
 
-        pnlProductFilter.add(pnlPoductControls, java.awt.BorderLayout.CENTER);
+        pnlProductFilter.add(pnlProductControls, java.awt.BorderLayout.CENTER);
 
         pnlProductButtons.setBackground(new java.awt.Color(255, 255, 255));
         pnlProductButtons.setPreferredSize(new java.awt.Dimension(303, 33));
@@ -1022,13 +894,13 @@ public class ReportManagement extends javax.swing.JPanel {
 
         tblProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Mã SP", "Tên SP", "Số lượng bán", "Doanh thu (VNĐ)"
+                "Mã SP", "Tên SP", "Số lượng bán"
             }
         ));
         scrollProduct.setViewportView(tblProducts);
@@ -1036,20 +908,6 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlProductTable.add(scrollProduct, java.awt.BorderLayout.CENTER);
 
         pnlProductTableAndSummary.add(pnlProductTable, java.awt.BorderLayout.CENTER);
-
-        pnlProductSummary.setBackground(new java.awt.Color(255, 255, 255));
-        pnlProductSummary.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
-
-        lblProductTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblProductTotal.setText("Tổng doanh thu SP:");
-        pnlProductSummary.add(lblProductTotal);
-
-        lblProductTotalValue.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblProductTotalValue.setForeground(new java.awt.Color(0, 102, 204));
-        lblProductTotalValue.setText("jLabel2");
-        pnlProductSummary.add(lblProductTotalValue);
-
-        pnlProductTableAndSummary.add(pnlProductSummary, java.awt.BorderLayout.SOUTH);
 
         pnlProductData.add(pnlProductTableAndSummary, java.awt.BorderLayout.WEST);
 
@@ -1353,8 +1211,6 @@ public class ReportManagement extends javax.swing.JPanel {
     private javax.swing.JLabel lblInvoiceYear;
     private javax.swing.JLabel lblProductMonth;
     private javax.swing.JLabel lblProductMonthYear;
-    private javax.swing.JLabel lblProductTotal;
-    private javax.swing.JLabel lblProductTotalValue;
     private javax.swing.JLabel lblProductYear;
     private javax.swing.JLabel lblRevenueCurrentDate;
     private javax.swing.JLabel lblRevenueEndDate;
@@ -1378,14 +1234,13 @@ public class ReportManagement extends javax.swing.JPanel {
     private javax.swing.JPanel pnlInvoiceTableAndSummary;
     private javax.swing.JPanel pnlInvoiceYear;
     private javax.swing.JPanel pnlInvoices;
-    private javax.swing.JPanel pnlPoductControls;
     private javax.swing.JPanel pnlProductButtons;
     private javax.swing.JPanel pnlProductChart;
+    private javax.swing.JPanel pnlProductControls;
     private javax.swing.JPanel pnlProductData;
     private javax.swing.JPanel pnlProductFilter;
     private javax.swing.JPanel pnlProductMonth;
     private javax.swing.JPanel pnlProductRadio;
-    private javax.swing.JPanel pnlProductSummary;
     private javax.swing.JPanel pnlProductTable;
     private javax.swing.JPanel pnlProductTableAndSummary;
     private javax.swing.JPanel pnlProductYear;
