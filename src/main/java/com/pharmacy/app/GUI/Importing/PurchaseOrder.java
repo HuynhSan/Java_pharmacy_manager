@@ -142,9 +142,8 @@ public class PurchaseOrder extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
@@ -159,6 +158,8 @@ public class PurchaseOrder extends javax.swing.JPanel {
         txtDate = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         txtUserID = new javax.swing.JTextField();
+        jLabel28 = new javax.swing.JLabel();
+        txtcreateID1 = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -166,12 +167,20 @@ public class PurchaseOrder extends javax.swing.JPanel {
         productCbb = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         txtQuantity = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jTextField6 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         saveDeBtn = new javax.swing.JButton();
         deleteDeBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         poTbl = new javax.swing.JTable();
         jPanel14 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jTextField7 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         savePOBtn = new javax.swing.JButton();
         clearBtn = new javax.swing.JButton();
@@ -181,21 +190,25 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel17 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jPanel18 = new javax.swing.JPanel();
-        jScrollpane = new javax.swing.JScrollPane();
-        poListTbl = new javax.swing.JTable();
+        jPanel8 = new javax.swing.JPanel();
         jTextField13 = new javax.swing.JTextField();
         jButton9 = new javax.swing.JButton();
         refreshBtn = new javax.swing.JButton();
+        jScrollpane = new javax.swing.JScrollPane();
+        poListTbl = new javax.swing.JTable();
         jPanel19 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         jPanel21 = new javax.swing.JPanel();
         jscrollpane = new javax.swing.JScrollPane();
         podetailsTbl = new javax.swing.JTable();
-        jLabel22 = new javax.swing.JLabel();
-        txtDateOrder = new javax.swing.JTextField();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        txtDateOrder = new javax.swing.JTextField();
+        jPanel11 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         txtManagerID = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
@@ -214,29 +227,34 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setPreferredSize(new java.awt.Dimension(557, 75));
+        jPanel1.setPreferredSize(new java.awt.Dimension(557, 90));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("LẬP ĐƠN ĐẶT MUA HÀNG");
+        jLabel2.setPreferredSize(new java.awt.Dimension(228, 40));
         jPanel1.add(jLabel2, java.awt.BorderLayout.NORTH);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
+        jPanel5.setPreferredSize(new java.awt.Dimension(944, 50));
+        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 15));
 
         jLabel27.setText("Mã đơn:");
         jPanel5.add(jLabel27);
 
         txtcreateID.setEditable(false);
+        txtcreateID.setPreferredSize(new java.awt.Dimension(64, 30));
         jPanel5.add(txtcreateID);
 
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel11.setText("Nhà cung cấp:");
+        jLabel11.setPreferredSize(new java.awt.Dimension(100, 16));
         jPanel5.add(jLabel11);
 
         supCbb.setEditable(true);
         supCbb.setMinimumSize(new java.awt.Dimension(200, 22));
-        supCbb.setPreferredSize(new java.awt.Dimension(200, 22));
+        supCbb.setPreferredSize(new java.awt.Dimension(200, 30));
         supCbb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 supCbbActionPerformed(evt);
@@ -244,13 +262,18 @@ public class PurchaseOrder extends javax.swing.JPanel {
         });
         jPanel5.add(supCbb);
 
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Ngày lập:");
+        jLabel12.setPreferredSize(new java.awt.Dimension(100, 16));
         jPanel5.add(jLabel12);
 
         txtDate.setEditable(false);
+        txtDate.setBackground(new java.awt.Color(255, 255, 255));
+        txtDate.setText("1/4/2025");
+        txtDate.setBorder(null);
         txtDate.setMaximumSize(new java.awt.Dimension(90, 22));
         txtDate.setMinimumSize(new java.awt.Dimension(90, 22));
-        txtDate.setPreferredSize(new java.awt.Dimension(90, 22));
+        txtDate.setPreferredSize(new java.awt.Dimension(100, 30));
         txtDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDateActionPerformed(evt);
@@ -262,8 +285,11 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel5.add(jLabel13);
 
         txtUserID.setEditable(false);
+        txtUserID.setBackground(new java.awt.Color(255, 255, 255));
+        txtUserID.setText("NV001");
+        txtUserID.setBorder(null);
         txtUserID.setMaximumSize(new java.awt.Dimension(90, 22));
-        txtUserID.setPreferredSize(new java.awt.Dimension(90, 22));
+        txtUserID.setPreferredSize(new java.awt.Dimension(100, 30));
         txtUserID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUserIDActionPerformed(evt);
@@ -271,14 +297,22 @@ public class PurchaseOrder extends javax.swing.JPanel {
         });
         jPanel5.add(txtUserID);
 
+        jLabel28.setText("Mã đơn:");
+        jPanel5.add(jLabel28);
+
+        txtcreateID1.setEditable(false);
+        txtcreateID1.setBackground(new java.awt.Color(255, 255, 255));
+        txtcreateID1.setText("DH001");
+        txtcreateID1.setBorder(null);
+        txtcreateID1.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel5.add(txtcreateID1);
+
         jPanel1.add(jPanel5, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel1, java.awt.BorderLayout.NORTH);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chi tiết đơn đặt hàng",
-                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chi tiết đơn đặt hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
         jPanel2.setPreferredSize(new java.awt.Dimension(450, 363));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -286,14 +320,15 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel13.setLayout(new java.awt.BorderLayout());
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
+        jPanel6.setPreferredSize(new java.awt.Dimension(1077, 50));
+        jPanel6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 10));
 
         jLabel5.setText("Sản phẩm:");
         jPanel6.add(jLabel5);
 
         productCbb.setEditable(true);
-        productCbb.setMinimumSize(new java.awt.Dimension(300, 22));
-        productCbb.setPreferredSize(new java.awt.Dimension(400, 22));
+        productCbb.setMinimumSize(new java.awt.Dimension(200, 22));
+        productCbb.setPreferredSize(new java.awt.Dimension(400, 30));
         productCbb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 productCbbActionPerformed(evt);
@@ -301,25 +336,59 @@ public class PurchaseOrder extends javax.swing.JPanel {
         });
         jPanel6.add(productCbb);
 
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Số lượng:");
+        jLabel6.setPreferredSize(new java.awt.Dimension(100, 16));
         jPanel6.add(jLabel6);
 
-        txtQuantity.addActionListener(new java.awt.event.ActionListener() {
+        txtQuantity.setPreferredSize(new java.awt.Dimension(64, 30));
+        jPanel6.add(txtQuantity);
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("Giá nhập:");
+        jLabel7.setPreferredSize(new java.awt.Dimension(70, 16));
+        jPanel6.add(jLabel7);
+
+        jTextField5.setText("100000");
+        jTextField5.setPreferredSize(new java.awt.Dimension(64, 30));
+        jPanel6.add(jTextField5);
+
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel8.setText("Phần trăm:");
+        jLabel8.setPreferredSize(new java.awt.Dimension(70, 16));
+        jPanel6.add(jLabel8);
+
+        jTextField6.setText("10");
+        jTextField6.setPreferredSize(new java.awt.Dimension(64, 30));
+        jPanel6.add(jTextField6);
+
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel9.setText("Giá bán:");
+        jLabel9.setPreferredSize(new java.awt.Dimension(70, 16));
+        jPanel6.add(jLabel9);
+
+        jTextField3.setEditable(false);
+        jTextField3.setBackground(new java.awt.Color(255, 255, 255));
+        jTextField3.setText("110000");
+        jTextField3.setPreferredSize(new java.awt.Dimension(64, 30));
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtQuantityActionPerformed(evt);
             }
         });
-        jPanel6.add(txtQuantity);
+        jPanel6.add(jTextField3);
 
         jPanel13.add(jPanel6, java.awt.BorderLayout.NORTH);
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel7.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 40, 5));
+        jPanel7.setPreferredSize(new java.awt.Dimension(251, 50));
+        jPanel7.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
 
         saveDeBtn.setBackground(new java.awt.Color(0, 204, 51));
         saveDeBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         saveDeBtn.setForeground(new java.awt.Color(255, 255, 255));
         saveDeBtn.setText("LƯU SẢN PHẨM");
+        saveDeBtn.setPreferredSize(new java.awt.Dimension(130, 30));
         saveDeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveDeBtnActionPerformed(evt);
@@ -331,6 +400,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
         deleteDeBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         deleteDeBtn.setForeground(new java.awt.Color(255, 255, 255));
         deleteDeBtn.setText("XÓA");
+        deleteDeBtn.setPreferredSize(new java.awt.Dimension(72, 30));
         deleteDeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteDeBtnActionPerformed(evt);
@@ -345,18 +415,19 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 202));
 
         poTbl.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "STT", "Mã thuốc", "Tên thuốc", "Số lượng"
-                }) {
-            Class[] types = new Class[] {
-                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            },
+            new String [] {
+                "STT", "Mã thuốc", "Tên thuốc", "Số lượng"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
         });
         poTbl.setRowHeight(30);
@@ -377,123 +448,134 @@ public class PurchaseOrder extends javax.swing.JPanel {
 
         jPanel14.setBackground(new java.awt.Color(255, 255, 255));
         jPanel14.setPreferredSize(new java.awt.Dimension(1041, 34));
-        jPanel14.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 5));
+        jPanel14.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 5));
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel10.setText("TỔNG TIỀN:");
+        jLabel10.setPreferredSize(new java.awt.Dimension(80, 16));
+        jPanel14.add(jLabel10);
+
+        jTextField7.setEditable(false);
+        jTextField7.setBackground(new java.awt.Color(255, 255, 255));
+        jTextField7.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextField7.setText("12300000");
+        jTextField7.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel14.add(jTextField7);
+
         jPanel2.add(jPanel14, java.awt.BorderLayout.SOUTH);
 
         jPanel4.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setPreferredSize(new java.awt.Dimension(1051, 40));
+        jPanel3.setPreferredSize(new java.awt.Dimension(1051, 50));
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
 
         savePOBtn.setBackground(new java.awt.Color(0, 204, 51));
         savePOBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         savePOBtn.setForeground(new java.awt.Color(255, 255, 255));
-        savePOBtn.setText("TẠO");
+        savePOBtn.setText("TẠO ĐƠN");
+        savePOBtn.setPreferredSize(new java.awt.Dimension(100, 30));
         savePOBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 savePOBtnActionPerformed(evt);
             }
         });
+        jPanel3.add(savePOBtn);
 
         clearBtn.setBackground(new java.awt.Color(255, 0, 0));
         clearBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         clearBtn.setForeground(new java.awt.Color(255, 255, 255));
         clearBtn.setText("HỦY BỎ");
+        clearBtn.setPreferredSize(new java.awt.Dimension(75, 30));
         clearBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearBtnActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1014, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(0, 358, Short.MAX_VALUE)
-                                        .addComponent(savePOBtn)
-                                        .addGap(151, 151, 151)
-                                        .addComponent(clearBtn)
-                                        .addGap(0, 358, Short.MAX_VALUE))));
-        jPanel3Layout.setVerticalGroup(
-                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 40, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(0, 8, Short.MAX_VALUE)
-                                        .addGroup(jPanel3Layout
-                                                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(savePOBtn)
-                                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                                        .addGap(1, 1, 1)
-                                                        .addComponent(clearBtn)))
-                                        .addGap(0, 8, Short.MAX_VALUE))));
+        jPanel3.add(clearBtn);
 
         jPanel4.add(jPanel3, java.awt.BorderLayout.SOUTH);
 
         jTabbedPane1.addTab("Tạo đơn mua", jPanel4);
 
         jPanel15.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel15.setPreferredSize(new java.awt.Dimension(1200, 760));
         jPanel15.setLayout(new java.awt.BorderLayout());
 
         jPanel16.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel16.setPreferredSize(new java.awt.Dimension(480, 500));
+        jPanel16.setPreferredSize(new java.awt.Dimension(600, 760));
         jPanel16.setLayout(new java.awt.BorderLayout());
 
         jPanel17.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel17.setPreferredSize(new java.awt.Dimension(479, 40));
+        jPanel17.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 10));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel19.setText("ĐƠN ĐẶT HÀNG");
-
-        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
-        jPanel17.setLayout(jPanel17Layout);
-        jPanel17Layout.setHorizontalGroup(
-                jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
-                                .addContainerGap(173, Short.MAX_VALUE)
-                                .addComponent(jLabel19)
-                                .addGap(164, 164, 164)));
-        jPanel17Layout.setVerticalGroup(
-                jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel19)));
+        jPanel17.add(jLabel19);
 
         jPanel16.add(jPanel17, java.awt.BorderLayout.NORTH);
 
         jPanel18.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách đơn đặt hàng\n",
-                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
+        jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách đơn đặt hàng\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        jPanel18.setPreferredSize(new java.awt.Dimension(480, 700));
+
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel8.setMinimumSize(new java.awt.Dimension(485, 100));
+        jPanel8.setPreferredSize(new java.awt.Dimension(590, 70));
+        jPanel8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 15));
+
+        jTextField13.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jTextField13.setForeground(new java.awt.Color(204, 204, 204));
+        jTextField13.setText("Nhập....");
+        jTextField13.setPreferredSize(new java.awt.Dimension(200, 30));
+        jPanel8.add(jTextField13);
+
+        jButton9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton9.setText("TÌM KIẾM");
+        jPanel8.add(jButton9);
+
+        refreshBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        refreshBtn.setText("TẢI LẠI");
+        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshBtnActionPerformed(evt);
+            }
+        });
+        jPanel8.add(refreshBtn);
+
+        jPanel18.add(jPanel8);
+
+        jScrollpane.setPreferredSize(new java.awt.Dimension(590, 550));
 
         poListTbl.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
-                        { null, null, null, null },
-                        { null, null, null, null },
-                        { null, null, null, null },
-                        { null, null, null, null }
-                },
-                new String[] {
-                        "Mã đơn", "Ngày tạo", "Người tạo", "Trạng thái"
-                }) {
-            Class[] types = new Class[] {
-                    java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Mã đơn", "Ngày tạo", "Người tạo", "Trạng thái"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, false
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
+        poListTbl.setPreferredSize(new java.awt.Dimension(300, 700));
         poListTbl.getTableHeader().setReorderingAllowed(false);
         poListTbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -508,232 +590,174 @@ public class PurchaseOrder extends javax.swing.JPanel {
             poListTbl.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        jTextField13.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jTextField13.setForeground(new java.awt.Color(204, 204, 204));
-        jTextField13.setText("Nhập....");
-
-        jButton9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton9.setText("TÌM KIẾM");
-
-        refreshBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        refreshBtn.setText("TẢI LẠI");
-        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshBtnActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
-        jPanel18.setLayout(jPanel18Layout);
-        jPanel18Layout.setHorizontalGroup(
-                jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel18Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollpane, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(12, Short.MAX_VALUE))
-                        .addGroup(jPanel18Layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 198,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(refreshBtn)
-                                .addGap(44, 44, 44)));
-        jPanel18Layout.setVerticalGroup(
-                jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton9)
-                                        .addComponent(refreshBtn))
-                                .addGap(36, 36, 36)
-                                .addComponent(jScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
-                                .addContainerGap()));
+        jPanel18.add(jScrollpane);
 
         jPanel16.add(jPanel18, java.awt.BorderLayout.CENTER);
 
         jPanel19.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel19.setPreferredSize(new java.awt.Dimension(309, 30));
+        jPanel19.setPreferredSize(new java.awt.Dimension(309, 60));
         jPanel19.setLayout(new java.awt.GridBagLayout());
         jPanel16.add(jPanel19, java.awt.BorderLayout.SOUTH);
 
         jPanel15.add(jPanel16, java.awt.BorderLayout.WEST);
 
         jPanel20.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel20.setPreferredSize(new java.awt.Dimension(550, 760));
         jPanel20.setLayout(new java.awt.BorderLayout());
 
         jLabel21.setBackground(new java.awt.Color(255, 255, 255));
         jLabel21.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel21.setText("CHI TIẾT ĐƠN ĐẶT HÀNG");
+        jLabel21.setPreferredSize(new java.awt.Dimension(221, 40));
         jPanel20.add(jLabel21, java.awt.BorderLayout.NORTH);
 
         jPanel21.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel21.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chi tiết đơn đặt hàng",
-                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
-        jPanel21.setPreferredSize(new java.awt.Dimension(516, 445));
+        jPanel21.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chi tiết đơn đặt hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        jPanel21.setPreferredSize(new java.awt.Dimension(550, 445));
+
+        jscrollpane.setPreferredSize(new java.awt.Dimension(540, 650));
 
         podetailsTbl.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
-                        { null, null, null },
-                        { null, null, null },
-                        { null, null, null },
-                        { null, null, null }
-                },
-                new String[] {
-                        "STT", "Mã thuốc", "Số lượng"
-                }) {
-            Class[] types = new Class[] {
-                    java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "STT", "Mã thuốc", "Số lượng"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
         });
+        podetailsTbl.setPreferredSize(new java.awt.Dimension(540, 650));
         jscrollpane.setViewportView(podetailsTbl);
 
-        jLabel22.setText("Ngày lập:");
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel9.setPreferredSize(new java.awt.Dimension(500, 100));
+        jPanel9.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 5));
 
-        txtDateOrder.setEditable(false);
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel10.setPreferredSize(new java.awt.Dimension(500, 40));
 
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel23.setText("Mã đơn:");
+        jLabel23.setPreferredSize(new java.awt.Dimension(80, 16));
+        jPanel10.add(jLabel23);
 
         txtID.setEditable(false);
+        txtID.setBackground(new java.awt.Color(255, 255, 255));
+        txtID.setBorder(null);
+        txtID.setFocusable(false);
+        txtID.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel10.add(txtID);
 
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel22.setText("Ngày lập:");
+        jLabel22.setPreferredSize(new java.awt.Dimension(100, 16));
+        jPanel10.add(jLabel22);
+
+        txtDateOrder.setEditable(false);
+        txtDateOrder.setBackground(new java.awt.Color(255, 255, 255));
+        txtDateOrder.setBorder(null);
+        txtDateOrder.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel10.add(txtDateOrder);
+
+        jPanel9.add(jPanel10);
+
+        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel11.setPreferredSize(new java.awt.Dimension(500, 40));
+
+        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel24.setText("Nhà cung cấp:");
+        jLabel24.setPreferredSize(new java.awt.Dimension(80, 16));
+        jPanel11.add(jLabel24);
 
         txtManagerID.setEditable(false);
+        txtManagerID.setBackground(new java.awt.Color(255, 255, 255));
+        txtManagerID.setBorder(null);
+        txtManagerID.setFocusable(false);
+        txtManagerID.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel11.add(txtManagerID);
 
+        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel25.setText("Người lập:");
+        jLabel25.setPreferredSize(new java.awt.Dimension(100, 16));
+        jPanel11.add(jLabel25);
 
         txtSup.setEditable(false);
+        txtSup.setBackground(new java.awt.Color(255, 255, 255));
+        txtSup.setBorder(null);
+        txtSup.setPreferredSize(new java.awt.Dimension(100, 30));
         txtSup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSupActionPerformed(evt);
             }
         });
+        jPanel11.add(txtSup);
+
+        jPanel9.add(jPanel11);
 
         javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
         jPanel21.setLayout(jPanel21Layout);
         jPanel21Layout.setHorizontalGroup(
-                jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel21Layout.createSequentialGroup()
-                                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel21Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(jscrollpane))
-                                        .addGroup(jPanel21Layout.createSequentialGroup()
-                                                .addGap(25, 25, 25)
-                                                .addGroup(jPanel21Layout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(jPanel21Layout.createSequentialGroup()
-                                                                .addComponent(jLabel23)
-                                                                .addGap(30, 30, 30)
-                                                                .addComponent(txtID,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(jPanel21Layout.createSequentialGroup()
-                                                                .addComponent(jLabel25)
-                                                                .addGap(18, 18, 18)
-                                                                .addComponent(txtManagerID,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                        139, Short.MAX_VALUE)
-                                                .addGroup(jPanel21Layout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel24)
-                                                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(jPanel21Layout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(txtDateOrder,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(txtSup, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(69, 69, 69)))
-                                .addContainerGap()));
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel21Layout.createSequentialGroup()
+                        .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addComponent(jscrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 584, Short.MAX_VALUE)))
+        );
         jPanel21Layout.setVerticalGroup(
-                jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel24)
-                                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel23)
-                                        .addComponent(txtSup, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 22,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtDateOrder, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel25)
-                                        .addComponent(txtManagerID, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jscrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-                                .addContainerGap()));
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jscrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         jPanel20.add(jPanel21, java.awt.BorderLayout.CENTER);
 
         jPanel22.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel22.setPreferredSize(new java.awt.Dimension(309, 30));
-        jPanel22.setLayout(new java.awt.GridBagLayout());
+        jPanel22.setPreferredSize(new java.awt.Dimension(309, 60));
+        jPanel22.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 10));
 
         approveBtn.setBackground(new java.awt.Color(0, 204, 51));
         approveBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         approveBtn.setForeground(new java.awt.Color(255, 255, 255));
         approveBtn.setText("DUYỆT ĐƠN");
         approveBtn.setEnabled(false);
+        approveBtn.setPreferredSize(new java.awt.Dimension(120, 30));
         approveBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 approveBtnActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 60, 0, 0);
-        jPanel22.add(approveBtn, gridBagConstraints);
+        jPanel22.add(approveBtn);
 
         cancelBtn.setBackground(new java.awt.Color(255, 0, 0));
         cancelBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         cancelBtn.setForeground(new java.awt.Color(255, 255, 255));
         cancelBtn.setText("HỦY ĐƠN");
         cancelBtn.setEnabled(false);
+        cancelBtn.setPreferredSize(new java.awt.Dimension(90, 30));
         cancelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtnActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 53, 0, 65);
-        jPanel22.add(cancelBtn, gridBagConstraints);
+        jPanel22.add(cancelBtn);
 
         jPanel20.add(jPanel22, java.awt.BorderLayout.SOUTH);
 
@@ -1023,6 +1047,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
     private javax.swing.JButton clearBtn;
     private javax.swing.JButton deleteDeBtn;
     private javax.swing.JButton jButton9;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -1034,9 +1059,15 @@ public class PurchaseOrder extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
@@ -1053,11 +1084,17 @@ public class PurchaseOrder extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollpane;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField13;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     private javax.swing.JScrollPane jscrollpane;
     private javax.swing.JTable poListTbl;
     private javax.swing.JTable poTbl;
@@ -1075,5 +1112,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
     private javax.swing.JTextField txtSup;
     private javax.swing.JTextField txtUserID;
     private javax.swing.JTextField txtcreateID;
+    private javax.swing.JTextField txtcreateID1;
     // End of variables declaration//GEN-END:variables
 }

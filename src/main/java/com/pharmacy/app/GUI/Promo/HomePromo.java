@@ -221,6 +221,7 @@ public class HomePromo extends javax.swing.JPanel{
         tblPromo.setMinimumSize(new java.awt.Dimension(700, 450));
         tblPromo.setPreferredSize(new java.awt.Dimension(1200, 1000));
         tblPromo.setRowHeight(30);
+        tblPromo.setSelectionBackground(new java.awt.Color(204, 204, 204));
         tblPromo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         tblPromo.setShowGrid(true);
         tblPromo.addMouseListener(new java.awt.event.MouseAdapter() {
