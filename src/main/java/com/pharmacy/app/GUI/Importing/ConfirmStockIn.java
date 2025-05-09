@@ -57,6 +57,8 @@ public class ConfirmStockIn extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel6 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -76,12 +78,22 @@ public class ConfirmStockIn extends javax.swing.JDialog {
         jPanel5 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtSum = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(700, 113));
         setPreferredSize(new java.awt.Dimension(1200, 760));
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("XÁC NHẬN NHẬP HÀNG");
+        jLabel4.setPreferredSize(new java.awt.Dimension(800, 30));
+        jPanel6.add(jLabel4);
+
+        getContentPane().add(jPanel6, java.awt.BorderLayout.NORTH);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chi tiết phiếu nhập", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
@@ -91,8 +103,8 @@ public class ConfirmStockIn extends javax.swing.JDialog {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setMinimumSize(new java.awt.Dimension(700, 22));
-        jPanel2.setPreferredSize(new java.awt.Dimension(1200, 30));
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
+        jPanel2.setPreferredSize(new java.awt.Dimension(1200, 40));
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 7));
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Mã đơn:");
@@ -168,7 +180,7 @@ public class ConfirmStockIn extends javax.swing.JDialog {
             }
         });
         detailsTbl.setMinimumSize(new java.awt.Dimension(700, 120));
-        detailsTbl.setPreferredSize(new java.awt.Dimension(1200, 402));
+        detailsTbl.setPreferredSize(new java.awt.Dimension(1200, 600));
         detailsTbl.setRowHeight(30);
         detailsTbl.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(detailsTbl);
@@ -182,12 +194,12 @@ public class ConfirmStockIn extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMinimumSize(new java.awt.Dimension(700, 43));
-        jPanel1.setPreferredSize(new java.awt.Dimension(1200, 100));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1200, 80));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setMinimumSize(new java.awt.Dimension(700, 33));
-        jPanel4.setPreferredSize(new java.awt.Dimension(1200, 50));
+        jPanel4.setPreferredSize(new java.awt.Dimension(1200, 40));
 
         importBtn.setBackground(new java.awt.Color(0, 204, 51));
         importBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -219,8 +231,9 @@ public class ConfirmStockIn extends javax.swing.JDialog {
         jPanel5.setPreferredSize(new java.awt.Dimension(1200, 40));
         jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("TỔNG THÀNH TIỀN:");
+        jLabel2.setPreferredSize(new java.awt.Dimension(120, 16));
         jPanel5.add(jLabel2);
 
         txtSum.setEditable(false);
@@ -233,13 +246,6 @@ public class ConfirmStockIn extends javax.swing.JDialog {
         jPanel3.add(jPanel1, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
-
-        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("XÁC NHẬN NHẬP HÀNG");
-        jLabel4.setPreferredSize(new java.awt.Dimension(800, 30));
-        getContentPane().add(jLabel4, java.awt.BorderLayout.PAGE_START);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -540,6 +546,7 @@ public class ConfirmStockIn extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField txtInvoiceID;
     private javax.swing.JTextField txtManagerID;
