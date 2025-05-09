@@ -339,6 +339,7 @@ public class PaymentDialog extends javax.swing.JDialog {
                     String promoIdForProduct = item.getPromoId();
                     if (promoIdForProduct != null && !addedPromoIds.contains(promoIdForProduct)){
                         salesPromoBUS.add(new SalesInvoicePromotionDTO(invoiceId, promoIdForProduct));
+                        addedPromoIds.add(promoIdForProduct);
                     }
                 }
 
