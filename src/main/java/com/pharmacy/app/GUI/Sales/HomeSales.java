@@ -246,6 +246,7 @@ public class HomeSales extends javax.swing.JPanel {
                + ", Tên: " + cartitem.getName()
                + ", SL: " + cartitem.getQuantityFromSpinner()
                + ", Giá gốc: " + cartitem.getSellPrice()
+               + ", Mã khuyến mãi: " + cartitem.getPromoId()
                + ", Tiền khuyến mãi: " + cartitem.getDiscountAmount()
                + ", Giá sau KM: " + cartitem.getFinalPrice());
         }
@@ -1195,6 +1196,7 @@ public class HomeSales extends javax.swing.JPanel {
                 cartItem.setFinalPrice(BigDecimal.valueOf(finalprice));                
                 cartItem.setSellPrice(BigDecimal.valueOf(originalprice));
                 cartItem.setDiscountAmount(BigDecimal.valueOf(discountprice));
+                
 
                 // Cập nhật khu vực thanh toán
                 updatePayment();
@@ -1222,6 +1224,8 @@ public class HomeSales extends javax.swing.JPanel {
                 item.getBatchId(),
                 item.getProductId(),
                 item.getName(),
+                item.getPromoId(),
+                item.getPercentDiscount(),
                 item.getDiscountAmount(),
                 item.getSellPrice(),
                 item.getFinalPrice(),

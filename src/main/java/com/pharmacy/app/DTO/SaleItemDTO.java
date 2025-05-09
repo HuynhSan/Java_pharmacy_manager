@@ -22,10 +22,11 @@ public class SaleItemDTO {
     private Float percentDiscount;
     private BigDecimal discountAmount;
     private BigDecimal finalPrice;
+    private String promoId;
 
     public SaleItemDTO(String batchId, String productId, String name, String unit,
                     BigDecimal sellPrice, LocalDate expirationDate, int inventoryQuantity,
-                    Float percentDiscount, BigDecimal discountAmount, BigDecimal finalPrice) {
+                    Float percentDiscount, BigDecimal discountAmount, BigDecimal finalPrice, String promoId) {
         this.batchId = batchId;
         this.productId = productId;
         this.name = name;
@@ -36,6 +37,7 @@ public class SaleItemDTO {
         this.percentDiscount = percentDiscount;
         this.discountAmount = discountAmount;
         this.finalPrice = finalPrice;
+        this.promoId = promoId;
     }
 
     // Getters and setters for all fields
@@ -118,4 +120,14 @@ public class SaleItemDTO {
     public void setFinalPrice(BigDecimal finalPrice) {
         this.finalPrice = finalPrice;
     }
+
+    public String getPromoId() {
+        return promoId;
+    }
+
+    public void setPromoId(String promoId) {
+        this.promoId = promoId;
+    }
+    
+    
 }
