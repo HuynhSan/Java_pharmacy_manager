@@ -12,6 +12,9 @@ import com.pharmacy.app.DTO.ProductBatchDTO;
 import com.pharmacy.app.DTO.ProductPromoDTO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -39,9 +42,10 @@ public class MedicalProducts extends javax.swing.JPanel {
         dateTbl.setDefaultEditor(Object.class, null);
         loadDateList();
         setupTableRenderer();
-        centerTableContent(dateTbl);
+//        centerTableContent(dateTbl);
         centerTableContent(batchListTbl);
         centerTableContent(medListTbl);
+
         
         searchPdtxt.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -150,7 +154,6 @@ public class MedicalProducts extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         medListPn = new javax.swing.JPanel();
@@ -174,9 +177,8 @@ public class MedicalProducts extends javax.swing.JPanel {
         medDatePn = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
         refreshBtn2 = new javax.swing.JButton();
+        destroyBtn = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         dateTbl = new javax.swing.JTable();
@@ -367,42 +369,10 @@ public class MedicalProducts extends javax.swing.JPanel {
         medDatePn.setLayout(new java.awt.BorderLayout());
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setPreferredSize(new java.awt.Dimension(562, 90));
-        jPanel4.setLayout(new java.awt.GridBagLayout());
+        jPanel4.setPreferredSize(new java.awt.Dimension(562, 70));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("QUẢN LÝ HẠN SỬ DỤNG");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 217, 0, 0);
-        jPanel4.add(jLabel2, gridBagConstraints);
-
-        jLabel3.setText("HẠN SỬ DỤNG CÒN LẠI:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(22, 93, 0, 0);
-        jPanel4.add(jLabel3, gridBagConstraints);
-
-        jComboBox2.setEditable(true);
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dưới 6 tháng", "Dưới 3 tháng", "Đã hết hạn" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = 58;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(19, 34, 18, 0);
-        jPanel4.add(jComboBox2, gridBagConstraints);
 
         refreshBtn2.setText("TẢI LẠI");
         refreshBtn2.addActionListener(new java.awt.event.ActionListener() {
@@ -410,13 +380,45 @@ public class MedicalProducts extends javax.swing.JPanel {
                 refreshBtn2ActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 41, 18, 148);
-        jPanel4.add(refreshBtn2, gridBagConstraints);
+
+        destroyBtn.setText("TIÊU HỦY");
+        destroyBtn.setEnabled(false);
+        destroyBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                destroyBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(521, 521, 521)
+                        .addComponent(jLabel2)
+                        .addGap(198, 198, 198))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(refreshBtn2)
+                        .addGap(55, 55, 55)))
+                .addComponent(destroyBtn)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel2)
+                .addContainerGap(31, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(destroyBtn)
+                    .addComponent(refreshBtn2))
+                .addContainerGap())
+        );
 
         medDatePn.add(jPanel4, java.awt.BorderLayout.NORTH);
 
@@ -427,25 +429,48 @@ public class MedicalProducts extends javax.swing.JPanel {
 
         dateTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "MÃ LÔ", "TÊN SẢN PHẨM", "SỐ LƯỢNG", "NHÀ CUNG CẤP", "NSX", "HSD", "HSD CÒN LẠI"
+                "STT", "MÃ LÔ", "TÊN SẢN PHẨM", "SỐ LƯỢNG", "NHÀ CUNG CẤP", "NSX", "HSD", "HSD CÒN LẠI"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         dateTbl.setRowHeight(30);
+        dateTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dateTblMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(dateTbl);
+        if (dateTbl.getColumnModel().getColumnCount() > 0) {
+            dateTbl.getColumnModel().getColumn(0).setMinWidth(60);
+            dateTbl.getColumnModel().getColumn(0).setPreferredWidth(70);
+            dateTbl.getColumnModel().getColumn(0).setMaxWidth(80);
+            dateTbl.getColumnModel().getColumn(1).setMinWidth(100);
+            dateTbl.getColumnModel().getColumn(1).setPreferredWidth(120);
+            dateTbl.getColumnModel().getColumn(1).setMaxWidth(140);
+            dateTbl.getColumnModel().getColumn(3).setMinWidth(60);
+            dateTbl.getColumnModel().getColumn(3).setPreferredWidth(70);
+            dateTbl.getColumnModel().getColumn(3).setMaxWidth(80);
+        }
 
         jPanel5.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -465,10 +490,6 @@ public class MedicalProducts extends javax.swing.JPanel {
         addDialog.setLocationRelativeTo(null);
         addDialog.setVisible(true);
     }//GEN-LAST:event_addBtnMouseClicked
-
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
     
     private void loadMedList(){
         ArrayList<MedicalProductsDTO> medList = medBUS.getAllProducts();
@@ -493,9 +514,11 @@ public class MedicalProducts extends javax.swing.JPanel {
             ArrayList<ProductBatchDTO> batchList = medBUS.getAllBatches();
             DefaultTableModel model = (DefaultTableModel) batchListTbl.getModel();
             model.setRowCount(0);
-
+            
+            int stt = 1;
             for(ProductBatchDTO batch : batchList){
                 model.addRow(new Object[]{
+                    stt++,
                     batch.getBatchID(),
                     batch.getMedicineName(),
                     batch.getQuantityInStock(),
@@ -512,59 +535,74 @@ public class MedicalProducts extends javax.swing.JPanel {
             
 }
     private void loadDateList(){
+        
         try {
             ProductBatchBUS medBUS = new ProductBatchBUS();
             ArrayList<ProductBatchDTO> batchList = medBUS.getAllBatches();
             DefaultTableModel model = (DefaultTableModel) dateTbl.getModel();
             model.setRowCount(0);
 
+            int stt = 1;
             for(ProductBatchDTO batch : batchList){
                 model.addRow(new Object[]{
+                    stt++,
                     batch.getBatchID(),
                     batch.getMedicineID(),
                     batch.getQuantityInStock(),
-                    "supplier chưa xử lý",
+                    batch.getSupplierName(),
                     batch.getManufacturingDate(),
                     batch.getExpirationDate(),
                     medBUS.getDateforBatch(batch.getExpirationDate())
                 });
             }
+        
         } catch (Exception e) {
             e.printStackTrace();
             e.getMessage();
         }
     }
+   
+
+
     
     private void setupTableRenderer() {
-        dateTbl.getColumnModel().getColumn(6)
-            .setCellRenderer(new DefaultTableCellRenderer() {
-                @Override
-                public Component getTableCellRendererComponent(JTable table, Object value,
-                        boolean isSelected, boolean hasFocus, int row, int column) {
 
+        // Tạo renderer tùy chỉnh: CĂN GIỮA + ĐỔI MÀU
+        DefaultTableCellRenderer centerAndColorRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(
+                    JTable table, Object value, boolean isSelected, boolean hasFocus,
+                    int row, int column) {
+
+
+
+                // Căn giữa mọi nội dung
+                setHorizontalAlignment(SwingConstants.CENTER);
+
+
+                if (column == 7) {
                     Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                    c.setForeground(Color.BLACK);
-
-                    try {
-                        String text = value.toString(); // "1 năm 2 tháng"
-                        int years = 0, months = 0;
-                        if (text.contains("năm")) years = Integer.parseInt(text.split(" năm")[0].trim());
-                        if (text.contains("tháng")) {
-                            String afterYear = text.contains("năm") ? text.split("năm")[1] : text;
-                            months = Integer.parseInt(afterYear.split("tháng")[0].trim());
-                        }
-
-                        int totalMonths = years * 12 + months;
-                        if (totalMonths < 6) c.setForeground(Color.RED);
-
-                    } catch (Exception e) {
-                        c.setForeground(Color.BLACK);
+                    LocalDate hsd = (LocalDate) table.getModel().getValueAt(row, 6);
+                    long monthsLeft = Period.between(LocalDate.now(), hsd).toTotalMonths();
+                    if (monthsLeft < 6 && monthsLeft >= 3) {
+                        c.setForeground(Color.YELLOW);  // Thay đổi màu chữ của ô
+                    } else if (monthsLeft < 3){
+                        c.setForeground(Color.RED);
+                    } else {
+                        c.setForeground(Color.BLACK); // Màu mặc định (đen)
                     }
-
                     return c;
                 }
-            });
-    }   
+                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            }
+        };
+            // Áp dụng renderer cho tất cả cột (căn giữa toàn bộ)
+            for (int i = 0; i < dateTbl.getColumnCount(); i++) {
+                dateTbl.getColumnModel().getColumn(i).setCellRenderer(centerAndColorRenderer);
+            }
+        }
+
+ 
     
     private void medListTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medListTblMouseClicked
             if (evt.getButton() == MouseEvent.BUTTON1) {
@@ -595,7 +633,42 @@ public class MedicalProducts extends javax.swing.JPanel {
 
     private void refreshBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtn2ActionPerformed
         loadDateList();
+        destroyBtn.setEnabled(false);
     }//GEN-LAST:event_refreshBtn2ActionPerformed
+
+    private void dateTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dateTblMouseClicked
+        int selectedRow = dateTbl.getSelectedRow();
+        if (selectedRow != -1) {
+            destroyBtn.setEnabled(true); // Enable nút khi click vào dòng
+        }
+    }//GEN-LAST:event_dateTblMouseClicked
+
+    private void destroyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destroyBtnActionPerformed
+            int row = dateTbl.getSelectedRow();
+            if (row >= 0) {
+                Object expObj = dateTbl.getValueAt(row, 6);
+                if (expObj instanceof LocalDate) {
+                    LocalDate exp = (LocalDate) expObj;
+                    Period p = Period.between(LocalDate.now(), exp);
+                    int totalDays = p.getYears() * 365 + p.getMonths() * 30 + p.getDays();
+
+                    if (totalDays <= 90 && totalDays >= 0) {
+                        JOptionPane.showMessageDialog(this, "HSD còn lại dưới 3 tháng. Tiến hành tiêu huỷ...");
+                        // TODO: Viết hành động tiêu hủy t đâyại
+                    } else if (totalDays < 0) {
+                        JOptionPane.showMessageDialog(this, "Lô thuốc này đã hết hạn. Có thể tiêu huỷ.");
+                        // TODO: Tiêu hủy luôn nếu muốn
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Chỉ được tiêu huỷ lô thuốc có HSD còn lại dưới 3 tháng!");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ngày hết hạn không hợp lệ!");
+                }
+                
+                
+            }
+
+    }//GEN-LAST:event_destroyBtnActionPerformed
     
     
     
@@ -603,9 +676,8 @@ public class MedicalProducts extends javax.swing.JPanel {
     private javax.swing.JButton addBtn;
     private javax.swing.JTable batchListTbl;
     private javax.swing.JTable dateTbl;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton destroyBtn;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;

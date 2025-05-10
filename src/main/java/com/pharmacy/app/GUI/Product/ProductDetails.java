@@ -60,12 +60,13 @@ public class ProductDetails extends javax.swing.JDialog {
         }
         ProductPromoDTO promo = ppBUS.getPromoByProductID(productDTO.getMedicineID());
         System.out.println(productDTO.getMedicineID());
-        System.out.println(promo.getPromoID());
+        
         
         if(promo != null){
+            System.out.println(promo.getPromoID());
             txtPromo.setText(promo.getPromoID());
         }else{
-            txtPromo.setText("");
+            txtPromo.setText("Không có.");
         }
         // Lưu giá trị gốc
         originalName = productDTO.getName();
