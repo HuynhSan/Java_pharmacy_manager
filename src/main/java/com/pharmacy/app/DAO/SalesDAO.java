@@ -52,7 +52,7 @@ public class SalesDAO implements DAOinterface{
         ArrayList<SaleItemDTO> saleItems = new ArrayList<>();
         
         if (myconnect.openConnection()) {
-            String sql = "SELECT * FROM v_product_batch_discount_max_summary";
+            String sql = "SELECT * FROM v_product_batch_discount_summary";
             
             ResultSet rs = myconnect.runQuery(sql);
             
@@ -68,7 +68,8 @@ public class SalesDAO implements DAOinterface{
                         rs.getInt(7),  // Lấy số lượng tồn kho
                         rs.getFloat(8), // Lấy tỷ lệ giảm giá
                         rs.getBigDecimal(9),  // Lấy số tiền giảm giá
-                        rs.getBigDecimal(10)   // Lấy giá cuối sau giảm giá
+                        rs.getBigDecimal(10),   // Lấy giá cuối sau giảm giá
+                        rs.getString(11)
                     );
                     saleItems.add(saleItem); // Thêm vào danh sách
                 }

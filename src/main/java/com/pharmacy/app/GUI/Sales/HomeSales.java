@@ -18,8 +18,8 @@ import com.pharmacy.app.DTO.SalesInvoiceDTO;
 import com.pharmacy.app.DTO.SalesInvoiceDetailDTO;
 import com.pharmacy.app.DTO.SessionDTO;
 import com.pharmacy.app.DTO.UserDTO;
-import com.pharmacy.app.GUI.Authorization.*;
-import java.awt.Color;
+//import com.pharmacy.app.GUI.Authorization.*;
+//import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -228,6 +228,7 @@ public class HomeSales extends javax.swing.JPanel {
         saleItemList = saleItemBUS.selectSaleItems();
         invoiceList = invoiceBUS.selectAll();
         showDataToTableProduct(saleItemList);
+        adjustTableHeight(tblProduct, jScrollPane2);
         showDataToTableInvoice(invoiceList);
         adjustTableHeight(tblInvoice, jScrollPane3);
         txtPromoId.setText("Không có!");
@@ -245,6 +246,7 @@ public class HomeSales extends javax.swing.JPanel {
                + ", Tên: " + cartitem.getName()
                + ", SL: " + cartitem.getQuantityFromSpinner()
                + ", Giá gốc: " + cartitem.getSellPrice()
+               + ", Mã khuyến mãi: " + cartitem.getPromoId()
                + ", Tiền khuyến mãi: " + cartitem.getDiscountAmount()
                + ", Giá sau KM: " + cartitem.getFinalPrice());
         }
@@ -331,7 +333,6 @@ public class HomeSales extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel19 = new javax.swing.JPanel();
-        jPanel17 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
@@ -408,23 +409,22 @@ public class HomeSales extends javax.swing.JPanel {
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(1250, 760));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(1250, 770));
+        jScrollPane1.setViewportView(jPanel19);
 
         jPanel19.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel19.setMinimumSize(new java.awt.Dimension(1250, 780));
+        jPanel19.setPreferredSize(new java.awt.Dimension(1250, 760));
         jPanel19.setLayout(new java.awt.BorderLayout());
-
-        jPanel17.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel17.setMinimumSize(new java.awt.Dimension(800, 510));
-        jPanel17.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 5));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMinimumSize(new java.awt.Dimension(400, 500));
-        jPanel1.setPreferredSize(new java.awt.Dimension(850, 800));
+        jPanel1.setPreferredSize(new java.awt.Dimension(850, 760));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setMinimumSize(new java.awt.Dimension(10, 57));
-        jPanel4.setPreferredSize(new java.awt.Dimension(800, 50));
-        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 5));
+        jPanel4.setPreferredSize(new java.awt.Dimension(800, 70));
+        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 10));
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setPreferredSize(new java.awt.Dimension(500, 40));
@@ -445,12 +445,12 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         btnAddMedicineToCart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnAddMedicineToCart.setText("Thêm thuốc");
+        btnAddMedicineToCart.setText("Thêm thuốc vào giỏ ");
         btnAddMedicineToCart.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAddMedicineToCart.setMargin(new java.awt.Insets(2, 10, 3, 10));
+        btnAddMedicineToCart.setMargin(new java.awt.Insets(2, 10, 3, 0));
         btnAddMedicineToCart.setMaximumSize(new java.awt.Dimension(150, 27));
         btnAddMedicineToCart.setMinimumSize(new java.awt.Dimension(150, 27));
-        btnAddMedicineToCart.setPreferredSize(new java.awt.Dimension(130, 35));
+        btnAddMedicineToCart.setPreferredSize(new java.awt.Dimension(170, 35));
         btnAddMedicineToCart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddMedicineToCartActionPerformed(evt);
@@ -513,7 +513,7 @@ public class HomeSales extends javax.swing.JPanel {
             }
         });
         tblProduct.setMaximumSize(new java.awt.Dimension(750, 600));
-        tblProduct.setPreferredSize(new java.awt.Dimension(790, 1000));
+        tblProduct.setPreferredSize(new java.awt.Dimension(790, 100));
         tblProduct.setRowHeight(30);
         tblProduct.setShowGrid(true);
         tblProduct.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -550,7 +550,7 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel11.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 30, 10));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("Tên thuốc");
         jLabel3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel3.setMinimumSize(new java.awt.Dimension(61, 25));
@@ -594,7 +594,7 @@ public class HomeSales extends javax.swing.JPanel {
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setMinimumSize(new java.awt.Dimension(10, 27));
-        jPanel5.setPreferredSize(new java.awt.Dimension(790, 70));
+        jPanel5.setPreferredSize(new java.awt.Dimension(790, 50));
         jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 0));
 
         btnClearCart.setBackground(new java.awt.Color(255, 0, 0));
@@ -613,11 +613,11 @@ public class HomeSales extends javax.swing.JPanel {
 
         jPanel1.add(jPanel5);
 
-        jPanel17.add(jPanel1);
+        jPanel19.add(jPanel1, java.awt.BorderLayout.WEST);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setName(""); // NOI18N
-        jPanel2.setPreferredSize(new java.awt.Dimension(400, 800));
+        jPanel2.setPreferredSize(new java.awt.Dimension(400, 780));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 20));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
@@ -772,9 +772,7 @@ public class HomeSales extends javax.swing.JPanel {
 
         jPanel2.add(jPanel7);
 
-        jPanel17.add(jPanel2);
-
-        jPanel19.add(jPanel17, java.awt.BorderLayout.PAGE_START);
+        jPanel19.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jScrollPane1.setViewportView(jPanel19);
 
@@ -783,7 +781,7 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setMaximumSize(new java.awt.Dimension(326589, 326589));
         jPanel9.setMinimumSize(new java.awt.Dimension(800, 80));
-        jPanel9.setPreferredSize(new java.awt.Dimension(1250, 750));
+        jPanel9.setPreferredSize(new java.awt.Dimension(1250, 770));
         jPanel9.setLayout(new java.awt.BorderLayout());
 
         jPanel16.setBackground(new java.awt.Color(255, 255, 255));
@@ -866,8 +864,7 @@ public class HomeSales extends javax.swing.JPanel {
         jPanel18.setPreferredSize(new java.awt.Dimension(1250, 650));
         jPanel18.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane3.setMinimumSize(new java.awt.Dimension(400, 200));
-        jScrollPane3.setPreferredSize(new java.awt.Dimension(800, 650));
+        jScrollPane3.setPreferredSize(new java.awt.Dimension(1200, 650));
 
         tblInvoice.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -890,8 +887,6 @@ public class HomeSales extends javax.swing.JPanel {
         });
         tblInvoice.setFillsViewportHeight(true);
         tblInvoice.setMaximumSize(new java.awt.Dimension(32767, 326589));
-        tblInvoice.setMinimumSize(new java.awt.Dimension(400, 300));
-        tblInvoice.setPreferredSize(new java.awt.Dimension(1250, 120));
         tblInvoice.setRowHeight(30);
         tblInvoice.setShowGrid(true);
         tblInvoice.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1115,7 +1110,6 @@ public class HomeSales extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
@@ -1202,6 +1196,7 @@ public class HomeSales extends javax.swing.JPanel {
                 cartItem.setFinalPrice(BigDecimal.valueOf(finalprice));                
                 cartItem.setSellPrice(BigDecimal.valueOf(originalprice));
                 cartItem.setDiscountAmount(BigDecimal.valueOf(discountprice));
+                
 
                 // Cập nhật khu vực thanh toán
                 updatePayment();
@@ -1229,6 +1224,8 @@ public class HomeSales extends javax.swing.JPanel {
                 item.getBatchId(),
                 item.getProductId(),
                 item.getName(),
+                item.getPromoId(),
+                item.getPercentDiscount(),
                 item.getDiscountAmount(),
                 item.getSellPrice(),
                 item.getFinalPrice(),

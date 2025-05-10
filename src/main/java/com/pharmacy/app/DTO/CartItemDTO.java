@@ -16,6 +16,8 @@ public class CartItemDTO {
     private String batchId;
     private String productId;
     private String name;
+    private String promoId;
+    private float discountPercent;
     private BigDecimal discountAmount;
     private BigDecimal sellPrice;
     private BigDecimal finalPrice;
@@ -24,11 +26,13 @@ public class CartItemDTO {
     private JPanel panel;
     private JSpinner spinner;
 
-    public CartItemDTO(String batchId, String productId, String name, BigDecimal discountAmount,
+    public CartItemDTO(String batchId, String productId, String name, String promoId, float discountPercent, BigDecimal discountAmount,
                     BigDecimal sellPrice, BigDecimal finalPrice, int quantity) {
         this.batchId = batchId;
         this.productId = productId;
         this.name = name;
+        this.promoId = promoId;
+        this.discountPercent = discountPercent;
         this.discountAmount = discountAmount;
         this.sellPrice = sellPrice;
         this.finalPrice = finalPrice;
@@ -37,6 +41,27 @@ public class CartItemDTO {
 
     // Getters & Setters cho tất cả các trường...
 
+    public void setDiscountPercent(float discountPercent) {
+        this.discountPercent = discountPercent;
+    }
+
+    public float getDiscountPercent() {
+        return discountPercent;
+    }
+
+    public void setPromoId(String promoId) {
+        this.promoId = promoId;
+    }
+
+    public String getPromoId() {
+        return promoId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
