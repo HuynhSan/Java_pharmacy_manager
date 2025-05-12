@@ -28,21 +28,17 @@ public class ProductReportDAO {
      * @param limit Maximum number of products to return
      * @return List of maps containing product_id, product_name, and quantity_sold
      */
-    public List<Map<String, Object>> getBestSellingProductsByMonth(int month, int year, int limit) {
+    public List<Map<String, Object>> getBestSellingProductsByMonth(int month, int year) {
         List<Map<String, Object>> productData = new ArrayList<>();
         
         if (myconnect.openConnection()) {
-            String sql = "SELECT p.product_id, p.name AS product_name, SUM(sd.quantity) AS quantity_sold " +
+            String sql = "SELECT TOP 5 p.product_id, p.name AS product_name, SUM(sd.quantity) AS quantity_sold " +
                          "FROM medical_products p " +
                          "JOIN sales_invoice_details sd ON p.product_id = sd.product_id " +
                          "JOIN sales_invoices si ON sd.sales_invoice_id = si.sales_invoice_id " +
-                         "WHERE MONTH(si.sale_date) = ? AND YEAR(si.sale_date) = ? AND is_deleted = 0 " +
+                         "WHERE MONTH(si.sale_date) = ? AND YEAR(si.sale_date) = ?" +
                          "GROUP BY p.product_id, p.name " +
-                         "ORDER BY sale_quantity DESC";
-            
-            if (limit > 0) {
-                sql += " LIMIT " + limit;
-            }
+                         "ORDER BY quantity_sold DESC";
             
             try {
                 ResultSet rs = myconnect.prepareQuery(sql, month, year);
@@ -69,21 +65,18 @@ public class ProductReportDAO {
      * @param limit Maximum number of products to return
      * @return List of maps containing product_id, product_name, and quantity_sold
      */
-    public List<Map<String, Object>> getBestSellingProductsByYear(int year, int limit) {
+    public List<Map<String, Object>> getBestSellingProductsByYear(int year) {
         List<Map<String, Object>> productData = new ArrayList<>();
         
         if (myconnect.openConnection()) {
-            String sql = "SELECT TOP 5 p.product_id, p.name AS product_name, SUM(sd.quantity) AS sale_quantity" +
-                         "FROM medical_products p" +
-                         "JOIN sales_invoice_details sd ON p.product_id = sd.product_id" +
-                         "JOIN sales_invoices si ON sd.sales_invoice_id = si.sales_invoice_id" +
-                         "WHERE YEAR(si.sale_date) = ? AND is_deleted = 0 " +
-                         "GROUP BY p.product_id, p.name" +
-                         "ORDER BY sale_quantity DESC";
-            
-            if (limit > 0) {
-                sql += " LIMIT " + limit;
-            }
+            String sql = "SELECT TOP 5 p.product_id, p.name AS product_name, SUM(sd.quantity) AS quantity_sold " +
+                         "FROM medical_products p " +
+                         "JOIN sales_invoice_details sd ON p.product_id = sd.product_id " +
+                         "JOIN sales_invoices si ON sd.sales_invoice_id = si.sales_invoice_id " +
+                         "WHERE YEAR(si.sale_date) = ? " +
+                         "GROUP BY p.product_id, p.name " +
+                         "ORDER BY quantity_sold DESC";
+
             
             try {
                 ResultSet rs = myconnect.prepareQuery(sql, year);

@@ -23,8 +23,8 @@ public class ProductReportBUS {
      * @param limit Maximum number of products to return (0 for all)
      * @return List of maps containing product details
      */
-    public List<Map<String, Object>> getBestSellingProductsByMonth(int month, int year, int limit) {
-        return productReportDAO.getBestSellingProductsByMonth(month, year, limit);
+    public List<Map<String, Object>> getBestSellingProductsByMonth(int month, int year) {
+        return productReportDAO.getBestSellingProductsByMonth(month, year);
     }
     
     /**
@@ -33,8 +33,8 @@ public class ProductReportBUS {
      * @param limit Maximum number of products to return (0 for all)
      * @return List of maps containing product details
      */
-    public List<Map<String, Object>> getBestSellingProductsByYear(int year, int limit) {
-        return productReportDAO.getBestSellingProductsByYear(year, limit);
+    public List<Map<String, Object>> getBestSellingProductsByYear(int year) {
+        return productReportDAO.getBestSellingProductsByYear(year);
     }
     
     /**

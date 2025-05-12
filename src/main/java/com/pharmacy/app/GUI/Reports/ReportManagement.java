@@ -4,6 +4,7 @@
  */
 package com.pharmacy.app.GUI.Reports;
 
+import com.pharmacy.app.BUS.InvoiceReportBUS;
 import com.pharmacy.app.BUS.ProductReportBUS;
 import com.pharmacy.app.BUS.RevenueReportBUS;
 import com.pharmacy.app.Utils.FormatUtils;
@@ -12,8 +13,10 @@ import java.awt.Dimension;
 import java.awt.event.ItemEvent;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -38,11 +41,17 @@ public class ReportManagement extends javax.swing.JPanel {
     
     private final RevenueReportBUS revenueBUS = new RevenueReportBUS();
     private final ProductReportBUS productBUS = new ProductReportBUS();
+    private final InvoiceReportBUS invoiceBUS = new InvoiceReportBUS();
     
     // Current revenue data
     private Map<String, BigDecimal> currentRevenueData = new TreeMap<>();
     private BigDecimal currentTotalRevenue = BigDecimal.ZERO;
-    
+    // Current product data
+    private List<Map<String, Object>> currentProductData = new ArrayList<>();
+    // Current invoice data
+    private Map<String, Object[]> currentInvoiceData = new TreeMap<>();
+    private int currentTotalInvoices = 0;
+    private BigDecimal currentTotalAmount = BigDecimal.ZERO;
     // Period types for statistics
     private enum PeriodType {
         DAY, MONTH, YEAR, CUSTOM
@@ -103,41 +112,41 @@ public class ReportManagement extends javax.swing.JPanel {
         btnInvoiceApply.addActionListener(e -> applyInvoiceFilter());
         
         // Month and Year combobox listeners
-        cbRevenueMonth.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                updateRevenueData();
-            }
-        });
-        
-        cbRevenueYear.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                updateRevenueData();
-            }
-        });
-        
-        cbProductMonth.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                updateBestSellingProducts();
-            }
-        });
-        
-        cbProductYear.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                updateBestSellingProducts();
-            }
-        });
-        
-        cbInvoiceMonth.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                updateInvoiceStatistics();
-            }
-        });
-        
-        cbInvoiceYear.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                updateInvoiceStatistics();
-            }
-        });
+//        cbRevenueMonth.addItemListener(e -> {
+//            if (e.getStateChange() == ItemEvent.SELECTED) {
+//                updateRevenueData();
+//            }
+//        });
+//        
+//        cbRevenueYear.addItemListener(e -> {
+//            if (e.getStateChange() == ItemEvent.SELECTED) {
+//                updateRevenueData();
+//            }
+//        });
+//        
+//        cbProductMonth.addItemListener(e -> {
+//            if (e.getStateChange() == ItemEvent.SELECTED) {
+//                updateBestSellingProducts();
+//            }
+//        });
+//        
+//        cbProductYear.addItemListener(e -> {
+//            if (e.getStateChange() == ItemEvent.SELECTED) {
+//                updateBestSellingProducts();
+//            }
+//        });
+//        
+//        cbInvoiceMonth.addItemListener(e -> {
+//            if (e.getStateChange() == ItemEvent.SELECTED) {
+//                updateInvoiceStatistics();
+//            }
+//        });
+//        
+//        cbInvoiceYear.addItemListener(e -> {
+//            if (e.getStateChange() == ItemEvent.SELECTED) {
+//                updateInvoiceStatistics();
+//            }
+//        });
     }
     
     /**
@@ -234,7 +243,6 @@ public class ReportManagement extends javax.swing.JPanel {
         updateInvoiceView(PeriodType.DAY);
         
         // Load actual data for today
-        fetchAndDisplayRevenueData();
     }
     
     /**
@@ -270,7 +278,7 @@ public class ReportManagement extends javax.swing.JPanel {
         }
         
         // Update data based on selected period
-        updateRevenueData();
+//        updateRevenueData();
     }
     
     /**
@@ -296,7 +304,6 @@ public class ReportManagement extends javax.swing.JPanel {
         }
         
         // Update data based on selected period
-        updateBestSellingProducts();
     }
     
     /**
@@ -346,16 +353,14 @@ public class ReportManagement extends javax.swing.JPanel {
      * Update best selling products data
      */
     private void updateBestSellingProducts() {
-        // This is a placeholder - in a real app, you would fetch data from your database
-        // For now, we'll just use the mock data already loaded
+        fetchAndDisplayProductData();
     }
     
     /**
      * Update invoice statistics data
      */
     private void updateInvoiceStatistics() {
-        // This is a placeholder - in a real app, you would fetch data from your database
-        // For now, we'll just use the mock data already loaded
+        fetchAndDisplayInvoiceData();
     }
     
     /**
@@ -369,14 +374,14 @@ public class ReportManagement extends javax.swing.JPanel {
      * Apply filter for product statistics
      */
     private void applyProductFilter() {
-        
+        fetchAndDisplayProductData();
     }
     
     /**
      * Apply filter for invoice statistics
      */
     private void applyInvoiceFilter() {
-        
+        fetchAndDisplayInvoiceData();
     }
     
     /**
@@ -510,7 +515,196 @@ public class ReportManagement extends javax.swing.JPanel {
         pnlRevenueChart.revalidate();
         pnlRevenueChart.repaint();
     }
+    // 
+    private void fetchAndDisplayProductData() {
+        try {
+            // Reset current data
+            currentProductData.clear();
+
+            // Lấy giới hạn số sản phẩm muốn hiển thị
+//            int limit = Integer.parseInt(productLimitComboBox.getSelectedItem().toString());
+
+            // Determine which filter is active and fetch appropriate data
+            if (productRadioMonth.isSelected()) {
+                // Get data for selected month and year
+                int month = Integer.parseInt(cbProductMonth.getSelectedItem().toString());
+                int year = Integer.parseInt(cbProductYear.getSelectedItem().toString());
+
+                // Fetch best-selling products for the selected month
+                currentProductData = productBUS.getBestSellingProductsByMonth(month, year);
+
+            } else if (productRadioYear.isSelected()) {
+                // Get data for selected year
+                int year = Integer.parseInt(cbProductYearOnly.getSelectedItem().toString());
+
+                // Fetch best-selling products for the selected year
+                currentProductData = productBUS.getBestSellingProductsByYear(year);
+            }
+
+            // Update UI with new data
+            updateProductTable();
+            updateProductChart();
+
+//            // Update total number of products displayed (if needed)
+//            lblProductTotalValue.setText(String.valueOf(currentProductData.size()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Lỗi khi tải dữ liệu sản phẩm: " + e.getMessage(),
+                "Lỗi",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
     
+    private void updateProductTable(){
+        DefaultTableModel model = (DefaultTableModel) tblProducts.getModel();
+        model.setRowCount(0); // Clear existing data
+
+        // Add data to table
+        for (Map<String, Object> product : currentProductData) {
+            Object[] row = new Object[3];
+            row[0] = product.get("product_id");
+            row[1] = product.get("product_name");
+            row[2] = product.get("quantity_sold");
+            model.addRow(row);
+    }
+    }
+    private void updateProductChart(){
+            // Create dataset from current product data
+        DefaultPieDataset dataset = new DefaultPieDataset();
+
+        // Add data to dataset
+        for (Map<String, Object> product : currentProductData) {
+            String productName = (String) product.get("product_name");
+            int quantitySold = (Integer) product.get("quantity_sold");
+            dataset.setValue(productName, quantitySold);
+        }
+
+        // Create chart with dataset
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Sản phẩm bán chạy",  // chart title
+                dataset,               // data
+                true,                 // include legend
+                true,                 // include tooltips
+                false                 // no URLs
+        );
+
+        // Update chart panel
+        ChartPanel chartPanel = new ChartPanel(chart);
+        pnlProductChart.removeAll();
+        pnlProductChart.add(chartPanel, BorderLayout.CENTER);
+        pnlProductChart.revalidate();
+        pnlProductChart.repaint();
+    }
+
+    
+    private void fetchAndDisplayInvoiceData() {
+        try {
+        // Reset current data
+        currentInvoiceData.clear();
+        currentTotalInvoices = 0;
+        currentTotalAmount = BigDecimal.ZERO;
+        
+        Map<String, Object[]> invoiceStats = new HashMap<>();
+        
+        // Xác định bộ lọc nào đang được chọn và lấy dữ liệu phù hợp
+        if (invoiceRadioDay.isSelected()) {
+            Date selectedDate = invoiceCurrentDate.getDate();
+            if (selectedDate != null) {
+                invoiceStats = invoiceBUS.getInvoicesWithAmountByDay(selectedDate);
+            }
+        } else if (invoiceRadioMonth.isSelected()) {
+            int month = Integer.parseInt(cbInvoiceMonth.getSelectedItem().toString());
+            int year = Integer.parseInt(cbInvoiceYear.getSelectedItem().toString());
+            invoiceStats = invoiceBUS.getInvoicesWithAmountByMonth(month, year);
+        } else if (invoiceRadioYear.isSelected()) {
+            int year = Integer.parseInt(cbInvoiceYearOnly.getSelectedItem().toString());
+            invoiceStats = invoiceBUS.getInvoicesWithAmountByYear(year);
+        } else if (invoiceRadioCustom.isSelected()) {
+            Date startDate = invoiceStartDate.getDate();
+            Date endDate = invoiceEndDate.getDate();
+            
+            if (startDate != null && endDate != null) {
+                invoiceStats = invoiceBUS.getInvoicesWithAmountByDateRange(startDate, endDate);
+            }
+        }
+        
+        // Xử lý dữ liệu
+        for (Map.Entry<String, Object[]> entry : invoiceStats.entrySet()) {
+            String dateKey = entry.getKey();
+            Object[] values = entry.getValue();
+            int count = (Integer) values[0];
+            BigDecimal amount = (BigDecimal) values[1];
+            
+            currentInvoiceData.put(dateKey, new Object[]{count, amount});
+            currentTotalInvoices += count;
+            currentTotalAmount = currentTotalAmount.add(amount);
+        }
+        
+        // Cập nhật UI với dữ liệu mới
+        updateInvoiceTable();
+        updateInvoiceChart();
+
+            // Update total labels
+            lblInvoiceTotalValue.setText(FormatUtils.formatCurrency(currentTotalAmount));
+            //lblInvoiceTotal.setText("Tổng doanh thu: ");
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Lỗi khi tải dữ liệu hóa đơn: " + e.getMessage(),
+                "Lỗi",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void updateInvoiceTable() {
+        DefaultTableModel model = (DefaultTableModel) tblInvoices.getModel();
+        model.setRowCount(0); // Xóa dữ liệu hiện có
+
+        for (Map.Entry<String, Object[]> entry : currentInvoiceData.entrySet()) {
+            Object[] rowData = new Object[3];
+            rowData[0] = entry.getKey(); // Ngày
+            Object[] values = entry.getValue();
+            rowData[1] = values[0]; // Số hóa đơn
+            rowData[2] = FormatUtils.formatCurrency((BigDecimal) values[1]); // Tổng tiền
+
+            model.addRow(rowData);
+        }
+    }
+    private BigDecimal getAmountForDate(String date) {
+        // Triển khai logic để lấy tổng tiền cho một ngày/tháng cụ thể
+        // Tùy thuộc vào cách bạn lưu trữ dữ liệu
+        // Tạm thời trả về 0
+        return BigDecimal.ZERO;
+    }
+    
+    private void updateInvoiceChart() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        for (Map.Entry<String, Object[]> entry : currentInvoiceData.entrySet()) {
+            String date = entry.getKey();
+            int invoiceCount = (Integer) entry.getValue()[0];
+            dataset.addValue(invoiceCount, "Số hóa đơn", date);
+        }
+
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Số hóa đơn theo thời gian",
+                "Thời gian",
+                "Số lượng hóa đơn",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
+        );
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        pnlInvoiceChart.removeAll();
+        pnlInvoiceChart.add(chartPanel, BorderLayout.CENTER);
+        pnlInvoiceChart.revalidate();
+        pnlInvoiceChart.repaint();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1124,15 +1318,15 @@ public class ReportManagement extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRevenueApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevenueApplyActionPerformed
-        // TODO add your handling code here:
+        updateRevenueData();
     }//GEN-LAST:event_btnRevenueApplyActionPerformed
 
     private void btnProductApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductApplyActionPerformed
-        // TODO add your handling code here:
+        updateBestSellingProducts();
     }//GEN-LAST:event_btnProductApplyActionPerformed
 
     private void btnInvoiceApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInvoiceApplyActionPerformed
-        // TODO add your handling code here:
+        updateInvoiceStatistics();
     }//GEN-LAST:event_btnInvoiceApplyActionPerformed
 
     private void btnRevenueExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevenueExportActionPerformed
