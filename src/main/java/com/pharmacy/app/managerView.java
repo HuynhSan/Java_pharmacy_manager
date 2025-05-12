@@ -564,9 +564,10 @@ public class managerView extends javax.swing.JFrame {
         });
         MenuHidePn.add(productBtn);
 
-        scheduleBtn.setBackground(new java.awt.Color(0, 102, 153));
+        scheduleBtn.setBackground(new java.awt.Color(0, 51, 255));
         scheduleBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         scheduleBtn.setForeground(new java.awt.Color(255, 255, 255));
+        scheduleBtn.setText("LỊCH LÀM VIỆC");
         scheduleBtn.setBorder(null);
         scheduleBtn.setBorderPainted(false);
         scheduleBtn.setContentAreaFilled(false);
@@ -885,7 +886,8 @@ public class managerView extends javax.swing.JFrame {
     }//GEN-LAST:event_saleBtnMouseClicked
 
     private void scheduleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scheduleBtnActionPerformed
-        // TODO add your handling code here:
+        ContentPn.add(new WorkScheduleManagement(), "Schedule");
+        switchToPanel("Schedule");
     }//GEN-LAST:event_scheduleBtnActionPerformed
 
     private void scheduleBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduleBtnMouseClicked

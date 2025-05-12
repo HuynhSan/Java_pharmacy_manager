@@ -127,7 +127,6 @@ public class loginPage extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(300, 30));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 0));
 
-        txtForgetPassword.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         txtForgetPassword.setForeground(new java.awt.Color(255, 0, 51));
         txtForgetPassword.setText("Quên mật khẩu ?");
         txtForgetPassword.setPreferredSize(new java.awt.Dimension(90, 16));

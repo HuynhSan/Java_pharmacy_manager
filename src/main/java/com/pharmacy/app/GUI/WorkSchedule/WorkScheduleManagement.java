@@ -4,22 +4,41 @@
  */
 package com.pharmacy.app.GUI.WorkSchedule;
 
+import com.pharmacy.app.BUS.WorkShiftBUS;
+import com.pharmacy.app.DTO.WorkShiftDTO;
+import com.pharmacy.app.Utils.WeekUltils;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author phong
  */
 public class WorkScheduleManagement extends javax.swing.JPanel {
+    WorkShiftBUS shiftBUS = new WorkShiftBUS();
+    LocalDate startDate = LocalDate.of(2025, 1, 1);
+    String[] shifts = {"S1", "S2", "S3", "Nghỉ"};
 
     /**
      * Creates new form WorkScheduleManagement
      */
     public WorkScheduleManagement() {
         initComponents();
+        for (int i = 1; i <= 7; i++){
+            TableColumn column = tblWeekSchedule.getColumnModel().getColumn(i);
+            column.setCellEditor(new DefaultCellEditor(new JComboBox<>(shifts)));
+        }
+        showWorkShift();
+        WeekUltils.populateWeeksComboBox(cbWeekPicker, 48, startDate);
+        WeekUltils.populateWeeksComboBox(cbWeekPicker1, 48, startDate);
         centerTableContent(tblShiftList);
         centerTableContent(tblWeekAttendance);
         centerTableContent(tblWeekSchedule);
@@ -37,6 +56,22 @@ public class WorkScheduleManagement extends javax.swing.JPanel {
 
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+    
+    private void showWorkShift(){
+        ArrayList<WorkShiftDTO> list = shiftBUS.selectAll();
+
+        DefaultTableModel model = (DefaultTableModel) tblShiftList.getModel();
+        model.setRowCount(0); // Xóa dữ liệu cũ
+
+        for (WorkShiftDTO shift : list) {
+            Object[] row = new Object[] {
+                shift.getShiftId(),
+                shift.getStartTime(),
+                shift.getEndTime()
+            };
+            model.addRow(row);
         }
     }
     /**
@@ -133,8 +168,9 @@ public class WorkScheduleManagement extends javax.swing.JPanel {
                 "Nhân viên", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"
             }
         ));
-        tblWeekSchedule.setPreferredSize(new java.awt.Dimension(690, 80));
+        tblWeekSchedule.setPreferredSize(new java.awt.Dimension(690, 600));
         tblWeekSchedule.setRowHeight(30);
+        tblWeekSchedule.setShowGrid(true);
         jScrollPane1.setViewportView(tblWeekSchedule);
         if (tblWeekSchedule.getColumnModel().getColumnCount() > 0) {
             tblWeekSchedule.getColumnModel().getColumn(0).setPreferredWidth(150);
@@ -252,7 +288,7 @@ public class WorkScheduleManagement extends javax.swing.JPanel {
         ));
         tblShiftList.setFocusable(false);
         tblShiftList.setMinimumSize(new java.awt.Dimension(500, 80));
-        tblShiftList.setPreferredSize(new java.awt.Dimension(500, 80));
+        tblShiftList.setPreferredSize(new java.awt.Dimension(500, 300));
         tblShiftList.setRowHeight(30);
         tblShiftList.setShowGrid(true);
         jScrollPane3.setViewportView(tblShiftList);
