@@ -101,7 +101,7 @@ public class ProductBatchBUS {
    }
    
    public boolean addBatch(ProductBatchDTO batchDTO){
-       if (!batchDAO.insert(batchDTO)){
+        if (!batchDAO.insert(batchDTO)){
             return false;
         }
        return true;

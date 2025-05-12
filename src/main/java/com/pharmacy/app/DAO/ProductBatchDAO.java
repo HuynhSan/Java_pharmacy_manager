@@ -98,10 +98,11 @@ boolean result = false;
     public ProductBatchDTO selectByID(String ID) {
         if(myconnect.openConnection()){
             try {
-                String sql = "SELECT pb.*, si.supplier_id FROM product_batches pb" + 
-                             "JOIN supplier_invoice_details sid ON pb.batch_id = pb.batch_id " + 
-                             "JOIN supplier_invoice si ON sid.supplier_invoice_id = si.supplier_invoice_id"+
-                             "WHERE pb.product_id = ?";
+                String sql = "SELECT pb.*, si.supplier_id FROM product_batches pb " + 
+                            "JOIN supplier_invoice_details sid ON pb.batch_id = sid.batch_id " + 
+                            "JOIN supplier_invoices si ON sid.supplier_invoice_id = si.supplier_invoice_id " +
+                            "WHERE pb.product_id = ?";
+
 
                 PreparedStatement ps = myconnect.con.prepareStatement(sql);
                 ps.setString(1, ID);

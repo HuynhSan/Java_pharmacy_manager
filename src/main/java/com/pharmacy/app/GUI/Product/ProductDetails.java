@@ -7,10 +7,12 @@ package com.pharmacy.app.GUI.Product;
 import com.pharmacy.app.BUS.CategoryBUS;
 import com.pharmacy.app.BUS.MedicalProductsBUS;
 import com.pharmacy.app.BUS.ProductBatchBUS;
+import com.pharmacy.app.BUS.ProductPromoBUS;
 import com.pharmacy.app.BUS.PromotionBUS;
 import com.pharmacy.app.DTO.CategoryDTO;
 import com.pharmacy.app.DTO.MedicalProductsDTO;
 import com.pharmacy.app.DTO.ProductBatchDTO;
+import com.pharmacy.app.DTO.ProductPromoDTO;
 import com.pharmacy.app.DTO.PromotionDTO;
 import java.awt.Frame;
 import javax.swing.JOptionPane;
@@ -24,7 +26,7 @@ public class ProductDetails extends javax.swing.JDialog {
 
     private MedicalProductsDTO productDTO;
     private MedicalProductsBUS productsBUS;
-    private PromotionBUS promoBUS = new PromotionBUS();
+    private ProductPromoBUS ppBUS = new ProductPromoBUS();
     private ProductBatchBUS pbbus = new ProductBatchBUS();
     private String originalName;
     private String originalCate;
@@ -56,12 +58,15 @@ public class ProductDetails extends javax.swing.JDialog {
         } else {
             txtSup.setText("Không xác định"); // hoặc "Không xác định"
         }
-        PromotionDTO promo = promoBUS.selectById(txtID.getText());
-        String promoID = (promo != null) ? promo.getPromotionId() : "";
-        if(promoID != null){
-            txtPromo.setText(promoID);
+        ProductPromoDTO promo = ppBUS.getPromoByProductID(productDTO.getMedicineID());
+        System.out.println(productDTO.getMedicineID());
+        
+        
+        if(promo != null){
+            System.out.println(promo.getPromoID());
+            txtPromo.setText(promo.getPromoID());
         }else{
-            txtPromo.setText("");
+            txtPromo.setText("Không có.");
         }
         // Lưu giá trị gốc
         originalName = productDTO.getName();

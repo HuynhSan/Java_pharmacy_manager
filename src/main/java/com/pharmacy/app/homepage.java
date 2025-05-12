@@ -35,12 +35,14 @@ public class homepage extends javax.swing.JFrame {
     private CardLayout cardlayout = new CardLayout();
     private HomeSales homesales = new HomeSales();
     
+    
     public homepage() {
         initComponents();
         this.setLocationRelativeTo(null);
         ContentPn.setLayout(cardlayout);
         ContentPn.add(homesales, "Sales");
         switchToPanel("Sales");
+        this.setExtendedState(managerView.MAXIMIZED_BOTH);
     }
 
     /**

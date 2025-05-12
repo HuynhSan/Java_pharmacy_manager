@@ -21,6 +21,9 @@ public class MedicalProductsDTO {
     public MedicalProductsDTO(){
      
     }
+
+    
+    
     public MedicalProductsDTO(String medicineID, String name, String category, String description, String unit, int quantity,  String packingSpecification) {
         this.medicineID = medicineID;
         this.name = name;

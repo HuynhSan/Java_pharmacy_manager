@@ -136,7 +136,6 @@ public final class CustomerList extends javax.swing.JPanel {
         btnAdd = new javax.swing.JButton();
         btnRefesh = new javax.swing.JButton();
         btnExportPDF = new javax.swing.JButton();
-        plCustomerList = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbCustomerList = new javax.swing.JTable();
 
@@ -218,13 +217,7 @@ public final class CustomerList extends javax.swing.JPanel {
 
         plHeader.add(plSearch);
 
-        add(plHeader, java.awt.BorderLayout.NORTH);
-
-        plCustomerList.setBackground(new java.awt.Color(255, 255, 255));
-        plCustomerList.setMaximumSize(new java.awt.Dimension(326589, 326589));
-        plCustomerList.setMinimumSize(new java.awt.Dimension(800, 450));
-        plCustomerList.setPreferredSize(new java.awt.Dimension(800, 450));
-        plCustomerList.setLayout(new java.awt.BorderLayout());
+        add(plHeader, java.awt.BorderLayout.PAGE_START);
 
         jScrollPane1.setMaximumSize(new java.awt.Dimension(326589, 326589));
         jScrollPane1.setMinimumSize(new java.awt.Dimension(780, 400));
@@ -270,9 +263,7 @@ public final class CustomerList extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tbCustomerList);
         tbCustomerList.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        plCustomerList.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        add(plCustomerList, java.awt.BorderLayout.CENTER);
+        add(jScrollPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
@@ -326,7 +317,6 @@ public final class CustomerList extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPanel plCustomerList;
     private javax.swing.JPanel plHeader;
     private javax.swing.JPanel plSearch;
     private javax.swing.JTable tbCustomerList;

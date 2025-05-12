@@ -48,6 +48,9 @@ public class PurchaseOrder extends javax.swing.JPanel {
         centerTableContent(poTbl);
         centerTableContent(poListTbl);
         centerTableContent(podetailsTbl);
+        if (SessionDTO.getCurrentUser().getRoleID().equals("ROLE001")) {
+             jTabbedPane1.setEnabledAt(0, false);
+        }    
     }
 
     private void loadPOlist() {
@@ -146,7 +149,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel4 = new javax.swing.JPanel();
+        createPOpnl = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -167,12 +170,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
         productCbb = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         txtQuantity = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         saveDeBtn = new javax.swing.JButton();
         deleteDeBtn = new javax.swing.JButton();
@@ -191,9 +188,9 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jLabel19 = new javax.swing.JLabel();
         jPanel18 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
-        jTextField13 = new javax.swing.JTextField();
-        jButton9 = new javax.swing.JButton();
         refreshBtn = new javax.swing.JButton();
+        approveBtn = new javax.swing.JButton();
+        cancelBtn = new javax.swing.JButton();
         jScrollpane = new javax.swing.JScrollPane();
         poListTbl = new javax.swing.JTable();
         jPanel19 = new javax.swing.JPanel();
@@ -214,8 +211,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jLabel25 = new javax.swing.JLabel();
         txtSup = new javax.swing.JTextField();
         jPanel22 = new javax.swing.JPanel();
-        approveBtn = new javax.swing.JButton();
-        cancelBtn = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(899, 500));
@@ -223,8 +218,8 @@ public class PurchaseOrder extends javax.swing.JPanel {
 
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(751, 478));
 
-        jPanel4.setPreferredSize(new java.awt.Dimension(751, 478));
-        jPanel4.setLayout(new java.awt.BorderLayout());
+        createPOpnl.setPreferredSize(new java.awt.Dimension(751, 478));
+        createPOpnl.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(557, 90));
@@ -309,7 +304,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
 
         jPanel1.add(jPanel5, java.awt.BorderLayout.CENTER);
 
-        jPanel4.add(jPanel1, java.awt.BorderLayout.NORTH);
+        createPOpnl.add(jPanel1, java.awt.BorderLayout.NORTH);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chi tiết đơn đặt hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
@@ -343,40 +338,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
 
         txtQuantity.setPreferredSize(new java.awt.Dimension(64, 30));
         jPanel6.add(txtQuantity);
-
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("Giá nhập:");
-        jLabel7.setPreferredSize(new java.awt.Dimension(70, 16));
-        jPanel6.add(jLabel7);
-
-        jTextField5.setText("100000");
-        jTextField5.setPreferredSize(new java.awt.Dimension(64, 30));
-        jPanel6.add(jTextField5);
-
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel8.setText("Phần trăm:");
-        jLabel8.setPreferredSize(new java.awt.Dimension(70, 16));
-        jPanel6.add(jLabel8);
-
-        jTextField6.setText("10");
-        jTextField6.setPreferredSize(new java.awt.Dimension(64, 30));
-        jPanel6.add(jTextField6);
-
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("Giá bán:");
-        jLabel9.setPreferredSize(new java.awt.Dimension(70, 16));
-        jPanel6.add(jLabel9);
-
-        jTextField3.setEditable(false);
-        jTextField3.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField3.setText("110000");
-        jTextField3.setPreferredSize(new java.awt.Dimension(64, 30));
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtQuantityActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jTextField3);
 
         jPanel13.add(jPanel6, java.awt.BorderLayout.NORTH);
 
@@ -464,7 +425,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
 
         jPanel2.add(jPanel14, java.awt.BorderLayout.SOUTH);
 
-        jPanel4.add(jPanel2, java.awt.BorderLayout.CENTER);
+        createPOpnl.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setPreferredSize(new java.awt.Dimension(1051, 50));
@@ -494,9 +455,9 @@ public class PurchaseOrder extends javax.swing.JPanel {
         });
         jPanel3.add(clearBtn);
 
-        jPanel4.add(jPanel3, java.awt.BorderLayout.SOUTH);
+        createPOpnl.add(jPanel3, java.awt.BorderLayout.SOUTH);
 
-        jTabbedPane1.addTab("Tạo đơn mua", jPanel4);
+        jTabbedPane1.addTab("Tạo đơn mua", createPOpnl);
 
         jPanel15.setBackground(new java.awt.Color(255, 255, 255));
         jPanel15.setPreferredSize(new java.awt.Dimension(1200, 760));
@@ -526,24 +487,41 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel8.setPreferredSize(new java.awt.Dimension(590, 70));
         jPanel8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 15));
 
-        jTextField13.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jTextField13.setForeground(new java.awt.Color(204, 204, 204));
-        jTextField13.setText("Nhập....");
-        jTextField13.setPreferredSize(new java.awt.Dimension(200, 30));
-        jPanel8.add(jTextField13);
-
-        jButton9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton9.setText("TÌM KIẾM");
-        jPanel8.add(jButton9);
-
         refreshBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         refreshBtn.setText("TẢI LẠI");
+        refreshBtn.setPreferredSize(new java.awt.Dimension(120, 30));
         refreshBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refreshBtnActionPerformed(evt);
             }
         });
         jPanel8.add(refreshBtn);
+
+        approveBtn.setBackground(new java.awt.Color(0, 204, 51));
+        approveBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        approveBtn.setForeground(new java.awt.Color(255, 255, 255));
+        approveBtn.setText("DUYỆT ĐƠN");
+        approveBtn.setEnabled(false);
+        approveBtn.setPreferredSize(new java.awt.Dimension(120, 30));
+        approveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                approveBtnActionPerformed(evt);
+            }
+        });
+        jPanel8.add(approveBtn);
+
+        cancelBtn.setBackground(new java.awt.Color(255, 0, 0));
+        cancelBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        cancelBtn.setForeground(new java.awt.Color(255, 255, 255));
+        cancelBtn.setText("HỦY ĐƠN");
+        cancelBtn.setEnabled(false);
+        cancelBtn.setPreferredSize(new java.awt.Dimension(90, 30));
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelBtnActionPerformed(evt);
+            }
+        });
+        jPanel8.add(cancelBtn);
 
         jPanel18.add(jPanel8);
 
@@ -723,7 +701,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jscrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
+                .addComponent(jscrollpane, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -732,33 +710,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jPanel22.setBackground(new java.awt.Color(255, 255, 255));
         jPanel22.setPreferredSize(new java.awt.Dimension(309, 60));
         jPanel22.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 10));
-
-        approveBtn.setBackground(new java.awt.Color(0, 204, 51));
-        approveBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        approveBtn.setForeground(new java.awt.Color(255, 255, 255));
-        approveBtn.setText("DUYỆT ĐƠN");
-        approveBtn.setEnabled(false);
-        approveBtn.setPreferredSize(new java.awt.Dimension(120, 30));
-        approveBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                approveBtnActionPerformed(evt);
-            }
-        });
-        jPanel22.add(approveBtn);
-
-        cancelBtn.setBackground(new java.awt.Color(255, 0, 0));
-        cancelBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        cancelBtn.setForeground(new java.awt.Color(255, 255, 255));
-        cancelBtn.setText("HỦY ĐƠN");
-        cancelBtn.setEnabled(false);
-        cancelBtn.setPreferredSize(new java.awt.Dimension(90, 30));
-        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelBtnActionPerformed(evt);
-            }
-        });
-        jPanel22.add(cancelBtn);
-
         jPanel20.add(jPanel22, java.awt.BorderLayout.SOUTH);
 
         jPanel15.add(jPanel20, java.awt.BorderLayout.CENTER);
@@ -1045,8 +996,8 @@ public class PurchaseOrder extends javax.swing.JPanel {
     private javax.swing.JButton approveBtn;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JButton clearBtn;
+    private javax.swing.JPanel createPOpnl;
     private javax.swing.JButton deleteDeBtn;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1062,9 +1013,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -1080,7 +1028,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -1090,10 +1037,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollpane;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JScrollPane jscrollpane;
     private javax.swing.JTable poListTbl;

@@ -34,10 +34,12 @@ public class adminView extends javax.swing.JFrame {
     private Color colorExited = new Color(0,102,153);
     private CardLayout cardlayout = new CardLayout();
     
+    
     public adminView() {
         initComponents();
         ContentPn.setLayout(cardlayout);
         this.setLocationRelativeTo(null);
+        this.setExtendedState(managerView.MAXIMIZED_BOTH);
     }
 
     /**
@@ -72,6 +74,7 @@ public class adminView extends javax.swing.JFrame {
         userBtn = new javax.swing.JButton();
         productBtn = new javax.swing.JButton();
         reportBtn = new javax.swing.JButton();
+        purchaseBtn = new javax.swing.JButton();
         authzBtn = new javax.swing.JButton();
         ContentPn = new javax.swing.JPanel();
 
@@ -515,6 +518,36 @@ public class adminView extends javax.swing.JFrame {
         });
         MenuHidePn.add(reportBtn);
 
+        purchaseBtn.setBackground(new java.awt.Color(0, 102, 153));
+        purchaseBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        purchaseBtn.setForeground(new java.awt.Color(255, 255, 255));
+        purchaseBtn.setText("ĐẶT HÀNG");
+        purchaseBtn.setBorder(null);
+        purchaseBtn.setBorderPainted(false);
+        purchaseBtn.setContentAreaFilled(false);
+        purchaseBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        purchaseBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        purchaseBtn.setMaximumSize(new java.awt.Dimension(200, 30));
+        purchaseBtn.setMinimumSize(new java.awt.Dimension(200, 30));
+        purchaseBtn.setPreferredSize(new java.awt.Dimension(150, 30));
+        purchaseBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                purchaseBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                purchaseBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                purchaseBtnMouseExited(evt);
+            }
+        });
+        purchaseBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                purchaseBtnActionPerformed(evt);
+            }
+        });
+        MenuHidePn.add(purchaseBtn);
+
         authzBtn.setBackground(new java.awt.Color(0, 102, 153));
         authzBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         authzBtn.setForeground(new java.awt.Color(255, 255, 255));
@@ -523,7 +556,6 @@ public class adminView extends javax.swing.JFrame {
         authzBtn.setBorderPainted(false);
         authzBtn.setContentAreaFilled(false);
         authzBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        authzBtn.setEnabled(false);
         authzBtn.setFocusable(false);
         authzBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         authzBtn.setMaximumSize(new java.awt.Dimension(200, 30));
@@ -546,6 +578,7 @@ public class adminView extends javax.swing.JFrame {
             }
         });
         MenuHidePn.add(authzBtn);
+
         MenuPn.add(MenuHidePn, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(MenuPn, java.awt.BorderLayout.LINE_START);
@@ -817,6 +850,25 @@ public class adminView extends javax.swing.JFrame {
         ContentPn.add(new ReportManagement(), "Reports");
         switchToPanel("Reports");
     }//GEN-LAST:event_reportBtnMouseClicked
+
+    private void purchaseBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_purchaseBtnMouseClicked
+        ContentPn.add(new PurchaseOrder(), "PO");
+        switchToPanel("PO");
+    }//GEN-LAST:event_purchaseBtnMouseClicked
+
+    private void purchaseBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_purchaseBtnMouseEntered
+        purchaseBtn.setBackground(colorEntered);
+        purchaseBtn.setOpaque(true);
+    }//GEN-LAST:event_purchaseBtnMouseEntered
+
+    private void purchaseBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_purchaseBtnMouseExited
+        purchaseBtn.setBackground(colorExited);
+        purchaseBtn.setOpaque(true);
+    }//GEN-LAST:event_purchaseBtnMouseExited
+
+    private void purchaseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_purchaseBtnActionPerformed
 
     
     public static void main(String args[]) {

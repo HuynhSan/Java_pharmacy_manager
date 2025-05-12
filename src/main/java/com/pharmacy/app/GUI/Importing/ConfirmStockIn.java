@@ -207,6 +207,11 @@ public class ConfirmStockIn extends javax.swing.JDialog {
         importBtn.setText("NHẬP KHO");
         importBtn.setEnabled(false);
         importBtn.setPreferredSize(new java.awt.Dimension(93, 30));
+        importBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                importBtnMouseClicked(evt);
+            }
+        });
         importBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 importBtnActionPerformed(evt);
@@ -293,7 +298,7 @@ public class ConfirmStockIn extends javax.swing.JDialog {
                 // Chỉ xử lý khi cột mã lô, giá nhập hoặc SL thực nhận thay đổi
                 calculateRowTotal(e.getFirstRow());
                 calculateTotalSum();
-                checkValidation();
+                checkAllFieldsFilled();
             }
         });
 
@@ -346,77 +351,104 @@ public class ConfirmStockIn extends javax.swing.JDialog {
 
         txtSum.setText(String.valueOf(sum));
     }
-
-    private void checkValidation() {
+    
+    private void checkAllFieldsFilled() {
         DefaultTableModel model = (DefaultTableModel) detailsTbl.getModel();
-        boolean allRowsValid = true;
+        boolean allFilled = true;
 
         for (int i = 0; i < model.getRowCount(); i++) {
-            // Kiểm tra các ô mã lô, giá nhập, SL thực nhận
-            Object lotNumber = model.getValueAt(i, 4);    // Cột mã lô
+            Object lotNumber = model.getValueAt(i, 4);
             Object manuDate = model.getValueAt(i, 5);
             Object expDate = model.getValueAt(i, 6);
-            Object importPrice = model.getValueAt(i, 7);  
-            Object sellPrice = model.getValueAt(i, 8);  
-            Object actualQuantity = model.getValueAt(i, 9); // Cột SL thực nhận
+            Object importPrice = model.getValueAt(i, 7);
+            Object sellPrice = model.getValueAt(i, 8);
+            Object actualQuantity = model.getValueAt(i, 9);
 
-            // Kiểm tra không null và không rỗng
-            boolean isRowValid = (lotNumber != null && !lotNumber.toString().trim().isEmpty())
-                             && (importPrice != null && !importPrice.toString().trim().isEmpty())
-                             && (actualQuantity != null && !actualQuantity.toString().trim().isEmpty())
-                             && (manuDate != null && !manuDate.toString().trim().isEmpty())
-                             && (expDate != null && !expDate.toString().trim().isEmpty())
-                             && (sellPrice != null && !sellPrice.toString().trim().isEmpty());
-
-            // Nếu dòng này không valid, đánh dấu và thoát luôn
-            if (!isRowValid) {
-                allRowsValid = false;
-                System.out.println("có giá trị null trong table");
-                continue;
+            if (lotNumber == null || lotNumber.toString().trim().isEmpty() ||
+                manuDate == null || manuDate.toString().trim().isEmpty() ||
+                expDate == null || expDate.toString().trim().isEmpty() ||
+                importPrice == null || importPrice.toString().trim().isEmpty() ||
+                sellPrice == null || sellPrice.toString().trim().isEmpty() ||
+                actualQuantity == null || actualQuantity.toString().trim().isEmpty()) {
+                allFilled = false;
+                break;
             }
-
-            // Kiểm tra giá trị số hợp lệ
-            try {
-                double price = Double.parseDouble(sellPrice.toString());
-                double imPrice = Double.parseDouble(importPrice.toString());
-                LocalDate manu = LocalDate.parse(manuDate.toString());
-                LocalDate exp = LocalDate.parse(expDate.toString());
-                int quantity = Integer.parseInt(actualQuantity.toString());
-                
-                // validate giá và số lượng
-                 if (imPrice <= 0 || price <= 0 || quantity <= 0) {
-                    JOptionPane.showMessageDialog(this, "Giá và số lượng phải > 0", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    allRowsValid = false;
-                    continue;
-                }
-                // validate hsd sau nsx
-                if (!exp.isAfter(manu)) {
-                    JOptionPane.showMessageDialog(this, "Ngày hết hạn phải sau ngày sản xuất", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    allRowsValid = false;
-                    continue;
-                }
-               
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Dữ liệu không hợp lệ hoặc sai định dạng", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                allRowsValid = false;
-                continue;
-            }catch (DateTimeParseException e) {
-                JOptionPane.showMessageDialog(this, 
-                "Dòng " + (i+1) + ": Sai định dạng ngày (yyyy-MM-dd)\nVí dụ: 2026-07-03", 
-                "Lỗi", 
-                JOptionPane.ERROR_MESSAGE);
-                allRowsValid = false;
-                continue;
-            }catch (Exception e) {
-                System.out.println("Dòng " + (i+1) + ": Lỗi không xác định" ); 
-                e.printStackTrace();
-                allRowsValid = false;
-                continue;
         }
 
-        importBtn.setEnabled(allRowsValid);
+        importBtn.setEnabled(allFilled); // Chỉ bật khi điền đầy đủ
     }
-    }
+
+
+//    private void checkValidation() {
+//        DefaultTableModel model = (DefaultTableModel) detailsTbl.getModel();
+//        boolean allRowsValid = true;
+//
+//        for (int i = 0; i < model.getRowCount(); i++) {
+//            // Kiểm tra các ô mã lô, giá nhập, SL thực nhận
+//            Object lotNumber = model.getValueAt(i, 4);    // Cột mã lô
+//            Object manuDate = model.getValueAt(i, 5);
+//            Object expDate = model.getValueAt(i, 6);
+//            Object importPrice = model.getValueAt(i, 7);  
+//            Object sellPrice = model.getValueAt(i, 8);  
+//            Object actualQuantity = model.getValueAt(i, 9); // Cột SL thực nhận
+//
+//            // Kiểm tra không null và không rỗng
+//            boolean isRowValid = (lotNumber != null && !lotNumber.toString().trim().isEmpty())
+//                             && (importPrice != null && !importPrice.toString().trim().isEmpty())
+//                             && (actualQuantity != null && !actualQuantity.toString().trim().isEmpty())
+//                             && (manuDate != null && !manuDate.toString().trim().isEmpty())
+//                             && (expDate != null && !expDate.toString().trim().isEmpty())
+//                             && (sellPrice != null && !sellPrice.toString().trim().isEmpty());
+//
+//            // Nếu dòng này không valid, đánh dấu và thoát luôn
+//            if (!isRowValid) {
+//                allRowsValid = false;
+//                System.out.println("có giá trị null trong table");
+//                continue;
+//            }
+//
+//            // Kiểm tra giá trị số hợp lệ
+//            try {
+//                double price = Double.parseDouble(sellPrice.toString());
+//                double imPrice = Double.parseDouble(importPrice.toString());
+//                LocalDate manu = LocalDate.parse(manuDate.toString());
+//                LocalDate exp = LocalDate.parse(expDate.toString());
+//                int quantity = Integer.parseInt(actualQuantity.toString());
+//                
+//                // validate giá và số lượng
+//                 if (imPrice <= 0 || price <= 0 || quantity <= 0) {
+//                    JOptionPane.showMessageDialog(this, "Giá và số lượng phải > 0", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//                    allRowsValid = false;
+//                    continue;
+//                }
+//                // validate hsd sau nsx
+//                if (!exp.isAfter(manu)) {
+//                    JOptionPane.showMessageDialog(this, "Ngày hết hạn phải sau ngày sản xuất", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//                    allRowsValid = false;
+//                    continue;
+//                }
+//               
+//            } catch (NumberFormatException e) {
+//                JOptionPane.showMessageDialog(this, "Dữ liệu không hợp lệ hoặc sai định dạng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//                allRowsValid = false;
+//                continue;
+//            }catch (DateTimeParseException e) {
+//                JOptionPane.showMessageDialog(this, 
+//                "Dòng " + (i+1) + ": Sai định dạng ngày (yyyy-MM-dd)\nVí dụ: 2026-07-03", 
+//                "Lỗi", 
+//                JOptionPane.ERROR_MESSAGE);
+//                allRowsValid = false;
+//                continue;
+//            }catch (Exception e) {
+//                System.out.println("Dòng " + (i+1) + ": Lỗi không xác định" ); 
+//                e.printStackTrace();
+//                allRowsValid = false;
+//                continue;
+//        }
+//
+//        importBtn.setEnabled(allRowsValid);
+//    }
+//    }
     
     
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
@@ -432,6 +464,45 @@ public class ConfirmStockIn extends javax.swing.JDialog {
     }//GEN-LAST:event_txtSupActionPerformed
 
     private void importBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importBtnActionPerformed
+        DefaultTableModel model = (DefaultTableModel) detailsTbl.getModel();
+        boolean isFilled = false;
+            for (int i = 0; i < model.getRowCount(); i++) {
+                try {
+                    double imPrice = Double.parseDouble(model.getValueAt(i, 7).toString());
+                    double price = Double.parseDouble(model.getValueAt(i, 8).toString());
+                    int quantity = Integer.parseInt(model.getValueAt(i, 9).toString());
+                    LocalDate manu = LocalDate.parse(model.getValueAt(i, 5).toString());
+                    LocalDate exp = LocalDate.parse(model.getValueAt(i, 6).toString());
+
+                    if (imPrice <= 0 || price <= 0 || quantity <= 0) {
+                        JOptionPane.showMessageDialog(this, "Giá và số lượng phải > 0", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        return; // Dừng lại nếu có lỗi
+                    }
+
+                    if (!exp.isAfter(manu)) {
+                        JOptionPane.showMessageDialog(this, "Ngày hết hạn phải sau ngày sản xuất", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Dữ liệu không hợp lệ hoặc sai định dạng số", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                } catch (DateTimeParseException e) {
+                    JOptionPane.showMessageDialog(this,
+                            "Dòng " + (i + 1) + ": Sai định dạng ngày (yyyy-MM-dd)\nVí dụ: 2026-07-03",
+                            "Lỗi",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this,
+                            "Dòng " + (i + 1) + ": Lỗi không xác định",
+                            "Lỗi",
+                            JOptionPane.ERROR_MESSAGE);
+                    e.printStackTrace();
+                    return;
+                }
+            }
+        
         String[] options = { "Xác nhận", "Hủy bỏ" };
         int choice = JOptionPane.showOptionDialog(
             null,
@@ -455,7 +526,6 @@ public class ConfirmStockIn extends javax.swing.JDialog {
             supInvNew.setPurchaseDate(LocalDate.now());
             
             List<SuplierInvoiceDetailsDTO> details = new ArrayList<>();
-            DefaultTableModel model = (DefaultTableModel) detailsTbl.getModel();
 
             for (int i = 0; i < model.getRowCount(); i++) {
                 SuplierInvoiceDetailsDTO detail = new SuplierInvoiceDetailsDTO();
@@ -488,6 +558,10 @@ public class ConfirmStockIn extends javax.swing.JDialog {
             this.dispose();
         }
     }//GEN-LAST:event_importBtnActionPerformed
+
+    private void importBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importBtnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_importBtnMouseClicked
 
     /**
      * @param args the command line arguments
