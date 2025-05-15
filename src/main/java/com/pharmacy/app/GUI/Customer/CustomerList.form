@@ -279,12 +279,14 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
-<<<<<<< HEAD
+
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbCustomerListMouseClicked"/>
           </Events>
         </Component>
-=======
+        <!-- Chỗ thêm vào -->
+        <Container class="javax.swing.JPanel" name="plCustomerList">
+      
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
           </AuxValues>
@@ -374,7 +376,6 @@
             </Component>
           </SubComponents>
         </Container>
->>>>>>> 3a88b8ca5ca8a789d38856b33379dfb9ee2ed429
       </SubComponents>
     </Container>
   </SubComponents>
