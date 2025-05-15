@@ -211,7 +211,7 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Container class="javax.swing.JPanel" name="plCustomerList">
-          <Component class="javax.swing.JTable" name="tbCustomerList">
+          <!-- <Component class="javax.swing.JTable" name="tbCustomerList">
             <Properties>
               <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                 <Table columnCount="4" rowCount="4">
@@ -283,7 +283,7 @@
             <Events>
               <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbCustomerListMouseClicked"/>
             </Events>
-          </Component>
+          </Component> -->
           <!-- <Container class="javax.swing.JPanel" name="plCustomerList"> -->
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -291,7 +291,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="tbCustomerList1">
+            <Component class="javax.swing.JTable" name="tbCustomerList">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="4" rowCount="4">
