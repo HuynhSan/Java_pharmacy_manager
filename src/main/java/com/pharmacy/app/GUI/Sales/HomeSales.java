@@ -512,8 +512,7 @@ public class HomeSales extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tblProduct.setMaximumSize(new java.awt.Dimension(750, 600));
-        tblProduct.setPreferredSize(new java.awt.Dimension(790, 100));
+        tblProduct.setPreferredSize(new java.awt.Dimension(790, 400));
         tblProduct.setRowHeight(30);
         tblProduct.setShowGrid(true);
         tblProduct.addMouseListener(new java.awt.event.MouseAdapter() {
