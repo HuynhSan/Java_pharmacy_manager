@@ -65,35 +65,41 @@ public class PaymentDialog extends javax.swing.JDialog {
         this.subTotal = subTotal;
         this.totalProduct = homesales.calculateTotalProduct();
         this.homesales = homesales;
+        showData();
         showHashMap(cartItems);
+        getRootPane().setDefaultButton(btnConfirmPayment);
         
-        // Hiển thị dữ liệu lên các trường trong dialog
+
+    }
+    
+    // Hiển thị dữ liệu lên các trường trong dialog
+    public void showData(){
         txtTotalProductPrice.setText(formatMoney(totalProductPrice));
         txtDiscountAmount.setText(formatMoney(totalDiscount));
         txtFinalTotal.setText(formatMoney(subTotal));
-    }
-    
-        public void showHashMap(Map<String, CartItemDTO> cartItems){
-            // Sau khi thêm vào cartPanel, thêm đoạn này để debug
-            System.out.println("==> Giỏ hàng thanh toán:");
-            for (Map.Entry<String, CartItemDTO> entry : cartItems.entrySet()) {
-                CartItemDTO cartitem = entry.getValue();
-                System.out.println("Batch ID: " + cartitem.getBatchId()
-                   + ", Product ID: " + cartitem.getProductId()
-                   + ", Tên: " + cartitem.getName()
-                   + ", SL: " + cartitem.getQuantityFromSpinner()
-                   + ", Giá gốc: " + cartitem.getSellPrice()
-                   + ", Mã khuyến mãi: " + cartitem.getPromoId()
-                   + ", Tiền khuyến mãi: " + cartitem.getDiscountAmount()
-                   + ", Giá sau KM: " + cartitem.getFinalPrice());
-            }
-            System.out.println("------------------------------");
+    }    
 
+    public void showHashMap(Map<String, CartItemDTO> cartItems){
+        // Sau khi thêm vào cartPanel, thêm đoạn này để debug
+        System.out.println("==> Giỏ hàng thanh toán:");
+        for (Map.Entry<String, CartItemDTO> entry : cartItems.entrySet()) {
+            CartItemDTO cartitem = entry.getValue();
+            System.out.println("Batch ID: " + cartitem.getBatchId()
+               + ", Product ID: " + cartitem.getProductId()
+               + ", Tên: " + cartitem.getName()
+               + ", SL: " + cartitem.getQuantityFromSpinner()
+               + ", Giá gốc: " + cartitem.getSellPrice()
+               + ", Mã khuyến mãi: " + cartitem.getPromoId()
+               + ", Tiền khuyến mãi: " + cartitem.getDiscountAmount()
+               + ", Giá sau KM: " + cartitem.getFinalPrice());
         }
-    
-        private String formatMoney(BigDecimal amount) {
-            return String.format("%,.0f", amount);
-        }
+        System.out.println("------------------------------");
+
+    }
+
+    private String formatMoney(BigDecimal amount) {
+        return String.format("%,.0f", amount);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -327,7 +333,7 @@ public class PaymentDialog extends javax.swing.JDialog {
                         invoiceId,
                         item.getProductId(),
                         item.getQuantity(),
-                        item.getFinalPrice()
+                        item.getSellPrice()
                     );
                     salesInvoiceDetailBUS.addInvoiceDetail(detail);
 
