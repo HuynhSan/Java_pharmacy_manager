@@ -191,7 +191,7 @@ public class UserManagement extends javax.swing.JPanel {
 
         pnlUser1.setBackground(new java.awt.Color(255, 255, 255));
         pnlUser1.setToolTipText("");
-        pnlUser1.setPreferredSize(new java.awt.Dimension(607, 40));
+        pnlUser1.setPreferredSize(new java.awt.Dimension(1180, 40));
         pnlUser1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
 
         txtSearchUser.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
@@ -261,9 +261,9 @@ public class UserManagement extends javax.swing.JPanel {
         add(pnlUser1, java.awt.BorderLayout.NORTH);
 
         pnlUser2.setBackground(new java.awt.Color(255, 255, 255));
-        pnlUser2.setPreferredSize(new java.awt.Dimension(600, 439));
+        pnlUser2.setPreferredSize(new java.awt.Dimension(1180, 700));
 
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(695, 402));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(1180, 650));
 
         tblUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -284,7 +284,7 @@ public class UserManagement extends javax.swing.JPanel {
         ));
         tblUsers.setFocusable(false);
         tblUsers.setMinimumSize(new java.awt.Dimension(500, 80));
-        tblUsers.setPreferredSize(new java.awt.Dimension(500, 80));
+        tblUsers.setPreferredSize(new java.awt.Dimension(1180, 700));
         tblUsers.setRowHeight(30);
         tblUsers.setShowGrid(true);
         tblUsers.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -298,14 +298,14 @@ public class UserManagement extends javax.swing.JPanel {
         pnlUser2.setLayout(pnlUser2Layout);
         pnlUser2Layout.setHorizontalGroup(
             pnlUser2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 765, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlUser2Layout.setVerticalGroup(
             pnlUser2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlUser2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(pnlUser2, java.awt.BorderLayout.CENTER);
