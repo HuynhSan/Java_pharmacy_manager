@@ -106,21 +106,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
             model.addElement(sup.getName());
         }
         supCbb.setModel(model);
-        // try {
-        // SupplierBUS supBus = new SupplierBUS();
-        // ArrayList<SupplierDTO> sups = supBus.getSupList();
-        // System.out.println("Number of suppliers: " + sups.size());
-        //
-        // DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        // for (SupplierDTO sup : sups) {
-        // System.out.println("Adding supplier: " + sup.getName());
-        // model.addElement(sup.getName());
-        // }
-        // supCbb.setModel(model);
-        // } catch (Exception e) {
-        // System.err.println("Error in loadCbbSup: " + e.getMessage());
-        // e.printStackTrace();
-        // }
     }
 
     private void centerTableContent(JTable table) {
@@ -207,9 +192,9 @@ public class PurchaseOrder extends javax.swing.JPanel {
         txtDateOrder = new javax.swing.JTextField();
         jPanel11 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
-        txtManagerID = new javax.swing.JTextField();
-        jLabel25 = new javax.swing.JLabel();
         txtSup = new javax.swing.JTextField();
+        jLabel25 = new javax.swing.JLabel();
+        txtManagerID = new javax.swing.JTextField();
         jPanel22 = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -419,7 +404,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jTextField7.setEditable(false);
         jTextField7.setBackground(new java.awt.Color(255, 255, 255));
         jTextField7.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField7.setText("12300000");
         jTextField7.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel14.add(jTextField7);
 
@@ -658,18 +642,6 @@ public class PurchaseOrder extends javax.swing.JPanel {
         jLabel24.setPreferredSize(new java.awt.Dimension(80, 16));
         jPanel11.add(jLabel24);
 
-        txtManagerID.setEditable(false);
-        txtManagerID.setBackground(new java.awt.Color(255, 255, 255));
-        txtManagerID.setBorder(null);
-        txtManagerID.setFocusable(false);
-        txtManagerID.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel11.add(txtManagerID);
-
-        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel25.setText("Người lập:");
-        jLabel25.setPreferredSize(new java.awt.Dimension(100, 16));
-        jPanel11.add(jLabel25);
-
         txtSup.setEditable(false);
         txtSup.setBackground(new java.awt.Color(255, 255, 255));
         txtSup.setBorder(null);
@@ -680,6 +652,18 @@ public class PurchaseOrder extends javax.swing.JPanel {
             }
         });
         jPanel11.add(txtSup);
+
+        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel25.setText("Người lập:");
+        jLabel25.setPreferredSize(new java.awt.Dimension(100, 16));
+        jPanel11.add(jLabel25);
+
+        txtManagerID.setEditable(false);
+        txtManagerID.setBackground(new java.awt.Color(255, 255, 255));
+        txtManagerID.setBorder(null);
+        txtManagerID.setFocusable(false);
+        txtManagerID.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel11.add(txtManagerID);
 
         jPanel9.add(jPanel11);
 

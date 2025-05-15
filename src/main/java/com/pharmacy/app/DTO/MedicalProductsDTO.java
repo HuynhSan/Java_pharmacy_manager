@@ -17,6 +17,7 @@ public class MedicalProductsDTO {
     private int quantity;
     private String status;
     private String packingSpecification;
+    private String imgPath;
 
     public MedicalProductsDTO(){
      
@@ -96,6 +97,14 @@ public class MedicalProductsDTO {
 
     public void setPackingSpecification(String packingSpecification) {
         this.packingSpecification = packingSpecification;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
     
     

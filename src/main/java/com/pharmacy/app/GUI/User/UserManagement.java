@@ -265,6 +265,7 @@ public class UserManagement extends javax.swing.JPanel {
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(695, 402));
 
+        tblUsers.setAutoCreateColumnsFromModel(false);
         tblUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -304,8 +305,8 @@ public class UserManagement extends javax.swing.JPanel {
             pnlUser2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlUser2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(pnlUser2, java.awt.BorderLayout.CENTER);

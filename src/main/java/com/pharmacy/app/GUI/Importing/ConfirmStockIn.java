@@ -261,7 +261,6 @@ public class ConfirmStockIn extends javax.swing.JDialog {
         txtManagerID.setText(selectedPO.getManagerUserID());
         txtPOid.setText(selectedPO.getPoID());
         txtSup.setText(selectedPO.getSupplierID());
-
         // Load chi tiết PO
         ArrayList<PurchaseOrderDetailsDTO> detailsList = poDeBUS.getAllPOdetails(selectedPO.getPoID());
         DefaultTableModel model = (DefaultTableModel) detailsTbl.getModel();
@@ -379,77 +378,6 @@ public class ConfirmStockIn extends javax.swing.JDialog {
     }
 
 
-//    private void checkValidation() {
-//        DefaultTableModel model = (DefaultTableModel) detailsTbl.getModel();
-//        boolean allRowsValid = true;
-//
-//        for (int i = 0; i < model.getRowCount(); i++) {
-//            // Kiểm tra các ô mã lô, giá nhập, SL thực nhận
-//            Object lotNumber = model.getValueAt(i, 4);    // Cột mã lô
-//            Object manuDate = model.getValueAt(i, 5);
-//            Object expDate = model.getValueAt(i, 6);
-//            Object importPrice = model.getValueAt(i, 7);  
-//            Object sellPrice = model.getValueAt(i, 8);  
-//            Object actualQuantity = model.getValueAt(i, 9); // Cột SL thực nhận
-//
-//            // Kiểm tra không null và không rỗng
-//            boolean isRowValid = (lotNumber != null && !lotNumber.toString().trim().isEmpty())
-//                             && (importPrice != null && !importPrice.toString().trim().isEmpty())
-//                             && (actualQuantity != null && !actualQuantity.toString().trim().isEmpty())
-//                             && (manuDate != null && !manuDate.toString().trim().isEmpty())
-//                             && (expDate != null && !expDate.toString().trim().isEmpty())
-//                             && (sellPrice != null && !sellPrice.toString().trim().isEmpty());
-//
-//            // Nếu dòng này không valid, đánh dấu và thoát luôn
-//            if (!isRowValid) {
-//                allRowsValid = false;
-//                System.out.println("có giá trị null trong table");
-//                continue;
-//            }
-//
-//            // Kiểm tra giá trị số hợp lệ
-//            try {
-//                double price = Double.parseDouble(sellPrice.toString());
-//                double imPrice = Double.parseDouble(importPrice.toString());
-//                LocalDate manu = LocalDate.parse(manuDate.toString());
-//                LocalDate exp = LocalDate.parse(expDate.toString());
-//                int quantity = Integer.parseInt(actualQuantity.toString());
-//                
-//                // validate giá và số lượng
-//                 if (imPrice <= 0 || price <= 0 || quantity <= 0) {
-//                    JOptionPane.showMessageDialog(this, "Giá và số lượng phải > 0", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//                    allRowsValid = false;
-//                    continue;
-//                }
-//                // validate hsd sau nsx
-//                if (!exp.isAfter(manu)) {
-//                    JOptionPane.showMessageDialog(this, "Ngày hết hạn phải sau ngày sản xuất", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//                    allRowsValid = false;
-//                    continue;
-//                }
-//               
-//            } catch (NumberFormatException e) {
-//                JOptionPane.showMessageDialog(this, "Dữ liệu không hợp lệ hoặc sai định dạng", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//                allRowsValid = false;
-//                continue;
-//            }catch (DateTimeParseException e) {
-//                JOptionPane.showMessageDialog(this, 
-//                "Dòng " + (i+1) + ": Sai định dạng ngày (yyyy-MM-dd)\nVí dụ: 2026-07-03", 
-//                "Lỗi", 
-//                JOptionPane.ERROR_MESSAGE);
-//                allRowsValid = false;
-//                continue;
-//            }catch (Exception e) {
-//                System.out.println("Dòng " + (i+1) + ": Lỗi không xác định" ); 
-//                e.printStackTrace();
-//                allRowsValid = false;
-//                continue;
-//        }
-//
-//        importBtn.setEnabled(allRowsValid);
-//    }
-//    }
-    
     
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         this.dispose();

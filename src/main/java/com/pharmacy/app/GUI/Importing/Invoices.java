@@ -219,9 +219,6 @@ public final class Invoices extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         newinvoiceTbl = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jTextField4 = new javax.swing.JTextField();
         refreshBtn = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         importBtn = new javax.swing.JButton();
@@ -266,6 +263,7 @@ public final class Invoices extends javax.swing.JPanel {
 
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách đơn đặt hàng đã duyệt", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        jPanel10.setLayout(new java.awt.BorderLayout());
 
         jScrollPane3.setPreferredSize(new java.awt.Dimension(1190, 550));
         jScrollPane3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -310,26 +308,13 @@ public final class Invoices extends javax.swing.JPanel {
         });
         jScrollPane3.setViewportView(newinvoiceTbl);
 
+        jPanel10.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel7.setPreferredSize(new java.awt.Dimension(1180, 70));
-        jPanel7.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 20));
-
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel10.setText("Tìm theo: ");
-        jLabel10.setPreferredSize(new java.awt.Dimension(100, 16));
-        jPanel7.add(jLabel10);
-
-        jComboBox5.setEditable(true);
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo đơn", "Tên người tạo", "Nhà cung cấp" }));
-        jComboBox5.setMinimumSize(new java.awt.Dimension(108, 30));
-        jComboBox5.setPreferredSize(new java.awt.Dimension(108, 30));
-        jPanel7.add(jComboBox5);
-
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jTextField4.setForeground(new java.awt.Color(204, 204, 204));
-        jTextField4.setText("Nhập....");
-        jTextField4.setPreferredSize(new java.awt.Dimension(300, 30));
-        jPanel7.add(jTextField4);
+        jPanel7.setPreferredSize(new java.awt.Dimension(1180, 50));
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 70, 5);
+        flowLayout1.setAlignOnBaseline(true);
+        jPanel7.setLayout(flowLayout1);
 
         refreshBtn.setText("TẢI LẠI");
         refreshBtn.setPreferredSize(new java.awt.Dimension(72, 30));
@@ -340,29 +325,7 @@ public final class Invoices extends javax.swing.JPanel {
         });
         jPanel7.add(refreshBtn);
 
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1243, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        jPanel10.add(jPanel7, java.awt.BorderLayout.NORTH);
 
         jPanel8.add(jPanel10, java.awt.BorderLayout.CENTER);
 
@@ -736,9 +699,7 @@ public final class Invoices extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton importBtn;
     private javax.swing.JButton jButton8;
-    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -760,7 +721,6 @@ public final class Invoices extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTable newinvoiceTbl;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JButton refreshBtn1;
