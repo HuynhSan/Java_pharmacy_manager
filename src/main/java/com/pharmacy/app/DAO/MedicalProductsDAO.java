@@ -22,7 +22,7 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
 
         if (myconnect.openConnection()) {
             try {
-                String sql = "INSERT INTO medical_products(product_id, name, category_id, description, unit, quantity, packing_specification) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO medical_products(product_id, name, category_id, description, unit, quantity, packing_specification, img_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 // Sử dụng phương thức prepareUpdate để thực thi câu lệnh SQL
                 int rowsAffected = myconnect.prepareUpdate(sql, 
                     product.getMedicineID(),
@@ -31,7 +31,8 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
                     product.getDescription(),
                     product.getUnit(),
                     product.getQuantity(),
-                    product.getPackingSpecification()
+                    product.getPackingSpecification(),
+                    product.getImgPath()
                 );
 
                 if (rowsAffected > 0) {
@@ -108,7 +109,7 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
     public ArrayList<MedicalProductsDTO> selectAll() {
         ArrayList<MedicalProductsDTO> medicineList = new ArrayList<MedicalProductsDTO>();
         if (myconnect.openConnection()){
-            String sql = "SELECT * FROM medical_products m JOIN categories c ON m.category_id = c.category_id WHERE m.is_deleted = 0";
+            String sql = "SELECT * FROM medical_products m JOIN categories c ON m.category_id = c.category_id";
             ResultSet rs = myconnect.runQuery(sql);
             
             try {
@@ -116,7 +117,7 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
                        MedicalProductsDTO product = new MedicalProductsDTO(
                        rs.getString(1),
                        rs.getString(2),
-                       rs.getString(10),
+                       rs.getString(11),
                        rs.getString(4),
                        rs.getString(5),
                        rs.getInt(6),
@@ -127,6 +128,7 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
                        }else {
                            product.setStatus("Ngừng kinh doanh");
                        }
+                       product.setImgPath(rs.getString("img_path"));
                        medicineList.add(product);
                 }
             } catch (SQLException ex) {

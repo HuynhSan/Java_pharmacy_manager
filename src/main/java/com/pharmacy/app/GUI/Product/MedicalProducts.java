@@ -42,8 +42,7 @@ public class MedicalProducts extends javax.swing.JPanel {
         loadBatchList();
         dateTbl.setDefaultEditor(Object.class, null);
         loadDateList();
-        setupTableRenderer();
-        // centerTableContent(dateTbl);
+        centerTableContent(dateTbl);
         centerTableContent(batchListTbl);
         centerTableContent(medListTbl);
 
@@ -155,7 +154,7 @@ public class MedicalProducts extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -244,26 +243,26 @@ public class MedicalProducts extends javax.swing.JPanel {
         jScrollPane3.setPreferredSize(new java.awt.Dimension(1200, 700));
 
         medListTbl.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "STT", "MÃ SẢN PHẨM", "TÊN SẢN PHẨM", "SỐ LƯỢNG", "PHÂN LOẠI", "TRẠNG THÁI"
-                }) {
-            Class[] types = new Class[] {
-                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class,
-                    java.lang.String.class, java.lang.String.class
+            },
+            new String [] {
+                "STT", "MÃ SẢN PHẨM", "TÊN SẢN PHẨM", "SỐ LƯỢNG", "PHÂN LOẠI", "TRẠNG THÁI"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, false, false, false
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         medListTbl.setPreferredSize(new java.awt.Dimension(1200, 760));
@@ -274,6 +273,16 @@ public class MedicalProducts extends javax.swing.JPanel {
             }
         });
         jScrollPane3.setViewportView(medListTbl);
+        if (medListTbl.getColumnModel().getColumnCount() > 0) {
+            medListTbl.getColumnModel().getColumn(0).setMinWidth(90);
+            medListTbl.getColumnModel().getColumn(0).setPreferredWidth(100);
+            medListTbl.getColumnModel().getColumn(0).setMaxWidth(110);
+            medListTbl.getColumnModel().getColumn(1).setMinWidth(120);
+            medListTbl.getColumnModel().getColumn(1).setMaxWidth(200);
+            medListTbl.getColumnModel().getColumn(3).setMinWidth(100);
+            medListTbl.getColumnModel().getColumn(3).setPreferredWidth(120);
+            medListTbl.getColumnModel().getColumn(3).setMaxWidth(140);
+        }
 
         medListPn.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
@@ -322,29 +331,29 @@ public class MedicalProducts extends javax.swing.JPanel {
         jScrollPane2.setPreferredSize(new java.awt.Dimension(1200, 670));
 
         batchListTbl.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
-                        { null, null, null, null, null, null, null },
-                        { null, null, null, null, null, null, null },
-                        { null, null, null, null, null, null, null },
-                        { null, null, null, null, null, null, null }
-                },
-                new String[] {
-                        "STT", "MÃ LÔ", "TÊN SẢN PHẨM", "SỐ LƯỢNG", "NHÀ CUNG CẤP", "NSX", "HSD"
-                }) {
-            Class[] types = new Class[] {
-                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class,
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "STT", "MÃ LÔ", "TÊN SẢN PHẨM", "SỐ LƯỢNG", "NHÀ CUNG CẤP", "NSX", "HSD"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, false, false, false, false
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         batchListTbl.setPreferredSize(new java.awt.Dimension(1200, 760));
@@ -406,31 +415,30 @@ public class MedicalProducts extends javax.swing.JPanel {
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
-                jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel4Layout.createSequentialGroup()
-                                                .addGap(521, 521, 521)
-                                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 248,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel4Layout.createSequentialGroup()
-                                                .addGap(794, 794, 794)
-                                                .addComponent(refreshBtn2)
-                                                .addGap(55, 55, 55)
-                                                .addComponent(destroyBtn)))
-                                .addGap(1004, 1004, 1004)));
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(521, 521, 521)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(794, 794, 794)
+                        .addComponent(refreshBtn2)
+                        .addGap(55, 55, 55)
+                        .addComponent(destroyBtn)))
+                .addGap(1004, 1004, 1004))
+        );
         jPanel4Layout.setVerticalGroup(
-                jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27,
-                                        Short.MAX_VALUE)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(destroyBtn)
-                                        .addComponent(refreshBtn2))
-                                .addContainerGap()));
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(destroyBtn)
+                    .addComponent(refreshBtn2))
+                .addContainerGap())
+        );
 
         medDatePn.add(jPanel4, java.awt.BorderLayout.NORTH);
 
@@ -442,29 +450,29 @@ public class MedicalProducts extends javax.swing.JPanel {
         jScrollPane1.setPreferredSize(new java.awt.Dimension(1200, 700));
 
         dateTbl.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
-                        { null, null, null, null, null, null, null, null },
-                        { null, null, null, null, null, null, null, null },
-                        { null, null, null, null, null, null, null, null },
-                        { null, null, null, null, null, null, null, null }
-                },
-                new String[] {
-                        "STT", "MÃ LÔ", "TÊN SẢN PHẨM", "SỐ LƯỢNG", "NHÀ CUNG CẤP", "NSX", "HSD", "HSD CÒN LẠI"
-                }) {
-            Class[] types = new Class[] {
-                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class,
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "STT", "MÃ LÔ", "MÃ SẢN PHẨM", "SỐ LƯỢNG", "NHÀ CUNG CẤP", "NSX", "HSD", "HSD CÒN LẠI"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean[] {
-                    true, false, false, false, false, false, false, true
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         dateTbl.setPreferredSize(new java.awt.Dimension(1200, 760));
@@ -482,6 +490,9 @@ public class MedicalProducts extends javax.swing.JPanel {
             dateTbl.getColumnModel().getColumn(1).setMinWidth(100);
             dateTbl.getColumnModel().getColumn(1).setPreferredWidth(120);
             dateTbl.getColumnModel().getColumn(1).setMaxWidth(140);
+            dateTbl.getColumnModel().getColumn(2).setMinWidth(140);
+            dateTbl.getColumnModel().getColumn(2).setPreferredWidth(150);
+            dateTbl.getColumnModel().getColumn(2).setMaxWidth(200);
             dateTbl.getColumnModel().getColumn(3).setMinWidth(60);
             dateTbl.getColumnModel().getColumn(3).setPreferredWidth(70);
             dateTbl.getColumnModel().getColumn(3).setMaxWidth(80);
@@ -541,7 +552,6 @@ public class MedicalProducts extends javax.swing.JPanel {
                         batch.getManufacturingDate(),
                         batch.getExpirationDate()
                 });
-                System.out.println(batch.getMedicineID());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -578,39 +588,39 @@ public class MedicalProducts extends javax.swing.JPanel {
         }
     }
 
-    private void setupTableRenderer() {
+//    private void setupTableRenderer() {
 
         // Tạo renderer tùy chỉnh: CĂN GIỮA + ĐỔI MÀU
-        DefaultTableCellRenderer centerAndColorRenderer = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(
-                    JTable table, Object value, boolean isSelected, boolean hasFocus,
-                    int row, int column) {
-
-                // Căn giữa mọi nội dung
-                setHorizontalAlignment(SwingConstants.CENTER);
-
-                if (column == 7) {
-                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                    LocalDate hsd = (LocalDate) table.getModel().getValueAt(row, 6);
-                    long monthsLeft = Period.between(LocalDate.now(), hsd).toTotalMonths();
-                    if (monthsLeft < 6 && monthsLeft >= 3) {
-                        c.setForeground(Color.YELLOW); // Thay đổi màu chữ của ô
-                    } else if (monthsLeft < 3) {
-                        c.setForeground(Color.RED);
-                    } else {
-                        c.setForeground(Color.BLACK); // Màu mặc định (đen)
-                    }
-                    return c;
-                }
-                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            }
-        };
-        // Áp dụng renderer cho tất cả cột (căn giữa toàn bộ)
-        for (int i = 0; i < dateTbl.getColumnCount(); i++) {
-            dateTbl.getColumnModel().getColumn(i).setCellRenderer(centerAndColorRenderer);
-        }
-    }
+//        DefaultTableCellRenderer centerAndColorRenderer = new DefaultTableCellRenderer() {
+//            @Override
+//            public Component getTableCellRendererComponent(
+//                    JTable table, Object value, boolean isSelected, boolean hasFocus,
+//                    int row, int column) {
+//
+//                // Căn giữa mọi nội dung
+//                setHorizontalAlignment(SwingConstants.CENTER);
+//
+//                if (column == 7) {
+//                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+//                    LocalDate hsd = (LocalDate) table.getModel().getValueAt(row, 6);
+//                    long monthsLeft = Period.between(LocalDate.now(), hsd).toTotalMonths();
+//                    if (monthsLeft < 6 && monthsLeft >= 3) {
+//                        c.setForeground(Color.YELLOW); // Thay đổi màu chữ của ô
+//                    } else if (monthsLeft < 3) {
+//                        c.setForeground(Color.RED);
+//                    } else {
+//                        c.setForeground(Color.BLACK); // Màu mặc định (đen)
+//                    }
+//                    return c;
+//                }
+//                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+//            }
+//        };
+//        // Áp dụng renderer cho tất cả cột (căn giữa toàn bộ)
+//        for (int i = 0; i < dateTbl.getColumnCount(); i++) {
+//            dateTbl.getColumnModel().getColumn(i).setCellRenderer(centerAndColorRenderer);
+//        }
+//    }
 
     private void medListTblMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_medListTblMouseClicked
         if (evt.getButton() == MouseEvent.BUTTON1) {
