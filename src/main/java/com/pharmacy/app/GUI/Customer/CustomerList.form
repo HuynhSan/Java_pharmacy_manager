@@ -210,91 +210,86 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="tbCustomerList">
-          <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="4">
-                <Column editable="false" title="M&#xc3; KH&#xc1;CH H&#xc0;NG" type="java.lang.String">
-                  <Data value="KH01"/>
-                  <Data value="KH02"/>
-                  <Data value="null"/>
-                  <Data value="null"/>
-                </Column>
-                <Column editable="false" title="T&#xca;N KH&#xc1;CH H&#xc0;NG" type="java.lang.String">
-                  <Data value="Nguy&#x1ec5;n V&#x103;n A"/>
-                  <Data value="Nguy&#x1ec5;n V&#x103;n B"/>
-                  <Data value="null"/>
-                  <Data value="null"/>
-                </Column>
-                <Column editable="false" title="S&#x1ed0; &#x110;I&#x1ec6;N THO&#x1ea0;I" type="java.lang.String">
-                  <Data value="0123456789"/>
-                  <Data value="0978465132"/>
-                  <Data value="null"/>
-                  <Data value="null"/>
-                </Column>
-                <Column editable="false" title="&#x110;I&#x1ec2;M" type="java.lang.Float">
-                  <Data value="100.0"/>
-                  <Data value="20.0"/>
-                  <Data value="null"/>
-                  <Data value="null"/>
-                </Column>
-              </Table>
-            </Property>
-            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-              <TableColumnModel selectionModel="1">
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-              </TableColumnModel>
-            </Property>
-            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[326589, 326589]"/>
-            </Property>
-            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[780, 400]"/>
-            </Property>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[1180, 760]"/>
-            </Property>
-            <Property name="rowHeight" type="int" value="30"/>
-            <Property name="showGrid" type="boolean" value="true"/>
-            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
-            </Property>
-          </Properties>
-<<<<<<< HEAD
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbCustomerListMouseClicked"/>
-          </Events>
-        </Component>
-=======
+        <Container class="javax.swing.JPanel" name="plCustomerList">
+          <!-- <Component class="javax.swing.JTable" name="tbCustomerList">
+            <Properties>
+              <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                <Table columnCount="4" rowCount="4">
+                  <Column editable="false" title="M&#xc3; KH&#xc1;CH H&#xc0;NG" type="java.lang.String">
+                    <Data value="KH01"/>
+                    <Data value="KH02"/>
+                    <Data value="null"/>
+                    <Data value="null"/>
+                  </Column>
+                  <Column editable="false" title="T&#xca;N KH&#xc1;CH H&#xc0;NG" type="java.lang.String">
+                    <Data value="Nguy&#x1ec5;n V&#x103;n A"/>
+                    <Data value="Nguy&#x1ec5;n V&#x103;n B"/>
+                    <Data value="null"/>
+                    <Data value="null"/>
+                  </Column>
+                  <Column editable="false" title="S&#x1ed0; &#x110;I&#x1ec6;N THO&#x1ea0;I" type="java.lang.String">
+                    <Data value="0123456789"/>
+                    <Data value="0978465132"/>
+                    <Data value="null"/>
+                    <Data value="null"/>
+                  </Column>
+                  <Column editable="false" title="&#x110;I&#x1ec2;M" type="java.lang.Float">
+                    <Data value="100.0"/>
+                    <Data value="20.0"/>
+                    <Data value="null"/>
+                    <Data value="null"/>
+                  </Column>
+                </Table>
+              </Property>
+              <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                <TableColumnModel selectionModel="1">
+                  <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Title/>
+                    <Editor/>
+                    <Renderer/>
+                  </Column>
+                  <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Title/>
+                    <Editor/>
+                    <Renderer/>
+                  </Column>
+                  <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Title/>
+                    <Editor/>
+                    <Renderer/>
+                  </Column>
+                  <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Title/>
+                    <Editor/>
+                    <Renderer/>
+                  </Column>
+                </TableColumnModel>
+              </Property>
+              <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                <Dimension value="[326589, 326589]"/>
+              </Property>
+              <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                <Dimension value="[780, 400]"/>
+              </Property>
+              <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                <Dimension value="[1180, 760]"/>
+              </Property>
+              <Property name="rowHeight" type="int" value="30"/>
+              <Property name="showGrid" type="boolean" value="true"/>
+              <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+              </Property>
+            </Properties>
+            <Events>
+              <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbCustomerListMouseClicked"/>
+            </Events>
+          </Component> -->
+          <!-- <Container class="javax.swing.JPanel" name="plCustomerList"> -->
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
           </AuxValues>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-              <BorderConstraints direction="Center"/>
-            </Constraint>
-          </Constraints>
 
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
           <SubComponents>
             <Component class="javax.swing.JTable" name="tbCustomerList">
               <Properties>
@@ -374,7 +369,6 @@
             </Component>
           </SubComponents>
         </Container>
->>>>>>> 3a88b8ca5ca8a789d38856b33379dfb9ee2ed429
       </SubComponents>
     </Container>
   </SubComponents>
