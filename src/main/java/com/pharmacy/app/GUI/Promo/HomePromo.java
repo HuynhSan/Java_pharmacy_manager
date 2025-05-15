@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -35,8 +36,7 @@ public class HomePromo extends javax.swing.JPanel{
     public HomePromo() {
         initComponents();
         loadAllData();
-        centerTableContent(tblPromo);
-
+        centerTableContent(tblPromo);        
         
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -330,6 +330,7 @@ public class HomePromo extends javax.swing.JPanel{
     
     private void centerTableContent(JTable table) {
         // Căn giữa tiêu đề
+        table.setSelectionBackground(new Color(57,105,138));
         JTableHeader header = table.getTableHeader();
         DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
         headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
