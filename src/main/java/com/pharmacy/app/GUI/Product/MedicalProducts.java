@@ -552,7 +552,6 @@ public class MedicalProducts extends javax.swing.JPanel {
                         batch.getManufacturingDate(),
                         batch.getExpirationDate()
                 });
-                System.out.println(batch.getMedicineID());
             }
         } catch (Exception e) {
             e.printStackTrace();
