@@ -127,9 +127,8 @@ public class loginPage extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(300, 30));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 0));
 
-        txtForgetPassword.setForeground(new java.awt.Color(255, 0, 51));
+        txtForgetPassword.setForeground(new java.awt.Color(255, 255, 255));
         txtForgetPassword.setText("Quên mật khẩu ?");
-        txtForgetPassword.setPreferredSize(new java.awt.Dimension(90, 16));
         txtForgetPassword.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtForgetPasswordMouseClicked(evt);

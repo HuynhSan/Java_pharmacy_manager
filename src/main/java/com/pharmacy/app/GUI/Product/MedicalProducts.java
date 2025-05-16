@@ -265,7 +265,7 @@ public class MedicalProducts extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        medListTbl.setPreferredSize(new java.awt.Dimension(1200, 760));
+        medListTbl.setPreferredSize(new java.awt.Dimension(1200, 2000));
         medListTbl.setRowHeight(30);
         medListTbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -356,7 +356,7 @@ public class MedicalProducts extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        batchListTbl.setPreferredSize(new java.awt.Dimension(1200, 760));
+        batchListTbl.setPreferredSize(new java.awt.Dimension(1200, 2000));
         batchListTbl.setRowHeight(30);
         jScrollPane2.setViewportView(batchListTbl);
         if (batchListTbl.getColumnModel().getColumnCount() > 0) {
@@ -475,7 +475,7 @@ public class MedicalProducts extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        dateTbl.setPreferredSize(new java.awt.Dimension(1200, 760));
+        dateTbl.setPreferredSize(new java.awt.Dimension(1200, 2000));
         dateTbl.setRowHeight(30);
         dateTbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
