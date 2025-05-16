@@ -7,11 +7,13 @@ import com.pharmacy.app.BUS.PromotionBUS;
 import com.pharmacy.app.DTO.PromotionDTO;
 import com.pharmacy.app.Utils.PDFExporter;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
@@ -36,7 +38,8 @@ public class HomePromo extends javax.swing.JPanel{
     public HomePromo() {
         initComponents();
         loadAllData();
-        centerTableContent(tblPromo);        
+        centerTableContent(tblPromo);      
+        adjustTableHeight(tblPromo, jScrollPane2);
         
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -295,6 +298,27 @@ public class HomePromo extends javax.swing.JPanel{
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
     
+    
+    public void adjustTableHeight(JTable table, JScrollPane scrollPane) {
+        int rowCount = table.getRowCount();
+        int rowHeight = table.getRowHeight();
+
+        // Tính tổng chiều cao cần thiết cho tất cả dòng
+        int totalHeight = rowCount * rowHeight;
+
+        // Đặt kích thước preferred viewport cho bảng
+        table.setPreferredScrollableViewportSize(new Dimension(
+            table.getPreferredScrollableViewportSize().width,
+            totalHeight
+        ));
+
+        // Làm cho bảng lấp đầy JScrollPane
+        table.setFillsViewportHeight(true);
+
+        // Gọi lại validate để cập nhật layout
+        scrollPane.revalidate();
+    }
+
     // Dùng cho combobox
     public void loadDataByType(String type) {
         promotionListByType = promoBUS.getPromosByType(type); // Lấy danh sách mã giảm giá từ PromoBUS
