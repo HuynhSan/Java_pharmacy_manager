@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  */
 public class EmployeeValidation {
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-    private static final String PHONE_REGEX = "^[0-9]{10}$";
+    private static final String PHONE_REGEX = "^0\\d{9,10}$";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     
     /**
@@ -61,7 +61,6 @@ public class EmployeeValidation {
         if (!Pattern.matches(PHONE_REGEX, phone)) {
             return "Số điện thoại phải có 10 chữ số";
         }
-        
         return "";
     }
     

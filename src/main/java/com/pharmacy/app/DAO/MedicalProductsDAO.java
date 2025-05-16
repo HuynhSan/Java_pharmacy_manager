@@ -140,7 +140,42 @@ public class MedicalProductsDAO implements DAOinterface<MedicalProductsDTO>{
         }
         return medicineList;
     }
-
+    
+    public ArrayList<MedicalProductsDTO> selectAll1() {
+        ArrayList<MedicalProductsDTO> medicineList = new ArrayList<>();
+        if (myconnect.openConnection()){
+            String sql = "SELECT m.product_id, m.name, c.category_name, SUM(pb.inventory_quantity) AS total, m.is_deleted "
+                    + "FROM medical_products m "
+                    + "JOIN categories c ON m.category_id = c.category_id "
+                    + "JOIN product_batches pb ON pb.product_id = m.product_id "
+                    + "GROUP BY m.product_id, m.name, c.category_name, m.is_deleted";
+            ResultSet rs = myconnect.runQuery(sql);
+            
+            try {
+                while(rs.next()){
+                    MedicalProductsDTO product = new MedicalProductsDTO();
+                    product.setMedicineID(rs.getString("product_id"));
+                    product.setName(rs.getString("name"));
+                    product.setQuantity(rs.getInt("total"));
+                    product.setCategory(rs.getString("category_name"));
+                    if(rs.getBoolean("is_deleted")==false){
+                        product.setStatus("Còn hoạt động");
+                    }
+                    else {
+                        product.setStatus("Ngưng hoạt động");
+                    }
+                    medicineList.add(product);
+                }
+                System.out.println(medicineList);
+            } catch (SQLException ex) {
+                System.out.println("SQLException occurred: " + ex.getMessage());
+                ex.printStackTrace();
+            }finally{
+                myconnect.closeConnection();
+                    }
+        }
+        return medicineList;
+    }
     @Override
     public MedicalProductsDTO selectByID(String ID) {
         if(myconnect.openConnection()){

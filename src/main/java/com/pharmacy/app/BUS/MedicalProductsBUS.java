@@ -24,7 +24,14 @@ public class MedicalProductsBUS {
             return null;
         }
     }
-    
+    public ArrayList<MedicalProductsDTO> getAllProducts1 (){
+        try{
+            return productDAO.selectAll1();
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
     public String getMedicineNameByID(String medicineID) {
         try {
             return productDAO.selectByID(medicineID).getName();

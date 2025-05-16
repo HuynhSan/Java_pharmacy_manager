@@ -16,6 +16,7 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -518,7 +519,11 @@ public class MedicalProducts extends javax.swing.JPanel {
     }// GEN-LAST:event_addBtnMouseClicked
 
     private void loadMedList() {
-        ArrayList<MedicalProductsDTO> medList = medBUS.getAllProducts();
+//        medBUS = new MedicalProductsBUS();
+        List<MedicalProductsDTO> medList = medBUS.getAllProducts1();
+        if(medList == null || medList.isEmpty()){
+            System.out.println("medList null");
+        }
         DefaultTableModel model = (DefaultTableModel) medListTbl.getModel();
         model.setRowCount(0);
         int stt = 1;
