@@ -151,22 +151,23 @@ public class SupplierDAO implements DAOinterface<SupplierDTO>{
         ArrayList<SupplierDTO> suppliers = new ArrayList<>();
         if (myconnect.openConnection()){
             String sql = "SELECT * FROM suppliers WHERE( "
-                    + "LOWER(supplier_id) LIKE '%" + t.toLowerCase() + "%' OR "
-                    + "LOWER(name) LIKE '%" + t.toLowerCase() + "%' OR "
-                    + "phone_number LIKE '%" + t.toLowerCase() + "%' OR "
-                    + "email LIKE '%" + t.toLowerCase() + "%' OR "
-                    + "LOWER(address) LIKE '%" + t.toLowerCase() + "%' ) "
+                    + "LOWER(supplier_id) LIKE ? OR "
+                    + "LOWER(name) LIKE ? OR "
+                    + "phone_number LIKE ? OR "
+                    + "email LIKE ? OR "
+                    + "LOWER(address) LIKE ? ) "
                     + "AND is_deleted = 0";
-            ResultSet rs = myconnect.runQuery(sql);
+            String keyword = "%" + t.toLowerCase() + "%";
+            ResultSet rs = myconnect.prepareQuery(sql, keyword, keyword, keyword, keyword, keyword);
             try {
                 while (rs.next()) {
-                    SupplierDTO supplier = new SupplierDTO(
-                        rs.getString(1), // id
-                        rs.getString(2), // name
-                        rs.getString(3), // phone
-                        rs.getString(4), // email
-                        rs.getString(5) // address
-                    );
+                    SupplierDTO supplier = new SupplierDTO();
+                    supplier.setId(rs.getString("supplier_id")); // id
+                    supplier.setName(rs.getString("name")); // name
+                    supplier.setPhone(rs.getString("phone_number")); // phone
+                    supplier.setEmail(rs.getString("email")); // email
+                    supplier.setAddress(rs.getString("address")); // address
+                    
                     suppliers.add(supplier);
                 }
             } catch (SQLException e) {
