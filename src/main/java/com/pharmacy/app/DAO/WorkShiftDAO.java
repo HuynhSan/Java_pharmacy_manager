@@ -4,8 +4,13 @@
  */
 package com.pharmacy.app.DAO;
 
+import com.pharmacy.app.DTO.AttendanceDTO;
 import com.pharmacy.app.DTO.WorkShiftDTO;
+import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -66,4 +71,76 @@ public class WorkShiftDAO implements DAOinterface<WorkShiftDTO>{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
+    public String generateNextId() {
+        String nextId = ""; // Mặc định nếu bảng chưa có dữ liệu
+        if (myconnect.openConnection()){
+            try {
+                String sql = "SELECT MAX(attendance_id) AS max_id FROM attendance";
+                ResultSet rs = myconnect.runQuery(sql);
+                String lastId = "ATT000";
+                
+                if (rs.next()) {
+                    lastId = rs.getString("max_id"); // Ví dụ SUP012
+                }
+                
+                String numericPart = lastId.substring(3);
+                int lastNumber = Integer.parseInt(numericPart); // Lấy phần số: 12
+                lastNumber++; // Tăng lên: 13
+                nextId = "ATT" + String.format("%03d", lastNumber); // Kết quả: SUP013
+            } catch (SQLException e) {
+//                e.printStackTrace();
+            } 
+        }
+        return nextId;
+    }
+        
+    public boolean checkIn(AttendanceDTO t){
+        boolean result = false;
+        if (myconnect.openConnection()){
+            String newId = generateNextId();
+            t.setId(newId);
+            System.out.println(newId);
+            String query = "INSERT INTO attendance (attendance_id, employee_id, work_date, check_in, check_out) "
+                    + "VALUES (?, ?, ?, ?, ?)";
+            int rowsAffected = myconnect.prepareUpdate(
+                query, 
+                t.getId(),
+                t.getEmployeeId(),
+                Date.valueOf(LocalDate.now()),
+                Time.valueOf(LocalTime.now()),
+                t.getCheckOut()
+//                t.isIsDeleted() ? 1 : 0  // Include is_deleted field
+            );
+            result = rowsAffected > 0;
+            myconnect.closeConnection();
+        }
+        return result;
+    }
+    
+    public boolean checkOut(String employeeID){
+        boolean result = false;
+        if (myconnect.openConnection()){
+            String query = "UPDATE A "
+                    + "SET A.check_out = ? "
+                    + "FROM attendance A "
+                    + "INNER JOIN ( "
+                    + "SELECT TOP 1 attendance_id "
+                    + "FROM attendance "
+                    + "WHERE employee_id = ? "
+                    + "AND check_out IS NULL "
+                    + "AND work_date = ? "
+                    + "ORDER BY check_in DESC "
+                    + ") T ON A.attendance_id = T.attendance_id";
+
+            int rowAffected = myconnect.prepareUpdate(
+                    query,
+                    Time.valueOf(LocalTime.now()),
+                    employeeID,
+                    Date.valueOf(LocalDate.now())
+            );
+            result = rowAffected > 0;
+            myconnect.closeConnection();
+        }
+        return result;
+    }
 }
