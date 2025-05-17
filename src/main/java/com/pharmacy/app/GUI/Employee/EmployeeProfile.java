@@ -9,14 +9,17 @@ import com.pharmacy.app.DTO.EmployeeDTO;
 import com.pharmacy.app.DTO.SessionDTO;
 import com.pharmacy.app.DTO.UserDTO;
 import java.time.format.DateTimeFormatter;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author phong
  */
 public class EmployeeProfile extends javax.swing.JPanel {
-    private EmployeeBUS emBUS;
-    private EmployeeDTO emDTO = new EmployeeDTO();
+    private final EmployeeBUS emBUS;
+    private final EmployeeDTO emDTO;
+    private final UserDTO currentUser = SessionDTO.getCurrentUser();
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     /**
      * Creates new form EmployeeProfile
@@ -24,11 +27,11 @@ public class EmployeeProfile extends javax.swing.JPanel {
     public EmployeeProfile() {
         initComponents();
         emBUS = new EmployeeBUS();
-        UserDTO currentUser = SessionDTO.getCurrentUser();
+        emDTO = new EmployeeDTO();
         setData(currentUser.getUserID());
-        
     }
-    public void setData(String userID){
+    
+    public final void setData(String userID){
         EmployeeDTO employee = emBUS.getEmployeeByUserID(userID);
         txtEmployeeID.setText(employee.getEmployeeID());
         txtName.setText(employee.getName());
@@ -53,6 +56,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         pnlEmployeeProfile = new javax.swing.JPanel();
         lblEmployeeProfile = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         pnlProfileFields = new javax.swing.JPanel();
         lblName = new javax.swing.JLabel();
         lblGender = new javax.swing.JLabel();
@@ -137,18 +141,36 @@ public class EmployeeProfile extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         pnlEmployeeProfile.setBackground(new java.awt.Color(255, 255, 255));
+        pnlEmployeeProfile.setLayout(new java.awt.GridBagLayout());
 
+        lblEmployeeProfile.setBackground(new java.awt.Color(255, 255, 255));
         lblEmployeeProfile.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblEmployeeProfile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblEmployeeProfile.setText("THÔNG TIN NHÂN VIÊN");
         lblEmployeeProfile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        pnlEmployeeProfile.add(lblEmployeeProfile);
+        lblEmployeeProfile.setMaximumSize(new java.awt.Dimension(326589, 326589));
+        lblEmployeeProfile.setName(""); // NOI18N
+        lblEmployeeProfile.setPreferredSize(new java.awt.Dimension(500, 30));
+        pnlEmployeeProfile.add(lblEmployeeProfile, new java.awt.GridBagConstraints());
+
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setText("Làm mới");
+        jButton1.setPreferredSize(new java.awt.Dimension(80, 30));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
+        pnlEmployeeProfile.add(jButton1, gridBagConstraints);
 
         pnlProfileFields.setBackground(new java.awt.Color(255, 255, 255));
         pnlProfileFields.setPreferredSize(new java.awt.Dimension(516, 88));
         pnlProfileFields.setLayout(new java.awt.GridBagLayout());
 
         lblName.setText("Họ tên:");
+        lblName.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -159,6 +181,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlProfileFields.add(lblName, gridBagConstraints);
 
         lblGender.setText("Giới tính:");
+        lblGender.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -169,6 +192,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlProfileFields.add(lblGender, gridBagConstraints);
 
         lblEmail.setText("Email:");
+        lblEmail.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -179,6 +203,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlProfileFields.add(lblEmail, gridBagConstraints);
 
         lblDOB.setText("Ngày sinh:");
+        lblDOB.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -189,6 +214,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlProfileFields.add(lblDOB, gridBagConstraints);
 
         lblPhone.setText("Số điện thoại:");
+        lblPhone.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -199,6 +225,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlProfileFields.add(lblPhone, gridBagConstraints);
 
         lblAddress.setText("Địa chỉ:");
+        lblAddress.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -211,6 +238,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtName.setEditable(false);
         txtName.setText("Trần Uyên Phương");
         txtName.setFocusable(false);
+        txtName.setPreferredSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
@@ -224,6 +252,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtEmail.setEditable(false);
         txtEmail.setText("tranuyenphuong23022003@gmail.com");
         txtEmail.setFocusable(false);
+        txtEmail.setPreferredSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
@@ -237,6 +266,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtDOB.setEditable(false);
         txtDOB.setText("23/02/2003");
         txtDOB.setFocusable(false);
+        txtDOB.setPreferredSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
@@ -250,6 +280,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtPhone.setEditable(false);
         txtPhone.setText("0946279238");
         txtPhone.setFocusable(false);
+        txtPhone.setPreferredSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -263,6 +294,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtAddress.setEditable(false);
         txtAddress.setText("Chung cư C2 Lý Thường Kiệt đường Vĩnh Viễn, phường 7, quận 11, TPHCM");
         txtAddress.setFocusable(false);
+        txtAddress.setPreferredSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -275,6 +307,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlProfileFields.add(txtAddress, gridBagConstraints);
 
         lblEmpoyeeID.setText("Mã nhân viên:");
+        lblEmpoyeeID.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -287,6 +320,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtEmployeeID.setEditable(false);
         txtEmployeeID.setText("NV01");
         txtEmployeeID.setFocusable(false);
+        txtEmployeeID.setPreferredSize(new java.awt.Dimension(64, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -300,6 +334,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtGender.setEditable(false);
         txtGender.setText("Nữ");
         txtGender.setFocusable(false);
+        txtGender.setPreferredSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -315,6 +350,12 @@ public class EmployeeProfile extends javax.swing.JPanel {
         btnUpdateProfile.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnUpdateProfile.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdateProfile.setText("Cập nhật thông tin");
+        btnUpdateProfile.setPreferredSize(new java.awt.Dimension(135, 30));
+        btnUpdateProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateProfileActionPerformed(evt);
+            }
+        });
         pnlUpdateProfile.add(btnUpdateProfile);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -334,7 +375,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
                 .addComponent(pnlProfileFields, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlUpdateProfile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         pnlProfile.add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -845,11 +886,23 @@ public class EmployeeProfile extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbWeekPicker1ActionPerformed
 
+    private void btnUpdateProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateProfileActionPerformed
+        EmployeeDTO employee = emBUS.getEmployeeByID(txtEmployeeID.getText());
+        UpdateEmployee updateEmployeeDialog = new UpdateEmployee((JFrame) SwingUtilities.getWindowAncestor(this), true, employee);
+        updateEmployeeDialog.setLocationRelativeTo(null);
+        updateEmployeeDialog.setVisible(true);
+    }//GEN-LAST:event_btnUpdateProfileActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        setData(currentUser.getUserID());
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnUpdateProfile;
     private javax.swing.JComboBox<String> cbWeekPicker1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
