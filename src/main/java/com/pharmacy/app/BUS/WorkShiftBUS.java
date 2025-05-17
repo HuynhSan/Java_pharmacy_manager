@@ -32,10 +32,11 @@ public class WorkShiftBUS {
         return dao.checkOut(employeeID);
     }
     
-    public boolean isCheckIn(String employeeID){
-        return dao.isCheckIn(employeeID);
-    }
-    public boolean isCheckOut(String employeeID){
-        return dao.isCheckOut(employeeID);
+    public boolean hasAttendanceStatus(String employeeID, String type){
+        if ("checkin".equals(type)){
+            return dao.hasAttendanceStatus(employeeID, type);
+        } else {
+            return dao.hasAttendanceStatus(employeeID, type);
+        }
     }
 }
