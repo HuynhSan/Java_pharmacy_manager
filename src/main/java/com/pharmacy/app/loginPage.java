@@ -127,9 +127,8 @@ public class loginPage extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(300, 30));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 0));
 
-        txtForgetPassword.setForeground(new java.awt.Color(255, 0, 51));
+        txtForgetPassword.setForeground(new java.awt.Color(255, 255, 255));
         txtForgetPassword.setText("Quên mật khẩu ?");
-        txtForgetPassword.setPreferredSize(new java.awt.Dimension(90, 16));
         txtForgetPassword.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtForgetPasswordMouseClicked(evt);
@@ -237,9 +236,9 @@ public class loginPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordFieldActionPerformed
 
     private void txtForgetPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtForgetPasswordMouseClicked
-        UpdateUserPassword  passwordDialog = new UpdateUserPassword((JFrame) SwingUtilities.getWindowAncestor(this), true, true);
-        passwordDialog.setLocationRelativeTo(null);
-        passwordDialog.setVisible(true);
+//        UpdateUserPassword  passwordDialog = new UpdateUserPassword((JFrame) SwingUtilities.getWindowAncestor(this), true, true);
+//        passwordDialog.setLocationRelativeTo(null);
+//        passwordDialog.setVisible(true);
     }//GEN-LAST:event_txtForgetPasswordMouseClicked
 
     /**

@@ -9,9 +9,10 @@ package com.pharmacy.app.DTO;
  * @author LENOVO
  */
 public class PurchaseOrderDetailsDTO {
-    public String poID;
-    public String productID;
-    public int quantity;
+    private String poID;
+    private String productID;
+    private int quantity;
+    private String productName;
 
     public PurchaseOrderDetailsDTO(String poID, String productID, int quantity) {
         this.poID = poID;
@@ -42,4 +43,13 @@ public class PurchaseOrderDetailsDTO {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+    
 }

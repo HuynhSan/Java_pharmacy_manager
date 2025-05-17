@@ -125,5 +125,7 @@ public class ProductBatchBUS {
         return value != null && value.toLowerCase().contains(keyword.toLowerCase());
     }
     
-   
+    private boolean deleteBatch(String id){
+        return batchDAO.delete(id);
+    }
 }

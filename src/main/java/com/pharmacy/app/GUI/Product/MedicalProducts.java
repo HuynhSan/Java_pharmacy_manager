@@ -179,8 +179,9 @@ public class MedicalProducts extends javax.swing.JPanel {
         medDatePn = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        refreshBtn2 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
         destroyBtn = new javax.swing.JButton();
+        refreshBtn2 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         dateTbl = new javax.swing.JTable();
@@ -265,7 +266,7 @@ public class MedicalProducts extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        medListTbl.setPreferredSize(new java.awt.Dimension(1200, 760));
+        medListTbl.setPreferredSize(new java.awt.Dimension(1200, 1500));
         medListTbl.setRowHeight(30);
         medListTbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -293,6 +294,7 @@ public class MedicalProducts extends javax.swing.JPanel {
         medBatPn.setLayout(new java.awt.BorderLayout());
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setMinimumSize(new java.awt.Dimension(237, 60));
         jPanel6.setPreferredSize(new java.awt.Dimension(1200, 100));
         jPanel6.setLayout(new java.awt.BorderLayout());
 
@@ -356,7 +358,7 @@ public class MedicalProducts extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        batchListTbl.setPreferredSize(new java.awt.Dimension(1200, 760));
+        batchListTbl.setPreferredSize(new java.awt.Dimension(1200, 1500));
         batchListTbl.setRowHeight(30);
         jScrollPane2.setViewportView(batchListTbl);
         if (batchListTbl.getColumnModel().getColumnCount() > 0) {
@@ -391,18 +393,18 @@ public class MedicalProducts extends javax.swing.JPanel {
         medDatePn.setLayout(new java.awt.BorderLayout());
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setPreferredSize(new java.awt.Dimension(1200, 100));
+        jPanel4.setPreferredSize(new java.awt.Dimension(1200, 70));
+        jPanel4.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("QUẢN LÝ HẠN SỬ DỤNG");
         jLabel2.setPreferredSize(new java.awt.Dimension(1200, 30));
+        jPanel4.add(jLabel2, java.awt.BorderLayout.NORTH);
 
-        refreshBtn2.setText("TẢI LẠI");
-        refreshBtn2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshBtn2ActionPerformed(evt);
-            }
-        });
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setPreferredSize(new java.awt.Dimension(2005, 30));
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 50, 5));
 
         destroyBtn.setText("TIÊU HỦY");
         destroyBtn.setEnabled(false);
@@ -411,34 +413,17 @@ public class MedicalProducts extends javax.swing.JPanel {
                 destroyBtnActionPerformed(evt);
             }
         });
+        jPanel3.add(destroyBtn);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(521, 521, 521)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(794, 794, 794)
-                        .addComponent(refreshBtn2)
-                        .addGap(55, 55, 55)
-                        .addComponent(destroyBtn)))
-                .addGap(1004, 1004, 1004))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(destroyBtn)
-                    .addComponent(refreshBtn2))
-                .addContainerGap())
-        );
+        refreshBtn2.setText("TẢI LẠI");
+        refreshBtn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshBtn2ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(refreshBtn2);
+
+        jPanel4.add(jPanel3, java.awt.BorderLayout.CENTER);
 
         medDatePn.add(jPanel4, java.awt.BorderLayout.NORTH);
 
@@ -475,7 +460,8 @@ public class MedicalProducts extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        dateTbl.setPreferredSize(new java.awt.Dimension(1200, 760));
+        dateTbl.setPreferredSize(new java.awt.Dimension(1200, 1500));
+        dateTbl.setRequestFocusEnabled(false);
         dateTbl.setRowHeight(30);
         dateTbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -695,6 +681,7 @@ public class MedicalProducts extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;

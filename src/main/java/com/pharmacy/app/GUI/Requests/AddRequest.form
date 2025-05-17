@@ -81,7 +81,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtRequestDate">
           <Properties>
-            <Property name="text" type="java.lang.String" value="L&#x1ea5;y ng&#xe0;y hi&#x1ec7;n t&#x1ea1;i"/>
+            <Property name="editable" type="boolean" value="false"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

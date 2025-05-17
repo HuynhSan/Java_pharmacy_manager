@@ -339,7 +339,7 @@ public class ReportManagement extends javax.swing.JPanel {
         }
         
         // Update data based on selected period
-        updateInvoiceStatistics();
+//        updateInvoiceStatistics();
     }
     
     /**

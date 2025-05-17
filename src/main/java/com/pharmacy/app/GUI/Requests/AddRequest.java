@@ -63,7 +63,7 @@ public class AddRequest extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 20);
         pnlRequestFields.add(lblRequestType, gridBagConstraints);
 
-        txtRequestDate.setText("Lấy ngày hiện tại");
+        txtRequestDate.setEditable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;

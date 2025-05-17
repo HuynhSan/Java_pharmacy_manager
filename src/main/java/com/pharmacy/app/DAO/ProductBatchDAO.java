@@ -56,8 +56,28 @@ boolean result = false;
     }
 
     @Override
-    public boolean delete(String t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean delete(String id) {
+         boolean result = false;
+
+            try {
+                myconnect.openConnection();
+
+                String sql = "UPDATE product_batches SET is_deleted = 1 WHERE batch_id = ?";
+
+                int rowsAffected = myconnect.prepareUpdate(sql, id);
+
+                if (rowsAffected > 0) {
+                    result = true;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                // Đảm bảo đóng kết nối
+                myconnect.closeConnection();
+            }
+
+            return result;
     }
 
     @Override

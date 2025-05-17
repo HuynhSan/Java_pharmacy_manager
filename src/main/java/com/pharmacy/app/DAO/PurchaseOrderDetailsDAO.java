@@ -83,7 +83,7 @@ public class PurchaseOrderDetailsDAO implements DAOinterface<PurchaseOrderDetail
        ArrayList<PurchaseOrderDetailsDTO> poDeList = new ArrayList<PurchaseOrderDetailsDTO>();
         if (myconnect.openConnection()){
             try {
-                String sql = "SELECT * FROM purchase_order_details WHERE po_id = ?";
+                String sql = "SELECT * FROM purchase_order_details pod JOIN medical_products mp ON pod.product_id = mp.product_id  WHERE po_id = ? ";
                 PreparedStatement ps = myconnect.con.prepareStatement(sql);
                 ps.setString(1, ID);
                 ResultSet rs = ps.executeQuery();
@@ -95,6 +95,7 @@ public class PurchaseOrderDetailsDAO implements DAOinterface<PurchaseOrderDetail
                                 rs.getString("product_id"),
                                 rs.getInt("quantity")
                         );
+                        po.setProductName(rs.getString("name"));
                         poDeList.add(po);
                     }
                 } catch (SQLException ex) {

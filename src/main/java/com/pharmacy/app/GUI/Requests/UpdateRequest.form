@@ -108,11 +108,13 @@
         <Component class="javax.swing.JComboBox" name="cbRequestType">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
+              <StringArray count="6">
                 <StringItem index="0" value="&#x110;&#x1a1;n xin ngh&#x1ec9; ph&#xe9;p"/>
-                <StringItem index="1" value="&#x110;&#x1a1;n xin ngh&#x1ec9; vi&#x1ec7;c"/>
-                <StringItem index="2" value="&#x110;&#x1a1;n xin ngh&#x1ec9; &#x1ed1;m"/>
-                <StringItem index="3" value="&#x110;&#x1a1;n xin ngh&#x1ec9; thai s&#x1ea3;n"/>
+                <StringItem index="1" value="&#x110;&#x1a1;n xin ngh&#x1ec9; ph&#xe9;p kh&#xf4;ng l&#x1b0;&#x1a1;ng"/>
+                <StringItem index="2" value="&#x110;&#x1a1;n xin th&#xf4;i vi&#x1ec7;c"/>
+                <StringItem index="3" value="&#x110;&#x1a1;n xin ngh&#x1ec9; &#x1ed1;m"/>
+                <StringItem index="4" value="&#x110;&#x1a1;n xin ngh&#x1ec9; thai s&#x1ea3;n"/>
+                <StringItem index="5" value="&#x110;&#x1a1;n xin ngh&#x1ec9; l&#xfd; do kh&#xe1;c"/>
               </StringArray>
             </Property>
           </Properties>

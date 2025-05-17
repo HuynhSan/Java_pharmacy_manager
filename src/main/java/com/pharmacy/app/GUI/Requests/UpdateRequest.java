@@ -85,7 +85,7 @@ public class UpdateRequest extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
         pnlRequestFields.add(txtRequestDate, gridBagConstraints);
 
-        cbRequestType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đơn xin nghỉ phép", "Đơn xin nghỉ việc", "Đơn xin nghỉ ốm", "Đơn xin nghỉ thai sản" }));
+        cbRequestType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đơn xin nghỉ phép", "Đơn xin nghỉ phép không lương", "Đơn xin thôi việc", "Đơn xin nghỉ ốm", "Đơn xin nghỉ thai sản", "Đơn xin nghỉ lý do khác" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;

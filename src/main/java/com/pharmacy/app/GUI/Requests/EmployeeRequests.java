@@ -4,12 +4,16 @@
  */
 package com.pharmacy.app.GUI.Requests;
 
+import com.pharmacy.app.BUS.RequestBUS;
+import com.pharmacy.app.DTO.RequestDTO;
 import com.pharmacy.app.GUI.Sales.PaymentDialog;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 /**
@@ -17,14 +21,33 @@ import javax.swing.table.JTableHeader;
  * @author phong
  */
 public class EmployeeRequests extends javax.swing.JPanel {
-
+    RequestBUS reqBUS = new RequestBUS();
     /**
      * Creates new form EmployeeRequests
      */
     public EmployeeRequests() {
         initComponents();
-        centerTableContent(tblRequets);
-        
+        centerTableContent(tblRequest);
+        tblRequest.setDefaultEditor(Object.class, null);
+        tblListRequest.setDefaultEditor(Object.class, null);
+        loadReqList();
+    }
+    
+    private void loadReqList() {
+        ArrayList<RequestDTO> reqList = reqBUS.getAllRequest();
+        DefaultTableModel model = (DefaultTableModel) tblListRequest.getModel();
+        model.setRowCount(0);
+        int stt = 1;
+        for (RequestDTO req : reqList) {
+            model.addRow(new Object[] {
+                    stt++,
+                    req.getRequestId(),
+                    req.getEmployeeId(),
+                    req.getRequestDate(),
+                    req.getRequestType(),
+                    req.getStatus()
+            });
+        }
     }
     
     private void centerTableContent(JTable table) {
@@ -51,6 +74,8 @@ public class EmployeeRequests extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        selfReqPn = new javax.swing.JPanel();
         pnlRequest1 = new javax.swing.JPanel();
         txtSearchRequest = new javax.swing.JTextField();
         cbRequestType = new javax.swing.JComboBox<>();
@@ -60,8 +85,28 @@ public class EmployeeRequests extends javax.swing.JPanel {
         btnPdf = new javax.swing.JButton();
         pnlRequest2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblRequets = new javax.swing.JTable();
+        tblRequest = new javax.swing.JTable();
+        reqListPn = new javax.swing.JPanel();
+        pnlRequest3 = new javax.swing.JPanel();
+        txtSearchRequest1 = new javax.swing.JTextField();
+        cbRequestType1 = new javax.swing.JComboBox<>();
+        pnlRequestButton1 = new javax.swing.JPanel();
+        btnAddRequest1 = new javax.swing.JButton();
+        btnRefesh1 = new javax.swing.JButton();
+        btnPdf1 = new javax.swing.JButton();
+        pnlRequest4 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblListRequest = new javax.swing.JTable();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+        setLayout(new java.awt.BorderLayout());
+
+        jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
+
+        selfReqPn.setBackground(new java.awt.Color(255, 255, 255));
+        selfReqPn.setLayout(new java.awt.BorderLayout());
+
+        pnlRequest1.setBackground(new java.awt.Color(255, 255, 255));
         pnlRequest1.setToolTipText("");
         pnlRequest1.setPreferredSize(new java.awt.Dimension(607, 40));
         pnlRequest1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
@@ -90,6 +135,7 @@ public class EmployeeRequests extends javax.swing.JPanel {
         });
         pnlRequest1.add(cbRequestType);
 
+        pnlRequestButton.setBackground(new java.awt.Color(255, 255, 255));
         pnlRequestButton.setPreferredSize(new java.awt.Dimension(300, 35));
         pnlRequestButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 5));
 
@@ -131,56 +177,191 @@ public class EmployeeRequests extends javax.swing.JPanel {
 
         pnlRequest1.add(pnlRequestButton);
 
+        selfReqPn.add(pnlRequest1, java.awt.BorderLayout.NORTH);
+
+        pnlRequest2.setBackground(new java.awt.Color(255, 255, 255));
         pnlRequest2.setPreferredSize(new java.awt.Dimension(600, 439));
+        pnlRequest2.setLayout(new java.awt.BorderLayout());
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(670, 402));
 
-        tblRequets.setModel(new javax.swing.table.DefaultTableModel(
+        tblRequest.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Mã đơn", "Ngày gửi đơn", "Loại đơn", "Trạng thái"
+                "STT", "Mã đơn", "Ngày gửi đơn", "Loại đơn", "Trạng thái"
             }
-        ));
-        tblRequets.setFocusable(false);
-        tblRequets.setMinimumSize(new java.awt.Dimension(500, 80));
-        tblRequets.setPreferredSize(new java.awt.Dimension(500, 80));
-        tblRequets.setRowHeight(30);
-        tblRequets.setShowGrid(true);
-        jScrollPane1.setViewportView(tblRequets);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, false, false
+            };
 
-        pnlRequest2.add(jScrollPane1);
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlRequest2, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
-                    .addComponent(pnlRequest1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(pnlRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlRequest2, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblRequest.setFocusable(false);
+        tblRequest.setMinimumSize(new java.awt.Dimension(500, 80));
+        tblRequest.setPreferredSize(new java.awt.Dimension(500, 400));
+        tblRequest.setRowHeight(30);
+        tblRequest.setShowGrid(true);
+        jScrollPane1.setViewportView(tblRequest);
+        if (tblRequest.getColumnModel().getColumnCount() > 0) {
+            tblRequest.getColumnModel().getColumn(0).setResizable(false);
+            tblRequest.getColumnModel().getColumn(0).setPreferredWidth(50);
+        }
+
+        pnlRequest2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        selfReqPn.add(pnlRequest2, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane1.addTab("Đơn từ cá nhân", selfReqPn);
+
+        reqListPn.setBackground(new java.awt.Color(255, 255, 255));
+        reqListPn.setLayout(new java.awt.BorderLayout());
+
+        pnlRequest3.setBackground(new java.awt.Color(255, 255, 255));
+        pnlRequest3.setToolTipText("");
+        pnlRequest3.setPreferredSize(new java.awt.Dimension(607, 40));
+        pnlRequest3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
+
+        txtSearchRequest1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        txtSearchRequest1.setForeground(new java.awt.Color(153, 153, 153));
+        txtSearchRequest1.setText("Tìm kiếm");
+        txtSearchRequest1.setHighlighter(null);
+        txtSearchRequest1.setMinimumSize(new java.awt.Dimension(250, 22));
+        txtSearchRequest1.setPreferredSize(new java.awt.Dimension(250, 22));
+        txtSearchRequest1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchRequest1ActionPerformed(evt);
+            }
+        });
+        pnlRequest3.add(txtSearchRequest1);
+
+        cbRequestType1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Chờ duyệt", "Đã duyệt", "Không duyệt" }));
+        cbRequestType1.setFocusable(false);
+        cbRequestType1.setMinimumSize(new java.awt.Dimension(80, 22));
+        cbRequestType1.setPreferredSize(new java.awt.Dimension(105, 22));
+        cbRequestType1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbRequestType1ActionPerformed(evt);
+            }
+        });
+        pnlRequest3.add(cbRequestType1);
+
+        pnlRequestButton1.setBackground(new java.awt.Color(255, 255, 255));
+        pnlRequestButton1.setPreferredSize(new java.awt.Dimension(300, 35));
+        pnlRequestButton1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 5));
+
+        btnAddRequest1.setText("Tạo");
+        btnAddRequest1.setFocusable(false);
+        btnAddRequest1.setMaximumSize(new java.awt.Dimension(72, 22));
+        btnAddRequest1.setMinimumSize(new java.awt.Dimension(72, 22));
+        btnAddRequest1.setPreferredSize(new java.awt.Dimension(72, 22));
+        btnAddRequest1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddRequest1ActionPerformed(evt);
+            }
+        });
+        pnlRequestButton1.add(btnAddRequest1);
+
+        btnRefesh1.setText("Tải lại");
+        btnRefesh1.setFocusable(false);
+        btnRefesh1.setMaximumSize(new java.awt.Dimension(72, 22));
+        btnRefesh1.setMinimumSize(new java.awt.Dimension(72, 22));
+        btnRefesh1.setPreferredSize(new java.awt.Dimension(72, 22));
+        btnRefesh1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefesh1ActionPerformed(evt);
+            }
+        });
+        pnlRequestButton1.add(btnRefesh1);
+
+        btnPdf1.setText("In PDF");
+        btnPdf1.setFocusable(false);
+        btnPdf1.setMaximumSize(new java.awt.Dimension(72, 22));
+        btnPdf1.setMinimumSize(new java.awt.Dimension(72, 22));
+        btnPdf1.setPreferredSize(new java.awt.Dimension(72, 22));
+        btnPdf1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPdf1ActionPerformed(evt);
+            }
+        });
+        pnlRequestButton1.add(btnPdf1);
+
+        pnlRequest3.add(pnlRequestButton1);
+
+        reqListPn.add(pnlRequest3, java.awt.BorderLayout.NORTH);
+
+        pnlRequest4.setBackground(new java.awt.Color(255, 255, 255));
+        pnlRequest4.setPreferredSize(new java.awt.Dimension(600, 439));
+        pnlRequest4.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(670, 402));
+
+        tblListRequest.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "STT", "Mã đơn", "Mã nhân viên", "Ngày gửi đơn", "Loại đơn", "Trạng thái"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblListRequest.setFocusable(false);
+        tblListRequest.setMinimumSize(new java.awt.Dimension(500, 80));
+        tblListRequest.setPreferredSize(new java.awt.Dimension(500, 400));
+        tblListRequest.setRowHeight(30);
+        tblListRequest.setShowGrid(true);
+        jScrollPane2.setViewportView(tblListRequest);
+
+        pnlRequest4.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        reqListPn.add(pnlRequest4, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane1.addTab("Danh sách đơn từ", reqListPn);
+
+        add(jTabbedPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtSearchRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchRequestActionPerformed
@@ -205,17 +386,50 @@ public class EmployeeRequests extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPdfActionPerformed
 
+    private void txtSearchRequest1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchRequest1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchRequest1ActionPerformed
+
+    private void cbRequestType1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbRequestType1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbRequestType1ActionPerformed
+
+    private void btnAddRequest1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRequest1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddRequest1ActionPerformed
+
+    private void btnRefesh1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefesh1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRefesh1ActionPerformed
+
+    private void btnPdf1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdf1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPdf1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddRequest;
+    private javax.swing.JButton btnAddRequest1;
     private javax.swing.JButton btnPdf;
+    private javax.swing.JButton btnPdf1;
     private javax.swing.JButton btnRefesh;
+    private javax.swing.JButton btnRefesh1;
     private javax.swing.JComboBox<String> cbRequestType;
+    private javax.swing.JComboBox<String> cbRequestType1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel pnlRequest1;
     private javax.swing.JPanel pnlRequest2;
+    private javax.swing.JPanel pnlRequest3;
+    private javax.swing.JPanel pnlRequest4;
     private javax.swing.JPanel pnlRequestButton;
-    private javax.swing.JTable tblRequets;
+    private javax.swing.JPanel pnlRequestButton1;
+    private javax.swing.JPanel reqListPn;
+    private javax.swing.JPanel selfReqPn;
+    private javax.swing.JTable tblListRequest;
+    private javax.swing.JTable tblRequest;
     private javax.swing.JTextField txtSearchRequest;
+    private javax.swing.JTextField txtSearchRequest1;
     // End of variables declaration//GEN-END:variables
 }

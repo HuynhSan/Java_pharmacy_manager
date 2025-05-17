@@ -83,6 +83,7 @@ public class PurchaseOrder extends javax.swing.JPanel {
             model.addRow(new Object[] {
                     stt++,
                     pode.getProductID(),
+                    pode.getProductName(),
                     pode.getQuantity()
             });
         }
@@ -582,21 +583,28 @@ public class PurchaseOrder extends javax.swing.JPanel {
 
         podetailsTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "STT", "Mã thuốc", "Số lượng"
+                "STT", "Mã thuốc", "Tên thuốc", "Số lượng"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         podetailsTbl.setPreferredSize(new java.awt.Dimension(540, 650));
