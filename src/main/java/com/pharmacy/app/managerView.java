@@ -605,11 +605,11 @@ public class managerView extends javax.swing.JFrame {
         scheduleBtn.setBackground(new java.awt.Color(0, 51, 255));
         scheduleBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         scheduleBtn.setForeground(new java.awt.Color(255, 255, 255));
+        scheduleBtn.setText("LỊCH LÀM VIỆC");
         scheduleBtn.setBorder(null);
         scheduleBtn.setBorderPainted(false);
         scheduleBtn.setContentAreaFilled(false);
         scheduleBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        scheduleBtn.setEnabled(false);
         scheduleBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         scheduleBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         scheduleBtn.setMinimumSize(new java.awt.Dimension(200, 30));
@@ -641,7 +641,6 @@ public class managerView extends javax.swing.JFrame {
         infoBtn.setBorderPainted(false);
         infoBtn.setContentAreaFilled(false);
         infoBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        infoBtn.setEnabled(false);
         infoBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         infoBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         infoBtn.setMinimumSize(new java.awt.Dimension(200, 30));
