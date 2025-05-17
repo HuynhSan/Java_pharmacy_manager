@@ -4,19 +4,40 @@
  */
 package com.pharmacy.app.GUI.Employee;
 
+import com.pharmacy.app.BUS.EmployeeBUS;
+import com.pharmacy.app.DTO.EmployeeDTO;
+import com.pharmacy.app.DTO.SessionDTO;
+import com.pharmacy.app.DTO.UserDTO;
+import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author phong
  */
 public class EmployeeProfile extends javax.swing.JPanel {
-
+    private EmployeeBUS emBUS;
+    private EmployeeDTO emDTO = new EmployeeDTO();
+    private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     /**
      * Creates new form EmployeeProfile
      */
     public EmployeeProfile() {
         initComponents();
+        emBUS = new EmployeeBUS();
+        UserDTO currentUser = SessionDTO.getCurrentUser();
+        setData(currentUser.getUserID());
+        
     }
-
+    public void setData(String userID){
+        EmployeeDTO employee = emBUS.getEmployeeByUserID(userID);
+        txtEmployeeID.setText(employee.getEmployeeID());
+        txtName.setText(employee.getName());
+        txtPhone.setText(employee.getPhone());
+        txtAddress.setText(employee.getAddress());
+        txtGender.setText(employee.getGender() ? "Nam" : "Nữ");
+        txtDOB.setText(employee.getDob().format(DATE_FORMAT));
+        txtEmail.setText(employee.getEmail());
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
