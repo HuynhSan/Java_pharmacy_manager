@@ -62,6 +62,8 @@ public class adminView extends javax.swing.JFrame {
         btnBack = new javax.swing.JPanel();
         backicon = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        btnAttendance = new javax.swing.JPanel();
+        attendanceicon = new javax.swing.JLabel();
         btnUser = new javax.swing.JPanel();
         usericon = new javax.swing.JLabel();
         btnLogout = new javax.swing.JPanel();
@@ -227,16 +229,53 @@ public class adminView extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 415, Short.MAX_VALUE)
+            .addGap(0, 370, Short.MAX_VALUE)
         );
 
         MenuIcon.add(jPanel1);
+
+        btnAttendance.setBackground(new java.awt.Color(0, 51, 102));
+        btnAttendance.setMaximumSize(new java.awt.Dimension(45, 45));
+        btnAttendance.setPreferredSize(new java.awt.Dimension(45, 45));
+
+        attendanceicon.setBackground(new java.awt.Color(0, 51, 102));
+        attendanceicon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        attendanceicon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/attandance.png"))); // NOI18N
+        attendanceicon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        attendanceicon.setPreferredSize(new java.awt.Dimension(31, 35));
+        attendanceicon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                attendanceiconMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                attendanceiconMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                attendanceiconMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout btnAttendanceLayout = new javax.swing.GroupLayout(btnAttendance);
+        btnAttendance.setLayout(btnAttendanceLayout);
+        btnAttendanceLayout.setHorizontalGroup(
+            btnAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(attendanceicon, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+        );
+        btnAttendanceLayout.setVerticalGroup(
+            btnAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnAttendanceLayout.createSequentialGroup()
+                .addComponent(attendanceicon, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                .addGap(0, 2, Short.MAX_VALUE))
+        );
+
+        MenuIcon.add(btnAttendance);
 
         btnUser.setBackground(new java.awt.Color(0, 51, 102));
         btnUser.setMaximumSize(new java.awt.Dimension(45, 45));
         btnUser.setPreferredSize(new java.awt.Dimension(45, 45));
 
         usericon.setBackground(new java.awt.Color(0, 51, 102));
+        usericon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         usericon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user.png"))); // NOI18N
         usericon.setPreferredSize(new java.awt.Dimension(31, 35));
         usericon.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -810,14 +849,6 @@ public class adminView extends javax.swing.JFrame {
         reportBtn.setOpaque(true);
     }//GEN-LAST:event_reportBtnMouseExited
 
-    private void usericonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usericonMouseEntered
-        btnUser.setBackground(new Color(81, 115, 150));
-    }//GEN-LAST:event_usericonMouseEntered
-
-    private void usericonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usericonMouseExited
-        btnUser.setBackground(new Color(0,51,102));
-    }//GEN-LAST:event_usericonMouseExited
-
     private void logouticonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logouticonMouseEntered
         btnLogout.setBackground(new Color(81, 115, 150));
     }//GEN-LAST:event_logouticonMouseEntered
@@ -825,12 +856,6 @@ public class adminView extends javax.swing.JFrame {
     private void logouticonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logouticonMouseExited
         btnLogout.setBackground(new Color(0,51,102));
     }//GEN-LAST:event_logouticonMouseExited
-
-    private void usericonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usericonMouseClicked
-        UserInfo userDialog = new UserInfo((Frame)SwingUtilities.getWindowAncestor(usericon), true);
-        userDialog.setLocationRelativeTo(null);
-        userDialog.setVisible(true);
-    }//GEN-LAST:event_usericonMouseClicked
 
     private void logouticonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logouticonMouseClicked
         int confirm = JOptionPane.showConfirmDialog(null, 
@@ -870,6 +895,34 @@ public class adminView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_purchaseBtnActionPerformed
 
+    private void usericonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usericonMouseClicked
+        UserInfo userDialog = new UserInfo((Frame)SwingUtilities.getWindowAncestor(attendanceicon), true);
+        userDialog.setLocationRelativeTo(null);
+        userDialog.setVisible(true);
+    }//GEN-LAST:event_usericonMouseClicked
+
+    private void usericonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usericonMouseEntered
+        btnUser.setBackground(new Color(81, 115, 150));
+    }//GEN-LAST:event_usericonMouseEntered
+
+    private void usericonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usericonMouseExited
+        btnUser.setBackground(new Color(0,51,102));
+    }//GEN-LAST:event_usericonMouseExited
+
+    private void attendanceiconMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_attendanceiconMouseExited
+        btnAttendance.setBackground(new Color(0,51,102));
+    }//GEN-LAST:event_attendanceiconMouseExited
+
+    private void attendanceiconMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_attendanceiconMouseEntered
+        btnAttendance.setBackground(new Color(81, 115, 150));
+    }//GEN-LAST:event_attendanceiconMouseEntered
+
+    private void attendanceiconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_attendanceiconMouseClicked
+        attendance attendanceDialog = new attendance((Frame)SwingUtilities.getWindowAncestor(attendanceicon), true);
+        attendanceDialog.setLocationRelativeTo(null);
+        attendanceDialog.setVisible(true);
+    }//GEN-LAST:event_attendanceiconMouseClicked
+
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -908,8 +961,10 @@ public class adminView extends javax.swing.JFrame {
     private javax.swing.JPanel MenuHidePn;
     private javax.swing.JPanel MenuIcon;
     private javax.swing.JPanel MenuPn;
+    private javax.swing.JLabel attendanceicon;
     private javax.swing.JButton authzBtn;
     private javax.swing.JLabel backicon;
+    private javax.swing.JPanel btnAttendance;
     private javax.swing.JPanel btnBack;
     private javax.swing.JPanel btnClose;
     private javax.swing.JPanel btnLogout;
