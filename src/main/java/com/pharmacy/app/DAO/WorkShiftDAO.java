@@ -93,7 +93,48 @@ public class WorkShiftDAO implements DAOinterface<WorkShiftDTO>{
         }
         return nextId;
     }
-        
+    public boolean isCheckIn(String employeeID){
+        boolean result = false;
+        if (myconnect.openConnection()){
+            String query = "SELECT COUNT(*) FROM attendance "
+                    + "WHERE employee_id = ? "
+                    + "AND check_in IS NOT NULL "
+                    + "AND work_date = CAST(GETDATE() AS DATE)";
+            ResultSet rs = myconnect.prepareQuery(query, employeeID);
+            try {
+                if(rs.next()){
+                    result = rs.getInt(1) > 0;
+                }
+                rs.close();
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return result; 
+    }
+    public boolean isCheckOut(String employeeID){
+        boolean result = false;
+        if (myconnect.openConnection()){
+            String query = "SELECT COUNT(*) FROM attendance "
+                    + "WHERE employee_id = ? "
+                    + "AND check_in IS NOT NULL AND check_out IS NOT NULL "
+                    + "AND work_date = CAST(GETDATE() AS DATE)";
+            ResultSet rs = myconnect.prepareQuery(query, employeeID);
+            try {
+                if(rs.next()){
+                    result = rs.getInt(1) > 0;
+                }
+                rs.close();
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return result; 
+    }
     public boolean checkIn(AttendanceDTO t){
         boolean result = false;
         if (myconnect.openConnection()){
@@ -108,7 +149,7 @@ public class WorkShiftDAO implements DAOinterface<WorkShiftDTO>{
                 t.getEmployeeId(),
                 Date.valueOf(LocalDate.now()),
                 Time.valueOf(LocalTime.now()),
-                t.getCheckOut()
+                null
 //                t.isIsDeleted() ? 1 : 0  // Include is_deleted field
             );
             result = rowsAffected > 0;

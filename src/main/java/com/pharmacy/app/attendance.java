@@ -27,6 +27,7 @@ import javax.swing.Timer;
  */
 public class attendance extends javax.swing.JDialog {
     DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy HH:mm:ss");
+    WorkShiftBUS workBUS = new WorkShiftBUS();
     /**
      * Creates new form attendance
      * @param parent
@@ -42,6 +43,8 @@ public class attendance extends javax.swing.JDialog {
         EmployeeBUS emBUS = new EmployeeBUS();
         EmployeeDTO employee = emBUS.getEmployeeByUserID(currentUser.getUserID());
         txtEmployeeId.setText(employee.getEmployeeID());
+        
+        isCheckInOut(txtEmployeeId.getText());
 //        System.out.println("currentUser: " + employee.getEmployeeID());   
     }
     
@@ -52,6 +55,12 @@ public class attendance extends javax.swing.JDialog {
             lblDatetime.setText(date.format(FORMATTER));
         }  
     });
+    public final void isCheckInOut (String employeeID){
+        boolean isCheckIn = workBUS.isCheckIn(txtEmployeeId.getText());
+        boolean isCheckOut = workBUS.isCheckOut(txtEmployeeId.getText());
+        btnCheckIn.setEnabled(!isCheckIn);
+        btnCheckOut.setEnabled(!isCheckOut);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,8 +76,8 @@ public class attendance extends javax.swing.JDialog {
         lblDatetime = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         txtEmployeeId = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnCheckIn = new javax.swing.JButton();
+        btnCheckOut = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -110,11 +119,11 @@ public class attendance extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 30, 20, 30);
         jPanel2.add(txtEmployeeId, gridBagConstraints);
 
-        jButton1.setText("Check in");
-        jButton1.setPreferredSize(new java.awt.Dimension(70, 30));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCheckIn.setText("Check in");
+        btnCheckIn.setPreferredSize(new java.awt.Dimension(70, 30));
+        btnCheckIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCheckInActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -123,13 +132,13 @@ public class attendance extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 20, 10);
-        jPanel2.add(jButton1, gridBagConstraints);
+        jPanel2.add(btnCheckIn, gridBagConstraints);
 
-        jButton2.setText("Check out");
-        jButton2.setPreferredSize(new java.awt.Dimension(70, 30));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnCheckOut.setText("Check out");
+        btnCheckOut.setPreferredSize(new java.awt.Dimension(70, 30));
+        btnCheckOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnCheckOutActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -138,44 +147,43 @@ public class attendance extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 20, 10);
-        jPanel2.add(jButton2, gridBagConstraints);
+        jPanel2.add(btnCheckOut, gridBagConstraints);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCheckInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckInActionPerformed
         String employeeId = txtEmployeeId.getText();
+        WorkShiftBUS bus = new WorkShiftBUS();
+   
         if(employeeId.isEmpty()){
             JOptionPane.showMessageDialog(null, "Vui lòng nhập mã nhân viên");
             return;
         }
         AttendanceDTO attendance = new AttendanceDTO();
         attendance.setEmployeeId(employeeId);
-//        attendance.setWorkDate(LocalDate.now());
-//        attendance.setCheckIn(LocalTime.now());
-        attendance.setCheckOut(null);
-
         
-        WorkShiftBUS bus = new WorkShiftBUS();
-        boolean check = bus.checkIn(attendance);
-        if(check){
+        boolean success = bus.checkIn(attendance);
+        if(success){
             JOptionPane.showMessageDialog(null, "Check-in thành công");
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Check-in thất bại");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCheckInActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckOutActionPerformed
         // TODO add your handling code here:
         String employeeId = txtEmployeeId.getText();
+        WorkShiftBUS bus = new WorkShiftBUS();
+        
         if(employeeId.isEmpty()){
             JOptionPane.showMessageDialog(null, "Vui lòng nhập mã nhân viên");
             return;
         }
-        WorkShiftBUS bus = new WorkShiftBUS();
+        
         boolean success = bus.checkOut(employeeId);
         if(success){
             JOptionPane.showMessageDialog(null, "Check-out thành công");
@@ -183,7 +191,7 @@ public class attendance extends javax.swing.JDialog {
         } else {
             JOptionPane.showMessageDialog(null, "Check-out thất bại");
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnCheckOutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -228,8 +236,8 @@ public class attendance extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnCheckIn;
+    private javax.swing.JButton btnCheckOut;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
