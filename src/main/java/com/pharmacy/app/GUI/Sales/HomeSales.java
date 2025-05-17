@@ -63,6 +63,7 @@ import javax.swing.table.JTableHeader;
  * @author phong
  */
 public class HomeSales extends javax.swing.JPanel {
+    int flag = 0;
     UserDTO current_user = SessionDTO.getCurrentUser();
     private String user_id = current_user.getUserID();    
     private String currentCustomerId;
@@ -512,7 +513,7 @@ public class HomeSales extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tblProduct.setPreferredSize(new java.awt.Dimension(790, 400));
+        tblProduct.setPreferredSize(new java.awt.Dimension(790, 2000));
         tblProduct.setRowHeight(30);
         tblProduct.setShowGrid(true);
         tblProduct.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -918,6 +919,11 @@ public class HomeSales extends javax.swing.JPanel {
 
     private void btnPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentActionPerformed
         BigDecimal totalAmount = calculateTotalAmount();
+        System.out.println(flag);
+        if (flag != 0){
+            JOptionPane.showMessageDialog(null, "Số lượng lớn hơn kho", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         if (totalAmount.compareTo(BigDecimal.ZERO) > 0){
             BigDecimal productDiscount = calculateDiscountAmount();
             String discountText = txtDiscount.getText().trim();
@@ -1183,6 +1189,12 @@ public class HomeSales extends javax.swing.JPanel {
             quantitySpinner.setMinimumSize(new Dimension(50,30));
             quantitySpinner.addChangeListener(e -> {
                 int quantity = (int) quantitySpinner.getValue();
+                if (quantity > item.getInventoryQuantity()){
+                    JOptionPane.showMessageDialog(null, "Lớn hơn số lượng kho");
+                    flag = 1;
+                    return;
+                }
+                flag = 0;
                 double finalprice = quantity * item.getFinalPrice().doubleValue();                
                 double originalprice = quantity * item.getSellPrice().doubleValue();
                 double discountprice = quantity * item.getDiscountAmount().doubleValue();
