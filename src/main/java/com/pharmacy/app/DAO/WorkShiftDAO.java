@@ -93,48 +93,7 @@ public class WorkShiftDAO implements DAOinterface<WorkShiftDTO>{
         }
         return nextId;
     }
-    public boolean isCheckIn(String employeeID){
-        boolean result = false;
-        if (myconnect.openConnection()){
-            String query = "SELECT COUNT(*) FROM attendance "
-                    + "WHERE employee_id = ? "
-                    + "AND check_in IS NOT NULL "
-                    + "AND work_date = CAST(GETDATE() AS DATE)";
-            ResultSet rs = myconnect.prepareQuery(query, employeeID);
-            try {
-                if(rs.next()){
-                    result = rs.getInt(1) > 0;
-                }
-                rs.close();
-            } catch (SQLException e){
-                e.printStackTrace();
-            } finally {
-                myconnect.closeConnection();
-            }
-        }
-        return result; 
-    }
-    public boolean isCheckOut(String employeeID){
-        boolean result = false;
-        if (myconnect.openConnection()){
-            String query = "SELECT COUNT(*) FROM attendance "
-                    + "WHERE employee_id = ? "
-                    + "AND check_in IS NOT NULL AND check_out IS NOT NULL "
-                    + "AND work_date = CAST(GETDATE() AS DATE)";
-            ResultSet rs = myconnect.prepareQuery(query, employeeID);
-            try {
-                if(rs.next()){
-                    result = rs.getInt(1) > 0;
-                }
-                rs.close();
-            } catch (SQLException e){
-                e.printStackTrace();
-            } finally {
-                myconnect.closeConnection();
-            }
-        }
-        return result; 
-    }
+
     public boolean hasAttendanceStatus(String employeeID, String type) {
         boolean result = false;
         if (myconnect.openConnection()) {
