@@ -567,7 +567,6 @@ public class managerView extends javax.swing.JFrame {
         scheduleBtn.setBackground(new java.awt.Color(0, 51, 255));
         scheduleBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         scheduleBtn.setForeground(new java.awt.Color(255, 255, 255));
-        scheduleBtn.setText("LỊCH LÀM VIỆC");
         scheduleBtn.setBorder(null);
         scheduleBtn.setBorderPainted(false);
         scheduleBtn.setContentAreaFilled(false);

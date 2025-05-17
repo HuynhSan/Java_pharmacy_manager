@@ -142,18 +142,19 @@ public class CustomerDAO implements DAOinterface<CustomerDTO>{
         ArrayList<CustomerDTO> customers = new ArrayList<>();
         if (myconnect.openConnection()){
             String sql = "SELECT * FROM customers WHERE( "
-                    + "LOWER(customer_id) LIKE '%" + t.toLowerCase() + "%' OR "
-                    + "LOWER(customer_name) LIKE '%" + t.toLowerCase() + "%' OR "
-                    + "phone_number LIKE '%" + t.toLowerCase() + "%')"
+                    + "LOWER(customer_id) LIKE ? OR "
+                    + "LOWER(customer_name) LIKE ? OR "
+                    + "phone_number LIKE ?)"
                     + "AND is_deleted = 0";
-            ResultSet rs = myconnect.runQuery(sql);
+            String keyword = "%" + t.toLowerCase() + "%";
+            ResultSet rs = myconnect.prepareQuery(sql, keyword, keyword, keyword);
             try {
                 while (rs.next()) {
                     CustomerDTO customer = new CustomerDTO();
-                    customer.setId(rs.getString(1)); // id
-                    customer.setName(rs.getString(2)); // name
-                    customer.setPhone(rs.getString(3)); // phone
-                    customer.setPoint(rs.getFloat(4)); // point
+                    customer.setId(rs.getString("customer_id")); // id
+                    customer.setName(rs.getString("customer_name")); // name
+                    customer.setPhone(rs.getString("phone_number")); // phone
+//                    customer.setPoint(rs.getFloat(4)); // point
                     
                     customers.add(customer);
                 }

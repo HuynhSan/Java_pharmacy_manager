@@ -5,6 +5,7 @@
 package com.pharmacy.app.Utils;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
  */
 public class EmployeeValidation {
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-    private static final String PHONE_REGEX = "^[0-9]{10}$";
+    private static final String PHONE_REGEX = "^0\\d{9,10}$";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     
     /**
@@ -61,7 +62,6 @@ public class EmployeeValidation {
         if (!Pattern.matches(PHONE_REGEX, phone)) {
             return "Số điện thoại phải có 10 chữ số";
         }
-        
         return "";
     }
     
@@ -74,18 +74,27 @@ public class EmployeeValidation {
         if (dateStr == null || dateStr.trim().isEmpty()) {
             return "Ngày sinh không được để trống";
         }
-        
+
         try {
             LocalDate date = LocalDate.parse(dateStr, DATE_FORMATTER);
-            if (date.isAfter(LocalDate.now())) {
+            LocalDate now = LocalDate.now();
+
+            if (date.isAfter(now)) {
                 return "Ngày sinh không thể là ngày trong tương lai";
+            }
+
+            // Kiểm tra tuổi
+            Period age = Period.between(date, now);
+            if (age.getYears() < 18) {
+                return "Tuổi phải từ 18 trở lên";
             }
         } catch (DateTimeParseException e) {
             return "Ngày sinh không đúng định dạng (dd/MM/yyyy)";
         }
-        
+
         return "";
     }
+
     
     /**
      * Converts string date to LocalDate
