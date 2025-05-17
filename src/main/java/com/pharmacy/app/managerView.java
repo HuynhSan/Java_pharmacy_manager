@@ -81,8 +81,8 @@ public class managerView extends javax.swing.JFrame {
         purchaseBtn = new javax.swing.JButton();
         productBtn = new javax.swing.JButton();
         scheduleBtn = new javax.swing.JButton();
-        reportBtn = new javax.swing.JButton();
         infoBtn = new javax.swing.JButton();
+        reportBtn = new javax.swing.JButton();
         ContentPn = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -632,6 +632,38 @@ public class managerView extends javax.swing.JFrame {
         });
         MenuHidePn.add(scheduleBtn);
 
+        infoBtn.setBackground(new java.awt.Color(0, 102, 153));
+        infoBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        infoBtn.setForeground(new java.awt.Color(255, 255, 255));
+        infoBtn.setText("THÔNG TIN CÁ NHÂN");
+        infoBtn.setToolTipText("");
+        infoBtn.setBorder(null);
+        infoBtn.setBorderPainted(false);
+        infoBtn.setContentAreaFilled(false);
+        infoBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        infoBtn.setEnabled(false);
+        infoBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        infoBtn.setMaximumSize(new java.awt.Dimension(200, 30));
+        infoBtn.setMinimumSize(new java.awt.Dimension(200, 30));
+        infoBtn.setPreferredSize(new java.awt.Dimension(150, 30));
+        infoBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                infoBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                infoBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                infoBtnMouseExited(evt);
+            }
+        });
+        infoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                infoBtnActionPerformed(evt);
+            }
+        });
+        MenuHidePn.add(infoBtn);
+
         reportBtn.setBackground(new java.awt.Color(0, 102, 153));
         reportBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         reportBtn.setForeground(new java.awt.Color(255, 255, 255));
@@ -653,31 +685,6 @@ public class managerView extends javax.swing.JFrame {
             }
         });
         MenuHidePn.add(reportBtn);
-
-        infoBtn.setBackground(new java.awt.Color(0, 102, 153));
-        infoBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        infoBtn.setForeground(new java.awt.Color(255, 255, 255));
-        infoBtn.setBorder(null);
-        infoBtn.setBorderPainted(false);
-        infoBtn.setContentAreaFilled(false);
-        infoBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        infoBtn.setEnabled(false);
-        infoBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        infoBtn.setMaximumSize(new java.awt.Dimension(200, 30));
-        infoBtn.setMinimumSize(new java.awt.Dimension(200, 30));
-        infoBtn.setPreferredSize(new java.awt.Dimension(150, 30));
-        infoBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                infoBtnMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                infoBtnMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                infoBtnMouseExited(evt);
-            }
-        });
-        MenuHidePn.add(infoBtn);
 
         MenuPn.add(MenuHidePn, java.awt.BorderLayout.CENTER);
 
@@ -938,8 +945,8 @@ public class managerView extends javax.swing.JFrame {
     }//GEN-LAST:event_infoBtnMouseClicked
 
     private void infoBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoBtnMouseEntered
-//        infoBtn.setBackground(colorEntered);
-//        infoBtn.setOpaque(true);
+        infoBtn.setBackground(colorEntered);
+        infoBtn.setOpaque(true);
     }//GEN-LAST:event_infoBtnMouseEntered
 
     private void infoBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoBtnMouseExited
@@ -948,8 +955,8 @@ public class managerView extends javax.swing.JFrame {
     }//GEN-LAST:event_infoBtnMouseExited
 
     private void scheduleBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduleBtnMouseEntered
-//        scheduleBtn.setBackground(colorEntered);
-//        scheduleBtn.setOpaque(true);// TODO add your handling code here:
+        scheduleBtn.setBackground(colorEntered);
+        scheduleBtn.setOpaque(true);// TODO add your handling code here:
     }//GEN-LAST:event_scheduleBtnMouseEntered
 
     private void scheduleBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduleBtnMouseExited
@@ -958,8 +965,8 @@ public class managerView extends javax.swing.JFrame {
     }//GEN-LAST:event_scheduleBtnMouseExited
 
     private void reportBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseEntered
-//        reportBtn.setBackground(colorEntered);
-//        reportBtn.setOpaque(true);
+        reportBtn.setBackground(colorEntered);
+        reportBtn.setOpaque(true);
     }//GEN-LAST:event_reportBtnMouseEntered
 
     private void reportBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseExited
@@ -1016,6 +1023,10 @@ public class managerView extends javax.swing.JFrame {
     private void attendanceiconMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_attendanceiconMouseExited
         btnAttendance.setBackground(new Color(0,51,102));
     }//GEN-LAST:event_attendanceiconMouseExited
+
+    private void infoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_infoBtnActionPerformed
 
     
     public static void main(String args[]) {

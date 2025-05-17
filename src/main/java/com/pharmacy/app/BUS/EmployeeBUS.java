@@ -82,6 +82,14 @@ public class EmployeeBUS {
         return employeeDAO.selectByID(employeeID);
     }
     
+    public EmployeeDTO getEmployeeByUserID(String userID) {
+        for (EmployeeDTO employee : employeeList) {
+            if (employee.getUserID().equals(userID)) {
+                return employee;
+            }
+        }
+        return employeeDAO.selectByUserID(userID);
+    }
     public ArrayList<EmployeeDTO> searchEmployees(String keyword) {
         return employeeDAO.search(keyword);
     }
