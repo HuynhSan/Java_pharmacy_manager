@@ -37,15 +37,13 @@ public class attendance extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         timer.start();
-        
-        
+
         UserDTO currentUser = SessionDTO.getCurrentUser();
         EmployeeBUS emBUS = new EmployeeBUS();
         EmployeeDTO employee = emBUS.getEmployeeByUserID(currentUser.getUserID());
         txtEmployeeId.setText(employee.getEmployeeID());
         
-        isCheckInOut(txtEmployeeId.getText());
-//        System.out.println("currentUser: " + employee.getEmployeeID());   
+        isCheckInOut(txtEmployeeId.getText());  
     }
     
     Timer timer = new Timer(1000, new ActionListener(){
@@ -55,11 +53,22 @@ public class attendance extends javax.swing.JDialog {
             lblDatetime.setText(date.format(FORMATTER));
         }  
     });
+    
     public final void isCheckInOut (String employeeID){
-        boolean isCheckIn = workBUS.isCheckIn(txtEmployeeId.getText());
-        boolean isCheckOut = workBUS.isCheckOut(txtEmployeeId.getText());
-        btnCheckIn.setEnabled(!isCheckIn);
-        btnCheckOut.setEnabled(!isCheckOut);
+        boolean hasCheckIn = workBUS.hasAttendanceStatus(employeeID, "checkin");
+        boolean hasCheckOut = workBUS.hasAttendanceStatus(employeeID, "checkout");
+        if(!hasCheckIn){
+            btnCheckIn.setEnabled(true);
+            btnCheckOut.setEnabled(false);
+        }
+        else if (hasCheckIn && !hasCheckOut){
+            btnCheckIn.setEnabled(false);
+            btnCheckOut.setEnabled(true);            
+        }
+        else {
+            btnCheckIn.setEnabled(false);
+            btnCheckOut.setEnabled(false);            
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
