@@ -4,20 +4,72 @@
  */
 package com.pharmacy.app;
 
+import com.pharmacy.app.BUS.EmployeeBUS;
+import com.pharmacy.app.BUS.UserBUS;
+import com.pharmacy.app.BUS.WorkShiftBUS;
+import com.pharmacy.app.DTO.AttendanceDTO;
+import com.pharmacy.app.DTO.EmployeeDTO;
+import com.pharmacy.app.DTO.SessionDTO;
+import com.pharmacy.app.DTO.UserDTO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+
 /**
  *
  * @author BOI QUAN
  */
 public class attendance extends javax.swing.JDialog {
-
+    DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy HH:mm:ss");
+    WorkShiftBUS workBUS = new WorkShiftBUS();
     /**
      * Creates new form attendance
+     * @param parent
+     * @param modal
      */
     public attendance(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-    }
+        timer.start();
 
+        UserDTO currentUser = SessionDTO.getCurrentUser();
+        EmployeeBUS emBUS = new EmployeeBUS();
+        EmployeeDTO employee = emBUS.getEmployeeByUserID(currentUser.getUserID());
+        txtEmployeeId.setText(employee.getEmployeeID());
+        
+        isCheckInOut(txtEmployeeId.getText());  
+    }
+    
+    Timer timer = new Timer(1000, new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e){
+            LocalDateTime date = LocalDateTime.now();
+            lblDatetime.setText(date.format(FORMATTER));
+        }  
+    });
+    
+    public final void isCheckInOut (String employeeID){
+        boolean hasCheckIn = workBUS.hasAttendanceStatus(employeeID, "checkin");
+        boolean hasCheckOut = workBUS.hasAttendanceStatus(employeeID, "checkout");
+        if(!hasCheckIn){
+            btnCheckIn.setEnabled(true);
+            btnCheckOut.setEnabled(false);
+        }
+        else if (hasCheckIn && !hasCheckOut){
+            btnCheckIn.setEnabled(false);
+            btnCheckOut.setEnabled(true);            
+        }
+        else {
+            btnCheckIn.setEnabled(false);
+            btnCheckOut.setEnabled(false);            
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,11 +82,11 @@ public class attendance extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblDatetime = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        txtEmployeeId = new javax.swing.JTextField();
+        btnCheckIn = new javax.swing.JButton();
+        btnCheckOut = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -53,11 +105,11 @@ public class attendance extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(20, 0, 10, 0);
         jPanel1.add(jLabel1, gridBagConstraints);
 
-        jLabel2.setText("Chủ nhật, ngày 10/05/2025");
+        lblDatetime.setText("Chủ nhật, ngày 10/05/2025");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        jPanel1.add(jLabel2, gridBagConstraints);
+        jPanel1.add(lblDatetime, gridBagConstraints);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -65,8 +117,8 @@ public class attendance extends javax.swing.JDialog {
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 180));
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Mã nhân viên", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jTextField1.setPreferredSize(new java.awt.Dimension(64, 60));
+        txtEmployeeId.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Mã nhân viên", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        txtEmployeeId.setPreferredSize(new java.awt.Dimension(64, 60));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -74,32 +126,81 @@ public class attendance extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 30, 20, 30);
-        jPanel2.add(jTextField1, gridBagConstraints);
+        jPanel2.add(txtEmployeeId, gridBagConstraints);
 
-        jButton1.setText("Check in");
-        jButton1.setPreferredSize(new java.awt.Dimension(70, 30));
+        btnCheckIn.setText("Check in");
+        btnCheckIn.setPreferredSize(new java.awt.Dimension(70, 30));
+        btnCheckIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckInActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 20, 10);
-        jPanel2.add(jButton1, gridBagConstraints);
+        jPanel2.add(btnCheckIn, gridBagConstraints);
 
-        jButton2.setText("Check out");
-        jButton2.setPreferredSize(new java.awt.Dimension(70, 30));
+        btnCheckOut.setText("Check out");
+        btnCheckOut.setPreferredSize(new java.awt.Dimension(70, 30));
+        btnCheckOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckOutActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 20, 10);
-        jPanel2.add(jButton2, gridBagConstraints);
+        jPanel2.add(btnCheckOut, gridBagConstraints);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCheckInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckInActionPerformed
+        String employeeId = txtEmployeeId.getText();
+        WorkShiftBUS bus = new WorkShiftBUS();
+   
+        if(employeeId.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập mã nhân viên");
+            return;
+        }
+        AttendanceDTO attendance = new AttendanceDTO();
+        attendance.setEmployeeId(employeeId);
+        
+        boolean success = bus.checkIn(attendance);
+        if(success){
+            JOptionPane.showMessageDialog(null, "Check-in thành công");
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Check-in thất bại");
+        }
+    }//GEN-LAST:event_btnCheckInActionPerformed
+
+    private void btnCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckOutActionPerformed
+        // TODO add your handling code here:
+        String employeeId = txtEmployeeId.getText();
+        WorkShiftBUS bus = new WorkShiftBUS();
+        
+        if(employeeId.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập mã nhân viên");
+            return;
+        }
+        
+        boolean success = bus.checkOut(employeeId);
+        if(success){
+            JOptionPane.showMessageDialog(null, "Check-out thành công");
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Check-out thất bại");
+        }
+    }//GEN-LAST:event_btnCheckOutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -144,12 +245,12 @@ public class attendance extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnCheckIn;
+    private javax.swing.JButton btnCheckOut;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblDatetime;
+    private javax.swing.JTextField txtEmployeeId;
     // End of variables declaration//GEN-END:variables
 }

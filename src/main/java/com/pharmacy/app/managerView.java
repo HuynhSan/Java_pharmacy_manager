@@ -84,6 +84,7 @@ public class managerView extends javax.swing.JFrame {
         scheduleBtn = new javax.swing.JButton();
         payrollBtn = new javax.swing.JButton();
         infoBtn = new javax.swing.JButton();
+        reportBtn = new javax.swing.JButton();
         ContentPn = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -606,11 +607,11 @@ public class managerView extends javax.swing.JFrame {
         scheduleBtn.setBackground(new java.awt.Color(0, 51, 255));
         scheduleBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         scheduleBtn.setForeground(new java.awt.Color(255, 255, 255));
+        scheduleBtn.setText("LỊCH LÀM VIỆC");
         scheduleBtn.setBorder(null);
         scheduleBtn.setBorderPainted(false);
         scheduleBtn.setContentAreaFilled(false);
         scheduleBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        scheduleBtn.setEnabled(false);
         scheduleBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         scheduleBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         scheduleBtn.setMinimumSize(new java.awt.Dimension(200, 30));
@@ -649,28 +650,16 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 payrollBtnMouseClicked(evt);
             }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                payrollBtnMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                payrollBtnMouseExited(evt);
-            }
-        });
-        payrollBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                payrollBtnActionPerformed(evt);
-            }
-        });
-        MenuHidePn.add(payrollBtn);
 
         infoBtn.setBackground(new java.awt.Color(0, 102, 153));
         infoBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         infoBtn.setForeground(new java.awt.Color(255, 255, 255));
+        infoBtn.setText("THÔNG TIN CÁ NHÂN");
+        infoBtn.setToolTipText("");
         infoBtn.setBorder(null);
         infoBtn.setBorderPainted(false);
         infoBtn.setContentAreaFilled(false);
         infoBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        infoBtn.setEnabled(false);
         infoBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         infoBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         infoBtn.setMinimumSize(new java.awt.Dimension(200, 30));
@@ -686,7 +675,39 @@ public class managerView extends javax.swing.JFrame {
                 infoBtnMouseExited(evt);
             }
         });
+        infoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                infoBtnActionPerformed(evt);
+            }
+        });
         MenuHidePn.add(infoBtn);
+
+        reportBtn.setBackground(new java.awt.Color(0, 102, 153));
+        reportBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        reportBtn.setForeground(new java.awt.Color(255, 255, 255));
+        reportBtn.setBorder(null);
+        reportBtn.setBorderPainted(false);
+        reportBtn.setContentAreaFilled(false);
+        reportBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        reportBtn.setEnabled(false);
+        reportBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        reportBtn.setMaximumSize(new java.awt.Dimension(200, 30));
+        reportBtn.setMinimumSize(new java.awt.Dimension(200, 30));
+        reportBtn.setPreferredSize(new java.awt.Dimension(150, 30));
+        reportBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                payrollBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                payrollBtnMouseExited(evt);
+            }
+        });
+        payrollBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payrollBtnActionPerformed(evt);
+            }
+        });
+        MenuHidePn.add(payrollBtn);
 
         MenuPn.add(MenuHidePn, java.awt.BorderLayout.CENTER);
 
@@ -947,8 +968,8 @@ public class managerView extends javax.swing.JFrame {
     }//GEN-LAST:event_infoBtnMouseClicked
 
     private void infoBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoBtnMouseEntered
-//        infoBtn.setBackground(colorEntered);
-//        infoBtn.setOpaque(true);
+        infoBtn.setBackground(colorEntered);
+        infoBtn.setOpaque(true);
     }//GEN-LAST:event_infoBtnMouseEntered
 
     private void infoBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoBtnMouseExited
@@ -957,8 +978,8 @@ public class managerView extends javax.swing.JFrame {
     }//GEN-LAST:event_infoBtnMouseExited
 
     private void scheduleBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduleBtnMouseEntered
-//        scheduleBtn.setBackground(colorEntered);
-//        scheduleBtn.setOpaque(true);// TODO add your handling code here:
+        scheduleBtn.setBackground(colorEntered);
+        scheduleBtn.setOpaque(true);// TODO add your handling code here:
     }//GEN-LAST:event_scheduleBtnMouseEntered
 
     private void scheduleBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduleBtnMouseExited
@@ -971,6 +992,11 @@ public class managerView extends javax.swing.JFrame {
         payrollBtn.setBackground(colorEntered);
         payrollBtn.setOpaque(true);
     }//GEN-LAST:event_payrollBtnMouseEntered
+
+    private void reportBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseEntered
+        reportBtn.setBackground(colorEntered);
+        reportBtn.setOpaque(true);
+    }//GEN-LAST:event_reportBtnMouseEntered
 
     private void payrollBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_payrollBtnMouseExited
         payrollBtn.setBackground(colorExited);
@@ -1038,6 +1064,9 @@ public class managerView extends javax.swing.JFrame {
     }//GEN-LAST:event_payrollBtnMouseClicked
 
 
+    private void infoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_infoBtnActionPerformed
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

@@ -4,19 +4,95 @@
  */
 package com.pharmacy.app.GUI.Employee;
 
+import com.pharmacy.app.BUS.EmployeeBUS;
+import com.pharmacy.app.BUS.WorkSchedulesBUS;
+import com.pharmacy.app.BUS.WorkShiftBUS;
+import com.pharmacy.app.DTO.EmployeeDTO;
+import com.pharmacy.app.DTO.SessionDTO;
+import com.pharmacy.app.DTO.UserDTO;
+import com.pharmacy.app.DTO.WorkShiftDTO;
+import com.pharmacy.app.Utils.WeekUltils;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import com.pharmacy.app.Utils.ScheduleTableHelper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author phong
  */
 public class EmployeeProfile extends javax.swing.JPanel {
-
+    private List<LocalDate> weekDates;
+    private final EmployeeBUS emBUS;
+    private final EmployeeDTO emDTO;
+    private final EmployeeDTO employee_login;
+    private String employeeId;
+    private Map<String, WorkShiftDTO> shiftMap;
+    private final UserDTO currentUser = SessionDTO.getCurrentUser();
+    private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    LocalDate startDate = LocalDate.of(2025, 1, 1);
+    WorkShiftBUS shiftBus = new WorkShiftBUS();
+    WorkSchedulesBUS scheduleBus = new WorkSchedulesBUS();
     /**
      * Creates new form EmployeeProfile
      */
     public EmployeeProfile() {
         initComponents();
+        emBUS = new EmployeeBUS();
+        emDTO = new EmployeeDTO();
+        setData(currentUser.getUserID());
+        
+        // Hiển thị cbx theo tuần
+        WeekUltils.populateWeeksComboBox(cbWeekPicker1, 48, startDate);
+        
+        // Lấy nhân viên
+        employee_login = emBUS.getEmployeeByUserID(currentUser.getUserID());
+        employeeId = employee_login.getEmployeeID();
+        
+        // Lấy tuần hiện tại của cbx
+        String selectedWeek = cbWeekPicker1.getSelectedItem().toString();
+        weekDates = getWeekDatesFromComboBox(selectedWeek);
+        
+        // Lấy ca làm và giờ làm 
+        shiftMap = shiftBus.getShiftMap();
+        
+        showScheduleEmployee();
     }
+    
+    public List<LocalDate> getWeekDatesFromComboBox(String selectedWeek) {
+        // selectedWeek ví dụ: "07/04/2025 - 13/04/2025"
+        String[] parts = selectedWeek.split(" - ");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+        LocalDate start = LocalDate.parse(parts[0], formatter); // thứ 2
+        // tạo list ngày từ thứ 2 -> CN
+        List<LocalDate> dates = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            dates.add(start.plusDays(i));
+        }
+        return dates;
+    }
+    public final void setData(String userID){
+        EmployeeDTO employee = emBUS.getEmployeeByUserID(userID);
+        txtEmployeeID.setText(employee.getEmployeeID());
+        txtName.setText(employee.getName());
+        txtPhone.setText(employee.getPhone());
+        txtAddress.setText(employee.getAddress());
+        txtGender.setText(employee.getGender() ? "Nam" : "Nữ");
+        txtDOB.setText(employee.getDob().format(DATE_FORMAT));
+        txtEmail.setText(employee.getEmail());
+    }
+    
+    public void showScheduleEmployee(){
+        LocalDate start = weekDates.get(0);
+        LocalDate end = weekDates.get(6);
+        Map<String, Map<LocalDate, String>> scheduleMap = scheduleBus.getScheduleForWeek(start, end);
+        ScheduleTableHelper.buildScheduleTableForEmployee(tblWeekSchedule,employeeId,weekDates,scheduleMap,shiftMap);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,6 +108,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         pnlEmployeeProfile = new javax.swing.JPanel();
         lblEmployeeProfile = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         pnlProfileFields = new javax.swing.JPanel();
         lblName = new javax.swing.JLabel();
         lblGender = new javax.swing.JLabel();
@@ -116,18 +193,36 @@ public class EmployeeProfile extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         pnlEmployeeProfile.setBackground(new java.awt.Color(255, 255, 255));
+        pnlEmployeeProfile.setLayout(new java.awt.GridBagLayout());
 
+        lblEmployeeProfile.setBackground(new java.awt.Color(255, 255, 255));
         lblEmployeeProfile.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblEmployeeProfile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblEmployeeProfile.setText("THÔNG TIN NHÂN VIÊN");
         lblEmployeeProfile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        pnlEmployeeProfile.add(lblEmployeeProfile);
+        lblEmployeeProfile.setMaximumSize(new java.awt.Dimension(326589, 326589));
+        lblEmployeeProfile.setName(""); // NOI18N
+        lblEmployeeProfile.setPreferredSize(new java.awt.Dimension(500, 30));
+        pnlEmployeeProfile.add(lblEmployeeProfile, new java.awt.GridBagConstraints());
+
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setText("Làm mới");
+        jButton1.setPreferredSize(new java.awt.Dimension(80, 30));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
+        pnlEmployeeProfile.add(jButton1, gridBagConstraints);
 
         pnlProfileFields.setBackground(new java.awt.Color(255, 255, 255));
         pnlProfileFields.setPreferredSize(new java.awt.Dimension(516, 88));
         pnlProfileFields.setLayout(new java.awt.GridBagLayout());
 
         lblName.setText("Họ tên:");
+        lblName.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -138,6 +233,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlProfileFields.add(lblName, gridBagConstraints);
 
         lblGender.setText("Giới tính:");
+        lblGender.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -148,6 +244,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlProfileFields.add(lblGender, gridBagConstraints);
 
         lblEmail.setText("Email:");
+        lblEmail.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -158,6 +255,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlProfileFields.add(lblEmail, gridBagConstraints);
 
         lblDOB.setText("Ngày sinh:");
+        lblDOB.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -168,6 +266,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlProfileFields.add(lblDOB, gridBagConstraints);
 
         lblPhone.setText("Số điện thoại:");
+        lblPhone.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -178,6 +277,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlProfileFields.add(lblPhone, gridBagConstraints);
 
         lblAddress.setText("Địa chỉ:");
+        lblAddress.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -190,6 +290,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtName.setEditable(false);
         txtName.setText("Trần Uyên Phương");
         txtName.setFocusable(false);
+        txtName.setPreferredSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
@@ -203,6 +304,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtEmail.setEditable(false);
         txtEmail.setText("tranuyenphuong23022003@gmail.com");
         txtEmail.setFocusable(false);
+        txtEmail.setPreferredSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
@@ -216,6 +318,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtDOB.setEditable(false);
         txtDOB.setText("23/02/2003");
         txtDOB.setFocusable(false);
+        txtDOB.setPreferredSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
@@ -229,6 +332,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtPhone.setEditable(false);
         txtPhone.setText("0946279238");
         txtPhone.setFocusable(false);
+        txtPhone.setPreferredSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -242,6 +346,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtAddress.setEditable(false);
         txtAddress.setText("Chung cư C2 Lý Thường Kiệt đường Vĩnh Viễn, phường 7, quận 11, TPHCM");
         txtAddress.setFocusable(false);
+        txtAddress.setPreferredSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -254,6 +359,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlProfileFields.add(txtAddress, gridBagConstraints);
 
         lblEmpoyeeID.setText("Mã nhân viên:");
+        lblEmpoyeeID.setMinimumSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -266,6 +372,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtEmployeeID.setEditable(false);
         txtEmployeeID.setText("NV01");
         txtEmployeeID.setFocusable(false);
+        txtEmployeeID.setPreferredSize(new java.awt.Dimension(64, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -279,6 +386,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtGender.setEditable(false);
         txtGender.setText("Nữ");
         txtGender.setFocusable(false);
+        txtGender.setPreferredSize(new java.awt.Dimension(0, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -294,6 +402,12 @@ public class EmployeeProfile extends javax.swing.JPanel {
         btnUpdateProfile.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnUpdateProfile.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdateProfile.setText("Cập nhật thông tin");
+        btnUpdateProfile.setPreferredSize(new java.awt.Dimension(135, 30));
+        btnUpdateProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateProfileActionPerformed(evt);
+            }
+        });
         pnlUpdateProfile.add(btnUpdateProfile);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -313,7 +427,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
                 .addComponent(pnlProfileFields, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlUpdateProfile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         pnlProfile.add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -326,7 +440,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlWeekSchedule.setPreferredSize(new java.awt.Dimension(650, 450));
         pnlWeekSchedule.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane2.setPreferredSize(new java.awt.Dimension(550, 402));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(550, 600));
 
         tblWeekSchedule.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -342,8 +456,9 @@ public class EmployeeProfile extends javax.swing.JPanel {
                 "Ngày làm việc", "Ca làm việc"
             }
         ));
-        tblWeekSchedule.setPreferredSize(new java.awt.Dimension(690, 80));
+        tblWeekSchedule.setPreferredSize(new java.awt.Dimension(690, 700));
         tblWeekSchedule.setRowHeight(30);
+        tblWeekSchedule.setShowGrid(true);
         jScrollPane2.setViewportView(tblWeekSchedule);
 
         pnlWeekSchedule.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -351,15 +466,16 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlWorkSchedule.add(pnlWeekSchedule, java.awt.BorderLayout.CENTER);
 
         pnlEmployeeAttendance.setBackground(new java.awt.Color(255, 255, 255));
-        pnlEmployeeAttendance.setPreferredSize(new java.awt.Dimension(240, 50));
+        pnlEmployeeAttendance.setPreferredSize(new java.awt.Dimension(240, 60));
         pnlEmployeeAttendance.setLayout(new java.awt.GridBagLayout());
 
         lblWeekPicker1.setText("Chọn tuần:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 20);
         pnlEmployeeAttendance.add(lblWeekPicker1, gridBagConstraints);
 
         cbWeekPicker1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "07/04/2025 - 13/04/2025", "14/04/2025 - 20/04/2025" }));
+        cbWeekPicker1.setPreferredSize(new java.awt.Dimension(161, 30));
         cbWeekPicker1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbWeekPicker1ActionPerformed(evt);
@@ -368,6 +484,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 3.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
         pnlEmployeeAttendance.add(cbWeekPicker1, gridBagConstraints);
 
         pnlWorkSchedule.add(pnlEmployeeAttendance, java.awt.BorderLayout.PAGE_START);
@@ -821,14 +938,30 @@ public class EmployeeProfile extends javax.swing.JPanel {
     }//GEN-LAST:event_txtTotalActionPerformed
 
     private void cbWeekPicker1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbWeekPicker1ActionPerformed
-        // TODO add your handling code here:
+        String selectedWeek = (String) cbWeekPicker1.getSelectedItem();
+        if (selectedWeek == null) return;
+
+        weekDates = getWeekDatesFromComboBox(selectedWeek);
+        showScheduleEmployee();
     }//GEN-LAST:event_cbWeekPicker1ActionPerformed
+
+    private void btnUpdateProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateProfileActionPerformed
+        EmployeeDTO employee = emBUS.getEmployeeByID(txtEmployeeID.getText());
+        UpdateEmployee updateEmployeeDialog = new UpdateEmployee((JFrame) SwingUtilities.getWindowAncestor(this), true, employee);
+        updateEmployeeDialog.setLocationRelativeTo(null);
+        updateEmployeeDialog.setVisible(true);
+    }//GEN-LAST:event_btnUpdateProfileActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        setData(currentUser.getUserID());
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnUpdateProfile;
     private javax.swing.JComboBox<String> cbWeekPicker1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
