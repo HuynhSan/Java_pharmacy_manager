@@ -19,6 +19,11 @@ public class WorkScheduleDTO {
     private boolean isHoliday;
     private boolean isDeleted;
 
+    public WorkScheduleDTO() {
+    }
+    
+    
+
     public WorkScheduleDTO(String scheduleId, String employeeId, String shiftId, LocalDate workDate, boolean isWeekend, boolean isHoliday, boolean isDeleted) {
         this.scheduleId = scheduleId;
         this.employeeId = employeeId;
@@ -28,6 +33,16 @@ public class WorkScheduleDTO {
         this.isHoliday = isHoliday;
         this.isDeleted = isDeleted;
     }
+
+    public WorkScheduleDTO(String employeeId, String shiftId, LocalDate workDate, boolean isWeekend, boolean isHoliday) {
+        this.employeeId = employeeId;
+        this.shiftId = shiftId;
+        this.workDate = workDate;
+        this.isWeekend = isWeekend;
+        this.isHoliday = isHoliday;
+    }
+    
+    
 
     
     public String getScheduleId() {
