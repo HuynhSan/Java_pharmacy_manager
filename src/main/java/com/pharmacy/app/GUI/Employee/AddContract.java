@@ -37,7 +37,7 @@ public class AddContract extends javax.swing.JDialog {
         String degree = txtDegree.getText();
         String experienceYearsStr = txtExperienceYears.getText();
         String signingDateStr = txtSigningDate.getText();
-        String position = txtPosition.getText();
+        String position = cbPosition.getSelectedItem().toString();
         String startDateStr = txtStartDate.getText();
         String endDateStr = txtEndDate.getText();
         String description = txtDescription.getText();
@@ -54,7 +54,7 @@ public class AddContract extends javax.swing.JDialog {
         String positionError = ContractValidation.validateRequired(position, "Chức vụ");
         if (!positionError.isEmpty()) {
             JOptionPane.showMessageDialog(this, positionError, "Lỗi", JOptionPane.ERROR_MESSAGE);
-            txtPosition.requestFocus();
+            cbPosition.requestFocus();
             return false;
         }
 
@@ -179,11 +179,11 @@ public class AddContract extends javax.swing.JDialog {
         lblSigningDate = new javax.swing.JLabel();
         txtSigningDate = new javax.swing.JTextField();
         lblPosition = new javax.swing.JLabel();
-        txtPosition = new javax.swing.JTextField();
         lblStartDate = new javax.swing.JLabel();
         txtStartDate = new javax.swing.JTextField();
         lblEndDate = new javax.swing.JLabel();
         txtDescription = new javax.swing.JTextField();
+        cbPosition = new javax.swing.JComboBox<>();
         pnlSalaryTerms = new javax.swing.JPanel();
         lblBaseSalary = new javax.swing.JLabel();
         txtBaseSalary = new javax.swing.JTextField();
@@ -350,13 +350,6 @@ public class AddContract extends javax.swing.JDialog {
         gridBagConstraints.ipady = 1;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 20, 20);
         pnlContractInfo.add(lblPosition, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 5.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 20, 10);
-        pnlContractInfo.add(txtPosition, gridBagConstraints);
 
         lblStartDate.setText("Ngày bắt đầu:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -388,6 +381,12 @@ public class AddContract extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 10);
         pnlContractInfo.add(txtDescription, gridBagConstraints);
+
+        cbPosition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quản lý nhà thuốc", "Nhân viên bán hàng" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 20, 10);
+        pnlContractInfo.add(cbPosition, gridBagConstraints);
 
         pnlSalaryTerms.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Điều khoản lương", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
         pnlSalaryTerms.setLayout(new java.awt.GridBagLayout());
@@ -545,7 +544,7 @@ public class AddContract extends javax.swing.JDialog {
 
             
             String degree = txtDegree.getText().trim();
-            String position = txtPosition.getText().trim();
+            String position = cbPosition.getSelectedItem().toString().trim();
             String workDescription = txtDescription.getText().trim();
             
             // Create contract object (not deleted by default)
@@ -642,6 +641,7 @@ public class AddContract extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddContract;
     private javax.swing.JButton btnCancelContract;
+    private javax.swing.JComboBox<String> cbPosition;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
@@ -671,7 +671,6 @@ public class AddContract extends javax.swing.JDialog {
     private javax.swing.JTextField txtEmployeeName;
     private javax.swing.JTextField txtEndDate;
     private javax.swing.JTextField txtExperienceYears;
-    private javax.swing.JTextField txtPosition;
     private javax.swing.JTextField txtSigningDate;
     private javax.swing.JTextField txtStartDate;
     // End of variables declaration//GEN-END:variables

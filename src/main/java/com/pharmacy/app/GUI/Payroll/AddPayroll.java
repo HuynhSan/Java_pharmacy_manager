@@ -4,11 +4,16 @@
  */
 package com.pharmacy.app.GUI.Payroll;
 
+import com.pharmacy.app.DTO.EmployeeDTO;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author phong
  */
 public class AddPayroll extends javax.swing.JDialog {
+    private String employeeID;
 
     /**
      * Creates new form PayrollDetails
@@ -16,6 +21,18 @@ public class AddPayroll extends javax.swing.JDialog {
     public AddPayroll(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+    /**
+     * Sets employee data in the contract form fields
+     * @param employee The selected employee
+     */
+    public void setEmployeeData(EmployeeDTO employee) {
+        if (employee != null) {
+            this.employeeID = employee.getEmployeeID();
+            txtEmployeeID.setText(employee.getEmployeeID());
+            txtEmployeeName.setText(employee.getName());
+        }
     }
 
     /**
@@ -104,6 +121,11 @@ public class AddPayroll extends javax.swing.JDialog {
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("Hủy");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
         pnlButton.add(btnCancel);
 
         pnlEmployeeInfo.setLayout(new java.awt.GridBagLayout());
@@ -192,6 +214,13 @@ public class AddPayroll extends javax.swing.JDialog {
     private void txtEmployeeIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmployeeIDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmployeeIDActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        this.dispose();
+        EmployeePayroll emPayrollDialog = new EmployeePayroll((JFrame) SwingUtilities.getWindowAncestor(this), true);
+        emPayrollDialog.setLocationRelativeTo(null);
+        emPayrollDialog.setVisible(true);
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
