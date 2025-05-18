@@ -140,6 +140,7 @@ public class WorkShiftDAO implements DAOinterface<WorkShiftDTO>{
         return nextId;
     }
 
+
     public boolean isCheckIn(String employeeID){
         boolean result = false;
         if (myconnect.openConnection()){
@@ -182,6 +183,7 @@ public class WorkShiftDAO implements DAOinterface<WorkShiftDTO>{
         }
         return result; 
     }
+
     public boolean hasAttendanceStatus(String employeeID, String type) {
         boolean result = false;
         if (myconnect.openConnection()) {
