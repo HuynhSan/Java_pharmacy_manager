@@ -10,6 +10,8 @@ import com.pharmacy.app.DAO.EmployeeDAO;
 import com.pharmacy.app.BUS.ContractBUS;
 import com.pharmacy.app.DTO.ContractDTO;
 import com.pharmacy.app.DAO.ContractDAO;
+import com.pharmacy.app.DTO.SessionDTO;
+import com.pharmacy.app.DTO.UserDTO;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -42,12 +44,26 @@ public class EmployeeManagement extends javax.swing.JPanel {
      */
     public EmployeeManagement() {
         initComponents();
+        checkUserPermissions();
         setupListeners();
         initBUS();
         loadEmployeeData();
         loadContractData();
         centerTableContent(tblEmployees);
         centerTableContent(tblContracts);
+    }
+    
+    private void checkUserPermissions() {
+        UserDTO currentUser = SessionDTO.getCurrentUser();
+        if (currentUser != null) {
+            String roleID = currentUser.getRoleID();
+
+            // If user is a Manager (ROLE002), hide the Contracts tab
+            if ("ROLE002".equals(roleID)) {
+                // Remove the Contracts tab
+                tpEmployeeManagement.remove(pnlContracts);
+            }
+        }
     }
     
     private void initBUS() {

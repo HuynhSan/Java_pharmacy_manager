@@ -101,9 +101,11 @@ public class UserDAO implements DAOinterface<UserDTO> {
     public ArrayList<UserDTO> search(String keyword) {
         ArrayList<UserDTO> userList = new ArrayList<>();
         myConnection.openConnection();
-        String query = "SELECT * FROM users WHERE (user_id LIKE '%" + keyword + "%' OR "
-                + "username LIKE '%" + keyword + "%' OR "
-                + "role_id LIKE '%" + keyword + "%') ";
+        String query = "SELECT u.* FROM users u " +
+                   "JOIN roles r ON u.role_id = r.role_id " +
+                   "WHERE u.user_id LIKE '%" + keyword + "%' OR " +
+                   "u.username LIKE '%" + keyword + "%' OR " +
+                   "r.role_name LIKE '%" + keyword + "%'";
         ResultSet rs = myConnection.runQuery(query);
         try {
             while (rs.next()) {
