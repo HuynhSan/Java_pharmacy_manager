@@ -15,6 +15,7 @@ import com.pharmacy.app.GUI.Product.MedicalProducts;
 import java.awt.*;
 import javax.swing.*;
 import com.pharmacy.app.GUI.Promo.*;
+import com.pharmacy.app.GUI.Requests.EmployeeRequests;
 import com.pharmacy.app.GUI.Sales.HomeSales;
 import com.pharmacy.app.GUI.Supplier.SupplierList;
 import com.pharmacy.app.GUI.User.UserInfo;
@@ -75,6 +76,7 @@ public class homepage extends javax.swing.JFrame {
         cusBtn = new javax.swing.JButton();
         promoBtn = new javax.swing.JButton();
         infoBtn = new javax.swing.JButton();
+        reqBtn = new javax.swing.JButton();
         ContentPn = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -437,11 +439,11 @@ public class homepage extends javax.swing.JFrame {
         infoBtn.setBackground(new java.awt.Color(0, 102, 153));
         infoBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         infoBtn.setForeground(new java.awt.Color(255, 255, 255));
+        infoBtn.setText("THÔNG TIN CÁ NHÂN");
         infoBtn.setBorder(null);
         infoBtn.setBorderPainted(false);
         infoBtn.setContentAreaFilled(false);
         infoBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        infoBtn.setEnabled(false);
         infoBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         infoBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         infoBtn.setMinimumSize(new java.awt.Dimension(200, 30));
@@ -458,6 +460,31 @@ public class homepage extends javax.swing.JFrame {
             }
         });
         MenuHidePn.add(infoBtn);
+
+        reqBtn.setBackground(new java.awt.Color(0, 102, 153));
+        reqBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        reqBtn.setForeground(new java.awt.Color(255, 255, 255));
+        reqBtn.setText("QUẢN LÝ ĐƠN TỪ");
+        reqBtn.setBorder(null);
+        reqBtn.setBorderPainted(false);
+        reqBtn.setContentAreaFilled(false);
+        reqBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        reqBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        reqBtn.setMaximumSize(new java.awt.Dimension(200, 30));
+        reqBtn.setMinimumSize(new java.awt.Dimension(200, 30));
+        reqBtn.setPreferredSize(new java.awt.Dimension(150, 30));
+        reqBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reqBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                reqBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                reqBtnMouseExited(evt);
+            }
+        });
+        MenuHidePn.add(reqBtn);
 
         MenuPn.add(MenuHidePn, java.awt.BorderLayout.CENTER);
 
@@ -681,6 +708,21 @@ public class homepage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_logouticonMouseClicked
 
+    private void reqBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqBtnMouseClicked
+        ContentPn.add(new EmployeeRequests(), "Request");
+        switchToPanel("Request");
+    }//GEN-LAST:event_reqBtnMouseClicked
+
+    private void reqBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqBtnMouseEntered
+        reqBtn.setBackground(colorEntered);
+        reqBtn.setOpaque(true);
+    }//GEN-LAST:event_reqBtnMouseEntered
+
+    private void reqBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqBtnMouseExited
+        reqBtn.setBackground(colorExited);
+        reqBtn.setOpaque(true);
+    }//GEN-LAST:event_reqBtnMouseExited
+
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -732,6 +774,7 @@ public class homepage extends javax.swing.JFrame {
     private javax.swing.JLabel minmaxicon;
     private javax.swing.JButton productBtn;
     private javax.swing.JButton promoBtn;
+    private javax.swing.JButton reqBtn;
     private javax.swing.JButton saleBtn;
     private javax.swing.JLabel usericon;
     // End of variables declaration//GEN-END:variables

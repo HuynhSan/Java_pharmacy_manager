@@ -8,14 +8,10 @@ import com.pharmacy.app.BUS.CategoryBUS;
 import com.pharmacy.app.BUS.MedicalProductsBUS;
 import com.pharmacy.app.BUS.ProductBatchBUS;
 import com.pharmacy.app.BUS.ProductPromoBUS;
-import com.pharmacy.app.BUS.PromotionBUS;
-import com.pharmacy.app.DTO.CategoryDTO;
 import com.pharmacy.app.DTO.MedicalProductsDTO;
 import com.pharmacy.app.DTO.ProductBatchDTO;
 import com.pharmacy.app.DTO.ProductPromoDTO;
-import com.pharmacy.app.DTO.PromotionDTO;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Image;
 import java.io.File;
 import javax.swing.ImageIcon;
@@ -80,7 +76,6 @@ public class ProductDetails extends javax.swing.JDialog {
         originalPacking = productDTO.getPackingSpecification();
 
         imgLbl.setPreferredSize(new Dimension(300, 200));
-        System.out.println(productDTO.getImgPath());
         loadProductImage(productDTO.getImgPath());
         // Thêm listener kiểm tra thay đổi
         setupChangeListeners();

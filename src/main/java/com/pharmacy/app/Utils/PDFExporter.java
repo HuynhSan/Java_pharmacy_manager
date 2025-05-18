@@ -641,6 +641,20 @@ public class PDFExporter {
                 true // landscape orientation
         );
     }
+    public static boolean exportRequestsToPDF(Component parentComponent, TableModel requestTableModel) {
+        // Define custom column widths for requests table
+        // STT | Mã đơn | Mã nv  Ngày gửi đơn | Loại đơn | Trạng thái
+        float[] columnWidths = {0.8f, 1.5f, 1.5f, 1.5f, 2f, 1.5f};
+
+        return exportTableToPDF(
+                parentComponent,
+                requestTableModel,
+                "DANH SÁCH ĐƠN TỪ NHÂN VIÊN",
+                "DanhSachDonTu.pdf",
+                columnWidths,
+                false // portrait orientation
+        );
+    }
     public static boolean exportCustomersToPDF(Component parentComponent, TableModel supplierTableModel) {
         // Define custom column widths for supplier table
         float[] columnWidths = {0.8f, 2f, 1.2f, 0.8f, 2f, 1.2f, 2.5f};

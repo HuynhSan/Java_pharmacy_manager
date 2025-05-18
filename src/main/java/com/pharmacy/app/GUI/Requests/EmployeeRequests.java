@@ -6,9 +6,13 @@ package com.pharmacy.app.GUI.Requests;
 
 import com.pharmacy.app.BUS.RequestBUS;
 import com.pharmacy.app.DTO.RequestDTO;
+import com.pharmacy.app.DTO.SessionDTO;
 import com.pharmacy.app.GUI.Sales.PaymentDialog;
+import java.awt.Frame;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -28,10 +32,34 @@ public class EmployeeRequests extends javax.swing.JPanel {
     public EmployeeRequests() {
         initComponents();
         centerTableContent(tblRequest);
+        centerTableContent(tblListRequest);
         tblRequest.setDefaultEditor(Object.class, null);
         tblListRequest.setDefaultEditor(Object.class, null);
         loadReqList();
+        loadReq();
+        if (SessionDTO.getCurrentUser().getRoleID().equals("ROLE003")) {
+             jTabbedPane1.setEnabledAt(1, false);
+        }  
     }
+    
+    
+    private void loadReq(){
+        String userid = SessionDTO.getCurrentUser().getUserID();
+        ArrayList<RequestDTO> reqList = reqBUS.getAllRequestByID(userid);
+        DefaultTableModel model = (DefaultTableModel) tblRequest.getModel();
+        model.setRowCount(0);
+        int stt = 1;
+        for (RequestDTO req : reqList) {
+            model.addRow(new Object[] {
+                    stt++,
+                    req.getRequestId(),
+                    req.getRequestDate(),
+                    req.getRequestType(),
+                    req.getStatus()
+            });
+        }
+    }
+    
     
     private void loadReqList() {
         ArrayList<RequestDTO> reqList = reqBUS.getAllRequest();
@@ -82,7 +110,6 @@ public class EmployeeRequests extends javax.swing.JPanel {
         pnlRequestButton = new javax.swing.JPanel();
         btnAddRequest = new javax.swing.JButton();
         btnRefesh = new javax.swing.JButton();
-        btnPdf = new javax.swing.JButton();
         pnlRequest2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRequest = new javax.swing.JTable();
@@ -91,7 +118,6 @@ public class EmployeeRequests extends javax.swing.JPanel {
         txtSearchRequest1 = new javax.swing.JTextField();
         cbRequestType1 = new javax.swing.JComboBox<>();
         pnlRequestButton1 = new javax.swing.JPanel();
-        btnAddRequest1 = new javax.swing.JButton();
         btnRefesh1 = new javax.swing.JButton();
         btnPdf1 = new javax.swing.JButton();
         pnlRequest4 = new javax.swing.JPanel();
@@ -99,9 +125,15 @@ public class EmployeeRequests extends javax.swing.JPanel {
         tblListRequest = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setPreferredSize(new java.awt.Dimension(1000, 514));
         setLayout(new java.awt.BorderLayout());
 
         jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane1MouseClicked(evt);
+            }
+        });
 
         selfReqPn.setBackground(new java.awt.Color(255, 255, 255));
         selfReqPn.setLayout(new java.awt.BorderLayout());
@@ -109,7 +141,7 @@ public class EmployeeRequests extends javax.swing.JPanel {
         pnlRequest1.setBackground(new java.awt.Color(255, 255, 255));
         pnlRequest1.setToolTipText("");
         pnlRequest1.setPreferredSize(new java.awt.Dimension(607, 40));
-        pnlRequest1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
+        pnlRequest1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
 
         txtSearchRequest.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         txtSearchRequest.setForeground(new java.awt.Color(153, 153, 153));
@@ -137,7 +169,7 @@ public class EmployeeRequests extends javax.swing.JPanel {
 
         pnlRequestButton.setBackground(new java.awt.Color(255, 255, 255));
         pnlRequestButton.setPreferredSize(new java.awt.Dimension(300, 35));
-        pnlRequestButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 5));
+        pnlRequestButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
 
         btnAddRequest.setText("Tạo");
         btnAddRequest.setFocusable(false);
@@ -163,25 +195,12 @@ public class EmployeeRequests extends javax.swing.JPanel {
         });
         pnlRequestButton.add(btnRefesh);
 
-        btnPdf.setText("In PDF");
-        btnPdf.setFocusable(false);
-        btnPdf.setMaximumSize(new java.awt.Dimension(72, 22));
-        btnPdf.setMinimumSize(new java.awt.Dimension(72, 22));
-        btnPdf.setPreferredSize(new java.awt.Dimension(72, 22));
-        btnPdf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPdfActionPerformed(evt);
-            }
-        });
-        pnlRequestButton.add(btnPdf);
-
         pnlRequest1.add(pnlRequestButton);
 
         selfReqPn.add(pnlRequest1, java.awt.BorderLayout.NORTH);
 
         pnlRequest2.setBackground(new java.awt.Color(255, 255, 255));
-        pnlRequest2.setPreferredSize(new java.awt.Dimension(600, 439));
-        pnlRequest2.setLayout(new java.awt.BorderLayout());
+        pnlRequest2.setPreferredSize(new java.awt.Dimension(600, 400));
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(670, 402));
 
@@ -219,16 +238,30 @@ public class EmployeeRequests extends javax.swing.JPanel {
         });
         tblRequest.setFocusable(false);
         tblRequest.setMinimumSize(new java.awt.Dimension(500, 80));
-        tblRequest.setPreferredSize(new java.awt.Dimension(500, 400));
+        tblRequest.setPreferredSize(new java.awt.Dimension(670, 502));
         tblRequest.setRowHeight(30);
         tblRequest.setShowGrid(true);
+        tblRequest.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRequestMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblRequest);
         if (tblRequest.getColumnModel().getColumnCount() > 0) {
             tblRequest.getColumnModel().getColumn(0).setResizable(false);
             tblRequest.getColumnModel().getColumn(0).setPreferredWidth(50);
         }
 
-        pnlRequest2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout pnlRequest2Layout = new javax.swing.GroupLayout(pnlRequest2);
+        pnlRequest2.setLayout(pnlRequest2Layout);
+        pnlRequest2Layout.setHorizontalGroup(
+            pnlRequest2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 787, Short.MAX_VALUE)
+        );
+        pnlRequest2Layout.setVerticalGroup(
+            pnlRequest2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+        );
 
         selfReqPn.add(pnlRequest2, java.awt.BorderLayout.CENTER);
 
@@ -240,7 +273,7 @@ public class EmployeeRequests extends javax.swing.JPanel {
         pnlRequest3.setBackground(new java.awt.Color(255, 255, 255));
         pnlRequest3.setToolTipText("");
         pnlRequest3.setPreferredSize(new java.awt.Dimension(607, 40));
-        pnlRequest3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
+        pnlRequest3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
 
         txtSearchRequest1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         txtSearchRequest1.setForeground(new java.awt.Color(153, 153, 153));
@@ -268,19 +301,7 @@ public class EmployeeRequests extends javax.swing.JPanel {
 
         pnlRequestButton1.setBackground(new java.awt.Color(255, 255, 255));
         pnlRequestButton1.setPreferredSize(new java.awt.Dimension(300, 35));
-        pnlRequestButton1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 5));
-
-        btnAddRequest1.setText("Tạo");
-        btnAddRequest1.setFocusable(false);
-        btnAddRequest1.setMaximumSize(new java.awt.Dimension(72, 22));
-        btnAddRequest1.setMinimumSize(new java.awt.Dimension(72, 22));
-        btnAddRequest1.setPreferredSize(new java.awt.Dimension(72, 22));
-        btnAddRequest1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddRequest1ActionPerformed(evt);
-            }
-        });
-        pnlRequestButton1.add(btnAddRequest1);
+        pnlRequestButton1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 5));
 
         btnRefesh1.setText("Tải lại");
         btnRefesh1.setFocusable(false);
@@ -350,9 +371,14 @@ public class EmployeeRequests extends javax.swing.JPanel {
         });
         tblListRequest.setFocusable(false);
         tblListRequest.setMinimumSize(new java.awt.Dimension(500, 80));
-        tblListRequest.setPreferredSize(new java.awt.Dimension(500, 400));
+        tblListRequest.setPreferredSize(new java.awt.Dimension(670, 500));
         tblListRequest.setRowHeight(30);
         tblListRequest.setShowGrid(true);
+        tblListRequest.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblListRequestMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblListRequest);
 
         pnlRequest4.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -379,12 +405,8 @@ public class EmployeeRequests extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddRequestActionPerformed
 
     private void btnRefeshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefeshActionPerformed
-        // TODO add your handling code here:
+        loadReq();
     }//GEN-LAST:event_btnRefeshActionPerformed
-
-    private void btnPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPdfActionPerformed
 
     private void txtSearchRequest1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchRequest1ActionPerformed
         // TODO add your handling code here:
@@ -394,23 +416,65 @@ public class EmployeeRequests extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbRequestType1ActionPerformed
 
-    private void btnAddRequest1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRequest1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddRequest1ActionPerformed
-
     private void btnRefesh1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefesh1ActionPerformed
-        // TODO add your handling code here:
+        loadReqList();
     }//GEN-LAST:event_btnRefesh1ActionPerformed
 
     private void btnPdf1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdf1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Get table model
+            DefaultTableModel model = (DefaultTableModel) tblListRequest.getModel();
+
+            // Use the PDFExporter utility class to export employee data
+            com.pharmacy.app.Utils.PDFExporter.exportRequestsToPDF(this, model);
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Lỗi khi xuất PDF: " + e.getMessage(),
+                    "Lỗi",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnPdf1ActionPerformed
+
+    private void tblRequestMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRequestMouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            int row = tblRequest.getSelectedRow();
+            if (row >= 0) {
+                String ID = tblRequest.getValueAt(row, 1).toString();
+                RequestDTO selectedProduct = reqBUS.getRequestByID(ID);
+
+                // Mở dialog
+                Frame frame = JOptionPane.getFrameForComponent(tblRequest);
+                UpdateRequest dialog = new UpdateRequest(frame, true, selectedProduct);
+                dialog.setLocationRelativeTo(frame);
+                dialog.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_tblRequestMouseClicked
+
+    private void tblListRequestMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListRequestMouseClicked
+    if (evt.getButton() == MouseEvent.BUTTON1) {
+                int row = tblListRequest.getSelectedRow();
+                if (row >= 0) {
+                    String ID = tblListRequest.getValueAt(row, 1).toString();
+                    RequestDTO selectedProduct = reqBUS.getRequestByID(ID);
+
+                    // Mở dialog
+                    Frame frame = JOptionPane.getFrameForComponent(tblListRequest);
+                    UpdateRequest dialog = new UpdateRequest(frame, true, selectedProduct);
+                    dialog.setLocationRelativeTo(frame);
+                    dialog.setVisible(true);
+                }
+            }
+    }//GEN-LAST:event_tblListRequestMouseClicked
+
+    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTabbedPane1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddRequest;
-    private javax.swing.JButton btnAddRequest1;
-    private javax.swing.JButton btnPdf;
     private javax.swing.JButton btnPdf1;
     private javax.swing.JButton btnRefesh;
     private javax.swing.JButton btnRefesh1;

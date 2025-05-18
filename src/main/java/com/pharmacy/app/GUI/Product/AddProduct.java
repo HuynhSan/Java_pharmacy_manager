@@ -355,8 +355,6 @@ public class AddProduct extends javax.swing.JDialog {
         newProduct.setCategory(categoryID);
         newProduct.setStatus("Còn kinh doanh");
         
-        // Thêm dòng này ở đầu phương thức
-System.out.println("Đường dẫn ảnh: " + imagePath); 
         if (imagePath == null || imagePath.isEmpty()){
             newProduct.setImgPath(null);
         }else{

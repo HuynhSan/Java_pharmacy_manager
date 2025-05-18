@@ -4,12 +4,27 @@
  */
 package com.pharmacy.app.GUI.Requests;
 
+import com.pharmacy.app.BUS.RequestBUS;
+import com.pharmacy.app.DTO.RequestDTO;
+import com.pharmacy.app.DTO.SessionDTO;
+import java.awt.Frame;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
+
 /**
  *
  * @author phong
  */
 public class UpdateRequest extends javax.swing.JDialog {
-
+    RequestDTO reqDTO;
+    RequestBUS reqBUS;
     /**
      * Creates new form UpdateRequest
      */
@@ -18,6 +33,58 @@ public class UpdateRequest extends javax.swing.JDialog {
         initComponents();
     }
 
+    UpdateRequest(Frame frame, boolean b, RequestDTO selectedProduct) {
+        super(frame, b);
+        initComponents();
+        this.reqDTO = selectedProduct;
+        loadData(selectedProduct);
+        reqBUS = new RequestBUS();
+        setupUpdateListeners();
+        checkUserRoleAndSetEditable();
+    }
+    private void checkUserRoleAndSetEditable() {
+    // Kiểm tra nếu role là ROLE003 thì disable cbbStatus và txtComment
+        if ("ROLE003".equals(SessionDTO.getCurrentUser().getRoleID())) {
+            cbbStatus.setEnabled(false);
+            txtComment.setEditable(false);
+        } else {
+            cbbStatus.setEnabled(true);
+            txtComment.setEditable(true);
+        }
+    }
+    private void loadData(RequestDTO req){
+        txtRequestID.setText(req.getRequestId());
+        txtRequestDate.setText(req.getRequestDate().toString());
+        cbRequestType.setSelectedItem(req.getRequestType());
+        cbbStatus.setSelectedItem(req.getStatus());
+        Date startdate = Date.from(req.getLeaveStartDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        startDatePicker.setDate(startdate);
+        txtReason.setText(req.getReason());
+        
+        if (req.getComment() != null) {
+            txtComment.setText(req.getComment());
+        } else {
+            txtComment.setText("");
+        }
+        
+        if (req.getLeaveEndDate() != null) {
+            Date date = Date.from(req.getLeaveEndDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            endDatePicker.setDate(date);
+        }
+        if (req.getResponseDate() != null){
+            txtResponseDate.setText(req.getRequestDate().toString());
+        }else{
+            txtResponseDate.setText("");
+        }
+    }
+    private void updateResponseDate() {
+        String status = cbbStatus.getSelectedItem().toString();
+        if ("Đã duyệt".equals(status) || "Từ chối".equals(status)) {
+            txtResponseDate.setText(java.time.LocalDate.now().toString());
+        } else {
+            txtResponseDate.setText("");
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,7 +93,6 @@ public class UpdateRequest extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         pnlRequest = new javax.swing.JPanel();
         lblRequest = new javax.swing.JLabel();
@@ -36,26 +102,25 @@ public class UpdateRequest extends javax.swing.JDialog {
         cbRequestType = new javax.swing.JComboBox<>();
         lblRequestDate = new javax.swing.JLabel();
         lblLeaveStartDate = new javax.swing.JLabel();
-        txtLeaveStartDate = new javax.swing.JTextField();
         lblLeaveEndDate = new javax.swing.JLabel();
-        txtLeaveEndDate = new javax.swing.JTextField();
         lblReason = new javax.swing.JLabel();
         lblRequestID = new javax.swing.JLabel();
         txtRequestID = new javax.swing.JTextField();
         spReason = new javax.swing.JScrollPane();
         txtReason = new javax.swing.JTextArea();
+        startDatePicker = new com.toedter.calendar.JDateChooser();
+        endDatePicker = new com.toedter.calendar.JDateChooser();
         pnlButton = new javax.swing.JPanel();
         btnUpdateRequest = new javax.swing.JButton();
-        btnDeleteRequest = new javax.swing.JButton();
         btnCancelRequest = new javax.swing.JButton();
         pnlApprovalInfo = new javax.swing.JPanel();
         lblStatus = new javax.swing.JLabel();
-        txtStatus = new javax.swing.JTextField();
         lblResponseDate = new javax.swing.JLabel();
         txtResponseDate = new javax.swing.JTextField();
         lblComment = new javax.swing.JLabel();
         spComment = new javax.swing.JScrollPane();
         txtComment = new javax.swing.JTextArea();
+        cbbStatus = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -66,109 +131,35 @@ public class UpdateRequest extends javax.swing.JDialog {
         pnlRequest.add(lblRequest);
 
         pnlRequestFields.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nội dung đơn", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        pnlRequestFields.setLayout(new java.awt.GridBagLayout());
+        pnlRequestFields.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblRequestType.setText("Loại đơn:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 30, 20);
-        pnlRequestFields.add(lblRequestType, gridBagConstraints);
+        pnlRequestFields.add(lblRequestType, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 111, 75, -1));
 
-        txtRequestDate.setText("Lấy ngày hiện tại");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
-        pnlRequestFields.add(txtRequestDate, gridBagConstraints);
+        txtRequestDate.setEditable(false);
+        pnlRequestFields.add(txtRequestDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, 230, -1));
 
         cbRequestType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đơn xin nghỉ phép", "Đơn xin nghỉ phép không lương", "Đơn xin thôi việc", "Đơn xin nghỉ ốm", "Đơn xin nghỉ thai sản", "Đơn xin nghỉ lý do khác" }));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
-        pnlRequestFields.add(cbRequestType, gridBagConstraints);
+        pnlRequestFields.add(cbRequestType, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 108, 230, -1));
 
         lblRequestDate.setText("Ngày gửi đơn:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 30, 20);
-        pnlRequestFields.add(lblRequestDate, gridBagConstraints);
+        pnlRequestFields.add(lblRequestDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 163, -1, -1));
 
         lblLeaveStartDate.setText("Ngày nghỉ:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 30, 20);
-        pnlRequestFields.add(lblLeaveStartDate, gridBagConstraints);
-
-        txtLeaveStartDate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtLeaveStartDateActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
-        pnlRequestFields.add(txtLeaveStartDate, gridBagConstraints);
+        pnlRequestFields.add(lblLeaveStartDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 212, 75, -1));
 
         lblLeaveEndDate.setText("Ngày quay lại:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 30, 20);
-        pnlRequestFields.add(lblLeaveEndDate, gridBagConstraints);
-
-        txtLeaveEndDate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtLeaveEndDateActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
-        pnlRequestFields.add(txtLeaveEndDate, gridBagConstraints);
+        pnlRequestFields.add(lblLeaveEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 258, -1, -1));
 
         lblReason.setText("Lí do:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 20, 20);
-        pnlRequestFields.add(lblReason, gridBagConstraints);
+        pnlRequestFields.add(lblReason, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 304, 75, -1));
 
         lblRequestID.setText("Mã đơn:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(20, 10, 30, 20);
-        pnlRequestFields.add(lblRequestID, gridBagConstraints);
+        pnlRequestFields.add(lblRequestID, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 59, 75, -1));
 
         txtRequestID.setEditable(false);
         txtRequestID.setFocusable(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(20, 0, 30, 10);
-        pnlRequestFields.add(txtRequestID, gridBagConstraints);
+        pnlRequestFields.add(txtRequestID, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 56, 230, -1));
 
         spReason.setMinimumSize(new java.awt.Dimension(234, 86));
 
@@ -176,12 +167,15 @@ public class UpdateRequest extends javax.swing.JDialog {
         txtReason.setRows(5);
         spReason.setViewportView(txtReason);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
-        pnlRequestFields.add(spReason, gridBagConstraints);
+        pnlRequestFields.add(spReason, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 304, -1, -1));
+        pnlRequestFields.add(startDatePicker, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, 200, -1));
+
+        endDatePicker.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                endDatePickerPropertyChange(evt);
+            }
+        });
+        pnlRequestFields.add(endDatePicker, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 200, -1));
 
         pnlButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
 
@@ -189,86 +183,52 @@ public class UpdateRequest extends javax.swing.JDialog {
         btnUpdateRequest.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnUpdateRequest.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdateRequest.setText("Cập nhật");
+        btnUpdateRequest.setEnabled(false);
+        btnUpdateRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateRequestActionPerformed(evt);
+            }
+        });
         pnlButton.add(btnUpdateRequest);
-
-        btnDeleteRequest.setBackground(new java.awt.Color(255, 0, 0));
-        btnDeleteRequest.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnDeleteRequest.setForeground(new java.awt.Color(255, 255, 255));
-        btnDeleteRequest.setText("Xóa");
-        pnlButton.add(btnDeleteRequest);
 
         btnCancelRequest.setBackground(new java.awt.Color(153, 153, 153));
         btnCancelRequest.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnCancelRequest.setForeground(new java.awt.Color(255, 255, 255));
         btnCancelRequest.setText("Hủy");
+        btnCancelRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelRequestActionPerformed(evt);
+            }
+        });
         pnlButton.add(btnCancelRequest);
 
         pnlApprovalInfo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin phê duyệt", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        pnlApprovalInfo.setLayout(new java.awt.GridBagLayout());
+        pnlApprovalInfo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblStatus.setText("Trạng thái:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(20, 10, 30, 20);
-        pnlApprovalInfo.add(lblStatus, gridBagConstraints);
-
-        txtStatus.setEditable(false);
-        txtStatus.setFocusable(false);
-        txtStatus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtStatusActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(20, 0, 30, 10);
-        pnlApprovalInfo.add(txtStatus, gridBagConstraints);
+        pnlApprovalInfo.add(lblStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 136, 105, -1));
 
         lblResponseDate.setText("Ngày phản hồi:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 30, 20);
-        pnlApprovalInfo.add(lblResponseDate, gridBagConstraints);
+        pnlApprovalInfo.add(lblResponseDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 185, 105, -1));
 
         txtResponseDate.setEditable(false);
         txtResponseDate.setFocusable(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
-        pnlApprovalInfo.add(txtResponseDate, gridBagConstraints);
+        pnlApprovalInfo.add(txtResponseDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 182, 198, -1));
 
         lblComment.setText("Ghi chú của quản lý:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 30, 20);
-        pnlApprovalInfo.add(lblComment, gridBagConstraints);
+        pnlApprovalInfo.add(lblComment, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 234, -1, -1));
 
         spComment.setMinimumSize(new java.awt.Dimension(234, 86));
 
         txtComment.setEditable(false);
         txtComment.setColumns(20);
         txtComment.setRows(5);
-        txtComment.setFocusable(false);
         spComment.setViewportView(txtComment);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        pnlApprovalInfo.add(spComment, gridBagConstraints);
+        pnlApprovalInfo.add(spComment, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 234, 198, 120));
+
+        cbbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chờ duyệt", "Đã duyệt", "Từ chối" }));
+        pnlApprovalInfo.add(cbbStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 130, 200, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -302,18 +262,184 @@ public class UpdateRequest extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtLeaveStartDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLeaveStartDateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtLeaveStartDateActionPerformed
+    private void endDatePickerPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_endDatePickerPropertyChange
 
-    private void txtLeaveEndDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLeaveEndDateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtLeaveEndDateActionPerformed
+    }//GEN-LAST:event_endDatePickerPropertyChange
 
-    private void txtStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStatusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtStatusActionPerformed
+    private void btnCancelRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelRequestActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelRequestActionPerformed
 
+    private void btnUpdateRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateRequestActionPerformed
+        int option = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn cập nhật không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+
+       if (option == JOptionPane.YES_OPTION) {
+            String ID = txtRequestID.getText().trim();
+            String type = (String) cbRequestType.getSelectedItem();
+            String reason = txtReason.getText().trim();
+            String cmt = txtComment.getText().trim();
+            LocalDate resDate;
+            if (txtResponseDate.getText().equalsIgnoreCase("")){
+                resDate = null;
+            }else{
+                resDate = LocalDate.parse(txtResponseDate.getText());
+                }
+            Date startDate = startDatePicker.getDate();
+
+
+            // Chuyển startDate sang LocalDate
+            LocalDate startLocalDate = startDate.toInstant()
+                                                .atZone(ZoneId.systemDefault())
+                                                .toLocalDate();
+
+            // Lấy và chuyển endDate nếu có
+            Date endDate = endDatePicker.getDate();
+            LocalDate endLocalDate = null;
+            if (endDate != null) {
+                endLocalDate = endDate.toInstant()
+                                      .atZone(ZoneId.systemDefault())
+                                      .toLocalDate();
+            }
+            
+            reqDTO.setRequestId(ID);
+            reqDTO.setLeaveStartDate(startLocalDate);
+            reqDTO.setLeaveEndDate(endLocalDate);
+            reqDTO.setRequestType(type);
+            reqDTO.setReason(reason);
+            reqDTO.setStatus(cbbStatus.getSelectedItem().toString());
+            reqDTO.setComment(cmt);
+            reqDTO.setResponseDate(resDate);
+            
+            boolean isUpdated = reqBUS.updateRequest(reqDTO);
+        if (isUpdated) {
+            loadData(reqDTO);
+            btnUpdateRequest.setEnabled(false);
+            JOptionPane.showMessageDialog(this, "Đã cập nhật thành công.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Cập nhật thất bại. Vui lòng thử lại.");
+        }
+       }
+    }//GEN-LAST:event_btnUpdateRequestActionPerformed
+    
+
+// Trong phương thức initComponents(), sau khi khởi tạo các component, thêm:
+private void setupUpdateListeners() {
+    // Listener cho endDatePicker
+    endDatePicker.addPropertyChangeListener("date", new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            checkForChanges();
+        }
+    });
+    
+    // Listener cho startDatePicker
+    startDatePicker.addPropertyChangeListener("date", new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            checkForChanges();
+        }
+    });
+    
+    // Listener cho cbRequestType
+    cbRequestType.addActionListener(e -> checkForChanges());
+    
+    // Listener cho cbbStatus
+    cbbStatus.addActionListener(e -> {
+        checkForChanges();
+        updateResponseDate();
+    });
+    
+    // Listener cho txtReason
+    addTextChangeListener(txtReason, () -> checkForChanges());
+    
+    // Listener cho txtComment
+    addTextChangeListener(txtComment, () -> checkForChanges());
+    
+    // Ban đầu disable nút cập nhật
+    btnUpdateRequest.setEnabled(false);
+}
+
+// Phương thức hỗ trợ thêm DocumentListener cho JTextComponent
+private void addTextChangeListener(JTextComponent textComponent, Runnable callback) {
+    textComponent.getDocument().addDocumentListener(new DocumentListener() {
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            callback.run();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            callback.run();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            callback.run();
+        }
+    });
+}
+private boolean validateDates() {
+    Date currentDate = new Date();
+    Date startDate = startDatePicker.getDate();
+    Date endDate = endDatePicker.getDate();
+    
+    
+    // Kiểm tra endDate phải sau startDate (nếu có cả hai)
+    if (startDate != null && endDate != null && endDate.before(startDate)) {
+        JOptionPane.showMessageDialog(this, "Ngày kết thúc phải sau ngày bắt đầu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+    
+    return true;
+}
+// Phương thức kiểm tra thay đổi
+private void checkForChanges() {
+    if (reqDTO == null) return;
+    // Kiểm tra nếu status là "Đã duyệt" hoặc "Từ chối" thì luôn disable nút cập nhật
+    String currentStatus = cbbStatus.getSelectedItem().toString();
+    if ("Đã duyệt".equals(currentStatus) || "Từ chối".equals(currentStatus)) {
+        btnUpdateRequest.setEnabled(false);
+        return; // Thoát luôn vì không cần kiểm tra các thay đổi khác
+    }
+    if (!validateDates()) {
+        btnUpdateRequest.setEnabled(false);
+        return;
+    }
+    // Kiểm tra thay đổi với endDatePicker
+    boolean endDateChanged = false;
+    if (endDatePicker.getDate() != null) {
+        endDateChanged = !endDatePicker.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                .equals(reqDTO.getLeaveEndDate());
+    } else if (reqDTO.getLeaveEndDate() != null) {
+        endDateChanged = true;
+    }
+    
+    // Kiểm tra thay đổi với startDatePicker
+    boolean startDateChanged = !startDatePicker.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            .equals(reqDTO.getLeaveStartDate());
+    
+    // Kiểm tra thay đổi với cbRequestType
+    boolean requestTypeChanged = !cbRequestType.getSelectedItem().toString().equals(reqDTO.getRequestType());
+    
+    // Kiểm tra thay đổi với cbbStatus
+    boolean statusChanged = !cbbStatus.getSelectedItem().toString().equals(reqDTO.getStatus());
+    
+    // Kiểm tra thay đổi với txtReason
+    boolean reasonChanged = !txtReason.getText().equals(reqDTO.getReason());
+    
+    // Kiểm tra thay đổi với txtComment
+    boolean commentChanged = false;
+    if (txtComment.getText() != null && reqDTO.getComment() != null) {
+        commentChanged = !txtComment.getText().equals(reqDTO.getComment());
+    } else if (txtComment.getText() != null || reqDTO.getComment() != null) {
+        commentChanged = true;
+    }
+    
+    // Kích hoạt nút cập nhật nếu có bất kỳ thay đổi nào
+    btnUpdateRequest.setEnabled(endDateChanged || startDateChanged || requestTypeChanged || 
+                               statusChanged || reasonChanged || commentChanged);
+}
+    
     /**
      * @param args the command line arguments
      */
@@ -359,9 +485,10 @@ public class UpdateRequest extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelRequest;
-    private javax.swing.JButton btnDeleteRequest;
     private javax.swing.JButton btnUpdateRequest;
     private javax.swing.JComboBox<String> cbRequestType;
+    private javax.swing.JComboBox<String> cbbStatus;
+    private com.toedter.calendar.JDateChooser endDatePicker;
     private javax.swing.JLabel lblComment;
     private javax.swing.JLabel lblLeaveEndDate;
     private javax.swing.JLabel lblLeaveStartDate;
@@ -378,13 +505,11 @@ public class UpdateRequest extends javax.swing.JDialog {
     private javax.swing.JPanel pnlRequestFields;
     private javax.swing.JScrollPane spComment;
     private javax.swing.JScrollPane spReason;
+    private com.toedter.calendar.JDateChooser startDatePicker;
     private javax.swing.JTextArea txtComment;
-    private javax.swing.JTextField txtLeaveEndDate;
-    private javax.swing.JTextField txtLeaveStartDate;
     private javax.swing.JTextArea txtReason;
     private javax.swing.JTextField txtRequestDate;
     private javax.swing.JTextField txtRequestID;
     private javax.swing.JTextField txtResponseDate;
-    private javax.swing.JTextField txtStatus;
     // End of variables declaration//GEN-END:variables
 }
