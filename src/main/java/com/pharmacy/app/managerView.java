@@ -53,7 +53,7 @@ public class managerView extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         HeaderPn = new javax.swing.JPanel();
@@ -82,7 +82,9 @@ public class managerView extends javax.swing.JFrame {
         purchaseBtn = new javax.swing.JButton();
         productBtn = new javax.swing.JButton();
         scheduleBtn = new javax.swing.JButton();
+        reqBtn = new javax.swing.JButton();
         infoBtn = new javax.swing.JButton();
+        reportBtn = new javax.swing.JButton();
         ContentPn = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -108,11 +110,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 closeiconMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 closeiconMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 closeiconMouseExited(evt);
             }
@@ -121,17 +121,19 @@ public class managerView extends javax.swing.JFrame {
         javax.swing.GroupLayout btnCloseLayout = new javax.swing.GroupLayout(btnClose);
         btnClose.setLayout(btnCloseLayout);
         btnCloseLayout.setHorizontalGroup(
-                btnCloseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnCloseLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(closeicon, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                                .addContainerGap()));
+            btnCloseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnCloseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(closeicon, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                .addContainerGap())
+        );
         btnCloseLayout.setVerticalGroup(
-                btnCloseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnCloseLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(closeicon, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                                .addContainerGap()));
+            btnCloseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnCloseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(closeicon, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         iconExit.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, 45, 45));
 
@@ -147,11 +149,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 minmaxiconMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 minmaxiconMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 minmaxiconMouseExited(evt);
             }
@@ -160,18 +160,19 @@ public class managerView extends javax.swing.JFrame {
         javax.swing.GroupLayout btnMaxLayout = new javax.swing.GroupLayout(btnMax);
         btnMax.setLayout(btnMaxLayout);
         btnMaxLayout.setHorizontalGroup(
-                btnMaxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnMaxLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(minmaxicon, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(9, Short.MAX_VALUE)));
+            btnMaxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnMaxLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(minmaxicon, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
+        );
         btnMaxLayout.setVerticalGroup(
-                btnMaxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnMaxLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(minmaxicon)
-                                .addContainerGap(7, Short.MAX_VALUE)));
+            btnMaxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnMaxLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(minmaxicon)
+                .addContainerGap(7, Short.MAX_VALUE))
+        );
 
         iconExit.add(btnMax, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, -1, 45));
 
@@ -199,11 +200,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 backiconMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 backiconMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 backiconMouseExited(evt);
             }
@@ -212,19 +211,19 @@ public class managerView extends javax.swing.JFrame {
         javax.swing.GroupLayout btnBackLayout = new javax.swing.GroupLayout(btnBack);
         btnBack.setLayout(btnBackLayout);
         btnBackLayout.setHorizontalGroup(
-                btnBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnBackLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(backicon, javax.swing.GroupLayout.PREFERRED_SIZE, 27,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(17, Short.MAX_VALUE)));
+            btnBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnBackLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(backicon, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
         btnBackLayout.setVerticalGroup(
-                btnBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnBackLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(backicon, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap()));
+            btnBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnBackLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(backicon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         MenuIcon.add(btnBack);
 
@@ -233,11 +232,13 @@ public class managerView extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 50, Short.MAX_VALUE));
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
         jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 370, Short.MAX_VALUE));
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 370, Short.MAX_VALUE)
+        );
 
         MenuIcon.add(jPanel1);
 
@@ -254,11 +255,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 attendanceiconMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 attendanceiconMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 attendanceiconMouseExited(evt);
             }
@@ -267,13 +266,15 @@ public class managerView extends javax.swing.JFrame {
         javax.swing.GroupLayout btnAttendanceLayout = new javax.swing.GroupLayout(btnAttendance);
         btnAttendance.setLayout(btnAttendanceLayout);
         btnAttendanceLayout.setHorizontalGroup(
-                btnAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(attendanceicon, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE));
+            btnAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(attendanceicon, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+        );
         btnAttendanceLayout.setVerticalGroup(
-                btnAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnAttendanceLayout.createSequentialGroup()
-                                .addComponent(attendanceicon, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                                .addGap(0, 2, Short.MAX_VALUE)));
+            btnAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnAttendanceLayout.createSequentialGroup()
+                .addComponent(attendanceicon, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                .addGap(0, 2, Short.MAX_VALUE))
+        );
 
         MenuIcon.add(btnAttendance);
 
@@ -288,11 +289,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 usericonMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 usericonMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 usericonMouseExited(evt);
             }
@@ -301,14 +300,15 @@ public class managerView extends javax.swing.JFrame {
         javax.swing.GroupLayout btnUserLayout = new javax.swing.GroupLayout(btnUser);
         btnUser.setLayout(btnUserLayout);
         btnUserLayout.setHorizontalGroup(
-                btnUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(usericon, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE));
+            btnUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(usericon, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+        );
         btnUserLayout.setVerticalGroup(
-                btnUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnUserLayout.createSequentialGroup()
-                                .addGap(0, 2, Short.MAX_VALUE)
-                                .addComponent(usericon, javax.swing.GroupLayout.PREFERRED_SIZE, 43,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)));
+            btnUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnUserLayout.createSequentialGroup()
+                .addGap(0, 2, Short.MAX_VALUE)
+                .addComponent(usericon, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         MenuIcon.add(btnUser);
 
@@ -322,11 +322,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logouticonMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 logouticonMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 logouticonMouseExited(evt);
             }
@@ -335,18 +333,19 @@ public class managerView extends javax.swing.JFrame {
         javax.swing.GroupLayout btnLogoutLayout = new javax.swing.GroupLayout(btnLogout);
         btnLogout.setLayout(btnLogoutLayout);
         btnLogoutLayout.setHorizontalGroup(
-                btnLogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnLogoutLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(logouticon)
-                                .addContainerGap(8, Short.MAX_VALUE)));
+            btnLogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnLogoutLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(logouticon)
+                .addContainerGap(8, Short.MAX_VALUE))
+        );
         btnLogoutLayout.setVerticalGroup(
-                btnLogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnLogoutLayout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(logouticon, javax.swing.GroupLayout.PREFERRED_SIZE, 41,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap()));
+            btnLogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnLogoutLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(logouticon, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         MenuIcon.add(btnLogout);
 
@@ -375,11 +374,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cusBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 cusBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 cusBtnMouseExited(evt);
             }
@@ -407,11 +404,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 promoBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 promoBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 promoBtnMouseExited(evt);
             }
@@ -439,11 +434,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 empBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 empBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 empBtnMouseExited(evt);
             }
@@ -471,11 +464,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 supBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 supBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 supBtnMouseExited(evt);
             }
@@ -504,11 +495,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 importBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 importBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 importBtnMouseExited(evt);
             }
@@ -536,11 +525,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 purchaseBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 purchaseBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 purchaseBtnMouseExited(evt);
             }
@@ -568,11 +555,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 productBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 productBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 productBtnMouseExited(evt);
             }
@@ -600,11 +585,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 scheduleBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 scheduleBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 scheduleBtnMouseExited(evt);
             }
@@ -615,6 +598,36 @@ public class managerView extends javax.swing.JFrame {
             }
         });
         MenuHidePn.add(scheduleBtn);
+
+        reqBtn.setBackground(new java.awt.Color(0, 51, 255));
+        reqBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        reqBtn.setForeground(new java.awt.Color(255, 255, 255));
+        reqBtn.setText("QUẢN LÝ ĐƠN TỪ");
+        reqBtn.setBorder(null);
+        reqBtn.setBorderPainted(false);
+        reqBtn.setContentAreaFilled(false);
+        reqBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        reqBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        reqBtn.setMaximumSize(new java.awt.Dimension(200, 30));
+        reqBtn.setMinimumSize(new java.awt.Dimension(200, 30));
+        reqBtn.setPreferredSize(new java.awt.Dimension(150, 30));
+        reqBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reqBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                reqBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                reqBtnMouseExited(evt);
+            }
+        });
+        reqBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reqBtnActionPerformed(evt);
+            }
+        });
+        MenuHidePn.add(reqBtn);
 
         infoBtn.setBackground(new java.awt.Color(0, 102, 153));
         infoBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -633,11 +646,9 @@ public class managerView extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 infoBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 infoBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 infoBtnMouseExited(evt);
             }
@@ -648,6 +659,28 @@ public class managerView extends javax.swing.JFrame {
             }
         });
         MenuHidePn.add(infoBtn);
+
+        reportBtn.setBackground(new java.awt.Color(0, 102, 153));
+        reportBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        reportBtn.setForeground(new java.awt.Color(255, 255, 255));
+        reportBtn.setBorder(null);
+        reportBtn.setBorderPainted(false);
+        reportBtn.setContentAreaFilled(false);
+        reportBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        reportBtn.setEnabled(false);
+        reportBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        reportBtn.setMaximumSize(new java.awt.Dimension(200, 30));
+        reportBtn.setMinimumSize(new java.awt.Dimension(200, 30));
+        reportBtn.setPreferredSize(new java.awt.Dimension(150, 30));
+        reportBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                reportBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                reportBtnMouseExited(evt);
+            }
+        });
+        MenuHidePn.add(reportBtn);
 
         MenuPn.add(MenuHidePn, java.awt.BorderLayout.CENTER);
 
@@ -660,6 +693,25 @@ public class managerView extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(918, 600));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void reqBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqBtnMouseClicked
+    ContentPn.add(new EmployeeRequests(), "Requests");
+        switchToPanel("Requests");
+    }//GEN-LAST:event_reqBtnMouseClicked
+
+    private void reqBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqBtnMouseEntered
+        reqBtn.setBackground(colorEntered);
+        reqBtn.setOpaque(true);
+    }//GEN-LAST:event_reqBtnMouseEntered
+
+    private void reqBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqBtnMouseExited
+        reqBtn.setBackground(colorExited);
+        reqBtn.setOpaque(true);
+    }//GEN-LAST:event_reqBtnMouseExited
+
+    private void reqBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reqBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reqBtnActionPerformed
      // cardlayout
 
     public void switchToPanel(String panelName) {
@@ -708,6 +760,14 @@ public class managerView extends javax.swing.JFrame {
         }
     }// GEN-LAST:event_backiconMouseClicked
 
+        private void reportBtnMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_backiconMouseEntered
+       
+    }// GEN-LAST:event_backiconMouseEntered
+
+    private void reportBtnMouseExited(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_backiconMouseExited
+
+    }// GEN-LAST:event_backiconMouseExited
+    
     private void backiconMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_backiconMouseEntered
         btnBack.setBackground(new Color(81, 115, 150));
     }// GEN-LAST:event_backiconMouseEntered
@@ -1027,6 +1087,7 @@ public class managerView extends javax.swing.JFrame {
     private javax.swing.JButton productBtn;
     private javax.swing.JButton promoBtn;
     private javax.swing.JButton purchaseBtn;
+    private javax.swing.JButton reportBtn;
     private javax.swing.JButton reqBtn;
     private javax.swing.JButton scheduleBtn;
     private javax.swing.JButton supBtn;

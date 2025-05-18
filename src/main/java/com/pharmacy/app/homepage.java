@@ -52,7 +52,7 @@ public class homepage extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         HeaderPn = new javax.swing.JPanel();
@@ -103,11 +103,9 @@ public class homepage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 closeiconMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 closeiconMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 closeiconMouseExited(evt);
             }
@@ -116,17 +114,19 @@ public class homepage extends javax.swing.JFrame {
         javax.swing.GroupLayout btnCloseLayout = new javax.swing.GroupLayout(btnClose);
         btnClose.setLayout(btnCloseLayout);
         btnCloseLayout.setHorizontalGroup(
-                btnCloseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnCloseLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(closeicon, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                                .addContainerGap()));
+            btnCloseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnCloseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(closeicon, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                .addContainerGap())
+        );
         btnCloseLayout.setVerticalGroup(
-                btnCloseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnCloseLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(closeicon, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                                .addContainerGap()));
+            btnCloseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnCloseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(closeicon, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         iconExit.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, 45, 45));
 
@@ -142,11 +142,9 @@ public class homepage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 minmaxiconMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 minmaxiconMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 minmaxiconMouseExited(evt);
             }
@@ -155,18 +153,19 @@ public class homepage extends javax.swing.JFrame {
         javax.swing.GroupLayout btnMaxLayout = new javax.swing.GroupLayout(btnMax);
         btnMax.setLayout(btnMaxLayout);
         btnMaxLayout.setHorizontalGroup(
-                btnMaxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnMaxLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(minmaxicon, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(9, Short.MAX_VALUE)));
+            btnMaxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnMaxLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(minmaxicon, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
+        );
         btnMaxLayout.setVerticalGroup(
-                btnMaxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnMaxLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(minmaxicon)
-                                .addContainerGap(7, Short.MAX_VALUE)));
+            btnMaxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnMaxLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(minmaxicon)
+                .addContainerGap(7, Short.MAX_VALUE))
+        );
 
         iconExit.add(btnMax, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, -1, 45));
 
@@ -193,11 +192,9 @@ public class homepage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 backiconMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 backiconMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 backiconMouseExited(evt);
             }
@@ -206,18 +203,19 @@ public class homepage extends javax.swing.JFrame {
         javax.swing.GroupLayout btnBackLayout = new javax.swing.GroupLayout(btnBack);
         btnBack.setLayout(btnBackLayout);
         btnBackLayout.setHorizontalGroup(
-                btnBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnBackLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(backicon)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+            btnBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnBackLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(backicon)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
         btnBackLayout.setVerticalGroup(
-                btnBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnBackLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(backicon, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap()));
+            btnBackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnBackLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(backicon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         MenuIcon.add(btnBack);
 
@@ -226,11 +224,13 @@ public class homepage extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 50, Short.MAX_VALUE));
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
         jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 370, Short.MAX_VALUE));
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 370, Short.MAX_VALUE)
+        );
 
         MenuIcon.add(jPanel1);
 
@@ -247,11 +247,9 @@ public class homepage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 attendanceiconMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 attendanceiconMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 attendanceiconMouseExited(evt);
             }
@@ -260,13 +258,15 @@ public class homepage extends javax.swing.JFrame {
         javax.swing.GroupLayout btnAttendanceLayout = new javax.swing.GroupLayout(btnAttendance);
         btnAttendance.setLayout(btnAttendanceLayout);
         btnAttendanceLayout.setHorizontalGroup(
-                btnAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(attendanceicon, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE));
+            btnAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(attendanceicon, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+        );
         btnAttendanceLayout.setVerticalGroup(
-                btnAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(btnAttendanceLayout.createSequentialGroup()
-                                .addComponent(attendanceicon, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                                .addGap(0, 2, Short.MAX_VALUE)));
+            btnAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnAttendanceLayout.createSequentialGroup()
+                .addComponent(attendanceicon, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                .addGap(0, 2, Short.MAX_VALUE))
+        );
 
         MenuIcon.add(btnAttendance);
 
@@ -281,11 +281,9 @@ public class homepage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 usericonMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 usericonMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 usericonMouseExited(evt);
             }
@@ -294,14 +292,15 @@ public class homepage extends javax.swing.JFrame {
         javax.swing.GroupLayout btnUser3Layout = new javax.swing.GroupLayout(btnUser3);
         btnUser3.setLayout(btnUser3Layout);
         btnUser3Layout.setHorizontalGroup(
-                btnUser3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(usericon, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE));
+            btnUser3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(usericon, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+        );
         btnUser3Layout.setVerticalGroup(
-                btnUser3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnUser3Layout.createSequentialGroup()
-                                .addGap(0, 2, Short.MAX_VALUE)
-                                .addComponent(usericon, javax.swing.GroupLayout.PREFERRED_SIZE, 43,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)));
+            btnUser3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnUser3Layout.createSequentialGroup()
+                .addGap(0, 2, Short.MAX_VALUE)
+                .addComponent(usericon, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         MenuIcon.add(btnUser3);
 
@@ -314,11 +313,9 @@ public class homepage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logouticonMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 logouticonMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 logouticonMouseExited(evt);
             }
@@ -327,19 +324,19 @@ public class homepage extends javax.swing.JFrame {
         javax.swing.GroupLayout logoutBtnLayout = new javax.swing.GroupLayout(logoutBtn);
         logoutBtn.setLayout(logoutBtnLayout);
         logoutBtnLayout.setHorizontalGroup(
-                logoutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logoutBtnLayout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(logouticon, javax.swing.GroupLayout.PREFERRED_SIZE, 37,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap()));
+            logoutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logoutBtnLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(logouticon, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
         logoutBtnLayout.setVerticalGroup(
-                logoutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logoutBtnLayout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(logouticon, javax.swing.GroupLayout.PREFERRED_SIZE, 41,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap()));
+            logoutBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logoutBtnLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(logouticon, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         MenuIcon.add(logoutBtn);
 
@@ -373,11 +370,9 @@ public class homepage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 saleBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 saleBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 saleBtnMouseExited(evt);
             }
@@ -405,11 +400,9 @@ public class homepage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 productBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 productBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 productBtnMouseExited(evt);
             }
@@ -437,11 +430,9 @@ public class homepage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cusBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 cusBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 cusBtnMouseExited(evt);
             }
@@ -469,11 +460,9 @@ public class homepage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 promoBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 promoBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 promoBtnMouseExited(evt);
             }
@@ -501,11 +490,9 @@ public class homepage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 infoBtnMouseClicked(evt);
             }
-
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 infoBtnMouseEntered(evt);
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 infoBtnMouseExited(evt);
             }
@@ -517,7 +504,7 @@ public class homepage extends javax.swing.JFrame {
         });
         MenuHidePn.add(infoBtn);
 
-        reqBtn.setBackground(new java.awt.Color(0, 102, 153));
+        reqBtn.setBackground(new java.awt.Color(0, 51, 255));
         reqBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         reqBtn.setForeground(new java.awt.Color(255, 255, 255));
         reqBtn.setText("QUẢN LÝ ĐƠN TỪ");
@@ -529,7 +516,22 @@ public class homepage extends javax.swing.JFrame {
         reqBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         reqBtn.setMinimumSize(new java.awt.Dimension(200, 30));
         reqBtn.setPreferredSize(new java.awt.Dimension(150, 30));
-
+        reqBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reqBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                reqBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                reqBtnMouseExited(evt);
+            }
+        });
+        reqBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reqBtnActionPerformed(evt);
+            }
+        });
         MenuHidePn.add(reqBtn);
 
         MenuPn.add(MenuHidePn, java.awt.BorderLayout.CENTER);
@@ -544,7 +546,26 @@ public class homepage extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(1000, 600));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    // cardlayout
+
+    private void reqBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqBtnMouseClicked
+        ContentPn.add(new EmployeeRequests(), "Requests");
+        switchToPanel("Requests");
+    }//GEN-LAST:event_reqBtnMouseClicked
+
+    private void reqBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqBtnMouseEntered
+        reqBtn.setBackground(colorEntered);
+        reqBtn.setOpaque(true);
+    }//GEN-LAST:event_reqBtnMouseEntered
+
+    private void reqBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqBtnMouseExited
+        reqBtn.setBackground(colorExited);
+        reqBtn.setOpaque(true);
+    }//GEN-LAST:event_reqBtnMouseExited
+
+    private void reqBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reqBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reqBtnActionPerformed
+     // cardlayout
 
     public void switchToPanel(String panelName) {
         cardlayout.show(ContentPn, panelName);
@@ -600,7 +621,7 @@ public class homepage extends javax.swing.JFrame {
     private void saleBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_saleBtnActionPerformed
         // TODO add your handling code here:
     }// GEN-LAST:event_saleBtnActionPerformed
-    // Bán hàng
+     // Bán hàng
 
     private void saleBtnMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_saleBtnMouseEntered
         saleBtn.setBackground(colorEntered);
