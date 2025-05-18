@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -138,4 +139,56 @@ public class ScheduleTableHelper {
 
         table.setModel(model);
     }
+    
+    public static void buildScheduleTableForEmployee(
+        JTable table,
+        String employeeId,
+        List<LocalDate> weekDates,
+        Map<String, Map<LocalDate, String>> scheduleMap,
+        Map<String, WorkShiftDTO> shiftMap
+    ) {
+        String[] columns = {"Ngày làm việc", "Ca làm việc"};
+        Object[][] data = new Object[weekDates.size()][2];
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy", Locale.forLanguageTag("vi"));
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        Map<LocalDate, String> employeeSchedule = scheduleMap.get(employeeId);
+
+        for (int i = 0; i < weekDates.size(); i++) {
+            LocalDate date = weekDates.get(i);
+            data[i][0] = date.format(dateFormatter);
+
+            String shiftId = "OFF";
+            if (employeeSchedule != null) {
+                shiftId = employeeSchedule.getOrDefault(date, "OFF");
+            }
+
+            if ("OFF".equals(shiftId)) {
+                data[i][1] = "Nghỉ";
+            } else {
+                WorkShiftDTO shift = shiftMap.get(shiftId);
+                if (shift != null) {
+                    String start = shift.getStartTime().format(timeFormatter);
+                    String end = shift.getEndTime().format(timeFormatter);
+                    data[i][1] = shiftId + " (" + start + " - " + end + ")";
+                } else {
+                    data[i][1] = shiftId + " (Chưa có giờ)";
+                }
+            }
+        }
+
+        DefaultTableModel model = new DefaultTableModel(data, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        table.setModel(model);
+        table.setRowHeight(30);
+        table.getTableHeader().setReorderingAllowed(false);
+    }
+
+
 }

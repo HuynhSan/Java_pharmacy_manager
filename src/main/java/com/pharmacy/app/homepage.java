@@ -475,11 +475,11 @@ public class homepage extends javax.swing.JFrame {
         infoBtn.setBackground(new java.awt.Color(0, 102, 153));
         infoBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         infoBtn.setForeground(new java.awt.Color(255, 255, 255));
+        infoBtn.setText("THÔNG TIN CÁ NHÂN");
         infoBtn.setBorder(null);
         infoBtn.setBorderPainted(false);
         infoBtn.setContentAreaFilled(false);
         infoBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        infoBtn.setEnabled(false);
         infoBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         infoBtn.setMaximumSize(new java.awt.Dimension(200, 30));
         infoBtn.setMinimumSize(new java.awt.Dimension(200, 30));
@@ -493,6 +493,11 @@ public class homepage extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 infoBtnMouseExited(evt);
+            }
+        });
+        infoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                infoBtnActionPerformed(evt);
             }
         });
         MenuHidePn.add(infoBtn);
@@ -732,6 +737,10 @@ public class homepage extends javax.swing.JFrame {
     private void attendanceiconMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_attendanceiconMouseExited
         btnAttendance.setBackground(new Color(0,51,102));
     }//GEN-LAST:event_attendanceiconMouseExited
+
+    private void infoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_infoBtnActionPerformed
 
     
     public static void main(String args[]) {

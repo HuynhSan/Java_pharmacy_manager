@@ -8,6 +8,7 @@ import com.pharmacy.app.DAO.WorkSchedulesDAO;
 import com.pharmacy.app.DTO.AttendanceDTO;
 import com.pharmacy.app.DTO.WorkScheduleDTO;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +25,7 @@ public class WorkSchedulesBUS {
     public Map<String, Map<LocalDate, String>> getScheduleForWeek(LocalDate startOfWeek, LocalDate endOfWeek) {
         return dao.fetchScheduleForWeek(startOfWeek, endOfWeek);
     }
+    
 
     public boolean add(WorkScheduleDTO ws) {
         return dao.insert(ws);

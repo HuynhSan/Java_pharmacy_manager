@@ -5,10 +5,19 @@
 package com.pharmacy.app.GUI.Employee;
 
 import com.pharmacy.app.BUS.EmployeeBUS;
+import com.pharmacy.app.BUS.WorkSchedulesBUS;
+import com.pharmacy.app.BUS.WorkShiftBUS;
 import com.pharmacy.app.DTO.EmployeeDTO;
 import com.pharmacy.app.DTO.SessionDTO;
 import com.pharmacy.app.DTO.UserDTO;
+import com.pharmacy.app.DTO.WorkShiftDTO;
+import com.pharmacy.app.Utils.WeekUltils;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import com.pharmacy.app.Utils.ScheduleTableHelper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -17,10 +26,17 @@ import javax.swing.SwingUtilities;
  * @author phong
  */
 public class EmployeeProfile extends javax.swing.JPanel {
+    private List<LocalDate> weekDates;
     private final EmployeeBUS emBUS;
     private final EmployeeDTO emDTO;
+    private final EmployeeDTO employee_login;
+    private String employeeId;
+    private Map<String, WorkShiftDTO> shiftMap;
     private final UserDTO currentUser = SessionDTO.getCurrentUser();
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    LocalDate startDate = LocalDate.of(2025, 1, 1);
+    WorkShiftBUS shiftBus = new WorkShiftBUS();
+    WorkSchedulesBUS scheduleBus = new WorkSchedulesBUS();
     /**
      * Creates new form EmployeeProfile
      */
@@ -29,8 +45,37 @@ public class EmployeeProfile extends javax.swing.JPanel {
         emBUS = new EmployeeBUS();
         emDTO = new EmployeeDTO();
         setData(currentUser.getUserID());
+        
+        // Hiển thị cbx theo tuần
+        WeekUltils.populateWeeksComboBox(cbWeekPicker1, 48, startDate);
+        
+        // Lấy nhân viên
+        employee_login = emBUS.getEmployeeByUserID(currentUser.getUserID());
+        employeeId = employee_login.getEmployeeID();
+        
+        // Lấy tuần hiện tại của cbx
+        String selectedWeek = cbWeekPicker1.getSelectedItem().toString();
+        weekDates = getWeekDatesFromComboBox(selectedWeek);
+        
+        // Lấy ca làm và giờ làm 
+        shiftMap = shiftBus.getShiftMap();
+        
+        showScheduleEmployee();
     }
     
+    public List<LocalDate> getWeekDatesFromComboBox(String selectedWeek) {
+        // selectedWeek ví dụ: "07/04/2025 - 13/04/2025"
+        String[] parts = selectedWeek.split(" - ");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDate start = LocalDate.parse(parts[0], formatter); // thứ 2
+        // tạo list ngày từ thứ 2 -> CN
+        List<LocalDate> dates = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            dates.add(start.plusDays(i));
+        }
+        return dates;
+    }
     public final void setData(String userID){
         EmployeeDTO employee = emBUS.getEmployeeByUserID(userID);
         txtEmployeeID.setText(employee.getEmployeeID());
@@ -40,6 +85,13 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtGender.setText(employee.getGender() ? "Nam" : "Nữ");
         txtDOB.setText(employee.getDob().format(DATE_FORMAT));
         txtEmail.setText(employee.getEmail());
+    }
+    
+    public void showScheduleEmployee(){
+        LocalDate start = weekDates.get(0);
+        LocalDate end = weekDates.get(6);
+        Map<String, Map<LocalDate, String>> scheduleMap = scheduleBus.getScheduleForWeek(start, end);
+        ScheduleTableHelper.buildScheduleTableForEmployee(tblWeekSchedule,employeeId,weekDates,scheduleMap,shiftMap);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -388,7 +440,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlWeekSchedule.setPreferredSize(new java.awt.Dimension(650, 450));
         pnlWeekSchedule.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane2.setPreferredSize(new java.awt.Dimension(550, 402));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(550, 600));
 
         tblWeekSchedule.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -404,8 +456,9 @@ public class EmployeeProfile extends javax.swing.JPanel {
                 "Ngày làm việc", "Ca làm việc"
             }
         ));
-        tblWeekSchedule.setPreferredSize(new java.awt.Dimension(690, 80));
+        tblWeekSchedule.setPreferredSize(new java.awt.Dimension(690, 700));
         tblWeekSchedule.setRowHeight(30);
+        tblWeekSchedule.setShowGrid(true);
         jScrollPane2.setViewportView(tblWeekSchedule);
 
         pnlWeekSchedule.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -413,15 +466,16 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlWorkSchedule.add(pnlWeekSchedule, java.awt.BorderLayout.CENTER);
 
         pnlEmployeeAttendance.setBackground(new java.awt.Color(255, 255, 255));
-        pnlEmployeeAttendance.setPreferredSize(new java.awt.Dimension(240, 50));
+        pnlEmployeeAttendance.setPreferredSize(new java.awt.Dimension(240, 60));
         pnlEmployeeAttendance.setLayout(new java.awt.GridBagLayout());
 
         lblWeekPicker1.setText("Chọn tuần:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 20);
         pnlEmployeeAttendance.add(lblWeekPicker1, gridBagConstraints);
 
         cbWeekPicker1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "07/04/2025 - 13/04/2025", "14/04/2025 - 20/04/2025" }));
+        cbWeekPicker1.setPreferredSize(new java.awt.Dimension(161, 30));
         cbWeekPicker1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbWeekPicker1ActionPerformed(evt);
@@ -430,6 +484,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 3.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
         pnlEmployeeAttendance.add(cbWeekPicker1, gridBagConstraints);
 
         pnlWorkSchedule.add(pnlEmployeeAttendance, java.awt.BorderLayout.PAGE_START);
@@ -883,7 +938,11 @@ public class EmployeeProfile extends javax.swing.JPanel {
     }//GEN-LAST:event_txtTotalActionPerformed
 
     private void cbWeekPicker1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbWeekPicker1ActionPerformed
-        // TODO add your handling code here:
+        String selectedWeek = (String) cbWeekPicker1.getSelectedItem();
+        if (selectedWeek == null) return;
+
+        weekDates = getWeekDatesFromComboBox(selectedWeek);
+        showScheduleEmployee();
     }//GEN-LAST:event_cbWeekPicker1ActionPerformed
 
     private void btnUpdateProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateProfileActionPerformed
