@@ -203,6 +203,27 @@ public class ContractDAO implements DAOinterface<ContractDTO> {
         return contractList;
     }
     
+    public ContractDTO getCurrentContractByEmployeeID(String employeeID) {
+        ContractDTO currentContract = null;
+        myConnection.openConnection();
+        
+        String sql = "SELECT * FROM contracts WHERE employee_id = ? AND is_deleted = 0 " +
+                    "AND start_date <= GETDATE() AND end_date >= GETDATE()";
+        
+        try {
+            ResultSet rs = myConnection.runPreparedQuery(sql, employeeID);
+            if (rs != null && rs.next()) {
+                currentContract = extractContractFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            myConnection.closeConnection();
+        }
+
+        return currentContract;
+    }
+    
     private ContractDTO extractContractFromResultSet(ResultSet rs) throws SQLException {
         String contractID = rs.getString("contract_id");
         String employeeID = rs.getString("employee_id");

@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -184,5 +185,39 @@ public class WorkSchedulesDAO implements DAOinterface<WorkScheduleDTO>{
     }
 
     
-    
+    public ArrayList<WorkScheduleDTO> getScheduleByEmployeeAndMonth(String employeeID, YearMonth month) {
+        ArrayList<WorkScheduleDTO> schedules = new ArrayList<>();
+
+        LocalDate startDate = month.atDay(1);
+        LocalDate endDate = month.atEndOfMonth();
+
+        String sql = "SELECT * FROM work_schedules WHERE employee_id = ? " +
+                     "AND work_date >= ? AND work_date <= ? AND is_deleted = 0";
+
+        try {
+            if (myconnect.openConnection()) {
+                ResultSet rs = myconnect.runPreparedQuery(sql, employeeID, Date.valueOf(startDate), Date.valueOf(endDate));
+                while (rs.next()) {
+                    WorkScheduleDTO schedule = new WorkScheduleDTO();
+                    schedule.setScheduleId(rs.getString("schedule_id"));
+                    schedule.setShiftId(rs.getString("shift_id"));
+                    schedule.setEmployeeId(rs.getString("employee_id"));
+                    schedule.setWorkDate(rs.getDate("work_date").toLocalDate());
+                    schedule.setIsWeekend(rs.getInt("is_weekend") == 1);
+                    schedule.setIsHoliday(rs.getInt("is_holiday") == 1);
+                    schedule.setIsDeleted(rs.getInt("is_deleted") == 1);
+
+                    schedules.add(schedule);
+                }
+                rs.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            myconnect.closeConnection();
+        }
+
+        return schedules;
+    }
+
 }
