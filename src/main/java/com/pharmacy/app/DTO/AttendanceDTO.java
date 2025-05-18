@@ -20,6 +20,16 @@ public class AttendanceDTO {
     private boolean isDeleted;
     
     public AttendanceDTO(){}
+
+    public AttendanceDTO(String id, String employeeId, LocalDate workDate, Time checkIn, Time checkOut) {
+        this.id = id;
+        this.employeeId = employeeId;
+        this.workDate = workDate;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+    }
+    
+    
     
     public AttendanceDTO(String id, String employeeId, LocalDate workDate, Time checkIn, Time checkOut, boolean isDeleted) {
         this.id = id;

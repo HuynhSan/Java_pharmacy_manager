@@ -27,6 +27,10 @@ public class EmployeeBUS {
         return employeeList;
     }
     
+    public ArrayList<EmployeeDTO> getAll() {
+        return employeeDAO.selectAll();
+    }
+    
     public void loadEmployeeList() {
         employeeList = employeeDAO.selectAll();
     }

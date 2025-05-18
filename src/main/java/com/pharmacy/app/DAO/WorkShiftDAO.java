@@ -21,9 +21,53 @@ import java.util.ArrayList;
 public class WorkShiftDAO implements DAOinterface<WorkShiftDTO>{
     MyConnection myconnect = new MyConnection();
 
+    public String generateShiftId() {
+        String nextId = "S1"; // Mặc định nếu bảng chưa có dữ liệu
+        if (myconnect.openConnection()) {
+            try {
+                String sql = "select top 1 shift_id from work_shifts order by shift_id DESC";
+                ResultSet rs = myconnect.runQuery(sql);
+
+                if (rs.next()) {
+                    String lastId = rs.getString("shift_id"); // Ví dụ: ATT012
+
+                    if (lastId != null) {
+                        String numericPart = lastId.substring(1); // Lấy phần số: "012"
+                        int lastNumber = Integer.parseInt(numericPart); // Chuyển thành int: 12
+                        nextId = "S" + (lastNumber + 1); // Tạo ID mới: ATT013
+                    }
+                }
+
+                rs.close(); // Đóng ResultSet sau khi dùng
+            } catch (SQLException e) {
+                e.printStackTrace(); // Log lỗi nếu có
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return nextId;
+    }
+    
     @Override
-    public boolean insert(WorkShiftDTO t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean insert(WorkShiftDTO shift) {
+        if (myconnect.openConnection()) {
+            String sql = "INSERT INTO work_shifts (shift_id, start_time, end_time, is_deleted) VALUES (?, ?, ?, 0)";
+            try {
+                int result = myconnect.prepareUpdate(
+                    sql,
+                    shift.getShiftId(),
+                    Time.valueOf(shift.getStartTime()), // LocalTime -> Time
+                    Time.valueOf(shift.getEndTime())
+                );
+                return result > 0;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+        return false;
+
     }
 
     @Override
@@ -72,27 +116,30 @@ public class WorkShiftDAO implements DAOinterface<WorkShiftDTO>{
     }
     
     public String generateNextId() {
-        String nextId = ""; // Mặc định nếu bảng chưa có dữ liệu
-        if (myconnect.openConnection()){
+        String nextId = "ATT001"; // Mặc định nếu bảng chưa có dữ liệu
+        if (myconnect.openConnection()) {
             try {
                 String sql = "SELECT MAX(attendance_id) AS max_id FROM attendance";
                 ResultSet rs = myconnect.runQuery(sql);
-                String lastId = "ATT000";
-                
+
                 if (rs.next()) {
-                    lastId = rs.getString("max_id"); // Ví dụ SUP012
+                    String lastId = rs.getString("max_id"); // Ví dụ: ATT012
+
+                    if (lastId != null) {
+                        String numericPart = lastId.substring(3); // Lấy phần số: "012"
+                        int lastNumber = Integer.parseInt(numericPart); // Chuyển thành int: 12
+                        nextId = "ATT" + String.format("%03d", lastNumber + 1); // Tạo ID mới: ATT013
+                    }
                 }
-                
-                String numericPart = lastId.substring(3);
-                int lastNumber = Integer.parseInt(numericPart); // Lấy phần số: 12
-                lastNumber++; // Tăng lên: 13
-                nextId = "ATT" + String.format("%03d", lastNumber); // Kết quả: SUP013
+
+                rs.close(); // Đóng ResultSet sau khi dùng
             } catch (SQLException e) {
-//                e.printStackTrace();
-            } 
+                e.printStackTrace(); // Log lỗi nếu có
+            }
         }
         return nextId;
     }
+
     public boolean isCheckIn(String employeeID){
         boolean result = false;
         if (myconnect.openConnection()){
