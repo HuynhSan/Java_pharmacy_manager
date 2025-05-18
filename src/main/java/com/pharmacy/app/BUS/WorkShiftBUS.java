@@ -12,6 +12,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -22,6 +23,23 @@ public class WorkShiftBUS {
     
     public ArrayList<WorkShiftDTO> selectAll() {
         return dao.selectAll();
+    }
+    
+    public String generateShiftId() {
+        return dao.generateShiftId();
+    }
+
+    
+    // Hàm lấy tất cả shiftId dưới dạng List<String>
+    public List<String> getAllShiftIds() {
+        List<WorkShiftDTO> shifts = dao.selectAll();
+        List<String> shiftIds = new ArrayList<>();
+
+        for (WorkShiftDTO shift : shifts) {
+            shiftIds.add(shift.getShiftId());
+        }
+
+        return shiftIds;
     }
     
     public boolean checkIn(AttendanceDTO attendance){
@@ -38,5 +56,9 @@ public class WorkShiftBUS {
         } else {
             return dao.hasAttendanceStatus(employeeID, type);
         }
+    }
+
+    public boolean addShift(WorkShiftDTO workShiftDTO) {
+        return dao.insert(workShiftDTO);
     }
 }
