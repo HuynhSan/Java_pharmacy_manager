@@ -104,7 +104,25 @@ public class EmployeeDAO implements DAOinterface<EmployeeDTO> {
         }
         return employee;
     }
-
+    public EmployeeDTO selectByUserID(String userID) {
+        EmployeeDTO employee = null;
+        myConnection.openConnection();
+        String query = "SELECT em.* "
+                + "FROM employees em "
+                + "INNER JOIN users u ON u.user_id = em.user_id "
+                + "WHERE u.user_id = ?";
+        try {
+            ResultSet rs = myConnection.runPreparedQuery(query, userID);
+            if (rs.next()) {
+                employee = extractEmployeeFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            myConnection.closeConnection();
+        }
+        return employee;
+    }
     @Override
     public ArrayList<EmployeeDTO> search(String keyword) {
         ArrayList<EmployeeDTO> employeeList = new ArrayList<>();

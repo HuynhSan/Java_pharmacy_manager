@@ -27,6 +27,10 @@ public class EmployeeBUS {
         return employeeList;
     }
     
+    public ArrayList<EmployeeDTO> getAll() {
+        return employeeDAO.selectAll();
+    }
+    
     public void loadEmployeeList() {
         employeeList = employeeDAO.selectAll();
     }
@@ -82,6 +86,14 @@ public class EmployeeBUS {
         return employeeDAO.selectByID(employeeID);
     }
     
+    public EmployeeDTO getEmployeeByUserID(String userID) {
+        for (EmployeeDTO employee : employeeList) {
+            if (employee.getUserID().equals(userID)) {
+                return employee;
+            }
+        }
+        return employeeDAO.selectByUserID(userID);
+    }
     public ArrayList<EmployeeDTO> searchEmployees(String keyword) {
         return employeeDAO.search(keyword);
     }
