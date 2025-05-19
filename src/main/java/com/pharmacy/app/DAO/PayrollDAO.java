@@ -99,9 +99,10 @@ public class PayrollDAO {
     public PayrollDTO selectByEmpID(String payrollID) {
         PayrollDTO payroll = null;
         myConnection.openConnection();
-        String query = "select * " +
+        String query = "select TOP 1 * " +
                         "from payrolls " +
-                        "where employee_id = ?";
+                        "where employee_id = ? " +
+                        "ORDER BY pay_date DESC";
         try {
             ResultSet rs = myConnection.prepareQuery(query, payrollID);
             if (rs.next()) {
@@ -155,7 +156,25 @@ public class PayrollDAO {
         }
         return payrollList;
     }
-    
+    public PayrollDTO filterPayrollByMonthYear(String employeeID, String month, String year) {
+        PayrollDTO payroll = null;
+        myConnection.openConnection();
+        String query = "SELECT * FROM payrolls "
+                + "WHERE employee_id = ? "
+                + "AND MONTH(pay_date) = ? "
+                + "AND YEAR(pay_date) = ?";
+        try {
+            ResultSet rs = myConnection.prepareQuery(query, employeeID, Integer.parseInt(month), Integer.parseInt(year));
+            while (rs.next()) {
+                payroll = extractPayrollFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            myConnection.closeConnection();
+        }
+        return payroll;
+    }
     /**
      * Get the highest payroll ID number from all payrolls (including deleted ones)
      * @return The highest ID number used in the database

@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
@@ -40,7 +41,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
     private List<LocalDate> weekDates;
     private final EmployeeBUS emBUS;
     private final EmployeeDTO emDTO;
-    private final EmployeeDTO employee_login;
+    private EmployeeDTO employee_login;
     private ContractBUS contractBUS;
     private PayrollBUS payrollBUS;
     private PayrollDetailsBUS payrollDetailsBUS;
@@ -48,6 +49,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
     private Map<String, WorkShiftDTO> shiftMap;
     private final UserDTO currentUser = SessionDTO.getCurrentUser();
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     LocalDate startDate = LocalDate.of(2025, 1, 1);
     WorkShiftBUS shiftBus = new WorkShiftBUS();
     WorkSchedulesBUS scheduleBus = new WorkSchedulesBUS();
@@ -164,6 +166,8 @@ public class EmployeeProfile extends javax.swing.JPanel {
         // Auto-resize columns
         tblPayrollComponent.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
+    
+
     public void showScheduleEmployee(){
         LocalDate start = weekDates.get(0);
         LocalDate end = weekDates.get(6);
@@ -612,7 +616,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtTotal.setEditable(false);
         txtTotal.setFocusable(false);
         txtTotal.setMinimumSize(new java.awt.Dimension(72, 22));
-        txtTotal.setPreferredSize(new java.awt.Dimension(72, 22));
+        txtTotal.setPreferredSize(new java.awt.Dimension(72, 30));
         txtTotal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTotalActionPerformed(evt);
@@ -636,6 +640,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
 
         txtEmployeeID3.setEditable(false);
         txtEmployeeID3.setFocusable(false);
+        txtEmployeeID3.setPreferredSize(new java.awt.Dimension(64, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -654,6 +659,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
 
         txtStatus.setEditable(false);
         txtStatus.setFocusable(false);
+        txtStatus.setPreferredSize(new java.awt.Dimension(64, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -671,6 +677,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
 
         txtDate.setEditable(false);
         txtDate.setFocusable(false);
+        txtDate.setPreferredSize(new java.awt.Dimension(64, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
@@ -685,15 +692,27 @@ public class EmployeeProfile extends javax.swing.JPanel {
         pnlFilter.add(lblMonth);
 
         txtMonth.setMaximumSize(new java.awt.Dimension(64, 22));
+        txtMonth.setPreferredSize(new java.awt.Dimension(60, 30));
         pnlFilter.add(txtMonth);
 
         lblYear.setText("Năm:");
         pnlFilter.add(lblYear);
 
         txtYear.setMaximumSize(new java.awt.Dimension(64, 22));
+        txtYear.setPreferredSize(new java.awt.Dimension(60, 30));
+        txtYear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtYearActionPerformed(evt);
+            }
+        });
         pnlFilter.add(txtYear);
 
         btnFilter.setText("Lọc");
+        btnFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterActionPerformed(evt);
+            }
+        });
         pnlFilter.add(btnFilter);
 
         javax.swing.GroupLayout pnlSalaryLayout = new javax.swing.GroupLayout(pnlSalary);
@@ -1032,6 +1051,26 @@ public class EmployeeProfile extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         setData(currentUser.getUserID());
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtYearActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtYearActionPerformed
+
+    private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
+        // TODO add your handling code here:
+        String month = txtMonth.getText();
+        String year = txtYear.getText();
+        // Lấy nhân viên
+        employee_login = emBUS.getEmployeeByUserID(currentUser.getUserID());
+        employeeId = employee_login.getEmployeeID();
+        PayrollDTO payroll = payrollBUS.getPayrollByMonthYear(employeeId,month, year);
+        if(payroll == null){
+            JOptionPane.showMessageDialog(this, "Không tìm thấy bảng lương cho tháng " + month + " năm " + year,
+                              "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        }
+        setDataPayroll(employeeId);
+        displayPayrollDetails(employeeId);
+    }//GEN-LAST:event_btnFilterActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

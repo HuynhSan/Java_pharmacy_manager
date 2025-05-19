@@ -70,7 +70,7 @@ public class PayrollDetailsDAO {
         }
         return payrollDetailList;
     }
-    
+
     private PayrollDetailsDTO extractPayrollDetailFromResultSet(ResultSet rs) throws SQLException {
         String payrollID = rs.getString("payroll_id");
         String componentID = rs.getString("component_id");
