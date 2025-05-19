@@ -102,6 +102,48 @@ public class EmployeeBUS {
         return employeeDAO.filterByGender(gender);
     }
     
+    /**
+     * Gets a list of employees who have the position "Nhân viên bán hàng" in their contracts
+     * @return ArrayList of sales employees
+     */
+    public ArrayList<EmployeeDTO> getSalesEmployees() {
+        return employeeDAO.getEmployeesByPosition("Nhân viên bán hàng");
+    }
+
+    /**
+     * Loads sales employees into a dedicated list
+     */
+    private ArrayList<EmployeeDTO> salesEmployeeList;
+
+    public ArrayList<EmployeeDTO> getSalesEmployeeList() {
+        return salesEmployeeList;
+    }
+
+    public void loadSalesEmployeeList() {
+        salesEmployeeList = employeeDAO.getEmployeesByPosition("Nhân viên bán hàng");
+    }
+    
+    /**
+     * Gets a list of employees who have contracts
+     * @return ArrayList of employees with contracts
+     */
+    public ArrayList<EmployeeDTO> getEmployeesWithContracts() {
+        return employeeDAO.getEmployeesWithContracts();
+    }
+
+    /**
+     * Loads employees with contracts into a dedicated list
+     */
+    private ArrayList<EmployeeDTO> contractEmployeeList;
+
+    public ArrayList<EmployeeDTO> getContractEmployeeList() {
+        return contractEmployeeList;
+    }
+
+    public void loadContractEmployeeList() {
+        contractEmployeeList = employeeDAO.getEmployeesWithContracts();
+    }
+    
     public String generateNewEmployeeID() {
         // Get the highest employee ID from the entire database (including deleted employees)
         int maxID = employeeDAO.getHighestEmployeeIDNumber();

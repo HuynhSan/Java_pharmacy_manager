@@ -19,6 +19,7 @@ import com.pharmacy.app.GUI.User.UserInfo;
 import com.pharmacy.app.GUI.User.UserManagement;
 import com.pharmacy.app.GUI.WorkSchedule.WorkScheduleManagement;
 import com.pharmacy.app.GUI.Reports.ReportManagement;
+import com.pharmacy.app.GUI.Payroll.PayrollManagement;
 
 /**
  *
@@ -77,7 +78,7 @@ public class adminView extends javax.swing.JFrame {
         productBtn = new javax.swing.JButton();
         reportBtn = new javax.swing.JButton();
         purchaseBtn = new javax.swing.JButton();
-        authzBtn = new javax.swing.JButton();
+        payrollBtn = new javax.swing.JButton();
         ContentPn = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -587,36 +588,37 @@ public class adminView extends javax.swing.JFrame {
         });
         MenuHidePn.add(purchaseBtn);
 
-        authzBtn.setBackground(new java.awt.Color(0, 102, 153));
-        authzBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        authzBtn.setForeground(new java.awt.Color(255, 255, 255));
-        authzBtn.setToolTipText("");
-        authzBtn.setBorder(null);
-        authzBtn.setBorderPainted(false);
-        authzBtn.setContentAreaFilled(false);
-        authzBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        authzBtn.setFocusable(false);
-        authzBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        authzBtn.setMaximumSize(new java.awt.Dimension(200, 30));
-        authzBtn.setMinimumSize(new java.awt.Dimension(200, 30));
-        authzBtn.setPreferredSize(new java.awt.Dimension(150, 30));
-        authzBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+        payrollBtn.setBackground(new java.awt.Color(0, 102, 153));
+        payrollBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        payrollBtn.setForeground(new java.awt.Color(255, 255, 255));
+        payrollBtn.setText("TÍNH LƯƠNG");
+        payrollBtn.setToolTipText("");
+        payrollBtn.setBorder(null);
+        payrollBtn.setBorderPainted(false);
+        payrollBtn.setContentAreaFilled(false);
+        payrollBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        payrollBtn.setFocusable(false);
+        payrollBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        payrollBtn.setMaximumSize(new java.awt.Dimension(200, 30));
+        payrollBtn.setMinimumSize(new java.awt.Dimension(200, 30));
+        payrollBtn.setPreferredSize(new java.awt.Dimension(150, 30));
+        payrollBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                authzBtnMouseClicked(evt);
+                payrollBtnMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                authzBtnMouseEntered(evt);
+                payrollBtnMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                authzBtnMouseExited(evt);
+                payrollBtnMouseExited(evt);
             }
         });
-        authzBtn.addActionListener(new java.awt.event.ActionListener() {
+        payrollBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                authzBtnActionPerformed(evt);
+                payrollBtnActionPerformed(evt);
             }
         });
-        MenuHidePn.add(authzBtn);
+        MenuHidePn.add(payrollBtn);
 
         MenuPn.add(MenuHidePn, java.awt.BorderLayout.CENTER);
 
@@ -729,9 +731,9 @@ public class adminView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_productBtnActionPerformed
 
-    private void authzBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authzBtnActionPerformed
+    private void payrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payrollBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_authzBtnActionPerformed
+    }//GEN-LAST:event_payrollBtnActionPerformed
 // Khách hàng
     private void cusBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cusBtnMouseEntered
         cusBtn.setBackground(colorEntered);
@@ -822,21 +824,21 @@ public class adminView extends javax.swing.JFrame {
         ContentPn.add(new MedicalProducts(), "Medinces");
         switchToPanel("Medinces");
     }//GEN-LAST:event_productBtnMouseClicked
-// Phân quyền
-    private void authzBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_authzBtnMouseExited
-//        authzBtn.setBackground(colorExited);
-//        authzBtn.setOpaque(true);
-    }//GEN-LAST:event_authzBtnMouseExited
+// Tính lương
+    private void payrollBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_payrollBtnMouseExited
+        payrollBtn.setBackground(colorExited);
+        payrollBtn.setOpaque(true);
+    }//GEN-LAST:event_payrollBtnMouseExited
 
-    private void authzBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_authzBtnMouseEntered
-//        authzBtn.setBackground(colorEntered);
- //       authzBtn.setOpaque(true);
-    }//GEN-LAST:event_authzBtnMouseEntered
+    private void payrollBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_payrollBtnMouseEntered
+        payrollBtn.setBackground(colorEntered);
+        payrollBtn.setOpaque(true);
+    }//GEN-LAST:event_payrollBtnMouseEntered
 
-    private void authzBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_authzBtnMouseClicked
-        ContentPn.add(new AuthorizationManagement(), "Authz");
-        switchToPanel("Authz");
-    }//GEN-LAST:event_authzBtnMouseClicked
+    private void payrollBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_payrollBtnMouseClicked
+        ContentPn.add(new PayrollManagement(), "Payroll");
+        switchToPanel("Payroll");
+    }//GEN-LAST:event_payrollBtnMouseClicked
 
 // Báo cáo thống kê
     private void reportBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseEntered
@@ -962,7 +964,6 @@ public class adminView extends javax.swing.JFrame {
     private javax.swing.JPanel MenuIcon;
     private javax.swing.JPanel MenuPn;
     private javax.swing.JLabel attendanceicon;
-    private javax.swing.JButton authzBtn;
     private javax.swing.JLabel backicon;
     private javax.swing.JPanel btnAttendance;
     private javax.swing.JPanel btnBack;
@@ -977,6 +978,7 @@ public class adminView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel logouticon;
     private javax.swing.JLabel minmaxicon;
+    private javax.swing.JButton payrollBtn;
     private javax.swing.JButton productBtn;
     private javax.swing.JButton promoBtn;
     private javax.swing.JButton purchaseBtn;
