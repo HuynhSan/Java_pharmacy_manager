@@ -217,8 +217,7 @@ public class WorkShiftDAO implements DAOinterface<WorkShiftDTO>{
         }
         return result;
     }
-
-    public boolean checkIn(AttendanceDTO t){
+        public boolean checkIn(AttendanceDTO t){
         boolean result = false;
         if (myconnect.openConnection()){
             String newId = generateNextId();
@@ -267,4 +266,5 @@ public class WorkShiftDAO implements DAOinterface<WorkShiftDTO>{
         }
         return result;
     }
+
 }

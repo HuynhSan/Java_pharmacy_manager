@@ -664,13 +664,13 @@ public class homepage extends javax.swing.JFrame {
     }//GEN-LAST:event_infoBtnMouseClicked
 
     private void infoBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoBtnMouseEntered
- //       infoBtn.setBackground(colorEntered);
- //       infoBtn.setOpaque(true);
+        infoBtn.setBackground(colorEntered);
+        infoBtn.setOpaque(true);
     }//GEN-LAST:event_infoBtnMouseEntered
 
     private void infoBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoBtnMouseExited
-//        infoBtn.setBackground(colorExited);
-//        infoBtn.setOpaque(true);
+        infoBtn.setBackground(colorExited);
+        infoBtn.setOpaque(true);
     }//GEN-LAST:event_infoBtnMouseExited
 
     private void usericonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usericonMouseEntered
