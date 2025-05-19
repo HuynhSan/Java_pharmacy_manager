@@ -5,69 +5,77 @@
 package com.pharmacy.app.DTO;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
- * @author BOI QUAN
+ * @author phong
  */
 public class PayrollDTO {
     private String payrollID;
     private String employeeID;
-    private boolean status;
     private BigDecimal totalSalary;
-    private LocalDate payDate;
-
-    public PayrollDTO(String payrollID, String employeeID, boolean status, BigDecimal totalSalary, LocalDate payDate) {
+    private boolean status;
+    private LocalDateTime payDate;
+    private boolean isDeleted;
+    
+    // Constructor
+    public PayrollDTO(String payrollID, String employeeID, BigDecimal totalSalary, boolean status, LocalDateTime payDate, boolean isDeleted) {
         this.payrollID = payrollID;
         this.employeeID = employeeID;
-        this.status = status;
         this.totalSalary = totalSalary;
+        this.status = status;
         this.payDate = payDate;
+        this.isDeleted = isDeleted;
     }
-
-    public PayrollDTO() {
-    }
+    
+    // Getter & Setter
 
     public String getPayrollID() {
         return payrollID;
-    }
-
-    public String getEmployeeID() {
-        return employeeID;
-    }
-
-    public boolean getStatus() {
-        return status;
-    }
-
-    public BigDecimal getTotalSalary() {
-        return totalSalary;
-    }
-
-    public LocalDate getPayDate() {
-        return payDate;
     }
 
     public void setPayrollID(String payrollID) {
         this.payrollID = payrollID;
     }
 
+    public String getEmployeeID() {
+        return employeeID;
+    }
+
     public void setEmployeeID(String employeeID) {
         this.employeeID = employeeID;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public BigDecimal getTotalSalary() {
+        return totalSalary;
     }
 
     public void setTotalSalary(BigDecimal totalSalary) {
         this.totalSalary = totalSalary;
     }
 
-    public void setPayDate(LocalDate payDate) {
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getPayDate() {
+        return payDate;
+    }
+
+    public void setPayDate(LocalDateTime payDate) {
         this.payDate = payDate;
     }
-   
-    
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDelete(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }

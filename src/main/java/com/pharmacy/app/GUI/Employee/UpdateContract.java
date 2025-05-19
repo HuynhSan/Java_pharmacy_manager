@@ -53,7 +53,7 @@ public class UpdateContract extends javax.swing.JDialog {
         txtDegree.setText(contract.getDegree());
         txtExperienceYears.setText(String.valueOf(contract.getExperienceYears()));
         txtSigningDate.setText(contract.getSigningDate().format(DATE_FORMAT));
-        txtPosition.setText(contract.getPosition());
+        cbPosition.setSelectedItem(contract.getPosition());
         txtStartDate.setText(contract.getStartDate().format(DATE_FORMAT));
         txtEndDate.setText(contract.getEndDate().format(DATE_FORMAT));
         txtDescription.setText(contract.getWorkDescription());
@@ -69,7 +69,7 @@ public class UpdateContract extends javax.swing.JDialog {
         String degree = txtDegree.getText();
         String experienceYearsStr = txtExperienceYears.getText();
         String signingDateStr = txtSigningDate.getText();
-        String position = txtPosition.getText();
+        String position = (String) cbPosition.getSelectedItem();
         String startDateStr = txtStartDate.getText();
         String endDateStr = txtEndDate.getText();
         String description = txtDescription.getText();
@@ -86,7 +86,7 @@ public class UpdateContract extends javax.swing.JDialog {
         String positionError = ContractValidation.validateRequired(position, "Chức vụ");
         if (!positionError.isEmpty()) {
             JOptionPane.showMessageDialog(this, positionError, "Lỗi", JOptionPane.ERROR_MESSAGE);
-            txtPosition.requestFocus();
+            cbPosition.requestFocus();
             return false;
         }
 
@@ -169,12 +169,12 @@ public class UpdateContract extends javax.swing.JDialog {
         lblSigningDate = new javax.swing.JLabel();
         txtSigningDate = new javax.swing.JTextField();
         lblPosition = new javax.swing.JLabel();
-        txtPosition = new javax.swing.JTextField();
         lblStartDate = new javax.swing.JLabel();
         txtStartDate = new javax.swing.JTextField();
         lblEndDate = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDescription = new javax.swing.JTextArea();
+        cbPosition = new javax.swing.JComboBox<>();
         pnlSalaryTerms = new javax.swing.JPanel();
         lblBaseSalary = new javax.swing.JLabel();
         txtBaseSalary = new javax.swing.JTextField();
@@ -292,13 +292,6 @@ public class UpdateContract extends javax.swing.JDialog {
         gridBagConstraints.ipady = 1;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 20, 20);
         pnlContractInfo.add(lblPosition, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 5.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 20, 10);
-        pnlContractInfo.add(txtPosition, gridBagConstraints);
 
         lblStartDate.setText("Ngày bắt đầu:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -334,6 +327,12 @@ public class UpdateContract extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 10);
         pnlContractInfo.add(jScrollPane1, gridBagConstraints);
+
+        cbPosition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quản lý nhà thuốc", "Nhân viên bán hàng" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 20, 10);
+        pnlContractInfo.add(cbPosition, gridBagConstraints);
 
         pnlSalaryTerms.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Điều khoản lương", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
         pnlSalaryTerms.setLayout(new java.awt.GridBagLayout());
@@ -466,7 +465,7 @@ public class UpdateContract extends javax.swing.JDialog {
                     .addComponent(pnlSalaryTerms, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlUpdateContract, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlContractButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -538,7 +537,7 @@ public class UpdateContract extends javax.swing.JDialog {
             contractDTO.setDegree(txtDegree.getText());
             contractDTO.setExperienceYears(Float.parseFloat(txtExperienceYears.getText()));
             contractDTO.setSigningDate(ContractValidation.parseDate(txtSigningDate.getText()));
-            contractDTO.setPosition(txtPosition.getText());
+            contractDTO.setPosition((String) cbPosition.getSelectedItem());
             contractDTO.setStartDate(ContractValidation.parseDate(txtStartDate.getText()));
             contractDTO.setEndDate(ContractValidation.parseDate(txtEndDate.getText()));
             contractDTO.setWorkDescription(txtDescription.getText());
@@ -605,6 +604,7 @@ public class UpdateContract extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelContract;
     private javax.swing.JButton btnDeleteContract;
     private javax.swing.JButton btnUpdateContract;
+    private javax.swing.JComboBox<String> cbPosition;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblBaseSalary;
@@ -631,7 +631,6 @@ public class UpdateContract extends javax.swing.JDialog {
     private javax.swing.JTextField txtEmployeeName;
     private javax.swing.JTextField txtEndDate;
     private javax.swing.JTextField txtExperienceYears;
-    private javax.swing.JTextField txtPosition;
     private javax.swing.JTextField txtSigningDate;
     private javax.swing.JTextField txtStartDate;
     // End of variables declaration//GEN-END:variables

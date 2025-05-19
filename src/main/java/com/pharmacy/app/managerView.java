@@ -20,6 +20,7 @@ import com.pharmacy.app.GUI.Supplier.SupplierList;
 import com.pharmacy.app.GUI.User.UserInfo;
 import com.pharmacy.app.GUI.User.UserManagement;
 import com.pharmacy.app.GUI.WorkSchedule.WorkScheduleManagement;
+import com.pharmacy.app.GUI.Payroll.PayrollManagement;
 
 /**
  *
@@ -81,8 +82,8 @@ public class managerView extends javax.swing.JFrame {
         purchaseBtn = new javax.swing.JButton();
         productBtn = new javax.swing.JButton();
         scheduleBtn = new javax.swing.JButton();
+        payrollBtn = new javax.swing.JButton();
         infoBtn = new javax.swing.JButton();
-        reportBtn = new javax.swing.JButton();
         ContentPn = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -632,6 +633,37 @@ public class managerView extends javax.swing.JFrame {
         });
         MenuHidePn.add(scheduleBtn);
 
+        payrollBtn.setBackground(new java.awt.Color(0, 102, 153));
+        payrollBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        payrollBtn.setForeground(new java.awt.Color(255, 255, 255));
+        payrollBtn.setText("TÍNH LƯƠNG");
+        payrollBtn.setToolTipText("");
+        payrollBtn.setBorder(null);
+        payrollBtn.setBorderPainted(false);
+        payrollBtn.setContentAreaFilled(false);
+        payrollBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        payrollBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        payrollBtn.setMaximumSize(new java.awt.Dimension(200, 30));
+        payrollBtn.setMinimumSize(new java.awt.Dimension(200, 30));
+        payrollBtn.setPreferredSize(new java.awt.Dimension(150, 30));
+        payrollBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                payrollBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                payrollBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                payrollBtnMouseExited(evt);
+            }
+        });
+        payrollBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payrollBtnActionPerformed(evt);
+            }
+        });
+        MenuHidePn.add(payrollBtn);
+
         infoBtn.setBackground(new java.awt.Color(0, 102, 153));
         infoBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         infoBtn.setForeground(new java.awt.Color(255, 255, 255));
@@ -662,28 +694,6 @@ public class managerView extends javax.swing.JFrame {
             }
         });
         MenuHidePn.add(infoBtn);
-
-        reportBtn.setBackground(new java.awt.Color(0, 102, 153));
-        reportBtn.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        reportBtn.setForeground(new java.awt.Color(255, 255, 255));
-        reportBtn.setBorder(null);
-        reportBtn.setBorderPainted(false);
-        reportBtn.setContentAreaFilled(false);
-        reportBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        reportBtn.setEnabled(false);
-        reportBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        reportBtn.setMaximumSize(new java.awt.Dimension(200, 30));
-        reportBtn.setMinimumSize(new java.awt.Dimension(200, 30));
-        reportBtn.setPreferredSize(new java.awt.Dimension(150, 30));
-        reportBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                reportBtnMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                reportBtnMouseExited(evt);
-            }
-        });
-        MenuHidePn.add(reportBtn);
 
         MenuPn.add(MenuHidePn, java.awt.BorderLayout.CENTER);
 
@@ -962,17 +972,7 @@ public class managerView extends javax.swing.JFrame {
         scheduleBtn.setBackground(colorExited);
         scheduleBtn.setOpaque(true);
     }//GEN-LAST:event_scheduleBtnMouseExited
-
-    private void reportBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseEntered
-        reportBtn.setBackground(colorEntered);
-        reportBtn.setOpaque(true);
-    }//GEN-LAST:event_reportBtnMouseEntered
-
-    private void reportBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportBtnMouseExited
-        reportBtn.setBackground(colorExited);
-        reportBtn.setOpaque(true);
-    }//GEN-LAST:event_reportBtnMouseExited
-
+  
     private void usericonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usericonMouseEntered
         btnUser.setBackground(new Color(81, 115, 150));
     }//GEN-LAST:event_usericonMouseEntered
@@ -1027,6 +1027,24 @@ public class managerView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_infoBtnActionPerformed
 
+    private void payrollBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_payrollBtnMouseClicked
+        ContentPn.add(new PayrollManagement(), "Payrolls");
+        switchToPanel("Payrolls");
+    }//GEN-LAST:event_payrollBtnMouseClicked
+
+    private void payrollBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_payrollBtnMouseEntered
+        payrollBtn.setBackground(colorEntered);
+        payrollBtn.setOpaque(true);
+    }//GEN-LAST:event_payrollBtnMouseEntered
+
+    private void payrollBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_payrollBtnMouseExited
+        payrollBtn.setBackground(colorExited);
+        payrollBtn.setOpaque(true);
+    }//GEN-LAST:event_payrollBtnMouseExited
+
+    private void payrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payrollBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_payrollBtnActionPerformed
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1082,10 +1100,10 @@ public class managerView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel logouticon;
     private javax.swing.JLabel minmaxicon;
+    private javax.swing.JButton payrollBtn;
     private javax.swing.JButton productBtn;
     private javax.swing.JButton promoBtn;
     private javax.swing.JButton purchaseBtn;
-    private javax.swing.JButton reportBtn;
     private javax.swing.JButton saleBtn;
     private javax.swing.JButton scheduleBtn;
     private javax.swing.JButton supBtn;

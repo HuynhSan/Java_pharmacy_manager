@@ -4,18 +4,119 @@
  */
 package com.pharmacy.app.GUI.Payroll;
 
+import com.pharmacy.app.BUS.EmployeeBUS;
+import com.pharmacy.app.BUS.PayrollBUS;
+import com.pharmacy.app.BUS.PayrollDetailsBUS;
+import com.pharmacy.app.BUS.SalaryComponentsBUS;
+import com.pharmacy.app.DTO.EmployeeDTO;
+import com.pharmacy.app.DTO.PayrollDTO;
+import com.pharmacy.app.DTO.PayrollDetailsDTO;
+import com.pharmacy.app.DTO.SalaryComponentsDTO;
+import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Locale;
+import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author phong
  */
 public class PayrollDetails extends javax.swing.JDialog {
+    private PayrollBUS payrollBUS;
+    private PayrollDetailsBUS payrollDetailsBUS;
+    private EmployeeBUS employeeBUS;
+    private PayrollDTO selectedPayroll;
 
     /**
      * Creates new form AddPayroll
+     * @param parent
+     * @param modal
      */
+    public PayrollDetails(JFrame parent, boolean modal, PayrollDTO selectedPayroll) {
+        super(parent, modal);
+        this.selectedPayroll = selectedPayroll;
+        this.payrollBUS = new PayrollBUS();
+        this.payrollDetailsBUS = new PayrollDetailsBUS();
+        this.employeeBUS = new EmployeeBUS();
+        initComponents();
+        displayPayrollData();
+        displayPayrollDetails();
+    }
+    
     public PayrollDetails(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.payrollBUS = new PayrollBUS();
+        this.payrollDetailsBUS = new PayrollDetailsBUS();
+        this.employeeBUS = new EmployeeBUS();
         initComponents();
+    }
+    
+    private void displayPayrollData() {
+        if (selectedPayroll != null) {
+            // Display basic payroll information
+            txtEmployeeID.setText(selectedPayroll.getEmployeeID());
+
+            // Get employee name
+            String employeeID = selectedPayroll.getEmployeeID();
+            EmployeeDTO employee = employeeBUS.getEmployeeByID(employeeID);
+            String employeeName = (employee != null) ? employee.getName() : "Unknown";
+            txtEmployeeName.setText(employeeName);
+
+            // Format and display total salary
+            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+            txtTotal.setText(currencyFormat.format(selectedPayroll.getTotalSalary()));
+
+            // Display status
+            txtStatus.setText(selectedPayroll.getStatus() ? "Đã thanh toán" : "Chưa thanh toán");
+
+            // Format and display payment date
+            if (selectedPayroll.getPayDate() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                txtDate.setText(selectedPayroll.getPayDate().format(formatter));
+            } else {
+                txtDate.setText("Chưa có");
+            }
+        }
+    }
+
+    private void displayPayrollDetails() {
+        if (selectedPayroll != null) {
+            // Initialize SalaryComponentsBUS and load data
+            SalaryComponentsBUS componentsBUS = new SalaryComponentsBUS();
+            componentsBUS.loadComponentsList();
+
+            // Get payroll details
+            ArrayList<PayrollDetailsDTO> payrollDetails = payrollDetailsBUS.getPayrollDetailsByPayrollID(selectedPayroll.getPayrollID());
+
+            // Set up table model
+            DefaultTableModel model = (DefaultTableModel) tblPayrollComponent.getModel();
+            model.setRowCount(0); // Clear existing rows
+
+            // Format currency
+            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
+            // Add data to table
+            for (PayrollDetailsDTO detail : payrollDetails) {
+                Object[] row = new Object[3];
+
+                // Get component name instead of ID
+                SalaryComponentsDTO component = componentsBUS.getComponentByID(detail.getComponentID());
+                row[0] = (component != null) ? component.getName() : detail.getComponentID();
+
+                // Value (could be days/hours)
+                row[1] = detail.getValue();
+
+                // Amount
+                row[2] = currencyFormat.format(detail.getAmount());
+
+                model.addRow(row);
+            }
+
+            // Auto-resize columns
+            tblPayrollComponent.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        }
     }
 
     /**
@@ -37,8 +138,6 @@ public class PayrollDetails extends javax.swing.JDialog {
         txtEmployeeName = new javax.swing.JTextField();
         lblTotal = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
-        lblBankAccount = new javax.swing.JLabel();
-        txtBankAccount = new javax.swing.JTextField();
         lblStatus = new javax.swing.JLabel();
         txtStatus = new javax.swing.JTextField();
         lblDate = new javax.swing.JLabel();
@@ -101,10 +200,10 @@ public class PayrollDetails extends javax.swing.JDialog {
 
         lblTotal.setText("Lương thực nhận:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 40, 20, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
         pnlEmployeeInfo.add(lblTotal, gridBagConstraints);
 
         txtTotal.setEditable(false);
@@ -117,61 +216,45 @@ public class PayrollDetails extends javax.swing.JDialog {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
         pnlEmployeeInfo.add(txtTotal, gridBagConstraints);
 
-        lblBankAccount.setText("Số tài khoản:");
+        lblStatus.setText("Trạng thái:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 20);
-        pnlEmployeeInfo.add(lblBankAccount, gridBagConstraints);
-
-        txtBankAccount.setEditable(false);
-        txtBankAccount.setFocusable(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 5.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
-        pnlEmployeeInfo.add(txtBankAccount, gridBagConstraints);
-
-        lblStatus.setText("Trạng thái:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
         pnlEmployeeInfo.add(lblStatus, gridBagConstraints);
 
         txtStatus.setEditable(false);
         txtStatus.setFocusable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 5.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
         pnlEmployeeInfo.add(txtStatus, gridBagConstraints);
 
         lblDate.setText("Ngày trả lương:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 40, 0, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 40, 20, 20);
         pnlEmployeeInfo.add(lblDate, gridBagConstraints);
 
         txtDate.setEditable(false);
         txtDate.setFocusable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
         pnlEmployeeInfo.add(txtDate, gridBagConstraints);
 
         pnlPayrollComponent.setPreferredSize(new java.awt.Dimension(500, 439));
@@ -181,9 +264,6 @@ public class PayrollDetails extends javax.swing.JDialog {
 
         tblPayrollComponent.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Lương cơ bản", "26 ngày", "5,000,000"},
-                {"Phụ cấp ngoài giờ/OT", "10 giờ", "1,000,000"},
-                {"...", null, null},
                 {null, null, null},
                 {null, null, null},
                 {null, null, null}
@@ -204,6 +284,11 @@ public class PayrollDetails extends javax.swing.JDialog {
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("Hủy");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
         pnlButton.add(btnCancel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -232,7 +317,7 @@ public class PayrollDetails extends javax.swing.JDialog {
                 .addComponent(pnlEmployeeInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(pnlPayrollComponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pnlButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -247,6 +332,10 @@ public class PayrollDetails extends javax.swing.JDialog {
     private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTotalActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -295,7 +384,6 @@ public class PayrollDetails extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
-    private javax.swing.JLabel lblBankAccount;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblEmployeeID;
     private javax.swing.JLabel lblEmployeeName;
@@ -308,7 +396,6 @@ public class PayrollDetails extends javax.swing.JDialog {
     private javax.swing.JPanel pnlPayrollComponent;
     private javax.swing.JScrollPane spPayrollComponent;
     private javax.swing.JTable tblPayrollComponent;
-    private javax.swing.JTextField txtBankAccount;
     private javax.swing.JTextField txtDate;
     private javax.swing.JTextField txtEmployeeID;
     private javax.swing.JTextField txtEmployeeName;

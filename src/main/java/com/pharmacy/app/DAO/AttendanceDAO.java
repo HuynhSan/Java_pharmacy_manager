@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,5 +84,44 @@ public class AttendanceDAO implements DAOinterface<AttendanceDTO>{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    public ArrayList<AttendanceDTO> getAttendanceByEmployeeAndMonth(String employeeID, YearMonth month) {
+        ArrayList<AttendanceDTO> attendanceList = new ArrayList<>();
+
+        LocalDate startDate = month.atDay(1);
+        LocalDate endDate = month.atEndOfMonth();
+
+        String sql = "SELECT * FROM attendance WHERE employee_id = ? " +
+                     "AND work_date >= ? AND work_date <= ? AND is_deleted = 0";
+
+        if (myconnect.openConnection()) {
+            try {
+                ResultSet rs = myconnect.runPreparedQuery(
+                    sql,
+                    employeeID,
+                    Date.valueOf(startDate),
+                    Date.valueOf(endDate)
+                );
+
+                while (rs.next()) {
+                    String id = rs.getString("attendance_id");
+                    LocalDate workDate = rs.getDate("work_date").toLocalDate();
+                    Time checkIn = rs.getTime("check_in");
+                    Time checkOut = rs.getTime("check_out");
+
+                    AttendanceDTO dto = new AttendanceDTO(id, employeeID, workDate, checkIn, checkOut);
+                    attendanceList.add(dto);
+                }
+
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                myconnect.closeConnection();
+            }
+        }
+
+        return attendanceList;
+    }
+   
 
 }

@@ -4,11 +4,30 @@
  */
 package com.pharmacy.app.GUI.Payroll;
 
+import com.pharmacy.app.BUS.EmployeeBUS;
+import com.pharmacy.app.DAO.EmployeeDAO;
+import com.pharmacy.app.DTO.EmployeeDTO;
+import com.pharmacy.app.DTO.SessionDTO;
+import com.pharmacy.app.GUI.Employee.AddContract;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author phong
  */
 public class EmployeePayroll extends javax.swing.JDialog {
+    private EmployeeBUS employeeBUS;
+    private EmployeeDAO employeeDAO = new EmployeeDAO();
+    private EmployeeDTO employeeDTO;
+    private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private AddPayroll addPayrollDialog;
+    private EmployeeDTO selectedEmployee;
 
     /**
      * Creates new form EmployeePayroll
@@ -16,6 +35,177 @@ public class EmployeePayroll extends javax.swing.JDialog {
     public EmployeePayroll(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setupListeners();
+        initBUS();
+        loadEmployeeData();
+        setupTable();
+        // Disable Add Contract button initially (until an employee is selected)
+        btnPayroll.setEnabled(false);
+    }
+    
+    private void initBUS() {
+        employeeBUS = new EmployeeBUS();
+    
+        // Check current user role
+        String roleID = SessionDTO.getCurrentUser().getRoleID();
+
+        if ("ROLE001".equals(roleID)) {
+            // Admin sees employees with contracts
+            employeeBUS.loadContractEmployeeList();
+        } else if ("ROLE002".equals(roleID)) {
+            // Manager sees only sales employees
+            employeeBUS.loadSalesEmployeeList();
+        } else {
+            // Default behavior for other roles - load all employees
+            employeeBUS.loadEmployeeList();
+        }
+    }
+    
+    private void setupListeners() {
+        // Setup search text field focus listener
+        txtSearchEmployee.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtSearchEmployee.getText().equals("Tìm kiếm")) {
+                    txtSearchEmployee.setText("");
+                    txtSearchEmployee.setFont(new java.awt.Font("Segoe UI", 0, 12));
+                    txtSearchEmployee.setForeground(new java.awt.Color(0, 0, 0));
+                }
+            }
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtSearchEmployee.getText().isEmpty()) {
+                    txtSearchEmployee.setText("Tìm kiếm");
+                    txtSearchEmployee.setFont(new java.awt.Font("Segoe UI", 2, 12));
+                    txtSearchEmployee.setForeground(new java.awt.Color(153, 153, 153));
+                }
+            }
+        });
+        
+        // Setup search text field key listener
+        txtSearchEmployee.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String keyword = txtSearchEmployee.getText();
+                if (!keyword.equals("Tìm kiếm")) {
+                    searchEmployees(keyword);
+                }
+            }
+        });
+    }
+    
+    /**
+     * Load all employee data into the table
+     */
+    private void loadEmployeeData() {
+        ArrayList<EmployeeDTO> employees;
+        String roleID = SessionDTO.getCurrentUser().getRoleID();
+
+        if ("ROLE001".equals(roleID)) {
+            // Admin sees employees with contracts
+            employees = employeeBUS.getContractEmployeeList();
+        } else if ("ROLE002".equals(roleID)) {
+            // Manager sees only sales employees
+            employees = employeeBUS.getSalesEmployeeList();
+        } else {
+            // Default behavior for other roles
+            employees = employeeBUS.getEmployeeList();
+        }
+
+        displayEmployees(employees);
+    }
+    
+    /**
+     * Search employees based on keyword
+     */
+    private void searchEmployees(String keyword) {
+        if (keyword.isEmpty() || keyword.equals("Tìm kiếm")) {
+            loadEmployeeData();
+            return;
+        }
+
+        ArrayList<EmployeeDTO> searchResults = employeeBUS.searchEmployees(keyword);
+        String roleID = SessionDTO.getCurrentUser().getRoleID();
+
+        if ("ROLE001".equals(roleID)) {
+            // Admin sees only employees with contracts
+            ArrayList<EmployeeDTO> contractEmployees = employeeBUS.getContractEmployeeList();
+            ArrayList<EmployeeDTO> filteredResults = new ArrayList<>();
+
+            for (EmployeeDTO employee : searchResults) {
+                // Check if this employee is in the contract employees list
+                for (EmployeeDTO contractEmployee : contractEmployees) {
+                    if (employee.getEmployeeID().equals(contractEmployee.getEmployeeID())) {
+                        filteredResults.add(employee);
+                        break;
+                    }
+                }
+            }
+
+            displayEmployees(filteredResults);
+        } else if ("ROLE002".equals(roleID)) {
+            // Manager sees only sales employees
+            ArrayList<EmployeeDTO> salesEmployees = employeeBUS.getSalesEmployeeList();
+            ArrayList<EmployeeDTO> filteredResults = new ArrayList<>();
+
+            for (EmployeeDTO employee : searchResults) {
+                // Check if this employee is in the sales employees list
+                for (EmployeeDTO salesEmployee : salesEmployees) {
+                    if (employee.getEmployeeID().equals(salesEmployee.getEmployeeID())) {
+                        filteredResults.add(employee);
+                        break;
+                    }
+                }
+            }
+
+            displayEmployees(filteredResults);
+        } else {
+            // For other roles, show all search results
+            displayEmployees(searchResults);
+        }
+    }
+    
+    /**
+     * Display employees in the table
+     */
+    private void displayEmployees(ArrayList<EmployeeDTO> employees) {
+        DefaultTableModel model = (DefaultTableModel) tblEmployees.getModel();
+        model.setRowCount(0); // Clear current data
+        
+        for (EmployeeDTO employee : employees) {
+            Object[] row = {
+                employee.getEmployeeID(),
+                employee.getName(),
+                employee.getDob().format(DATE_FORMAT),
+                employee.getEmail()
+            };
+            model.addRow(row);
+        }
+    }
+    
+    private void setupTable() {
+        // Set table selection mode to single selection
+        tblEmployees.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        // Add table row selection listener
+        tblEmployees.getSelectionModel().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent event) {
+                // Skip if adjusting or no row is selected
+                if (event.getValueIsAdjusting() || tblEmployees.getSelectedRow() == -1) {
+                    return;
+                }
+
+                // Get selected employee's ID from the table
+                String employeeID = tblEmployees.getValueAt(tblEmployees.getSelectedRow(), 0).toString();
+
+                // Retrieve full employee object from BUS
+                selectedEmployee = employeeBUS.getEmployeeByID(employeeID);
+
+                // Enable the create contract button if a row is selected
+                btnPayroll.setEnabled(true);
+            }
+        });
     }
 
     /**
@@ -34,9 +224,12 @@ public class EmployeePayroll extends javax.swing.JDialog {
         pnlEmployeesList = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblEmployees = new javax.swing.JTable();
+        pnlTitle = new javax.swing.JPanel();
+        lblEmployeeList = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        getContentPane().setLayout(new java.awt.BorderLayout(0, 20));
 
         pnlSearchEmployee.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
 
@@ -70,6 +263,8 @@ public class EmployeePayroll extends javax.swing.JDialog {
         });
         pnlSearchEmployee.add(btnCancel);
 
+        getContentPane().add(pnlSearchEmployee, java.awt.BorderLayout.CENTER);
+
         pnlEmployeesList.setLayout(new java.awt.BorderLayout());
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(500, 310));
@@ -92,32 +287,46 @@ public class EmployeePayroll extends javax.swing.JDialog {
 
         pnlEmployeesList.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlEmployeesList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlSearchEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 662, Short.MAX_VALUE))
-                .addContainerGap(30, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(pnlSearchEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(pnlEmployeesList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
+        getContentPane().add(pnlEmployeesList, java.awt.BorderLayout.SOUTH);
+
+        pnlTitle.setLayout(new java.awt.BorderLayout());
+
+        lblEmployeeList.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblEmployeeList.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblEmployeeList.setText("DANH SÁCH NHÂN VIÊN");
+        lblEmployeeList.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        lblEmployeeList.setPreferredSize(new java.awt.Dimension(137, 30));
+        lblEmployeeList.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        pnlTitle.add(lblEmployeeList, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(pnlTitle, java.awt.BorderLayout.NORTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayrollActionPerformed
-        // TODO add your handling code here:
+        if (selectedEmployee == null) {
+            javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Vui lòng chọn một nhân viên từ danh sách.",
+                "Thông báo",
+                javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        // Open AddContract dialog with selected employee data
+        addPayrollDialog = new AddPayroll(new javax.swing.JFrame(), true);
+
+        // Set employee data in AddContract dialog
+        addPayrollDialog.setEmployeeData(selectedEmployee);
+
+        // Close this dialog
+        dispose();
+
+        // Show the AddContract dialog
+        addPayrollDialog.setLocationRelativeTo(null);
+        addPayrollDialog.setVisible(true);
     }//GEN-LAST:event_btnPayrollActionPerformed
 
     private void txtSearchEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchEmployeeActionPerformed
@@ -125,7 +334,7 @@ public class EmployeePayroll extends javax.swing.JDialog {
     }//GEN-LAST:event_txtSearchEmployeeActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
@@ -175,8 +384,10 @@ public class EmployeePayroll extends javax.swing.JDialog {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnPayroll;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblEmployeeList;
     private javax.swing.JPanel pnlEmployeesList;
     private javax.swing.JPanel pnlSearchEmployee;
+    private javax.swing.JPanel pnlTitle;
     private javax.swing.JTable tblEmployees;
     private javax.swing.JTextField txtSearchEmployee;
     // End of variables declaration//GEN-END:variables

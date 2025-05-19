@@ -166,6 +166,55 @@ public class EmployeeDAO implements DAOinterface<EmployeeDTO> {
     }
     
     /**
+     * Gets employees who have the position "Nhân viên bán hàng" in the contracts table
+     * @param position
+     * @return ArrayList of EmployeeDTO objects with sales positions
+     */
+    public ArrayList<EmployeeDTO> getEmployeesByPosition(String position) {
+        ArrayList<EmployeeDTO> salesEmployees = new ArrayList<>();
+        myConnection.openConnection();
+        String query = "SELECT e.* FROM employees e " +
+                       "INNER JOIN contracts c ON e.employee_id = c.employee_id " +
+                       "WHERE c.position = ? AND e.is_deleted = 0";
+        ResultSet rs = myConnection.runPreparedQuery(query, position);
+        try {
+            while (rs.next()) {
+                EmployeeDTO employee = extractEmployeeFromResultSet(rs);
+                salesEmployees.add(employee);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            myConnection.closeConnection();
+        }
+        return salesEmployees;
+    }
+    
+    /**
+     * Gets employees who have contracts
+     * @return ArrayList of EmployeeDTO objects with contracts
+     */
+    public ArrayList<EmployeeDTO> getEmployeesWithContracts() {
+        ArrayList<EmployeeDTO> contractEmployees = new ArrayList<>();
+        myConnection.openConnection();
+        String query = "SELECT DISTINCT e.* FROM employees e " +
+                       "INNER JOIN contracts c ON e.employee_id = c.employee_id " +
+                       "WHERE e.is_deleted = 0";
+        ResultSet rs = myConnection.runQuery(query);
+        try {
+            while (rs.next()) {
+                EmployeeDTO employee = extractEmployeeFromResultSet(rs);
+                contractEmployees.add(employee);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            myConnection.closeConnection();
+        }
+        return contractEmployees;
+    }
+    
+    /**
      * Get the highest employee ID number from all employees (including deleted ones)
      * @return The highest ID number used in the database
      */

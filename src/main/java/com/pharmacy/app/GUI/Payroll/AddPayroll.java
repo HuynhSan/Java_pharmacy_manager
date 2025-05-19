@@ -4,11 +4,32 @@
  */
 package com.pharmacy.app.GUI.Payroll;
 
+import com.pharmacy.app.BUS.PayrollBUS;
+import com.pharmacy.app.BUS.PayrollDetailsBUS;
+import com.pharmacy.app.DTO.EmployeeDTO;
+import com.pharmacy.app.DTO.PayrollDTO;
+import com.pharmacy.app.DTO.PayrollDetailsDTO;
+import com.pharmacy.app.GUI.WorkSchedule.SalaryCalculationService;
+import java.math.BigDecimal;
+import java.time.YearMonth;
+import java.util.List;
+import java.util.Map;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author phong
  */
 public class AddPayroll extends javax.swing.JDialog {
+    private String employeeID;
+    private SalaryCalculationService salaryService;
+    private PayrollBUS payrollBUS;
+    private PayrollDetailsBUS payrollDetailsBUS;
+    private List<PayrollDetailsDTO> currentPayrollDetails;
+    private YearMonth currentMonth;
 
     /**
      * Creates new form PayrollDetails
@@ -16,6 +37,136 @@ public class AddPayroll extends javax.swing.JDialog {
     public AddPayroll(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.salaryService = new SalaryCalculationService();
+        this.payrollBUS = new PayrollBUS();
+        this.payrollDetailsBUS = new PayrollDetailsBUS();
+        this.currentMonth = YearMonth.now(); // or get from user input
+        setupTable();
+    }
+    
+    /**
+     * Sets employee data in the contract form fields
+     * @param employee The selected employee
+     */
+    public void setEmployeeData(EmployeeDTO employee) {
+        if (employee != null) {
+            this.employeeID = employee.getEmployeeID();
+            txtEmployeeID.setText(employee.getEmployeeID());
+            txtEmployeeName.setText(employee.getName());
+            calculateAndDisplaySalary();
+        }
+    }
+    
+    private void setupTable() {
+        DefaultTableModel model = new DefaultTableModel(
+            new String[]{"Thành phần lương", "Ngày/Giờ", "Số tiền"},
+            0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Allow editing only the performance bonus (SC06)
+                return column == 1 && row == 5; // SC06 row
+            }
+        };
+        tblPayrollComponent.setModel(model);
+
+        // Add listener for performance bonus changes
+        model.addTableModelListener(e -> {
+            if (e.getColumn() == 1 && e.getFirstRow() == 5) {
+                updatePerformanceBonus();
+            }
+        });
+    }
+    
+    private void calculateAndDisplaySalary() {
+        try {
+            // Generate new payroll ID
+            String payrollID = payrollBUS.generateNewPayrollID();
+
+            // Calculate salary details
+            currentPayrollDetails = salaryService.calculateSalary(employeeID, payrollID, currentMonth);
+
+            // Display in table
+            updateTable();
+
+            // Calculate and display total
+            updateTotalSalary();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Lỗi khi tính lương: " + e.getMessage(), 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void updateTable() {
+        DefaultTableModel model = (DefaultTableModel) tblPayrollComponent.getModel();
+        model.setRowCount(0);
+
+        // Component names mapping
+        Map<String, String> componentNames = Map.of(
+            "SC01", "Lương cơ bản thực tế",
+            "SC02", "Phụ cấp OT ngày thường",
+            "SC03", "Phụ cấp OT cuối tuần", 
+            "SC04", "Phụ cấp OT ngày lễ",
+            "SC05", "Phụ cấp đi lại",
+            "SC06", "Thưởng hiệu suất",
+            "SC07", "Trừ nghỉ không phép",
+            "SC08", "Trừ đi muộn",
+            "SC09", "Thuế thu nhập cá nhân"
+        );
+
+        for (PayrollDetailsDTO detail : currentPayrollDetails) {
+            String componentName = componentNames.get(detail.getComponentID());
+            String unit = detail.getComponentID().equals("SC05") ? "Tháng" : 
+                         detail.getComponentID().startsWith("SC0") && 
+                         (detail.getComponentID().equals("SC02") || 
+                          detail.getComponentID().equals("SC03") || 
+                          detail.getComponentID().equals("SC04")) ? "Giờ" : "Ngày";
+
+            model.addRow(new Object[]{
+                componentName,
+                detail.getValue() + " " + unit,
+                String.format("%,.0f VNĐ", detail.getAmount())
+            });
+        }
+    }
+    
+    private void updateTotalSalary() {
+        BigDecimal total = currentPayrollDetails.stream()
+                                              .map(PayrollDetailsDTO::getAmount)
+                                              .reduce(BigDecimal.ZERO, BigDecimal::add);
+        txtTotal.setText(String.format("%,.0f VNĐ", total));
+    }
+    
+    private void updatePerformanceBonus() {
+        try {
+            DefaultTableModel model = (DefaultTableModel) tblPayrollComponent.getModel();
+            String valueStr = model.getValueAt(5, 1).toString().replaceAll("[^0-9]", "");
+            BigDecimal bonusAmount = new BigDecimal(valueStr);
+
+            // Update the payroll detail
+            for (PayrollDetailsDTO detail : currentPayrollDetails) {
+                if (detail.getComponentID().equals("SC06")) {
+                    detail.setAmount(bonusAmount);
+                    detail.setValue(bonusAmount.compareTo(BigDecimal.ZERO) > 0 ? 1 : 0);
+                    break;
+                }
+            }
+
+            // Update table display
+            model.setValueAt(String.format("%,.0f VNĐ", bonusAmount), 5, 2);
+
+            // Update total
+            updateTotalSalary();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Số tiền không hợp lệ", 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -98,12 +249,22 @@ public class AddPayroll extends javax.swing.JDialog {
         btnAddPayroll.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnAddPayroll.setForeground(new java.awt.Color(255, 255, 255));
         btnAddPayroll.setText("Xác nhận");
+        btnAddPayroll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddPayrollActionPerformed(evt);
+            }
+        });
         pnlButton.add(btnAddPayroll);
 
         btnCancel.setBackground(new java.awt.Color(153, 153, 153));
         btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("Hủy");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
         pnlButton.add(btnCancel);
 
         pnlEmployeeInfo.setLayout(new java.awt.GridBagLayout());
@@ -175,7 +336,7 @@ public class AddPayroll extends javax.swing.JDialog {
                 .addComponent(pnlEmployeeInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pnlPayrollComponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(20, 20, 20)
                 .addComponent(pnlTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(pnlButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -192,6 +353,72 @@ public class AddPayroll extends javax.swing.JDialog {
     private void txtEmployeeIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmployeeIDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmployeeIDActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        this.dispose();
+        EmployeePayroll emPayrollDialog = new EmployeePayroll((JFrame) SwingUtilities.getWindowAncestor(this), true);
+        emPayrollDialog.setLocationRelativeTo(null);
+        emPayrollDialog.setVisible(true);
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnAddPayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPayrollActionPerformed
+        try {
+            // Calculate total salary
+            BigDecimal totalSalary = currentPayrollDetails.stream()
+                                                        .map(PayrollDetailsDTO::getAmount)
+                                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            // Create payroll
+            PayrollDTO payroll = new PayrollDTO(
+                currentPayrollDetails.get(0).getPayrollID(),
+                employeeID,
+                totalSalary,
+                false, // Not paid yet
+                null,  // Pay date will be set when payment is made
+                false  // Not deleted
+            );
+
+            // Save payroll
+            boolean payrollSaved = payrollBUS.addPayroll(payroll);
+
+            if (payrollSaved) {
+                // Save payroll details
+                boolean allDetailsSaved = true;
+                for (PayrollDetailsDTO detail : currentPayrollDetails) {
+                    if (!payrollDetailsBUS.addPayrollDetail(detail)) {
+                        allDetailsSaved = false;
+                        break;
+                    }
+                }
+
+                if (allDetailsSaved) {
+                    JOptionPane.showMessageDialog(this,
+                        "Tạo bảng lương thành công!",
+                        "Thành công",
+                        JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
+                } else {
+                    // Rollback payroll if details failed
+                    payrollBUS.deletePayroll(payroll.getPayrollID());
+                    JOptionPane.showMessageDialog(this,
+                        "Lỗi khi lưu chi tiết bảng lương!",
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    "Lỗi khi tạo bảng lương!",
+                    "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Lỗi: " + e.getMessage(),
+                "Lỗi",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAddPayrollActionPerformed
 
     /**
      * @param args the command line arguments
