@@ -7,11 +7,15 @@ package com.pharmacy.app.GUI.Employee;
 import com.pharmacy.app.BUS.ContractBUS;
 import com.pharmacy.app.BUS.EmployeeBUS;
 import com.pharmacy.app.BUS.PayrollBUS;
+import com.pharmacy.app.BUS.PayrollDetailsBUS;
+import com.pharmacy.app.BUS.SalaryComponentsBUS;
 import com.pharmacy.app.BUS.WorkSchedulesBUS;
 import com.pharmacy.app.BUS.WorkShiftBUS;
 import com.pharmacy.app.DTO.ContractDTO;
 import com.pharmacy.app.DTO.EmployeeDTO;
 import com.pharmacy.app.DTO.PayrollDTO;
+import com.pharmacy.app.DTO.PayrollDetailsDTO;
+import com.pharmacy.app.DTO.SalaryComponentsDTO;
 import com.pharmacy.app.DTO.SessionDTO;
 import com.pharmacy.app.DTO.UserDTO;
 import com.pharmacy.app.DTO.WorkShiftDTO;
@@ -19,11 +23,14 @@ import com.pharmacy.app.Utils.WeekUltils;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import com.pharmacy.app.Utils.ScheduleTableHelper;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -36,6 +43,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
     private final EmployeeDTO employee_login;
     private ContractBUS contractBUS;
     private PayrollBUS payrollBUS;
+    private PayrollDetailsBUS payrollDetailsBUS;
     private String employeeId;
     private Map<String, WorkShiftDTO> shiftMap;
     private final UserDTO currentUser = SessionDTO.getCurrentUser();
@@ -52,6 +60,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         contractBUS = new ContractBUS();
         emDTO = new EmployeeDTO();
         payrollBUS = new PayrollBUS();
+        payrollDetailsBUS = new PayrollDetailsBUS();
         setData(currentUser.getUserID());
         
         // Hiển thị cbx theo tuần
@@ -68,6 +77,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         // Lấy ca làm và giờ làm 
         shiftMap = shiftBus.getShiftMap();
         setDataPayroll(employeeId);
+        displayPayrollDetails(employeeId);
         setDataContract(employeeId);
         showScheduleEmployee();
     }
@@ -112,13 +122,48 @@ public class EmployeeProfile extends javax.swing.JPanel {
     }
     
     public void setDataPayroll(String employeeID){
-        PayrollDTO payroll = payrollBUS.getPayrollByID(employeeID);
+        PayrollDTO payroll = payrollBUS.getPayrollByEmpID(employeeID);
         txtEmployeeID3.setText(employeeID);
         txtTotal.setText(String.valueOf(payroll.getTotalSalary()));
         txtStatus.setText(payroll.getStatus() ? "Đã nhận" : "Chưa nhận");
         txtDate.setText(payroll.getPayDate().format(DATE_FORMAT));
     }
-    
+    public void displayPayrollDetails(String employeeID) {
+        // Initialize SalaryComponentsBUS and load data
+        SalaryComponentsBUS componentsBUS = new SalaryComponentsBUS();
+        PayrollDTO payroll = payrollBUS.getPayrollByEmpID(employeeID);
+        componentsBUS.loadComponentsList();
+
+        // Get payroll details
+        ArrayList<PayrollDetailsDTO> payrollDetails = payrollDetailsBUS.getPayrollDetailsByPayrollID(payroll.getPayrollID());
+
+        // Set up table model
+        DefaultTableModel model = (DefaultTableModel) tblPayrollComponent.getModel();
+        model.setRowCount(0); // Clear existing rows
+
+        // Format currency
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
+        // Add data to table
+        for (PayrollDetailsDTO detail : payrollDetails) {
+            Object[] row = new Object[3];
+
+            // Get component name instead of ID
+            SalaryComponentsDTO component = componentsBUS.getComponentByID(detail.getComponentID());
+            row[0] = (component != null) ? component.getName() : detail.getComponentID();
+
+            // Value (could be days/hours)
+            row[1] = detail.getValue();
+
+            // Amount
+            row[2] = currencyFormat.format(detail.getAmount());
+
+            model.addRow(row);
+        }
+
+        // Auto-resize columns
+        tblPayrollComponent.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
     public void showScheduleEmployee(){
         LocalDate start = weekDates.get(0);
         LocalDate end = weekDates.get(6);

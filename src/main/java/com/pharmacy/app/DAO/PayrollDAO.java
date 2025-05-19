@@ -96,7 +96,24 @@ public class PayrollDAO {
         }
         return payroll;
     }
-
+    public PayrollDTO selectByEmpID(String payrollID) {
+        PayrollDTO payroll = null;
+        myConnection.openConnection();
+        String query = "select * " +
+                        "from payrolls " +
+                        "where employee_id = ?";
+        try {
+            ResultSet rs = myConnection.prepareQuery(query, payrollID);
+            if (rs.next()) {
+                payroll = extractPayrollFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            myConnection.closeConnection();
+        }
+        return payroll;
+    }
     public ArrayList<PayrollDTO> search(String keyword) {
         ArrayList<PayrollDTO> payrollList = new ArrayList<>();
         myConnection.openConnection();
