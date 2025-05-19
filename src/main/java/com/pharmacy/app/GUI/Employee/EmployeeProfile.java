@@ -4,10 +4,14 @@
  */
 package com.pharmacy.app.GUI.Employee;
 
+import com.pharmacy.app.BUS.ContractBUS;
 import com.pharmacy.app.BUS.EmployeeBUS;
+import com.pharmacy.app.BUS.PayrollBUS;
 import com.pharmacy.app.BUS.WorkSchedulesBUS;
 import com.pharmacy.app.BUS.WorkShiftBUS;
+import com.pharmacy.app.DTO.ContractDTO;
 import com.pharmacy.app.DTO.EmployeeDTO;
+import com.pharmacy.app.DTO.PayrollDTO;
 import com.pharmacy.app.DTO.SessionDTO;
 import com.pharmacy.app.DTO.UserDTO;
 import com.pharmacy.app.DTO.WorkShiftDTO;
@@ -30,6 +34,8 @@ public class EmployeeProfile extends javax.swing.JPanel {
     private final EmployeeBUS emBUS;
     private final EmployeeDTO emDTO;
     private final EmployeeDTO employee_login;
+    private ContractBUS contractBUS;
+    private PayrollBUS payrollBUS;
     private String employeeId;
     private Map<String, WorkShiftDTO> shiftMap;
     private final UserDTO currentUser = SessionDTO.getCurrentUser();
@@ -43,7 +49,9 @@ public class EmployeeProfile extends javax.swing.JPanel {
     public EmployeeProfile() {
         initComponents();
         emBUS = new EmployeeBUS();
+        contractBUS = new ContractBUS();
         emDTO = new EmployeeDTO();
+        payrollBUS = new PayrollBUS();
         setData(currentUser.getUserID());
         
         // Hiển thị cbx theo tuần
@@ -59,7 +67,8 @@ public class EmployeeProfile extends javax.swing.JPanel {
         
         // Lấy ca làm và giờ làm 
         shiftMap = shiftBus.getShiftMap();
-        
+        setDataPayroll(employeeId);
+        setDataContract(employeeId);
         showScheduleEmployee();
     }
     
@@ -85,6 +94,29 @@ public class EmployeeProfile extends javax.swing.JPanel {
         txtGender.setText(employee.getGender() ? "Nam" : "Nữ");
         txtDOB.setText(employee.getDob().format(DATE_FORMAT));
         txtEmail.setText(employee.getEmail());
+    }
+    
+    public void setDataContract(String employeeID){
+        ContractDTO contract = contractBUS.getLatestEmployeeContract(employeeID);
+        txtContractID1.setText(contract.getContractID());
+        txtEmployeeID2.setText(contract.getEmployeeID());
+        txtDegree1.setText(contract.getDegree());
+        txtExperienceYears1.setText(String.valueOf(contract.getExperienceYears()));
+        txtSigningDate1.setText(contract.getSigningDate().format(DATE_FORMAT));
+        txtPosition1.setText(contract.getPosition());
+        txtStartDate1.setText(contract.getStartDate().format(DATE_FORMAT));
+        txtEndDate1.setText(contract.getEndDate().format(DATE_FORMAT));
+        txtDescription1.setText(contract.getWorkDescription());
+        txtBaseSalary1.setText(String.valueOf(contract.getBaseSalary()));
+        txtBaseWorkDays1.setText("26");
+    }
+    
+    public void setDataPayroll(String employeeID){
+        PayrollDTO payroll = payrollBUS.getPayrollByID(employeeID);
+        txtEmployeeID3.setText(employeeID);
+        txtTotal.setText(String.valueOf(payroll.getTotalSalary()));
+        txtStatus.setText(payroll.getStatus() ? "Đã nhận" : "Chưa nhận");
+        txtDate.setText(payroll.getPayDate().format(DATE_FORMAT));
     }
     
     public void showScheduleEmployee(){
@@ -141,7 +173,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         lblTotal = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
         lblBankAccount = new javax.swing.JLabel();
-        txtBankAccount = new javax.swing.JTextField();
+        txtEmployeeID3 = new javax.swing.JTextField();
         lblStatus = new javax.swing.JLabel();
         txtStatus = new javax.swing.JTextField();
         lblDate = new javax.swing.JLabel();
@@ -549,7 +581,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
         pnlEmployeeInfo1.add(txtTotal, gridBagConstraints);
 
-        lblBankAccount.setText("Số tài khoản:");
+        lblBankAccount.setText("Mã nhân viên");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -557,15 +589,15 @@ public class EmployeeProfile extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 20);
         pnlEmployeeInfo1.add(lblBankAccount, gridBagConstraints);
 
-        txtBankAccount.setEditable(false);
-        txtBankAccount.setFocusable(false);
+        txtEmployeeID3.setEditable(false);
+        txtEmployeeID3.setFocusable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 2.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
-        pnlEmployeeInfo1.add(txtBankAccount, gridBagConstraints);
+        pnlEmployeeInfo1.add(txtEmployeeID3, gridBagConstraints);
 
         lblStatus.setText("Trạng thái:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1013,7 +1045,6 @@ public class EmployeeProfile extends javax.swing.JPanel {
     private javax.swing.JTable tblPayrollComponent;
     private javax.swing.JTable tblWeekSchedule;
     private javax.swing.JTextField txtAddress;
-    private javax.swing.JTextField txtBankAccount;
     private javax.swing.JTextField txtBaseSalary1;
     private javax.swing.JTextField txtBaseWorkDays1;
     private javax.swing.JTextField txtContractID1;
@@ -1024,6 +1055,7 @@ public class EmployeeProfile extends javax.swing.JPanel {
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEmployeeID;
     private javax.swing.JTextField txtEmployeeID2;
+    private javax.swing.JTextField txtEmployeeID3;
     private javax.swing.JTextField txtEndDate1;
     private javax.swing.JTextField txtExperienceYears1;
     private javax.swing.JTextField txtGender;
