@@ -71,7 +71,14 @@ public class PayrollBUS {
         }
         return payrollDAO.selectByID(payrollID);
     }
-    
+    public PayrollDTO getPayrollByEmpID(String employeeID) {
+        for (PayrollDTO payroll : payrollList) {
+            if (payroll.getEmployeeID().equals(employeeID)) {
+                return payroll;
+            }
+        }
+        return payrollDAO.selectByEmpID(employeeID);
+    }    
     public ArrayList<PayrollDTO> searchPayrollsByEmployeeName(String keyword) {
         return payrollDAO.search(keyword);
     }
