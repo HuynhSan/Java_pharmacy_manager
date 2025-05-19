@@ -288,6 +288,25 @@ public class RequestDAO implements DAOinterface<RequestDTO>{
         return emID;
     }
     
+    public int quantityRequestNonSalary(String emID){
+        int count = 0;
+        try {
+            if (myconnect.openConnection()) {
+                String sql = "select count(*) as total_requests from requests where request_type = N'Đơn xin nghỉ phép' and status = N'Đã duyệt'  and employee_id = ? ";
+                PreparedStatement ps = myconnect.con.prepareStatement(sql);
+                ps.setString(1, emID);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    count = rs.getInt("total_requests");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            myconnect.closeConnection();
+        }
+        return count;
+    }
     
 }
 

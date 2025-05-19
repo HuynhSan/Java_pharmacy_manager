@@ -4,6 +4,7 @@
  */
 package com.pharmacy.app.GUI.WorkSchedule;
 
+import com.pharmacy.app.BUS.RequestBUS;
 import com.pharmacy.app.DAO.AttendanceDAO;
 import com.pharmacy.app.DAO.ContractDAO;
 import com.pharmacy.app.DAO.SalaryComponentsDAO;
@@ -160,7 +161,8 @@ public class SalaryCalculationService {
     private int calculateUnauthorizedLeaveDays(String employeeID, YearMonth month, int actualWorkDays) {
         // Calculate expected work days in the month (exclude weekends and holidays)
         int expectedWorkDays = calculateExpectedWorkDays(month);
-        return Math.max(0, expectedWorkDays - actualWorkDays);
+        RequestBUS req = new RequestBUS();
+        return Math.max(0, expectedWorkDays - actualWorkDays - req.getCountRequestNonSalary(employeeID));
     }
     
     private int calculateExpectedWorkDays(YearMonth month) {

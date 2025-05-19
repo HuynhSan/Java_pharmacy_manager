@@ -57,4 +57,8 @@ public class RequestBUS {
     public boolean updateRequest(RequestDTO req){
         return reqDAO.update(req);
     }
+    
+    public int getCountRequestNonSalary(String emID){
+        return reqDAO.quantityRequestNonSalary(emID);
+    }
 }
