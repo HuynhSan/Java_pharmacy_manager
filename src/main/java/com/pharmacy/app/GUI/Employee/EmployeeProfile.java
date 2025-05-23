@@ -124,11 +124,20 @@ public class EmployeeProfile extends javax.swing.JPanel {
     }
     
     public void setDataPayroll(String employeeID){
+        
         PayrollDTO payroll = payrollBUS.getPayrollByEmpID(employeeID);
-        txtEmployeeID3.setText(employeeID);
-        txtTotal.setText(String.valueOf(payroll.getTotalSalary()));
-        txtStatus.setText(payroll.getStatus() ? "Đã nhận" : "Chưa nhận");
-        txtDate.setText(payroll.getPayDate().format(DATE_FORMAT));
+        if (payroll != null){
+            txtEmployeeID3.setText(employeeID);
+            txtTotal.setText(String.valueOf(payroll.getTotalSalary()));
+            txtStatus.setText(payroll.getStatus() ? "Đã nhận" : "Chưa nhận");
+            txtDate.setText(payroll.getPayDate().format(DATE_FORMAT));
+        } else {
+            txtEmployeeID3.setText(employeeID);
+            txtTotal.setText("");
+            txtStatus.setText("");
+            txtDate.setText("");
+        }
+
     }
     public void displayPayrollDetails(String employeeID) {
         // Initialize SalaryComponentsBUS and load data
@@ -145,26 +154,35 @@ public class EmployeeProfile extends javax.swing.JPanel {
 
         // Format currency
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        if (payrollDetails != null){
+                    // Add data to table
+            for (PayrollDetailsDTO detail : payrollDetails) {
+                Object[] row = new Object[3];
 
-        // Add data to table
-        for (PayrollDetailsDTO detail : payrollDetails) {
-            Object[] row = new Object[3];
+                // Get component name instead of ID
+                SalaryComponentsDTO component = componentsBUS.getComponentByID(detail.getComponentID());
+                row[0] = (component != null) ? component.getName() : detail.getComponentID();
 
-            // Get component name instead of ID
-            SalaryComponentsDTO component = componentsBUS.getComponentByID(detail.getComponentID());
-            row[0] = (component != null) ? component.getName() : detail.getComponentID();
+                // Value (could be days/hours)
+                row[1] = detail.getValue();
 
-            // Value (could be days/hours)
-            row[1] = detail.getValue();
+                // Amount
+                row[2] = currencyFormat.format(detail.getAmount());
 
-            // Amount
-            row[2] = currencyFormat.format(detail.getAmount());
+                model.addRow(row);
+            }
 
-            model.addRow(row);
+            // Auto-resize columns
+            tblPayrollComponent.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         }
+        else {
+            int rowCount = model.getRowCount();
+            for (int i=0; i<rowCount; i++){
+                model.setValueAt("0", i, 1);
+                model.setValueAt("0", i, 2);
 
-        // Auto-resize columns
-        tblPayrollComponent.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+            }
+        }
     }
     
 
