@@ -22,6 +22,7 @@ public class SuplierInvoicesBUS {
     public SuplierInvoicesBUS() {
         supInvoiceDAO = new SupplierInvoicesDAO();
         supInvoicesList = new ArrayList<>();
+        loadSupInvoiceList();
     }
 
     public void getSearchFiled(String field) {

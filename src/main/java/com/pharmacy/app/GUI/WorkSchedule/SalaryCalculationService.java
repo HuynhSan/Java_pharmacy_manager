@@ -112,7 +112,7 @@ public class SalaryCalculationService {
         double totalOvertimeHours = 0;
         for (AttendanceDTO attendance : attendances) {
             WorkScheduleDTO schedule = findScheduleForDate(schedules, attendance.getWorkDate());
-            if (schedule != null && !schedule.isIsWeekend() && !schedule.isIsHoliday()) {
+            if ((schedule != null && schedule.isIsWeekend() && !schedule.isIsHoliday())) {
                 double overtimeHours = calculateOvertimeForDay(attendance, schedule);
                 totalOvertimeHours += overtimeHours;
             }
@@ -155,7 +155,12 @@ public class SalaryCalculationService {
         // Assuming 8-hour standard work day
         // Calculate actual work hours and subtract 8 to get overtime
         // This is a simplified calculation - you may need to adjust based on your business logic
-        return Math.max(0, attendance.getActualWorkHours() - 8);
+        if ("OFF".equals(schedule.getShiftId())) {
+            return Math.max(0, attendance.getActualWorkHours());
+        }
+        else {
+            return Math.max(0, attendance.getActualWorkHours() - 8);
+        }
     }
     
     private int calculateUnauthorizedLeaveDays(String employeeID, YearMonth month, int actualWorkDays) {

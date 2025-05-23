@@ -694,6 +694,7 @@ public final class Invoices extends javax.swing.JPanel {
     }// GEN-LAST:event_refreshBtnActionPerformed
 
     private void refreshBtn1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_refreshBtn1ActionPerformed
+        supInvoiceBUS.loadSupInvoiceList();
         loadSupInvoiceData();
     }// GEN-LAST:event_refreshBtn1ActionPerformed
 

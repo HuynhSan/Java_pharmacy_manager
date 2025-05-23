@@ -84,6 +84,7 @@ public class UpdateRequest extends javax.swing.JDialog {
         } else {
             txtResponseDate.setText("");
         }
+        btnUpdateRequest.setEnabled(true);
     }
     /**
      * This method is called from within the constructor to initialize the form.

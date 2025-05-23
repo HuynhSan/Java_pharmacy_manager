@@ -98,19 +98,24 @@ public class PayrollManagement extends javax.swing.JPanel {
     private void displayPayrolls(ArrayList<PayrollDTO> payrolls) {
         DefaultTableModel model = (DefaultTableModel) tblPayrolls.getModel();
         model.setRowCount(0); // Clear current data
-        
+
         for (PayrollDTO payroll : payrolls) {
             // Look up the employee name based on employee ID
             String employeeID = payroll.getEmployeeID();
             EmployeeDTO employee = employeeBUS.getEmployeeByID(employeeID);
             String employeeName = (employee != null) ? employee.getName() : "Unknown";
-            
+
+            // Check payDate for null
+            String payDateStr = (payroll.getPayDate() != null)
+                ? payroll.getPayDate().format(DATE_FORMAT)
+                : "Chưa có";
+
             Object[] row = {
                 payroll.getPayrollID(),
                 employeeName,
                 formatMoney(payroll.getTotalSalary()),
                 payroll.getStatus() ? "Đã thanh toán" : "Chưa thanh toán",
-                payroll.getPayDate().format(DATE_FORMAT)
+                payDateStr
             };
             model.addRow(row);
         }
